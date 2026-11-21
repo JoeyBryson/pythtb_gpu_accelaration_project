@@ -40,6 +40,12 @@ def main() -> None:
     p.add_argument("--skip-serial", action="store_true", help="skip the slow PythTB serial loop")
     p.add_argument("--no-reliability", action="store_true",
                    help="skip PythTB's untimed reliability pass (saves one parallel run)")
+    p.add_argument("--rashba", type=float, default=None,
+                   help="Rashba coupling for BOTH sides (default: tutorial value 0.25)")
+    p.add_argument("--spin-blocks", action="store_true",
+                   help="ours: solve spin up/down separately (needs --rashba 0)")
+    p.add_argument("--precisions", nargs="+", default=["double", "single"],
+                   choices=["double", "single"], help="which precisions to run ours in")
     p.add_argument("--devices", nargs="+", default=["cpu", "cuda"],
                    help="where to run ours: cpu, cuda or both (cuda skipped if unavailable)")
     args = p.parse_args()
@@ -49,6 +55,8 @@ def main() -> None:
     hw = hardware_info()
     print(f"full pipeline on CPU {hw['cpu']} ({hw['n_cpus']} cpus), GPU {gpu}\n")
 
+    params = {} if args.rashba is None else {"rashba": args.rashba}
+    print(f"model parameters: {params or 'tutorial defaults'}; spin blocks: {args.spin_blocks}")
     rows = []
     for n in args.sizes:
         nk = args.nk or scaled_nk(n)
@@ -58,29 +66,37 @@ def main() -> None:
         baselines = {}
         if not args.skip_serial:
             res = bench_serial(*common_args, workers=args.workers,
-                               reliability=not args.no_reliability)
+                               reliability=not args.no_reliability, params=params)
             baselines["pythtb_serial"] = (sum(r.t_total for r in res), [r.z2 for r in res])
         res = bench_parallel(*common_args, workers=args.workers,
-                             reliability=not args.no_reliability)
+                             reliability=not args.no_reliability, params=params)
         # wall time of the parallel run is printed by bench_parallel; recompute from rows
         wall = float(open_last_row("cpu_parallel")["wall_s"])
         baselines["pythtb_parallel"] = (wall, [r.z2 for r in res])
         ref_z2 = np.array(baselines["pythtb_parallel"][1])
 
         for device in devices:
-            for precision in ("double", "single"):
+            for precision in args.precisions:
                 be = get_backend(precision, device)
                 log(f"ours {device} {precision}: {args.configs} configs of {n}x{n}, mesh {nk}x{nk}")
-                run_batch(n, args.W, nk, seeds[:1], be, check=False)  # warm-up
+                run_batch(n, args.W, nk, seeds[:1], be, check=False,  # warm-up
+                          spin_blocks=args.spin_blocks, **params)
                 progress = Progress(f"ours {device} {precision} {n}x{n}", args.configs, every=1)
-                out = run_batch(n, args.W, nk, seeds, be, check=True, progress=progress.step)
+                # The reliability check (an SVD of every overlap) is untimed but slow in double
+                # precision on a T4, and its answer doesn't depend on precision: run it once,
+                # with the single-precision pass only.
+                out = run_batch(n, args.W, nk, seeds, be, check=(precision == "single"),
+                                progress=progress.step, spin_blocks=args.spin_blocks, **params)
                 t = out.timings["total"]
+                checked = not np.isnan(out.min_overlap).all()
+                n_unrel = int((~out.reliable).sum()) if checked else "not checked"
                 agree = int((out.z2 == ref_z2).sum())
                 line = (
                     f"  ours {device:4s} {precision:6s} {t:8.3f} s  "
                     f"(solve {out.timings['solve']:.3f}, wilson {out.timings['wilson']:.3f}, "
                     f"z2 {out.timings['z2']:.3f})  Z2 agrees {agree}/{args.configs}  "
-                    f"unreliable {int((~out.reliable).sum())}  NS fallbacks {out.ns_fallbacks}"
+                    f"unreliable {n_unrel}  NS fallbacks {out.ns_fallbacks}  "
+                    f"eig retried {out.eig_retried}/{out.n_wilson} (cpu {out.eig_cpu})"
                     f"\n      wilson breakdown: "
                     + "  ".join(
                         f"{k[2:]} {out.timings[k]:.3f}"
@@ -94,13 +110,16 @@ def main() -> None:
                     "supercell": n, "nk": nk, "configs": args.configs, "W": args.W,
                     "device": device, "gpu": gpu if device == "cuda" else "",
                     "precision": precision, "t_ours": f"{t:.4f}",
+                    "rashba": params.get("rashba", "tutorial"), "spin_blocks": args.spin_blocks,
                     "t_solve": f"{out.timings['solve']:.4f}",
                     "t_wilson": f"{out.timings['wilson']:.4f}",
                     "t_z2": f"{out.timings['z2']:.4f}",
                     **{k: f"{out.timings[k]:.4f}"
                        for k in ("t_overlaps", "t_unitary", "t_product", "t_eigvals")},
-                    "z2_agree": agree, "n_unreliable": int((~out.reliable).sum()),
+                    "z2_agree": agree, "n_unreliable": n_unrel,
                     "ns_fallbacks": out.ns_fallbacks, "workers": args.workers,
+                    "eig_retried": out.eig_retried, "eig_cpu": out.eig_cpu,
+                    "n_wilson": out.n_wilson,
                 }
                 for name, (t_ref, _) in baselines.items():
                     row[f"t_{name}"] = f"{t_ref:.4f}"

@@ -37,9 +37,14 @@ NS_MAX_STEPS = 12
 NS_TOL = {torch.complex128: 1e-12, torch.complex64: 1e-5}
 
 
-def boundary_phase(model: TBModel, G: tuple[float, float] = (0.0, 1.0)) -> np.ndarray:
-    """D = exp(-2 pi i G.tau) for each state (spin flattened): u(k + G) = D * u(k). Shape (N,)."""
-    tau = np.repeat(np.asarray(model.orb_vecs), 2, axis=0)  # same position for both spins
+def boundary_phase(
+    model: TBModel, G: tuple[float, float] = (0.0, 1.0), spin_blocks: bool = False
+) -> np.ndarray:
+    """D = exp(-2 pi i G.tau) for each state: u(k + G) = D * u(k).
+    Shape (N,) with spin flattened, or (N/2,) per spin block (one entry per orbital)."""
+    tau = np.asarray(model.orb_vecs)
+    if not spin_blocks:
+        tau = np.repeat(tau, 2, axis=0)  # same position for both spins
     return np.exp(-2j * np.pi * tau @ np.asarray(G))
 
 
@@ -104,18 +109,25 @@ def ordered_product(U: torch.Tensor) -> torch.Tensor:
 
 
 def wannier_centres(
-    u: torch.Tensor, model: TBModel, method: str = "newton-schulz"
+    u: torch.Tensor, model: TBModel, method: str = "newton-schulz", eig_method: str = "hermitian"
 ) -> tuple[torch.Tensor, dict]:
     """Wannier centres for every line of every configuration.
 
-    u: (C, nk_x, nk_y, n_occ, N) occupied states from batched.solve_configs.
+    u: (C, nk_x, nk_y, n_occ, N) occupied states from batched.solve_configs, or
+       (C, 2, nk_x, nk_y, n_occ/2, N/2) with spin_blocks=True (Rashba = 0). Then each spin
+       block gets its own Wilson loops (half-size matrices), and the two blocks' Wannier
+       centres are combined per line: the same set the full problem gives, because the
+       overlaps and Wilson matrices are block-diagonal in spin.
     Returns wcc (C, nk_x, n_occ) in [0, 1) on the CPU, sorted per line, and info
     (fallback count and seconds per sub-step).
     """
     on_gpu = u.is_cuda
     clock = _Clock(on_gpu)
+    spin_blocks = u.ndim == 6
 
-    phase = torch.as_tensor(boundary_phase(model), dtype=u.dtype, device=u.device)
+    phase = torch.as_tensor(
+        boundary_phase(model, spin_blocks=spin_blocks), dtype=u.dtype, device=u.device
+    )
     M = overlaps_along_ky(u, phase)
     clock.lap("overlaps")
     if method == "newton-schulz":
@@ -125,14 +137,87 @@ def wannier_centres(
     clock.lap("unitary")
     W = ordered_product(U)  # (C, nk_x, n, n)
     clock.lap("product")
-    # Eigenvalues of the (non-Hermitian) Wilson matrices: done on the CPU. General eigen-
-    # solvers are slow on GPUs, and there are only C * nk_x of these small matrices.
-    evals = torch.linalg.eigvals(W.cpu())
+    if eig_method == "hermitian":
+        evals, eig_stats = unitary_eigenvalues(W)
+        evals = evals.cpu()
+    else:  # "general": the plain non-Hermitian eigensolver, on the CPU (slow on GPUs)
+        evals = torch.linalg.eigvals(W.cpu())
+        eig_stats = {"eig_retried": 0, "eig_cpu": int(W.shape[:-2].numel())}
     wcc = torch.remainder(-torch.angle(evals) / (2 * torch.pi), 1.0)
+    if spin_blocks:  # (C, 2, nk_x, n/2) -> (C, nk_x, n): both spins' centres on each line
+        wcc = wcc.movedim(1, -2).flatten(-2)
     wcc, _ = torch.sort(wcc, dim=-1)
     clock.lap("eigvals")
-    info = {"ns_fallbacks": n_fallback, "n_links": M.shape[:-2].numel(), **clock.laps}
+    info = {
+        "ns_fallbacks": n_fallback, **eig_stats, "n_wilson": int(W.shape[:-2].numel()),
+        "n_links": M.shape[:-2].numel(), **clock.laps,
+    }
     return wcc, info
+
+
+# Mixing weights for unitary_eigenvalues. Any fixed number not 0 works; irrational-looking
+# ones make accidental ties (two different phases giving the same mixed value) unlikely.
+# The second is used to retry the rare matrices where the first one fails.
+_MIX = 0.6180339887
+_MIX_RETRY = -1.4142135623
+# Accuracy bar per eigenvalue (the step always runs in double precision, see below). W is
+# normal, so if |W v - lambda v| <= tol for a unit vector v, lambda is within tol of a true
+# eigenvalue (Bauer-Fike), i.e. the Wannier centre is within tol / 2pi. Checked per
+# eigenvector, not per matrix: a matrix-wide norm let errors of ~1e-3 through at n = 512 in
+# single precision (found 21 Nov).
+EIG_TOL = 1e-10
+
+
+def _hermitian_eig(W: torch.Tensor, mix: float) -> tuple[torch.Tensor, torch.Tensor]:
+    """One attempt: eigenvalues of unitary W via eigh of a Hermitian mix of W and W^H.
+    Returns (eigenvalues (..., n), worst per-eigenvector residual |W v - lambda v| per matrix)."""
+    H = 0.5 * (W + W.mH) + mix * (W - W.mH) / 2j
+    _, V = torch.linalg.eigh(H)
+    lam = (V.conj() * (W @ V)).sum(dim=-2)  # diagonal of V^H W V, one per eigenvector
+    per_vector = torch.linalg.vector_norm(W @ V - V * lam.unsqueeze(-2), dim=-2)  # (..., n)
+    return lam, per_vector.amax(dim=-1)
+
+
+def unitary_eigenvalues(W: torch.Tensor) -> tuple[torch.Tensor, dict]:
+    """Eigenvalues of unitary matrices with a Hermitian eigensolver (fast and batched on GPUs).
+
+    A unitary W has eigenvalues e^{i theta} and an orthonormal set of eigenvectors. The
+    Hermitian matrix  H = (W + W^H)/2 + MIX (W - W^H)/(2i)  has the SAME eigenvectors
+    (eigenvalues cos theta + MIX sin theta), so we diagonalise H with `eigh` and read each
+    eigenvalue of W back as v^H W v.
+
+    Always done in DOUBLE precision, even in a single-precision run: in single precision
+    eigh can't separate eigenvalues closer than ~1e-6 and the Rayleigh read-back loses
+    accuracy (1e-3 errors at n = 512, 21 Nov). The Wilson matrices are small and few
+    (one n_occ x n_occ per line), so double costs little. A single-precision W is first made
+    exactly unitary in double with two Newton-Schulz steps (it moves by ~1e-5, below the 1e-4
+    single-precision tolerance); otherwise its tiny non-unitarity would fail the check.
+
+    It can still go wrong when two different phases give (nearly) the same cos + MIX sin, so
+    eigh mixes their eigenvectors. Every eigenvector is checked, and failures go through:
+      1. retry on the same device with a different MIX (cheap: few matrices)
+      2. only if that also fails: the general (non-Hermitian) solver on the CPU (slow)
+
+    W: (..., n, n). Returns (eigenvalues (..., n) complex128, {"eig_retried", "eig_cpu"} counts).
+    """
+    Wd = W.to(torch.complex128)
+    if W.dtype != torch.complex128:
+        eye = torch.eye(W.shape[-1], dtype=Wd.dtype, device=Wd.device)
+        for _ in range(2):  # Newton-Schulz polish: nearest unitary matrix, in double
+            Wd = 0.5 * Wd @ (3 * eye - Wd.mH @ Wd)
+    lam, residual = _hermitian_eig(Wd, _MIX)
+    bad = residual > EIG_TOL
+    stats = {"eig_retried": int(bad.sum()), "eig_cpu": 0}
+    if stats["eig_retried"]:
+        lam_retry, res_retry = _hermitian_eig(Wd[bad], _MIX_RETRY)
+        still_bad = res_retry > EIG_TOL
+        stats["eig_cpu"] = int(still_bad.sum())
+        if stats["eig_cpu"]:
+            lam_retry[still_bad] = torch.linalg.eigvals(Wd[bad][still_bad].cpu()).to(
+                lam_retry.device
+            )
+        lam[bad] = lam_retry
+    return lam, stats
 
 
 class _Clock:

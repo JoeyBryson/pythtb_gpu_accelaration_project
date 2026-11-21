@@ -32,6 +32,9 @@ class BatchResult:
     band_gap: np.ndarray  # (C,)
     timings: dict = field(default_factory=dict)  # seconds per stage
     ns_fallbacks: int = 0
+    eig_retried: int = 0  # Wilson matrices whose eigenvalues needed the GPU retry
+    eig_cpu: int = 0  # ... and of those, the ones that needed the slow CPU solver
+    n_wilson: int = 0  # Wilson matrices in total
 
     @property
     def reliable(self) -> np.ndarray:
@@ -51,7 +54,7 @@ def half_bz_rows(nk: int) -> np.ndarray:
 
 def run_batch(
     supercell: int, W: float, nk: int, seeds: list[int], backend: Backend,
-    check: bool = True, progress=None, **params,
+    check: bool = True, progress=None, spin_blocks: bool = False, **params,
 ) -> BatchResult:
     """Z2 for every configuration (one per seed), timing each stage on the device.
 
@@ -61,6 +64,8 @@ def run_batch(
     It is timed separately and not part of the pipeline's cost.
 
     progress: optional callable(n_done) called after each chunk (for progress logging).
+    spin_blocks: solve spin up and down as separate half-size problems (needs rashba = 0;
+    ~4x cheaper diagonalisation, same answers; see batched.solve_configs).
     """
     if nk % 2:
         raise ValueError("Z2 needs an even nk (k = pi on the mesh)")
@@ -68,6 +73,7 @@ def run_batch(
     n_occ, N = model.norb, 2 * model.norb
     t = {"solve": 0.0, "wilson": 0.0, "z2": 0.0, "check": 0.0}
     z2, margin, gap, min_overlap, fallbacks = [], [], [], [], 0
+    eig = {"eig_retried": 0, "eig_cpu": 0, "n_wilson": 0}
     rows = half_bz_rows(nk)
 
     # Process configurations in chunks that fit in device memory. The Wilson step holds
@@ -78,7 +84,9 @@ def run_batch(
 
         sync(backend)
         t0 = time.perf_counter()
-        energies, u = solve_configs(model, nk, W, part, backend, chunk=len(part))
+        energies, u = solve_configs(
+            model, nk, W, part, backend, chunk=len(part), spin_blocks=spin_blocks
+        )
         sync(backend)
         t1 = time.perf_counter()
         wcc, info = wannier_centres(u, model)
@@ -96,14 +104,18 @@ def run_batch(
         t["wilson"] += t2 - t1
         t["z2"] += t3 - t2
         fallbacks += info["ns_fallbacks"]
+        for key in eig:
+            eig[key] += info[key]
         for key, val in info.items():  # Wilson sub-steps: t_overlaps, t_unitary, ...
             if key.startswith("t_"):
                 t[key] = t.get(key, 0.0) + val
 
         if check:  # untimed diagnostic: is the mesh fine enough?
-            phase = torch.as_tensor(boundary_phase(model), dtype=u.dtype, device=u.device)
-            sv = torch.linalg.svdvals(overlaps_along_ky(u, phase))  # (c, nk, nk, n_occ)
-            min_overlap += sv.amin(dim=(1, 2, 3)).double().cpu().tolist()
+            phase = torch.as_tensor(
+                boundary_phase(model, spin_blocks=spin_blocks), dtype=u.dtype, device=u.device
+            )
+            sv = torch.linalg.svdvals(overlaps_along_ky(u, phase))  # (c, [2,] nk, nk, n)
+            min_overlap += sv.flatten(1).amin(dim=1).double().cpu().tolist()
             t["check"] += time.perf_counter() - t3
         else:
             min_overlap += [np.nan] * len(part)
@@ -113,5 +125,6 @@ def run_batch(
 
     t["total"] = t["solve"] + t["wilson"] + t["z2"]
     return BatchResult(
-        np.array(z2), np.array(margin), np.array(min_overlap), np.array(gap), t, fallbacks
+        np.array(z2), np.array(margin), np.array(min_overlap), np.array(gap), t, fallbacks,
+        **eig,
     )
