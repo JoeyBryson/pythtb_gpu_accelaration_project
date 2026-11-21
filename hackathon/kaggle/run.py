@@ -23,6 +23,15 @@ _TESTS = ["-m", "pytest", "-q", "-p", "no:cacheprovider"]
 # cores of the same machine (timed without diagnostics).
 _SPEED = ["--W", "2.0", "--devices", "cuda", "--precisions", "single", "--skip-serial",
           "--no-reliability", "--rashba", "0", "--spin-blocks"]
+def _fine(L: int, refine_nk: int, w_min: float = 1.5, w_max: float = 2.5, samples: int = 1000,
+          part: str = "") -> str:
+    """One analysis/sweep.py command (as a string, for scripts/run_parallel.py) for the fssfine presets.
+    `part` keeps two processes of the same size out of each other's CSV file."""
+    return (f"analysis/sweep.py --size {L} --deltas 1.65 --samples {samples} --W-min {w_min} "
+            f"--W-max {w_max} --W-step 0.1 --refine-nk {refine_nk} --seed {L} "
+            f"--out /kaggle/working/out/fssfine_L{L}{part}.csv")
+
+
 PRESETS = {
     "speed": [
         _TESTS,
@@ -59,6 +68,19 @@ PRESETS = {
         ["analysis/sweep.py", "--size", "16", "--deltas", "1.65", "--samples", "1000",
          "--W-min", "1.0", "--W-max", "3.0", "--W-step", "0.25",
          "--out", "/kaggle/working/out/dense_16x16.csv"],
+    ],
+    # "fssfine": finite-size-scaling datasets for analysis/fss.py (Ising-report method): lambda_nu = 1.65,
+    # W = 1.5..2.5 step 0.1, 1,000 samples per point, L = 8, 10, 12, 14, 16, BOTH T4s at once via
+    # scripts/run_parallel.py (~2 h). Refinement mesh 12 where 3 does not divide L (Dirac point on the
+    # mesh), 10 for L = 12. A different seed per size, so the sizes' samples are independent.
+    "fssfine": [
+        ["scripts/run_parallel.py",
+         " ; ".join(_fine(L, 12 if L % 3 else 10) for L in (16, 8)),
+         " ; ".join(_fine(L, 12 if L % 3 else 10) for L in (14, 12, 10))],
+    ],
+    # "fssfine_big": L = 20 for the same analysis, W range split over the two T4s (~1.5 h estimated).
+    "fssfine_big": [
+        ["scripts/run_parallel.py", _fine(20, 12, 1.5, 2.0, part="a"), _fine(20, 12, 2.1, 2.5, part="b")],
     ],
     # "phasemap": 2D map, lambda_nu 1.45..1.85 (step 0.05) x W 0..4 (step 0.25), 12x12, 50 samples
     # per cell (~20-25 min). Where disorder creates topology; also gives W_c(lambda_nu) for

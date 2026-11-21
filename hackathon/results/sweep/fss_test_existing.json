@@ -1,0 +1,68 @@
+{
+  "sizes": [
+    8,
+    12,
+    16
+  ],
+  "files": [
+    "/home/joey/pythtb_gpu_accelaration_project/hackathon/results/sweep/pilot_8x8_c_up.csv",
+    "/home/joey/pythtb_gpu_accelaration_project/hackathon/results/sweep/fss_12x12_c_up.csv",
+    "/home/joey/pythtb_gpu_accelaration_project/hackathon/results/sweep/fss_16x16_c_up.csv"
+  ],
+  "lambda_nu": 1.65,
+  "W_range": [
+    1.0,
+    3.0
+  ],
+  "per_size": {
+    "8": {
+      "W_mid": 2.0032459476127027,
+      "W_mid_err": 0.03646463245898159,
+      "width": 0.27635817786262834,
+      "width_err": 0.02079307651042238
+    },
+    "12": {
+      "W_mid": 1.9689669490287183,
+      "W_mid_err": 0.030948610411277794,
+      "width": 0.18924194200792457,
+      "width_err": 0.017632415434854883
+    },
+    "16": {
+      "W_mid": 1.9454082656365728,
+      "W_mid_err": 0.019002675608264498,
+      "width": 0.13331364218321387,
+      "width_err": 0.009159779900164165
+    }
+  },
+  "crossings": {
+    "8/12": {
+      "W": 1.8945029389796675,
+      "err": 0.14175449810607046,
+      "n_boot_inside": 500
+    },
+    "12/16": {
+      "W": 1.889252546655455,
+      "err": 0.1306260355462235,
+      "n_boot_inside": 496
+    }
+  },
+  "Wc_weighted_mean": {
+    "Wc": 1.8916635886538866,
+    "err": 0.09606017163047173,
+    "chi2_per_dof": 0.0007418857667313159,
+    "n_crossings": 2
+  },
+  "drift": {
+    "intercept_1overL_to_0": 1.8761265658449275,
+    "intercept_err": 0.5784577210773979,
+    "slope": 0.18376373134753976,
+    "slope_err": 6.746698166317205,
+    "significant": false
+  },
+  "width_scaling": {
+    "inv_nu": 1.0439833589423912,
+    "inv_nu_err": 0.1512602004380856,
+    "nu": 0.9578696742954326,
+    "nu_err": 0.13878339887933602
+  }
+}
