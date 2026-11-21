@@ -5,128 +5,110 @@
 pipeline, check it against Orth (2.14 ± 0.07) and Favata (1.92), and report the time-to-result against the best
 CPU baseline.
 
-Written Sat 21 Nov, about 20:00. Code freeze Sun about 15:00, so **about 19 h left**. Costs and timings come from
-`VIABILITY.md`.
+Updated Sat 21 Nov, about 22:15. Code freeze Sun about 15:00, so **about 17 h left**; data is needed by about
+08:00.
 
 ## Where we are
 
+### Done
+
 | | Status |
 |---|---|
-| GPU pipeline (batched `eigh` → Newton-Schulz Wilson loop → Z₂) | ✓ Matches PythTB 40/40. **8.9x vs PythTB on all CPU cores** (R7, T4, 12×12, single precision) |
-| Faster Wilson loop | Written, not yet timed on the GPU. A further speed-up of up to 10x may be possible (source to confirm) |
-| Reference data (Orth Fig. 5, Favata Fig. 7) | ✓ `analysis/reference_data/` |
-| **Stage 0 go/no-go** (L = 8, CPU) | ✓ **Physics GO**: f = 0 → 0.2 → 0.7 → 0.8 → 0.15 over W = 0 to 8 |
-| Gap-tracking Z₂ near the transition | ✗ Not converged: 85–95% flagged at W ≈ 2, and up to 6/20 answers change with nk. **The cause is the gap-tracking count, not the physics or the mesh.** |
-| **Decision A: invariant** | ✓ **Spin-up Chern number C↑ from the winding of arg det(Wilson loop), Z₂ = C↑ mod 2.** Same answer at nk = 6 and 10 for 137/140 samples (L = 8 and 12, W = 1–8). All 3 changes are flagged by largest step > 0.4. Rule: nk = 6, re-run flagged samples at nk = 10. (`analysis/stage0_chern_up.py`, `results/stage0*_chern_up*.csv`) |
-| GPU version of C↑ | ✓ `gpu_engine/spin_chern.py`. All tests pass on the T4 (63 passed, R11 run), after Oscar's cuSOLVER fix for a crash in the default LU routine (d823336). |
-| Production runner | ✓ `analysis/sweep.py` (Oscar): saves per point, resumes, refines, CPU estimate. Uses C↑ by default (`--invariant c_up`). |
-| **First sweep (R11, 8×8, T4)** | ✓ λν = 1.65: 0% → 60% (W = 2) → about 100% (W = 3.5–4.5) → 50% near W ≈ 7. **GPU time 5.1 min** for 4,200 samples. Cross-checked: the CPU C↑ on the same 100 seeds at W = 2 gives identical counts (56/94). |
-| Ensemble analysis (Filip) | ✓ `analysis/ensemble*.py`, `sample_size.py`: per-sample data, population and sample-size figures (L = 2–4, gap-tracking Z₂, CPU double). |
-| Many-GPU runner | ✓ `modal_runs/app.py` (Modal, separate from `kaggle/`). Presets test → timing → pilot → wc1 → wc2 → fig5 → big. **Blocked:** the workspace spend limit must be raised in the Modal dashboard. |
-| Gap policy (direct vs indirect) | ✓ Not an issue: identical in every sample |
+| GPU pipeline | ✓ **18.3x vs PythTB on all CPU cores** at 16×16 (R10: T4, single precision, Rashba 0, spin blocks), 15.9x at 12×12. Z₂ identical to PythTB. |
+| **Stage 0 go/no-go** (L = 8, CPU) | ✓ **Physics GO**: trivial → TAI → trivial. The gap-tracking Z₂ is not converged near W ≈ 2: this is the counting method, not the physics. |
+| **Decision A: invariant** | ✓ **Spin-up Chern number C↑ from the winding of arg det(Wilson loop), Z₂ = C↑ mod 2.** Same answer at nk = 6 and 10 for 137/140 samples (L = 8, 12; W = 1–8); all 3 changes are flagged by largest step > 0.4. Rule: nk = 6, re-run flagged samples on a finer mesh. |
+| GPU version of C↑ | ✓ `gpu_engine/spin_chern.py`. All tests pass on the T4 (63 passed, R11 run), with Oscar's cuSOLVER fix for a crash in PyTorch's default MAGMA LU routine on the T4 (d823336). |
+| Production runner | ✓ `analysis/sweep.py` (Oscar): saves after each point, resumes, refines flagged samples, CPU estimate. C↑ by default (`--invariant c_up`). |
+| **First sweep (R11, 8×8, T4)** | ✓ λν = 1.65: 0% → 60% (W = 2) → about 100% (W = 3.5–4.5) → 50% near W ≈ 7. **5.1 min of GPU time** for 4,200 samples (0.074 s per sample). The CPU C↑ on the same 100 seeds at W = 2 gives identical counts (56/94). |
+| Fair cost comparison | ✓ `benchmarks/sweep_cost.py` (Oscar), Kaggle preset `cost`: PythTB as-is vs C↑ in NumPy vs C↑ on the GPU, on the same machine. Separates the algorithm's gain from the GPU's. **Not yet run.** |
+| Ensemble figures (Filip) | ✓ `analysis/ensemble*.py`, `sample_size.py`: per-sample data, population and "why many samples" figures, including a 16×16 ensemble (72 samples per W). For the pitch. |
+| Reference data | ✓ Orth Fig. 5 and Favata Fig. 7, extracted exactly from the PDFs (`analysis/reference_data/`) |
 
-## The plan in five phases
+### Decision B (made 22:00): Kaggle only, Oscar's account
 
-### Phase 1: make the invariant trustworthy at the transition ✓ mostly done (decision A above)
+- **Modal:** two runners exist (`modal_runs/` for many GPUs, Filip's `modal_gpu/` for one GPU), but we couldn't get
+  the workspace working. Parked.
+- **Joey's Kaggle account:** jobs stay queued (more than 30 min) and never start, probably phone verification.
+  Tonight's runs go on **Oscar's account**, which starts jobs promptly.
+- **Hardware:** "GPU T4 x2", so 2 T4s per session if we run one process per GPU.
+- **Scope (base):** L = 8, 12, 16; L = 24 and 32 dropped (too slow on T4s).
 
-What remains: confirm the GPU C↑ matches the CPU version sample by sample (the Kaggle tests), and check that nk = 10
-is enough for refinement at L = 16. The steps below were the original plan, kept for the record.
+## Remaining work
 
-1. **Mesh convergence on the GPU.** W ∈ {2, 3}, nk ∈ {6, 10, 14, 18}, L ∈ {8, 12}, the same 20 seeds as stage 0.
-   Minutes of GPU time.
-2. **FHS spin-up Chern number C↑** (λ_R = 0, half-size block). Use the determinants of the same overlap matrices
-   (Fukui-Hatsugai-Suzuki). Run it on the same samples, with Z₂ = C↑ mod 2. First on the CPU against the stage 0
-   CSVs, then batched on the GPU.
-3. **Choose the invariant and nk.** Use whichever reaches both of these more cheaply:
-   - stable when nk goes up a step, for at least 95% of samples;
-   - at most about 20% unreliable at W ≈ 2.
+### Phase 2b: build (Sat 22:15–23:15)
 
-   Gap-tracking Z₂ and FHS C↑ must agree on every sample where both are reliable.
+| # | Task | Owner | Status |
+|---|---|---|---|
+| 1 | **Two-GPU helper:** run two `sweep.py` jobs at once, one per T4 (`CUDA_VISIBLE_DEVICES=0/1`) | GPU engine | To do |
+| 2 | **Presets `wc1` and `wc2`** in `kaggle/run.py`, added only (existing presets untouched): L = 16 on one T4, L = 8 + 12 on the other, one CSV per size | GPU engine | To do |
+| 3 | **Refinement mesh:** nk = 12 for L = 8 and 16 (Dirac point on the mesh when 3 doesn't divide L, Filip's finding), 10 for L = 12 | Physics validation | **To agree** |
+| 4 | **Upload race in `gpu_run.sh`:** a job pushed seconds after an upload ran the previous code version (21:40, Joey's account). Wait for the new version before pushing, or print a version stamp in the log. | Oscar | **To fix before the overnight runs** |
+| 5 | **Finite-size-scaling analysis** (no GPU): f(W, L) with bootstrap errors, crossings and drift, reliability-bias check, overlay with Favata, Orth and Born | Models and analysis | To do |
+| 6 | Joey's uncommitted `gpu_run.sh` fix (jobs point at the account's own code dataset; no change for Oscar) | Oscar / Joey | Decide |
 
-**Decision point A.** If neither converges at an affordable nk, fall back: run fewer sizes at a finer mesh, and
-present Wc₁ as the midpoint at each size instead of a crossing.
+### Phase 3: production runs (Oscar's account, unattended)
 
-### Phase 2: production tooling (Sat evening, in parallel with Phase 1, about 2 h)
+Speed on a T4 with C↑: **L = 8 measured at 0.074 s per sample** (R11). L = 12 and 16 are estimated at about 0.25 s
+and about 1 s until `cost` measures them.
 
-- A **runner** around `run_batch` (or the FHS path):
-  - parameters (`delta=1.65, rashba=0` explicitly), a W × L grid and the chosen nk;
-  - **append every sample to `results/tai_165_raw.csv`**, and resume after a crash or timeout;
-  - memory budget raised to about 10 GB per T4;
-  - **one process per GPU** (`CUDA_VISIBLE_DEVICES`).
-- Time the new Wilson loop and **find out where the extra speed-up comes from**, and whether it includes the spin
-  split, so it isn't counted twice.
-- Measure the CPU-side share: Wilson-matrix eigenvalues and Z₂ counting. After a 10x GPU speed-up these become the
-  bottleneck (Amdahl's law), so move them to the GPU or parallelise them if needed.
-- Check the remaining Kaggle GPU quota and session limits.
+| Order | Run | Sizes | W | Samples per point | T4 time (estimate) |
+|---|---|---|---|---|---|
+| 1 | **`cost`**: real timings + fair CPU comparison | 8, 12, 16 | 2.0 | few | ≈ 15 min |
+| 2 | **`wc1`, core goal** | 8, 12, 16 | 1.0–3.0, step 0.2 (11) | 500 | ≈ 2 h on one T4, ≈ 1 h with both |
+| 3 | **`wc2`** | 8, 12, 16 | 6.0–8.0, step 0.2 (11) | 500 | ≈ 2 h / ≈ 1 h |
+| 4 | Fig. 5 equivalent (optional) | 8, 12 | 7 λν × about 11 W around Orth's Wc | 300 | ≈ 2 h / ≈ 1 h |
 
-**Decision point B: base or stretch scope.** Decide from the measured seconds per *reliable* sample at the chosen
-nk:
+Expected precision with L = 8–16 and 500 samples: Wc₁ **± about 0.2**. That tests [1.8, 2.3], but won't separate
+Orth (2.14) from Favata (1.92).
 
-| | **Base scope** (current speed, 1–2 T4s) | **Stretch scope** (about 10x and 2+ GPUs, spin split working) |
-|---|---|---|
-| Sizes | L = 6, 8, 10, 12 (+16 reduced) | L = 8, 12, 16, 24 |
-| Samples near Wc₁ | 500 | 1,000 |
-| Expected Wc₁ precision | ± about 0.2 | ± about 0.1 |
-| Exponent ν from the collapse | bonus only | a real result (compare with about 2.4–2.6) |
-| Wc₂ ≈ 7 | optional, 2 sizes | finite-size scaling as well |
-| Extra λν (partial Fig. 5) | none | 3–4 values |
-| GPU time (overnight) | about 3–6 h | about 6–8 h |
+### Phase 4: analysis (Sun 08:00–11:00; code written tonight against R11 and partial data)
 
-### Phase 3: production runs (Sat night → Sun morning, unattended)
-
-1. **Coarse scan:** W from 0 to 8 in steps of 0.5, M = 100, two sizes, to locate both transitions. Under 1 h.
-2. **Finite-size-scaling runs for Wc₁:** about 10 W values within ±0.6 of the coarse value, at the chosen sizes and
-   M (table above).
-3. **Then, if time allows:** Wc₂, then the extra λν (stretch scope only).
-4. **CPU comparison:** a short PythTB all-cores run at the production parameters, on the same machine.
-   Extrapolate it to the full dataset and **label it as extrapolated**.
-
-Save results as they come in. If a run dies, resume it rather than restarting.
-
-### Phase 4: analysis (Sun 08:00–11:00, written Sat night against partial data)
-
-- f(W, L) and u(W, L) with bootstrap errors. Crossings W*(L₁, L₂) with their drift. Collapse if the data allow it.
-- Robustness checks: unreliable samples counted as 0 and then as 1, nk ± one step, single vs double precision on a
-  subset.
-- **Compare:** Wc₁ in [1.8, 2.3]? Above the Born value of about 1.7? Wc₂ in [6.5, 7.5]?
+- f(W, L) and u(W, L) with bootstrap errors. Crossings W*(L₁, L₂) and their drift. Collapse only as a bonus.
+- **Robustness:** unreliable samples counted as 0 and then as 1, refinement mesh (10 vs 12), largest-step threshold
+  0.35 / 0.45.
+- **Compare:** Wc₁ in [1.8, 2.3]? Above Born (about 1.7)? Wc₂ in [6.5, 7.5]?
 - **Figures:**
-  1. f(W) for each L, with Favata's curves, Orth's band, Born's line and a u(W) panel;
-  2. the finite-size-scaling zoom (crossings, W* against L, and the collapse if available);
-  3. time-to-result, GPU against the best CPU on the same machine.
-
-**Decision point C** (Sun about 10:00): if the crossings aren't resolved, present the midpoint at each size against L.
-That still tests the [1.6, 2.6] band and shows the transition sharpening.
+  1. f(W) for each L, with Favata's curves, Orth's band, the Born line and a u(W) panel;
+  2. the finite-size-scaling zoom (crossings, W* against L);
+  3. time-to-result from `cost`: PythTB vs C↑ CPU vs C↑ GPU, same machine.
+- **Decision C** (about 10:00): if the crossings aren't resolved, show the midpoint at each size against L instead.
 
 ### Phase 5: write-up and pitch (Sun 11:00–15:00)
 
-- Update `RESULTS.md` (new R-entries for the production runs) and `goal.md` (ticked criteria).
+- `RESULTS.md` entries for `cost`, `wc1` and `wc2`; tick the criteria in `goal.md`.
 - Pitch: "We reproduce Orth et al.'s central result, that disorder makes a trivial Kane-Mele insulator topological
-  at W ≈ t, with an independent method, and locate it by finite-size scaling. That took N thousand samples, X h on
-  the GPU against Y h on the best CPU."
-- Caveats slide: the different observables, the references aren't rigorous critical points, small L, and how we
-  handled unreliable samples.
+  at W ≈ t, with an independent method, and locate it by finite-size scaling: N thousand samples, X h on the GPU
+  against Y h on the best CPU."
+- **Speed claims:** quote the per-GPU speed-up against all cores of the same machine. Separate the algorithm's gain
+  (C↑ vs PythTB's gap tracking) from the GPU's (from `cost`).
+- Caveats: the different observables, the references aren't rigorous critical points, small L (≤ 16), the
+  handling of unreliable samples, λ_R = 0 only.
 - Code freeze about 15:00. Live demo plus a recorded backup.
-
-## Who does what (CLAUDE.md workstreams)
-
-| Workstream | Phase 1 | Phase 2 | Phase 3 | Phase 4 | Phase 5 |
-|---|---|---|---|---|---|
-| **GPU engine** | Mesh convergence on the GPU; FHS batched | Runner, multi-GPU, timing, CPU-side share | Run and monitor | CPU comparison | Performance slide |
-| **Models and analysis** | FHS on the CPU against the stage 0 data | Analysis code on partial data | — | Crossings, collapse, figures | Result figures |
-| **Physics validation** | Choose the invariant and nk (decision A) | Agree base or stretch scope (decision B) | Spot-check samples | Robustness checks, decision C | Caveats, science framing |
 
 ## Timeline
 
 | When | Milestone |
 |---|---|
-| Sat 20:00–22:30 | Phases 1 and 2. **Decisions A and B by about 22:30.** |
-| Sat 22:30 → Sun 07:00 | Phase 3 runs unattended (base scope about 3–6 h, stretch about 6–8 h, leaving 1–3 h slack) |
-| Sun 08:00–11:00 | Phase 4. Re-run one failed block if needed. Decision C. |
+| Sat 22:15–23:15 | Phase 2b (tasks 1–5); Oscar fixes the upload race |
+| About 23:15 | Oscar runs `cost` (about 15 min) |
+| About 23:30 → Sun 03:00 | `wc1`, then `wc2` (both T4s) |
+| Sun 03:00 → 07:00 | Fig. 5 runs if wanted; slack for one re-run |
+| Sun 08:00–11:00 | Phase 4 |
 | Sun 11:00–15:00 | Phase 5 and the code freeze |
+
+## Risks
+
+| Risk | Status / mitigation |
+|---|---|
+| Physics doesn't show the transition | ✓ Retired (stage 0, R11) |
+| Invariant not converged | ✓ Retired (C↑) |
+| **Kaggle access** (one working account, queues) | Run everything on Oscar's account; save as results arrive; resume rather than restart |
+| **Stale code on Kaggle** (upload race) | Task 4 before the overnight runs |
+| L = 16 slower than estimated | `cost` measures it first; drop L = 16 samples to 300 if needed |
+| Crossings not resolved at L ≤ 16 | Decision C: midpoints against L |
 
 ## Housekeeping
 
-- **Before Phase 3, update `goal.md`:** stage 0 done, the new convergence stage, the "≤ 20% unreliable at Wc₁"
-  criterion, and the chosen base or stretch scope.
-- **Commit** stage 0 (`analysis/stage0_go_no_go.py` and the two CSVs), `VIABILITY.md` and this plan.
+- **Update `goal.md`** with decision B (Kaggle, L ≤ 16, 500 samples) and the expected ± 0.2 precision.
+- **`VIABILITY.md` is out of date** (written before C↑ and before Kaggle-only). Mark it superseded by this plan.
 - **Label pre-event and on-the-day work as SoTA requires.** Everything in Part 2 is on-the-day work.
