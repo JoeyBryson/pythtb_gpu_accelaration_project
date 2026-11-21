@@ -1,7 +1,8 @@
-"""Runs ON Kaggle: unpack our code, install it, run the JOBS below on the GPU, save results.
+"""Runs ON Kaggle: unpack our code, install it, run one PRESET of jobs on the GPU, save results.
 
-Edit JOBS to change what a GPU run does, then `bash kaggle/gpu_run.sh` from hackathon/.
-Everything in hackathon/results/*.csv at the end comes back to your laptop.
+Pick a preset with `PRESET=<name> bash kaggle/gpu_run.sh` from hackathon/ (default "speed");
+edit or add presets below. Everything in hackathon/results/*.csv at the end comes back to
+your laptop.
 """
 
 import glob
@@ -13,18 +14,30 @@ import tarfile
 import time
 from pathlib import Path
 
-# Commands to run, from inside hackathon/. Edit freely.
-# Current setting: RESULTS.md R10. Rashba = 0 (team choice) on BOTH sides, ours with the
-# spin-block split and the double-precision eigenvalue step; GPU single precision vs PythTB
-# on all CPU cores of the same machine (timed without diagnostics).
-_COMMON = ["--W", "2.0", "--devices", "cuda", "--precisions", "single", "--skip-serial",
-           "--no-reliability", "--rashba", "0", "--spin-blocks"]
-JOBS = [
-    ["-m", "pytest", "-q", "-p", "no:cacheprovider"],
-    ["benchmarks/gpu_pipeline.py", "--sizes", "8", "12", "--configs", "40", *_COMMON],
-    # 16x16 with fewer configs: PythTB is slow here even on all cores
-    ["benchmarks/gpu_pipeline.py", "--sizes", "16", "--configs", "16", *_COMMON],
-]
+# Which preset to run. gpu_run.sh rewrites this line from its PRESET environment variable.
+PRESET = "speed"
+
+_TESTS = ["-m", "pytest", "-q", "-p", "no:cacheprovider"]
+# "speed" = RESULTS.md R10: Rashba = 0 (team choice) on BOTH sides, ours with the spin-block
+# split and the double-precision eigenvalue step; GPU single precision vs PythTB on all CPU
+# cores of the same machine (timed without diagnostics).
+_SPEED = ["--W", "2.0", "--devices", "cuda", "--precisions", "single", "--skip-serial",
+          "--no-reliability", "--rashba", "0", "--spin-blocks"]
+PRESETS = {
+    "speed": [
+        _TESTS,
+        ["benchmarks/gpu_pipeline.py", "--sizes", "8", "12", "--configs", "40", *_SPEED],
+        # 16x16 with fewer configs: PythTB is slow here even on all cores
+        ["benchmarks/gpu_pipeline.py", "--sizes", "16", "--configs", "16", *_SPEED],
+    ],
+    # "micro": GPU-only design checks, no PythTB baseline (~5-10 min): spin-block crossover
+    # by size, and the speed/accuracy of ways to get the Wilson-matrix eigenvalues.
+    "micro": [
+        _TESTS,
+        ["benchmarks/gpu_micro.py"],
+    ],
+}
+JOBS = PRESETS[PRESET]
 
 WORK = Path("/kaggle/working")
 PROJ = WORK / "proj"

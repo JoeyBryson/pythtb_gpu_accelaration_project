@@ -33,8 +33,10 @@ What happens:
 3. Starts the private script `<you>/pythtb-gpu-run` on a T4 and waits for it to finish.
 4. Downloads the log and result CSVs to `results/kaggle/<date-time>/`.
 
-**What it runs** is the `JOBS` list at the top of `kaggle/run.py`. Right now: the test suite,
-then the final speed benchmark (our GPU code in single precision vs PythTB on all CPU cores,
+**What it runs** is a preset from `PRESETS` at the top of `kaggle/run.py`, chosen with
+`PRESET=<name>` (default `speed`). Each preset is its own Kaggle job, so e.g. `PRESET=micro`
+(GPU-only design checks, ~5–10 min, no PythTB baseline) can run while a `speed` run is going.
+`speed` runs the test suite, then the final speed benchmark (our GPU code in single precision vs PythTB on all CPU cores,
 8×8 and 12×12 with 40 configurations, 16×16 with 16). Expect **~15–20 minutes** once it
 starts, almost all of it PythTB's baseline.
 

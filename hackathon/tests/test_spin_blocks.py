@@ -25,11 +25,11 @@ def test_same_energies_and_wannier_centres_as_full_problem():
     be, model, nk, W, seeds = get_backend("double"), clean_kane_mele(2, **NO_RASHBA), 6, 3.0, [0, 1]
     e_full, u_full = solve_configs(model, nk, W, seeds, be)
     e_blk, u_blk = solve_configs(model, nk, W, seeds, be, spin_blocks=True)
-    np.testing.assert_allclose(e_blk.numpy(), e_full.numpy(), atol=1e-10)
+    np.testing.assert_allclose(e_blk.cpu().numpy(), e_full.cpu().numpy(), atol=1e-10)
 
     wcc_full, _ = wannier_centres(u_full, model)
     wcc_blk, _ = wannier_centres(u_blk, model)
-    d = np.abs(wcc_blk.numpy() - wcc_full.numpy())
+    d = np.abs(wcc_blk.cpu().numpy() - wcc_full.cpu().numpy())  # .cpu(): may be on a GPU
     assert np.minimum(d, 1 - d).max() < 1e-8  # both sorted per line; distance on the circle
 
 
