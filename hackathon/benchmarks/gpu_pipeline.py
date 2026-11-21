@@ -7,7 +7,10 @@ Everything on the SAME machine, the SAME configurations (same seeds):
                    double and single precision, incl. all host<->device copies
 
 A speed-up is only reported alongside whether every configuration's Z2 agrees with PythTB.
-Reliability checks are excluded from all timings (both sides).
+Reliability checks are excluded from all timings (both sides): PythTB serial and parallel are
+timed with run_config(check=False) and get their flags from one untimed pass
+(cpu_baseline.reliability_pass); ours is timed by run_batch, which times its check separately.
+Before 21 Nov ~20:00 the PythTB parallel wall time included the checks (~15% on KAG).
 
 Example (from hackathon/):
   uv run python benchmarks/gpu_pipeline.py --sizes 6 8 --configs 40 --W 2.0
@@ -35,6 +38,8 @@ def main() -> None:
     p.add_argument("--nk", type=int, default=None, help="default: scaled_nk(size)")
     p.add_argument("--workers", type=int, default=os.cpu_count())
     p.add_argument("--skip-serial", action="store_true", help="skip the slow PythTB serial loop")
+    p.add_argument("--no-reliability", action="store_true",
+                   help="skip PythTB's untimed reliability pass (saves one parallel run)")
     p.add_argument("--devices", nargs="+", default=["cpu", "cuda"],
                    help="where to run ours: cpu, cuda or both (cuda skipped if unavailable)")
     args = p.parse_args()
@@ -52,9 +57,11 @@ def main() -> None:
 
         baselines = {}
         if not args.skip_serial:
-            res = bench_serial(*common_args)
+            res = bench_serial(*common_args, workers=args.workers,
+                               reliability=not args.no_reliability)
             baselines["pythtb_serial"] = (sum(r.t_total for r in res), [r.z2 for r in res])
-        res = bench_parallel(*common_args, workers=args.workers)
+        res = bench_parallel(*common_args, workers=args.workers,
+                             reliability=not args.no_reliability)
         # wall time of the parallel run is printed by bench_parallel; recompute from rows
         wall = float(open_last_row("cpu_parallel")["wall_s"])
         baselines["pythtb_parallel"] = (wall, [r.z2 for r in res])
