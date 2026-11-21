@@ -28,14 +28,14 @@ We keep Favata's convention (it's the PythTB-based method closest to ours) and
 ## The papers
 
 **Orth, Sekera, Bruder, Schmidt (2016)**, *The topological Anderson insulator phase in
-the Kane-Mele model*, arXiv:1512.03233. In `GPU_experimentation/papers/`.
+the Kane-Mele model*, arXiv:1512.03233. PDF in `joeys_og_folder/papers/`.
 - Method: conductance of a ribbon (Kwant), w = 93a × l = 150a. Not Wilson loops, so we
   compare *where* the topological region is, not the method.
 - Main parameters: λ_SO = 0.3t, λ_R = 0, λ_ν ∈ {1.45t, 1.65t, 1.85t}.
 - Numbers are mostly in figures (Fig. 2, 4, 5). Fig. 5 (critical W vs λ_ν) has no table.
 
 **Favata & Marrazzo (2023)**, *Single-point spin Chern number in a supercell framework*,
-Electron. Struct. 5 014005, arXiv:2301.02612. Not yet in `papers/`.
+Electron. Struct. 5 014005, arXiv:2301.02612. PDF in `joeys_og_folder/papers/related_work/pdf/`.
 - Method: spin Chern number at the Γ point only, on L×L supercells (2L² sites),
   L = 15 and 42, M = 50 configurations (M = 100 for 5 ≤ W/t ≤ 10).
 - Code: [spinv](https://github.com/roberta-favata/spinv), **built on PythTB**. This is the
@@ -50,10 +50,39 @@ Electron. Struct. 5 014005, arXiv:2301.02612. Not yet in `papers/`.
 | 2 | Clean gap, λ_R = 0, λ_SO = 0.3 | 2·\|3√3·0.3 − λ_ν\| | Orth p.2 / Kane-Mele | ✓ matches to 4 d.p. |
 | 3 | Clean transition, λ_R = 0, λ_SO = 0.3 | Z2 = 1 for λ_ν < 1.559, 0 above | Orth p.2 | ✓ **only on fine meshes** (λ_ν = 1.50 needs ≥ 48×48; 1.55 needs ~120×120) |
 | 4 | λ_ν = 1.45: topological, stays so with disorder | Z2 = 1 for small W | Orth Fig. 2 | to do |
-| 5 | **TAI**: λ_ν = 1.65, λ_R = 0: trivial at W = 0, topological from W ≈ 2 | Z2: 0 → 1 near W ≈ 2 | Orth (W_Orth ≈ 1) and Favata ("TAI appears at about W/t = 2"), **agree after the factor of 2** | to do: the headline check |
+| 5 | **TAI**: λ_ν = 1.65, λ_R = 0: trivial at W = 0, topological from W ≈ 2 | Z2: 0 → 1 near W ≈ 2 | Orth (W_Orth ≈ 1) and Favata ("TAI appears at about W/t = 2"), **agree after the factor of 2** | ✓ 16×16: opens at W = 1.92 (Favata 1.98 / 1.92; Orth 2.14 ± 0.07). See below |
+| 5b | **TAI closes** at strong disorder (same parameters) | fraction topological 1 → 0 around W ≈ 7 | Favata Fig. 7 left (to W = 12; Orth's plots stop at W = 6) | ✓ 16×16: closes at W = 6.71 (Favata 6.89 / 7.00). See below |
 | 6 | λ_ν = 1.85: TAI weak/unstable | fraction topological well below 1 | Orth Fig. 2 | to do |
 | 7 | Very strong disorder → trivial | Z2 = 0 | both | ✓ tested (2×2, W = 20) |
 | 8 | Finite Rashba narrows the TAI | narrower W range | Orth Fig. 3, Favata Fig. 7 | stretch |
+
+## Result: the TAI window at λ_ν = 1.65, λ_R = 0 (21 Nov)
+
+Ours: 16×16 supercells (512 sites), 500 disorder samples at each of 12 W values, spin-up Chern
+number C_up (Z2 = C_up mod 2, nk = 6, unreliable samples refined to nk = 10), single precision,
+one Modal H100, 150 s (`results/ensemble_L16_n500_h100.csv`). Window edge = W where the
+fraction of topological samples (among resolved ones) crosses 1/2; for Favata, where their mean
+spin Chern number crosses 1/2 (data extracted from their Fig. 7, `analysis/reference_data/`).
+
+| | Sites | Opens | Closes |
+|---|---|---|---|
+| **Ours, 16×16** | 512 | **1.92** | **6.71** |
+| Favata & Marrazzo, L = 15 | 450 | 1.98 | 6.89 |
+| Favata & Marrazzo, L = 42 | 3528 | 1.92 | 7.00 |
+| Orth et al., edge conductance (W doubled) | ribbon | 2.14 ± 0.07 | (plots end at W = 6) |
+| Born approximation (Orth's Fig. 5 normalisation) | | 1.67 | |
+
+Figure: `results/validation_tai_window.png` (`uv run python analysis/compare_papers.py
+results/ensemble_L16_n500_h100.csv`).
+
+- The opening edge agrees with Favata to 0.06 and sits 0.2 below Orth's conductance onset;
+  the Born estimate is lower still, as expected for a weak-disorder approximation.
+- The closing edge agrees with Favata to about 0.2 in W. Our points near it are W = 6, 7, 8,
+  so 6.71 is an interpolation; a finer grid there (6.25–7.5) would sharpen it.
+- **To check:** the observables differ (fraction of integer invariants vs the mean of a
+  non-integer single-point invariant vs conductance), so close agreement of the crossings is
+  the comparison, not the curves' shapes. What the invariant of a finite supercell means at
+  strong disorder (spectral vs mobility gap, see below) also needs the physics side's view.
 
 ## Caveats to keep in mind
 
