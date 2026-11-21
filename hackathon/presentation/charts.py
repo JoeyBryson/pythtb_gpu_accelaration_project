@@ -128,6 +128,36 @@ def chart_speedup_split() -> Path:
     return save(fig, "speedup_split.png")
 
 
+def chart_speed_simple(size: int = 16) -> Path:
+    """One message, big text: how long one full sweep takes, three ways, at one size."""
+    r = next(r for r in load_cost() if int(r["supercell"]) == size)
+    bars = [
+        ("PythTB today\n(4 CPU cores)", float(r["sweep_h_pythtb_cpu"]), MUTED),
+        ("Our method\n(same 4 CPU cores)", float(r["sweep_h_c_up_cpu"]), ORANGE),
+        ("Our method\n(one GPU)", float(r["sweep_h_c_up_gpu"]), BLUE),
+    ]
+    fig, ax = plt.subplots(figsize=(11, 5))
+    ys = [2, 1, 0]
+    for y, (label, h, colour) in zip(ys, bars, strict=True):
+        ax.barh(y, h, height=0.62, color=colour)
+        ax.text(h + 2, y, nice_time(h), va="center", ha="left", fontsize=22, fontweight="bold",
+                color=INK)
+    ax.set_yticks(ys, [b[0] for b in bars])
+    ax.tick_params(axis="y", length=0, labelsize=16, labelcolor=INK)
+    ax.set_xticks([])
+    ax.grid(False)
+    for side in ("bottom", "left"):
+        ax.spines[side].set_visible(False)
+    ax.set_xlim(0, float(r["sweep_h_pythtb_cpu"]) * 1.25)
+    ax.set_title(f"One disorder study, {size}×{size} supercells: "
+                 f"{float(r['x_total']):.0f}× faster", fontsize=22, pad=16)
+    fig.text(0.01, 0.01, "16,400 simulated samples. Times estimated from per-sample timings measured "
+             "on one Kaggle machine (4 CPU cores + 1 Tesla T4). RESULTS.md R12.",
+             color=MUTED, fontsize=9)
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    return save(fig, f"speed_simple_{size}x{size}.png")
+
+
 def save(fig, name: str) -> Path:
     FIGURES.mkdir(parents=True, exist_ok=True)
     path = FIGURES / name
@@ -137,5 +167,5 @@ def save(fig, name: str) -> Path:
 
 
 if __name__ == "__main__":
-    for make in (chart_sweep_cost, chart_speedup_split):
+    for make in (chart_sweep_cost, chart_speedup_split, chart_speed_simple):
         print(f"wrote {make()}")
