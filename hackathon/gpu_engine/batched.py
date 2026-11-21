@@ -86,22 +86,47 @@ def configs_per_chunk(nk: int, N: int, backend: Backend, budget_gb: float = 4.0)
     return max(1, int(budget_gb * 1e9 // per_config))
 
 
+def split_spin_blocks(H: torch.Tensor) -> torch.Tensor:
+    """(..., N, N) -> (..., 2, N/2, N/2): the spin-up and spin-down blocks.
+
+    Only valid when spin up and down don't mix (Rashba = 0): then H, in PythTB's
+    (orbital, spin) order, has nonzero entries only between equal spins, so the even rows/
+    columns (spin up) and odd ones (spin down) are two independent problems of half the size.
+    Raises if the blocks are coupled, rather than silently giving wrong answers.
+    """
+    coupling = H[..., 0::2, 1::2].abs().amax()
+    if coupling > 1e-12:
+        raise ValueError(
+            f"spin blocks are coupled (max |H_up,down| = {float(coupling):.2e}): "
+            "the spin-block split needs rashba = 0"
+        )
+    return torch.stack([H[..., 0::2, 0::2], H[..., 1::2, 1::2]], dim=-3)
+
+
 def solve_configs(
     model: TBModel, nk: int, W: float, seeds: list[int], backend: Backend,
-    chunk: int | None = None, shift_fn=None,
+    chunk: int | None = None, spin_blocks: bool = False, shift_fn=None,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Whole step 1 for C configurations of one clean model, `chunk` configurations per batch
     (default: as many as fit in memory, see configs_per_chunk).
 
+    Returns energies (C, nk, nk, N) and occupied states on the device:
+      spin_blocks=False: (C, nk, nk, n_occ, N)
+      spin_blocks=True:  (C, 2, nk, nk, n_occ/2, N/2), i.e. per spin block (Rashba = 0 only).
+        Each block is half the size, so diagonalising costs ~1/4 of the full problem. With a
+        gap at half filling, each spin block contributes exactly half its states (the count is
+        fixed across the zone while the gap is open, and equal for both spins at k = 0, where
+        time reversal maps one block onto the other), so each takes its lowest n_occ/2.
+
     shift_fn(norb, W, seeds) -> (C, 2*norb) on-site shifts; default `disorder_shifts`.
     Lets analysis code try other disorder ensembles (e.g. analysis/ensemble.pinned_shifts).
-
-    Returns energies (C, nk, nk, N) and occupied states (C, nk, nk, n_occ, N) on the device.
     """
     n_occ = model.norb  # half filling
     H0 = torch.as_tensor(clean_hamiltonians(model, nk), dtype=backend.cdtype, device=backend.device)
     N = H0.shape[-1]
-    chunk = chunk or configs_per_chunk(nk, N, backend)
+    if spin_blocks:
+        H0 = split_spin_blocks(H0)  # (K, 2, N/2, N/2)
+    chunk = chunk or configs_per_chunk(nk, N // 2 if spin_blocks else N, backend)
     shift_fn = shift_fn or disorder_shifts
 
     all_e, all_u = [], []
@@ -110,10 +135,19 @@ def solve_configs(
         d = torch.as_tensor(
             shift_fn(model.norb, W, part), dtype=backend.rdtype, device=backend.device
         )
-        e, u = solve(batched_hamiltonians(H0, d), n_occ)
+        if spin_blocks:
+            d = d[:, 0::2].unsqueeze(1)  # same shift for both spins: (c, 1, N/2), broadcasts
+            H = H0.unsqueeze(0) + torch.diag_embed(d.to(H0.dtype)).unsqueeze(1)  # (c,K,2,.,.)
+            e, u = solve(H, n_occ // 2)
+            e = torch.sort(e.flatten(-2), dim=-1).values  # both spins' energies, as one list
+        else:
+            e, u = solve(batched_hamiltonians(H0, d), n_occ)
         all_e.append(e)
         all_u.append(u)
     C = len(seeds)
     energies = torch.cat(all_e).reshape(C, nk, nk, N)
-    u_occ = torch.cat(all_u).reshape(C, nk, nk, n_occ, N)
+    if spin_blocks:
+        u_occ = torch.cat(all_u).reshape(C, nk, nk, 2, n_occ // 2, N // 2).movedim(3, 1)
+    else:
+        u_occ = torch.cat(all_u).reshape(C, nk, nk, n_occ, N)
     return energies, u_occ

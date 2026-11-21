@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 import os
 import platform
+import time
 import warnings
 from datetime import datetime
 from pathlib import Path
@@ -85,16 +86,55 @@ def save_rows(scenario: str, rows: list[dict]) -> Path:
     stamp = datetime.now().isoformat(timespec="seconds")
     rows = [{"timestamp": stamp, "scenario": scenario, **row, **hw} for row in rows]
 
-    new_file = not path.exists()
-    with path.open("a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
-        if new_file:
+    fields = list(rows[0])
+    old_rows: list[dict] = []
+    if path.exists():
+        with path.open(newline="") as f:
+            reader = csv.DictReader(f)
+            old_fields = list(reader.fieldnames or [])
+            if old_fields != fields:  # columns changed: rewrite with the union of columns,
+                old_rows = list(reader)  # so no value ends up under the wrong heading
+                fields = old_fields + [k for k in fields if k not in old_fields]
+
+    if old_rows or not path.exists():
+        with path.open("w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fields, restval="")
             writer.writeheader()
-        writer.writerows(rows)
+            writer.writerows(old_rows + rows)
+    else:  # same columns: just append
+        with path.open("a", newline="") as f:
+            csv.DictWriter(f, fieldnames=fields, restval="").writerows(rows)
     return path
+
+
+_START = time.time()
+
+
+def log(msg: str) -> None:
+    """Progress line with wall-clock time and time since the script started, flushed at once
+    (so it shows up live in the Kaggle log instead of in one lump at the end)."""
+    elapsed = time.time() - _START
+    print(f"[{time.strftime('%H:%M:%S')} +{elapsed:6.0f}s] {msg}", flush=True)
+
+
+class Progress:
+    """Prints 'done/total, elapsed, ETA' every `every` items (and at the end)."""
+
+    def __init__(self, label: str, total: int, every: int | None = None):
+        self.label, self.total, self.done = label, total, 0
+        self.every = every or max(1, total // 10)  # ~10 updates per loop
+        self.t0 = time.time()
+
+    def step(self, n: int = 1) -> None:
+        self.done += n
+        if self.done % self.every == 0 or self.done == self.total:
+            dt = time.time() - self.t0
+            eta = dt / self.done * (self.total - self.done)
+            log(f"{self.label}: {self.done}/{self.total} configs, {dt:.0f}s elapsed, ~{eta:.0f}s left")
 
 
 def print_header(scenario: str, description: str) -> None:
     hw = hardware_info()
     print(f"=== {scenario}: {description}")
-    print(f"    on {hw['cpu']}, {hw['n_cpus']} cpus, BLAS {hw['blas']}, numpy {hw['numpy']}\n")
+    print(f"    on {hw['cpu']}, {hw['n_cpus']} cpus, BLAS {hw['blas']}, numpy {hw['numpy']}\n",
+          flush=True)

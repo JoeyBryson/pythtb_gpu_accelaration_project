@@ -1,0 +1,108 @@
+[{"stream_name":"stdout","time":24.366773064,"data":"code in /kaggle/working/proj ['._LICENSE', '._README.md', '._hackathon', '._pyproject.toml', '._pythtb', 'LICENSE', 'README.md', 'hackathon', 'pyproject.toml', 'pythtb']\n"}
+,{"stream_name":"stdout","time":24.366814162,"data":"\n"}
+,{"stream_name":"stdout","time":24.36681965,"data":"$ /usr/bin/python3 -m pip install -q -e /kaggle/working/proj\n"}
+,{"stream_name":"stdout","time":32.945629939,"data":"[exit 0]\n"}
+,{"stream_name":"stdout","time":32.945668657,"data":"\n"}
+,{"stream_name":"stdout","time":32.945673827,"data":"$ /usr/bin/python3 -m pip install -q --no-deps -e /kaggle/working/proj/hackathon\n"}
+,{"stream_name":"stdout","time":37.031366054,"data":"[exit 0]\n"}
+,{"stream_name":"stdout","time":37.031404059,"data":"\n"}
+,{"stream_name":"stdout","time":37.031410109,"data":"$ /usr/bin/python3 -m pip install -q threadpoolctl pytest\n"}
+,{"stream_name":"stdout","time":38.62538335,"data":"[exit 0]\n"}
+,{"stream_name":"stdout","time":38.625423555,"data":"\n"}
+,{"stream_name":"stdout","time":38.625427557,"data":"$ /usr/bin/python3 -m pytest -q -p no:cacheprovider\n"}
+,{"stream_name":"stdout","time":74.001833592,"data":"...................................                                      [100%]\n"}
+,{"stream_name":"stdout","time":74.001874899,"data":"=============================== warnings summary ===============================\n"}
+,{"stream_name":"stdout","time":74.001879479,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:64\n"}
+,{"stream_name":"stdout","time":74.001882674,"data":"  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'\n"}
+,{"stream_name":"stdout","time":74.001886136,"data":"    prop = Group((name + Suppress(\"=\") + comma_separated(value)) | oneOf(_CONSTANTS))\n"}
+,{"stream_name":"stdout","time":74.001889329,"data":"\n"}
+,{"stream_name":"stdout","time":74.001892159,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":74.001895177,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":74.00189827,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":74.001901217,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":74.001904166,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":74.001907117,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":74.001910175,"data":"  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'\n"}
+,{"stream_name":"stdout","time":74.001913302,"data":"    parse = parser.parseString(pattern)\n"}
+,{"stream_name":"stdout","time":74.001916218,"data":"\n"}
+,{"stream_name":"stdout","time":74.001919015,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":74.001922055,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":74.001924999,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":74.001927945,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":74.00194122,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":74.00194399,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":74.001946354,"data":"  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'\n"}
+,{"stream_name":"stdout","time":74.001948915,"data":"    parser.resetCache()\n"}
+,{"stream_name":"stdout","time":74.001951176,"data":"\n"}
+,{"stream_name":"stdout","time":74.001953339,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:45\n"}
+,{"stream_name":"stdout","time":74.001956624,"data":"  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'\n"}
+,{"stream_name":"stdout","time":74.001959225,"data":"    ParserElement.enablePackrat()\n"}
+,{"stream_name":"stdout","time":74.001961664,"data":"\n"}
+,{"stream_name":"stdout","time":74.00196382,"data":"-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"}
+,{"stream_name":"stdout","time":74.001966156,"data":"35 passed, 14 warnings in 32.81s\n"}
+,{"stream_name":"stdout","time":77.266038711,"data":"[exit 0]\n"}
+,{"stream_name":"stdout","time":77.26607855,"data":"\n"}
+,{"stream_name":"stdout","time":77.266085745,"data":"$ /usr/bin/python3 benchmarks/gpu_pipeline.py --sizes 8 12 --configs 40 --W 2.0\n"}
+,{"stream_name":"stdout","time":178.993367948,"data":"full pipeline on CPU x86_64 (4 cpus), GPU Tesla T4\n"}
+,{"stream_name":"stdout","time":178.993416576,"data":"\n"}
+,{"stream_name":"stdout","time":178.993422264,"data":"8x8 supercell (H 256x256), mesh 6x6, 40 configs at W=2.0, 1 worker(s)\n"}
+,{"stream_name":"stdout","time":178.993426677,"data":"  wall time      99.23 s   -\u003e     0.40 configs/s  (2.481 s per config)\n"}
+,{"stream_name":"stdout","time":178.993431391,"data":"  stage time  build 3.55  solve 45.82  wilson 34.72  z2 0.022  (summed over configs)\n"}
+,{"stream_name":"stdout","time":178.99343573,"data":"  physics     fraction topological = 1.00  (0 of 40 Z2 answers flagged unreliable and left out)\n"}
+,{"stream_name":"stdout","time":178.993440057,"data":"  saved to /kaggle/working/proj/hackathon/results/cpu_serial.csv\n"}
+,{"stream_name":"stdout","time":178.993444326,"data":"\n"}
+,{"stream_name":"stdout","time":1177.159490259,"data":"8x8 supercell (H 256x256), mesh 6x6, 40 configs at W=2.0, 4 worker(s)\n"}
+,{"stream_name":"stdout","time":1177.159551347,"data":"  wall time      37.62 s   -\u003e     1.06 configs/s  (0.940 s per config)\n"}
+,{"stream_name":"stdout","time":1177.159557972,"data":"  stage time  build 4.75  solve 78.66  wilson 46.54  z2 0.031  (summed over configs)\n"}
+,{"stream_name":"stdout","time":1177.159562772,"data":"  physics     fraction topological = 1.00  (0 of 40 Z2 answers flagged unreliable and left out)\n"}
+,{"stream_name":"stdout","time":1177.159567582,"data":"  saved to /kaggle/working/proj/hackathon/results/cpu_parallel.csv\n"}
+,{"stream_name":"stdout","time":1177.159572259,"data":"\n"}
+,{"stream_name":"stdout","time":1177.159576552,"data":"  ours cpu  double   36.020 s  (solve 14.740, wilson 21.269, z2 0.011)  Z2 agrees 40/40  unreliable 0  NS fallbacks 0\n"}
+,{"stream_name":"stdout","time":1177.159581322,"data":"      vs pythtb_serial     84.105 s -\u003e    2.3x\n"}
+,{"stream_name":"stdout","time":1177.15958584,"data":"      vs pythtb_parallel   37.620 s -\u003e    1.0x\n"}
+,{"stream_name":"stdout","time":1177.159606441,"data":"  ours cpu  single   20.759 s  (solve 9.415, wilson 11.333, z2 0.010)  Z2 agrees 40/40  unreliable 0  NS fallbacks 0\n"}
+,{"stream_name":"stdout","time":1177.159610527,"data":"      vs pythtb_serial     84.105 s -\u003e    4.1x\n"}
+,{"stream_name":"stdout","time":1177.159614143,"data":"      vs pythtb_parallel   37.620 s -\u003e    1.8x\n"}
+,{"stream_name":"stdout","time":1177.159634169,"data":"  ours cuda double   37.512 s  (solve 20.131, wilson 17.344, z2 0.037)  Z2 agrees 40/40  unreliable 0  NS fallbacks 0\n"}
+,{"stream_name":"stdout","time":1177.159637702,"data":"      vs pythtb_serial     84.105 s -\u003e    2.2x\n"}
+,{"stream_name":"stdout","time":1177.159641018,"data":"      vs pythtb_parallel   37.620 s -\u003e    1.0x\n"}
+,{"stream_name":"stdout","time":1177.159644409,"data":"  ours cuda single    9.773 s  (solve 3.965, wilson 5.798, z2 0.011)  Z2 agrees 40/40  unreliable 0  NS fallbacks 0\n"}
+,{"stream_name":"stdout","time":1177.159647899,"data":"      vs pythtb_serial     84.105 s -\u003e    8.6x\n"}
+,{"stream_name":"stdout","time":1177.159651246,"data":"      vs pythtb_parallel   37.620 s -\u003e    3.8x\n"}
+,{"stream_name":"stdout","time":1177.159654919,"data":"\n"}
+,{"stream_name":"stdout","time":1177.159658612,"data":"12x12 supercell (H 576x576), mesh 6x6, 40 configs at W=2.0, 1 worker(s)\n"}
+,{"stream_name":"stdout","time":1177.159662929,"data":"  wall time     545.90 s   -\u003e     0.07 configs/s  (13.648 s per config)\n"}
+,{"stream_name":"stdout","time":1177.159667056,"data":"  stage time  build 6.90  solve 283.02  wilson 175.87  z2 0.024  (summed over configs)\n"}
+,{"stream_name":"stdout","time":1177.159670469,"data":"  physics     fraction topological = 1.00  (0 of 40 Z2 answers flagged unreliable and left out)\n"}
+,{"stream_name":"stdout","time":1177.15967454,"data":"  saved to /kaggle/working/proj/hackathon/results/cpu_serial.csv\n"}
+,{"stream_name":"stdout","time":1177.15967832,"data":"\n"}
+,{"stream_name":"stdout","time":3463.825228731,"data":"12x12 supercell (H 576x576), mesh 6x6, 40 configs at W=2.0, 4 worker(s)\n"}
+,{"stream_name":"stdout","time":3463.825308271,"data":"  wall time     321.29 s   -\u003e     0.12 configs/s  (8.032 s per config)\n"}
+,{"stream_name":"stdout","time":3463.825317919,"data":"  stage time  build 12.11  solve 793.83  wilson 316.91  z2 0.037  (summed over configs)\n"}
+,{"stream_name":"stdout","time":3463.825323579,"data":"  physics     fraction topological = 1.00  (0 of 40 Z2 answers flagged unreliable and left out)\n"}
+,{"stream_name":"stdout","time":3463.825328369,"data":"  saved to /kaggle/working/proj/hackathon/results/cpu_parallel.csv\n"}
+,{"stream_name":"stdout","time":3463.825333079,"data":"\n"}
+,{"stream_name":"stdout","time":3463.825338036,"data":"  ours cpu  double  251.666 s  (solve 101.958, wilson 149.686, z2 0.022)  Z2 agrees 40/40  unreliable 0  NS fallbacks 0\n"}
+,{"stream_name":"stdout","time":3463.825342367,"data":"      vs pythtb_serial    465.821 s -\u003e    1.9x\n"}
+,{"stream_name":"stdout","time":3463.825346904,"data":"      vs pythtb_parallel  321.290 s -\u003e    1.3x\n"}
+,{"stream_name":"stdout","time":3463.825351369,"data":"  ours cpu  single  135.871 s  (solve 59.150, wilson 76.705, z2 0.016)  Z2 agrees 40/40  unreliable 0  NS fallbacks 0\n"}
+,{"stream_name":"stdout","time":3463.825356236,"data":"      vs pythtb_serial    465.821 s -\u003e    3.4x\n"}
+,{"stream_name":"stdout","time":3463.825360815,"data":"      vs pythtb_parallel  321.290 s -\u003e    2.4x\n"}
+,{"stream_name":"stdout","time":3463.825365096,"data":"  ours cuda double  155.447 s  (solve 76.173, wilson 79.251, z2 0.023)  Z2 agrees 40/40  unreliable 0  NS fallbacks 0\n"}
+,{"stream_name":"stdout","time":3463.825369482,"data":"      vs pythtb_serial    465.821 s -\u003e    3.0x\n"}
+,{"stream_name":"stdout","time":3463.825383921,"data":"      vs pythtb_parallel  321.290 s -\u003e    2.1x\n"}
+,{"stream_name":"stdout","time":3463.825387444,"data":"  ours cuda single   36.110 s  (solve 15.782, wilson 20.313, z2 0.015)  Z2 agrees 40/40  unreliable 0  NS fallbacks 0\n"}
+,{"stream_name":"stdout","time":3463.825390826,"data":"      vs pythtb_serial    465.821 s -\u003e   12.9x\n"}
+,{"stream_name":"stdout","time":3463.825393974,"data":"      vs pythtb_parallel  321.290 s -\u003e    8.9x\n"}
+,{"stream_name":"stdout","time":3463.825397731,"data":"\n"}
+,{"stream_name":"stdout","time":3463.825400913,"data":"saved to /kaggle/working/proj/hackathon/results/full_pipeline.csv\n"}
+,{"stream_name":"stdout","time":3464.418815507,"data":"[exit 0]\n"}
+,{"stream_name":"stdout","time":3464.420716039,"data":"\n"}
+,{"stream_name":"stdout","time":3464.420743872,"data":"saved: ['cpu_parallel.csv', 'cpu_serial.csv', 'full_pipeline.csv']\n"}
+,{"stream_name":"stderr","time":3466.638651187,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3466.638690655,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":3466.930969312,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":3466.93100585,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":3467.759531469,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":3468.83013723,"data":"[NbConvertApp] Writing 284172 bytes to __results__.html\n"}
+]

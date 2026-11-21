@@ -1,95 +1,163 @@
-# Part 2 goal: reproduce the disorder-driven topological transition at λν = 1.65t
+# Goal: reproduce the paper's central result with an independent GPU method
 
-## The goal
+## The goal, in one line
 
-Use the GPU pipeline to measure the **fraction of disorder configurations that are topological (Z₂ = 1)**
-as a function of disorder strength W, at λν = 1.65t, λ_SO = 0.3t, λ_R = 0 and E_F = 0. Run it for several
-supercell sizes. Show on one plot that the material is:
+Show that **disorder turns a trivial Kane-Mele insulator topological at W ≈ 2.0 (our units; "W ≈ t" in
+Orth et al.)**. We locate this critical disorder **by finite-size scaling** (something the paper does not do),
+using our batched GPU Wilson-loop pipeline, and cross-check it against two independent published methods.
 
-1. **trivial at weak disorder**,
-2. **topological from W ≈ 2** (the topological Anderson insulator), and
-3. **trivial again near W ≈ 7** (Anderson insulator).
+**Pitch line:** "We reproduce the central result of Orth et al. (2016), that disorder makes a trivial Kane-Mele
+insulator topological at W ≈ t, with an independent method. We locate the transition by finite-size scaling,
+which needs thousands of disorder samples: practical on a GPU, impractical on a CPU."
 
-Overlay Favata & Marrazzo (2023) Fig. 7 (left) and the E_F = 0 curve of Orth et al. (2016) Fig. 2 (bottom
-middle). Report how long the same dataset takes on the best CPU baseline compared with the GPU.
+## Why this is the right target
 
-## Conventions
+- Orth et al.'s headline finding is that the topological Anderson insulator (TAI) exists in the Kane-Mele model.
+  Their demonstration is λν = 1.65t: trivial when clean, topological "at W ≈ t" (Fig. 2, middle panel), and
+  quantified as Wc in Fig. 5.
+- Two independent methods have measured it (conductance; single-point spin Chern number). Our Wilson-loop Z₂ is
+  a third. The lowest-order Born approximation gives a theory lower bound.
+- Neither paper extracts a critical point properly. Orth uses one ribbon size and does not define Wc; Favata
+  only shows curves for two sizes. Finite-size scaling is a real addition.
 
-| Quantity | Value / definition |
-|---|---|
-| Model | `kane_mele(delta=1.65, t=1, soc=0.3, rashba=0)`. Mapping checked in `VALIDATION.md`. |
-| Disorder | **Ours: εᵢ uniform in [−W/2, W/2]**, the same for both spins. This is the same convention as Favata. |
-| Orth's W | Orth uses [−W, W], so **W_ours = 2 × W_Orth**. Orth's numbers below are already doubled. |
-| Supercell | L × L cells (2L² sites). Same meaning of L as Favata. |
-| Per-config answer | Z₂ from `topology.z2_from_wannier_flow`, kept only if `ConfigResult.z2_reliable` |
+## Fixed conditions
 
-## Reference values (exact plotted data, extracted from the PDFs' vector graphics)
-
-**Favata & Marrazzo 2023, Fig. 7 (left)**, Δ/λ_SO = 5.5 (= λν 1.65t), λ_R = 0, M = 50 to 100 configs.
-The full curves are in `analysis/reference_data/favata2023_fig7_left.csv`.
-
-| | L = 15 | L = 42 |
+| Parameter | Value | PythTB / code |
 |---|---|---|
-| **Lower transition (C_s = 0.5)** | **W ≈ 1.99** | **W ≈ 1.92** |
-| TAI plateau (C_s ≥ 0.9) | 2.25 to 6.0 | 2.25 to 6.25 |
-| **Upper transition (C_s = 0.5)** | **W ≈ 6.89** | **W ≈ 7.00** |
+| Hopping | t = 1 | `t=1` |
+| Intrinsic spin-orbit coupling | λ_SO = 0.3t | `soc=0.3` |
+| Staggered sublattice potential | **λν = 1.65t** (= 5.5 λ_SO; trivial when clean, 0.09t above the boundary 3√3·λ_SO = 1.5588t) | `delta=1.65` |
+| Rashba | λ_R = 0 | **`rashba=0`** (the code defaults to 0.25, so always pass it) |
+| Filling | half filling, E_F = 0 | n_occ = norb |
+| Disorder | Anderson, εᵢ uniform in **[−W/2, W/2]**, the same for both spins | `disordered_kane_mele`, `batched.disorder_shifts` |
 
-**Orth et al. 2016**, the λν = 1.65t point of Fig. 5 (`analysis/reference_data/orth2016_fig5.csv`):
-**Wc = 2.14 ± 0.07** in our units. In Fig. 2, G at E_F = 0 reaches the 2G₀ plateau there and stays on it
-up to the edge of the plot (W_ours = 6).
+**Watch the factor of 2.** Orth uses [−W, W], so **W_ours = 2 × W_Orth**. All values below are in our units
+unless marked. Favata uses the same convention as us.
 
-The two references agree on the lower transition to within about 10%.
+## Target values
 
-## What we measure
+| Transition | Reference | Method | W (ours) |
+|---|---|---|---|
+| **Wc₁: trivial → TAI** (main target) | Orth et al. 2016, Fig. 5 | Two-terminal conductance, 93a × 150a ribbon, 100 configs | **2.14 ± 0.07** |
+| | Favata & Marrazzo 2023, Fig. 7 (left) | Single-point spin Chern number, L = 42 / 15, M = 50 | **1.92 / 1.99** (C_s = 0.5, our interpolation) |
+| | Lowest-order Born (`analysis/born.py`) | Theory, clean H(k) | 1.68 (Orth's normalisation) to 1.80 (BZ average): a lower bound |
+| **Wc₂: TAI → Anderson insulator** (secondary) | Favata & Marrazzo 2023, Fig. 7 (left) | as above | **7.00 / 6.89** (L = 42 / 15) |
 
-For each (L, W), with M configurations:
+Expected: **Wc₁ ≈ 2.0 ± 0.15** (the two methods span 1.92–2.14). **Wc₂ ≈ 7.0 ± 0.3.**
+Reference data: `analysis/reference_data/orth2016_fig5.csv` and `favata2023_fig7_left.csv`, extracted from the
+PDFs' vector graphics (`analysis/extract_paper_data.py`).
 
-- **f = fraction topological** = (number of reliable configs with Z₂ = 1) / (number of reliable configs).
-  Error bar: √(f(1 − f)/M_reliable).
-- **u = fraction unreliable** (no gap, mesh too coarse, or unsafe gap tracking). Always reported next to f.
-- **Wc_low and Wc_high** = the W values where f crosses 0.5 (linear interpolation), with bootstrap errors.
+## Method
 
-## Run
+**Per configuration** (`gpu_engine.spin_chern.run_spin_chern`; decision A, 21 Nov):
+1. Build the clean **spin-up block** of H(k) once (λ_R = 0 conserves S_z), then add a random diagonal for each
+   configuration.
+2. Run a batched `eigh` over configurations × k-points, on half-size matrices.
+3. Compute the overlaps along k_y and a batched `slogdet`. The phase of det(Wilson loop) gives the **sum of the
+   spin-up Wannier centres** on each k_x line.
+4. **C↑ = winding of that sum** as k_x goes round the zone, and **Z₂ = C↑ mod 2**. Reliable if the largest wrapped
+   step is ≤ 0.4 and the spin-up gap is open. Flagged configs are re-run at nk = 10.
 
-| λν | W (ours) | L | M per point | Total configs |
-|---|---|---|---|---|
-| 1.65 | 0 to 8 in steps of 0.25 (33 points, on Favata's grid) | 8, 12, 16 (+24 if the GPU allows) | 200 | ≈ 20,000 |
+Why not the gap-tracking Z₂ (`pipeline.run_batch`)? Near W ≈ 2 it flagged 85–95% of configs, and its answers
+changed with nk (up to 6/20). C↑ gave the same answer at nk = 6 and 10 for 137/140 configs (L = 8, 12;
+W = 1–8), and all 3 changes were flagged. Evidence: `analysis/stage0_chern_up.py`, `results/stage0*_chern_up*.csv`.
+The gap-tracking Z₂ stays as a cross-check, and for λ_R ≠ 0.
 
-For scale, the laptop CPU takes 0.75 s, 4.3 s and 22.5 s per config at L = 8, 12 and 16. That makes the run
-about 50 h serial, or about 12 h on 10 cores.
+**Per (L, W)**, over M configurations:
+- **f** = fraction topological = (reliable configs with Z₂ = 1) / (reliable configs)
+- **u** = fraction unreliable after refinement, split by reason (largest step > 0.4, spin-up gap closed)
+
+Use the **same seeds at every W**: each configuration keeps its disorder pattern, scaled by W. Error bars come
+from a bootstrap over seeds.
+
+**Locating Wc (finite-size scaling):**
+1. **Crossing.** f(W, L) curves for different L cross at Wc, because f → 0 below and f → 1 above as L → ∞. Each
+   pair (L₁, L₂) gives W*. Report the drift of W* with L, and extrapolate it.
+2. **Collapse (stronger, optional).** Fit f = F((W − Wc)·L^(1/ν)) for Wc and ν, with bootstrap errors.
+   Recipe: Mildner et al. (arXiv:2312.16689), disordered Haldane model, L ≤ 17, 500 configs,
+   Wc = 3.58 ± 0.02, ν = 2.42 ± 0.11. With λ_R = 0, Kane-Mele is two decoupled Chern copies, so ν ≈ 2.4–2.6
+   is likely (to check).
+3. **Quick estimate.** The single-L midpoint (f = 0.5) for each L. Report it, but don't quote it as the
+   critical point.
+
+## Stages
+
+| # | Stage | Where | Done when |
+|---|---|---|---|
+| 0 | ✓ **Go/no-go** (`analysis/stage0_go_no_go.py`, L = 8, 20 seeds). Physics GO; gap-tracking Z₂ not converged near W ≈ 2 | CPU | Done 21 Nov |
+| 0b | ✓ **Invariant convergence** (`analysis/stage0_chern_up.py`): C↑ stable at nk = 6 vs 10 for 137/140 configs; f(L = 8) = 0, 0.3, 1.0, 0.95, 0.2 at W = 1, 2, 3, 5, 8; f(W = 2) rises from 0.33 (L = 8) to 0.75 (L = 12) | CPU | Done 21 Nov: decision A = C↑ |
+| 1 | **GPU equals CPU:** `tests/test_spin_chern.py` (C↑ sample by sample, single and double) | GPU | All pass |
+| 2 | **Cross-check:** gap-tracking Z₂ against C↑ mod 2 on the reliable configs of both | GPU | Disagreements explained (they occur where gap tracking is flagged) |
+| 3 | **Pilot / timing:** `benchmarks/gpu_spin_chern.py` at L ∈ {8, 12, 16}; check that nk = 10 refinement suffices at L = 16 | GPU | Seconds per config known; scope decided (base or stretch, `PART2_PLAN.md`) |
+| 4 | **Coarse scan:** W 0 to 8 in steps of 0.25 (Favata's grid), L ∈ {8, 12, 16}, M = 200 | GPU | f(W) for each L; rough Wc₁ and Wc₂ |
+| 5 | **Finite-size-scaling runs:** about 10 W values within ±0.6 of each coarse Wc, L ∈ {8, 12, 16} (+24 if spin-split), M = 500 | GPU | Crossings W*(L₁, L₂) with errors |
+| 6 | **Analysis:** crossings, drift, optional collapse, robustness (below) | CPU | Wc₁ (and Wc₂) ± statistical ± systematic error |
+| 7 | **CPU comparison:** `cpu_baseline.py parallel` on the same machine, on a subset, extrapolated and labelled as such | same machine | Measured time to the whole dataset, GPU vs best CPU |
+| 8 | **Figures and write-up** | — | See below |
+
+**Compute estimate** (to be replaced by the stage 3 measurement): the old full-spin pipeline measured 0.245 and
+0.90 s per config at L = 8 and 12 (R7, T4, single). C↑ diagonalises a half-size block and skips Newton-Schulz,
+so expect several times less. Stage 4 is about 3.5 h and stage 5 about 3 h per transition on one T4,
+roughly halved with both T4s. L = 24 needs the spin split (about 8x cheaper diagonalisation). Laptop CPU
+equivalent, all 10 cores: roughly 15 h per transition at L ≤ 16.
+
+**Raw output:** append every config to `results/tai_165_raw.csv` as it finishes:
+`L, nk_used, W, seed, c_up, z2, max_step, gap_up, reliable, precision, device, timestamp`.
+
+## Robustness checks (stage 6)
+
+- **Reliability bias:** recompute Wc with the unreliable configs counted as Z₂ = 0, then as Z₂ = 1. The shift is
+  a systematic error.
+- **Mesh:** Wc with refinement at nk = 10 vs 14 at the largest L.
+- **Precision:** single vs double precision on a subset near Wc₁.
+- **Crossing drift:** W* for (8, 12), (12, 16) and (16, 24). Report the trend, and use it as a systematic error.
+- **Threshold:** Wc with the largest-step threshold at 0.35 and 0.45 instead of 0.4.
+
+## Figures
+
+1. **The key-result figure.** f(W) for each L, with error bars, for W from 0 to 8.
+   - On the same axes: Favata's L = 15 and 42 curves, a band for Orth's Wc = 2.14 ± 0.07, and a dashed line
+     for the Born value 1.68.
+   - Top axis: W_Orth = W/2.
+   - Lower panel: u(W).
+2. **Finite-size scaling.** A zoom on Wc₁: curves crossing, with W* against L as an inset. If the collapse is
+   done, F(x) with all sizes on one curve.
+3. **Performance.** Time to the whole dataset, GPU against the best CPU (and serial PythTB), same machine.
 
 ## How we'll know we've got there
 
-**Prerequisites**
-- [ ] Clean model (W = 0) at λν = 1.65 gives Z₂ = 0 at every L used.
-- [ ] Small CPU check (L = 8, W ∈ {0, 1, 2, 3, 5, 8}, 20 configs each) shows trivial → topological → trivial.
-- [ ] GPU gives the **same Z₂ as `reference.py` config by config** (same seeds) on at least 20 configs at
-      W ∈ {1, 2, 3}.
-- [ ] Mesh convergence: doubling nk changes f by less than its error bar at W = 2 and 3.
+**Validity (must pass first)**
+- [ ] Stage 0 shows trivial → topological → trivial at L = 8.
+- [ ] Clean model (W = 0) gives Z₂ = 0 at every L used.
+- [ ] GPU Z₂ = CPU Z₂ for every reliable config (stage 1), and Z₂ = C↑ mod 2 for every config (stage 2).
+- [ ] Mesh convergence: f is unchanged within its error bars at 2x nk.
 
-**The result**
-- [ ] f ≤ 0.1 for W ≤ 1.2 (trivial).
-- [ ] **Wc_low ∈ [1.6, 2.6]** at the largest L. That is Favata's 1.92 and Orth's 2.14, ±0.4 to allow for our
-      smaller L.
-- [ ] f ≥ 0.9 for 2.8 ≤ W ≤ 5.5 (TAI plateau).
-- [ ] **Wc_high ∈ [6.3, 7.7]** at the largest L (Favata's 7.0 ± 0.7).
-- [ ] At least 2 sizes, M ≥ 200 per point, with u reported.
-- [ ] **One figure:** f(W) for each L with error bars, Favata's L = 15 and L = 42 curves, Orth's E_F = 0 curve
-      (G/2G₀), and Wc_low and Wc_high marked.
+**The key result**
+- [ ] **Wc₁ from finite-size scaling in [1.8, 2.3]**, consistent with Orth (2.14 ± 0.07) and Favata (1.92), with
+      statistical and systematic errors stated.
+- [ ] Wc₁ above the Born lower bound (≈ 1.7).
+- [ ] f ≤ 0.1 for W ≤ 1.2, and f ≥ 0.9 on the plateau (about 2.8 to 5.5).
+- [ ] At least 3 sizes; the transition sharpens with L, and the crossings are resolved beyond their errors.
+
+**Secondary**
+- [ ] **Wc₂ in [6.5, 7.5]** (Favata 7.0).
+- [ ] Optional: ν from the collapse, compared with ≈ 2.4 (Mildner, Haldane).
 
 **Performance**
-- [ ] Time for the full run on the GPU, against `cpu_baseline.py parallel` (and `serial`) on the same machine.
-      Label any CPU time that is extrapolated from a subset as such.
+- [ ] Measured GPU time for the full dataset against the best CPU baseline on the same machine.
 
 ## Caveats to state
 
-1. **Different observables.** Orth measures edge conductance on a ribbon, Favata the mean of a single-point
-   spin Chern number (not an integer at finite L), and we the fraction of configs with Z₂ = 1. We compare
-   *where* the transitions are, not the shape of the curves.
-2. **Spectral gap vs mobility gap.** Disorder can fill the gap with localised states. Our band-gap check flags
-   these configs, so u will rise near the transitions. Decide the policy before the production run (see
-   `VALIDATION.md`) and report u.
-3. **Coarse meshes near transitions** can give a wrong Z₂. This is caught by `z2_margin` and `min_overlap`,
-   and checked by the mesh-convergence test.
-4. **Reference values come from the figures' vector data** (`analysis/extract_paper_data.py`). Neither paper
-   gives a table. Favata's crossings are limited by their 0.25 W grid.
+1. **Different observables.** Orth measures edge conductance on a ribbon, Favata the mean of a single-point spin
+   Chern number (not an integer at finite L), and we the fraction of configs with Z₂ = 1. They should agree on
+   *where* the transition is, not on the shape of the curves.
+2. **The references are not rigorous critical points.** Orth: one size, Wc undefined. Favata: our interpolation
+   of their curves. So "≈ 2.0" is a target with about ±0.15 uncertainty, and our finite-size-scaling value may
+   be the better-defined number.
+3. **Small sizes.** L ≤ 16 (24) against Orth's 28k sites. Crossings may drift because the clean critical point is
+   close (1.5588t). We report the drift.
+4. **Reliability flags rise near Wc,** which is exactly where finite-size scaling is sensitive. This is why the
+   reliability-bias check exists.
+5. **λν = 1.65t is a choice** made by Orth and reused by Favata, not a property of a real material.
+6. **"First" claims.** As far as we can tell, no finite-size-scaling analysis of the Kane-Mele TAI has been
+   published. Say it that way, never "first".

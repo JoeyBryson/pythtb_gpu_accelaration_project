@@ -60,6 +60,79 @@ def test_newton_schulz_falls_back_to_svd_when_it_cannot_converge():
     torch.testing.assert_close(U, unitary_part_svd(M), atol=1e-10, rtol=0)
 
 
+@pytest.mark.parametrize("dtype", [torch.complex128, torch.complex64])
+def test_unitary_eigenvalues_match_general_solver(dtype):
+    """Includes exactly degenerate pairs, as Kramers pairs give at k = 0 and pi."""
+    from gpu_engine.wilson import unitary_eigenvalues
+
+    torch.manual_seed(0)
+    Q, _ = torch.linalg.qr(torch.randn(40, 16, 16, dtype=torch.complex128))
+    phases = torch.rand(40, 16, dtype=torch.float64) * 2 * torch.pi
+    phases[:20, 1::2] = phases[:20, 0::2]  # half the batch: every eigenvalue doubly degenerate
+    W = (Q * torch.exp(1j * phases).unsqueeze(-2)) @ Q.mH
+    lam, _ = unitary_eigenvalues(W.to(dtype))
+    got = torch.sort(torch.remainder(torch.angle(lam.to(torch.complex128)), 2 * torch.pi)).values
+    want = torch.sort(torch.remainder(phases, 2 * torch.pi)).values
+    tol = 1e-9 if dtype == torch.complex128 else 1e-4
+    assert (got - want).abs().max() < tol
+
+
+def test_large_single_precision_matrix_stays_accurate():
+    """Regression (21 Nov): at n = 512 in single precision the eigenvalues came out ~1e-3 off
+    while passing a matrix-wide check. Dense spectrum + single-precision input must still give
+    phases within the single-precision tolerance (1e-4) of the exact ones."""
+    from gpu_engine.wilson import unitary_eigenvalues
+
+    torch.manual_seed(1)
+    n = 384
+    phases = torch.sort(torch.rand(2, n, dtype=torch.float64) * 2 * torch.pi).values
+    Q, _ = torch.linalg.qr(torch.randn(2, n, n, dtype=torch.complex128))
+    W = ((Q * torch.exp(1j * phases).unsqueeze(-2)) @ Q.mH).to(torch.complex64)
+    exact = torch.linalg.eigvals(W.to(torch.complex128))  # same (rounded) matrices, exactly
+    lam, stats = unitary_eigenvalues(W)
+    assert stats["eig_cpu"] == 0
+    got = torch.sort(torch.remainder(torch.angle(lam), 2 * torch.pi)).values
+    want = torch.sort(torch.remainder(torch.angle(exact), 2 * torch.pi)).values
+    assert (got - want).abs().max() < 1e-4
+
+
+def _unitary_with_phases(phases: list[float]) -> tuple[torch.Tensor, torch.Tensor]:
+    p = torch.tensor([phases], dtype=torch.float64)
+    Q, _ = torch.linalg.qr(torch.randn(1, len(phases), len(phases), dtype=torch.complex128))
+    return (Q * torch.exp(1j * p).unsqueeze(-2)) @ Q.mH, p
+
+
+def _sorted_phases(lam: torch.Tensor) -> torch.Tensor:
+    return torch.sort(torch.remainder(torch.angle(lam), 2 * torch.pi)).values
+
+
+def test_mixing_failure_is_fixed_by_the_gpu_retry():
+    """Two phases with equal cos + MIX*sin get mixed by eigh: caught, and fixed by the retry
+    (different MIX, double precision) without needing the slow CPU solver."""
+    import math
+
+    from gpu_engine.wilson import _MIX, unitary_eigenvalues
+
+    phi = math.atan(_MIX)  # cos(t) + MIX sin(t) is symmetric about t = phi
+    W, phases = _unitary_with_phases([phi + 0.7, phi - 0.7, 2.0, 4.0])
+    lam, stats = unitary_eigenvalues(W)
+    assert stats == {"eig_retried": 1, "eig_cpu": 0}
+    assert (_sorted_phases(lam) - _sorted_phases(torch.exp(1j * phases))).abs().max() < 1e-9
+
+
+def test_cpu_fallback_when_both_mixings_fail():
+    """Ties under BOTH mixing values in one matrix: only then the CPU solver is used."""
+    import math
+
+    from gpu_engine.wilson import _MIX, _MIX_RETRY, unitary_eigenvalues
+
+    p1, p2 = math.atan(_MIX), math.atan(_MIX_RETRY)
+    W, phases = _unitary_with_phases([p1 + 0.5, p1 - 0.5, p2 + 1.9, p2 - 1.9])
+    lam, stats = unitary_eigenvalues(W)
+    assert stats == {"eig_retried": 1, "eig_cpu": 1}
+    assert (_sorted_phases(lam) - _sorted_phases(torch.exp(1j * phases))).abs().max() < 1e-9
+
+
 @pytest.mark.parametrize("supercell", [1, 2])
 def test_clean_model_matches_pythtb(supercell):
     be = get_backend("double")

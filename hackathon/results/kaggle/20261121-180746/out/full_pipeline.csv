@@ -1,0 +1,9 @@
+timestamp,scenario,supercell,nk,configs,W,device,gpu,precision,t_ours,t_solve,t_wilson,t_z2,z2_agree,n_unreliable,ns_fallbacks,workers,t_pythtb_serial,speedup_vs_pythtb_serial,t_pythtb_parallel,speedup_vs_pythtb_parallel,host,cpu,os,n_cpus,blas,numpy
+2026-11-21T19:18:40,full_pipeline,8,6,40,2.0,cpu,,double,36.0204,14.7399,21.2692,0.0113,40,0,0,4,84.1052,2.33,37.6198,1.04,235bc08a14df,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T19:18:40,full_pipeline,8,6,40,2.0,cpu,,single,20.7587,9.4153,11.3332,0.0103,40,0,0,4,84.1052,4.05,37.6198,1.81,235bc08a14df,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T19:18:40,full_pipeline,8,6,40,2.0,cuda,Tesla T4,double,37.5124,20.1315,17.3439,0.0371,40,0,0,4,84.1052,2.24,37.6198,1.00,235bc08a14df,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T19:18:40,full_pipeline,8,6,40,2.0,cuda,Tesla T4,single,9.7734,3.9651,5.7978,0.0106,40,0,0,4,84.1052,8.61,37.6198,3.85,235bc08a14df,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T19:18:40,full_pipeline,12,6,40,2.0,cpu,,double,251.6656,101.9583,149.6856,0.0217,40,0,0,4,465.8211,1.85,321.2896,1.28,235bc08a14df,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T19:18:40,full_pipeline,12,6,40,2.0,cpu,,single,135.8710,59.1496,76.7054,0.0160,40,0,0,4,465.8211,3.43,321.2896,2.36,235bc08a14df,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T19:18:40,full_pipeline,12,6,40,2.0,cuda,Tesla T4,double,155.4467,76.1727,79.2510,0.0229,40,0,0,4,465.8211,3.00,321.2896,2.07,235bc08a14df,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T19:18:40,full_pipeline,12,6,40,2.0,cuda,Tesla T4,single,36.1103,15.7817,20.3133,0.0153,40,0,0,4,465.8211,12.90,321.2896,8.90,235bc08a14df,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
