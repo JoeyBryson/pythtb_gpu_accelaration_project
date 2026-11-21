@@ -395,6 +395,30 @@ Crossings: 8/16 **1.892 ± 0.052**, 8/12 1.895 ± 0.143, 12/16 1.889 ± 0.128.
   with size. Width ∝ 1/L is suggestive of a scaling exponent: **to check with the physics team**
   before claiming. Will be refined with the 1,000-sample 16×16 run (preset "dense").
 
+## R15. Phase map: material × disorder at 12×12 (KAG)
+
+`kaggle/run.py` preset "phasemap", 21 Nov 22:53. 12×12 supercells, C_up invariant (mesh 6,
+refine 10), single precision, spin blocks, one Tesla T4. λ_ν = 1.45–1.85 (step 0.05) × W = 0–4
+(step 0.25): 153 points × 50 samples = 7,650 samples in **17 min** of GPU time.
+Data: `results/sweep/phasemap_12x12_c_up.csv`. Slide: `results/figures/slides/5_phase_map.png`.
+
+W where the fraction topological crosses 50% (linear interpolation between grid points):
+
+| λ_ν | 1.45 | 1.50 | 1.55 | 1.60 | 1.65 | 1.70 | 1.75 | 1.80 | 1.85 |
+|---|---|---|---|---|---|---|---|---|---|
+| W_50 | always topological | always | always (≥ 96%) | 1.32 | 1.90 | 2.43 | 2.79 | 3.15 | 3.43 |
+
+- Below the clean boundary (λ_ν < 3√3·0.3 ≈ 1.559) every sample stays topological up to W = 4:
+  weak disorder doesn't destroy the phase.
+- Above it, disorder switches topology on, and the switch-on W rises with λ_ν (further from
+  the clean boundary needs more disorder): the TAI region over a range of materials, not one slice.
+- λ_ν = 1.65 gives 1.90, consistent with R13/R14 at 12×12 (midpoint 1.97 from the logistic fit).
+- 81 of 7,650 samples (1.1%) unresolved after refinement, all at λ_ν ≥ 1.55, i.e. near gap closings.
+- **To check:** comparison with Orth Fig. 5 (critical W vs λ_ν; remember W_ours = 2·W_Orth).
+  Not done yet; 50 samples per point, one size only.
+- The dense 1,000-sample 16×16 run (preset "dense") stopped after 2 of 9 points (W = 1.00: 0/1000,
+  W = 1.25: 1/1000) when this run took the GPU; not used.
+
 ---
 
 ## Still to measure
@@ -412,4 +436,5 @@ Crossings: 8/16 **1.892 ± 0.052**, 8/12 1.895 ± 0.143, 12/16 1.889 ± 0.128.
 - [x] 12×12 and 16×16 sweeps (R13): the switch sharpens with size, crossing near W ≈ 1.9–2.0
 - [x] CPU time estimate for whole sweeps (R12)
 - [x] Crossing estimate of the critical W (R14: 1.89 ± 0.05)
-- [ ] Refine with the 1,000-sample 16×16 run; data collapse / exponent (physics team)
+- [x] Phase map λ_ν × W at 12×12 (R15)
+- [ ] Refine with the 1,000-sample 16×16 run (first attempt stopped early); data collapse / exponent (physics team)
