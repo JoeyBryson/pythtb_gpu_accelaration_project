@@ -27,6 +27,10 @@ T4 note: double precision is ~15× slower than single on this GPU (measured belo
 > reliability diagnostics (~15% of wall time on KAG, see "Timing fix" under R7). Estimated
 > corrected baseline ~274 s, i.e. **~7.6×** rather than 8.9× (~3.3× rather than 3.8× at 8×8).
 > Re-run R7's PythTB parallel baseline with the fixed `cpu_baseline.py` before quoting.
+>
+> **Latest (R8, 12×12):** with faster Newton-Schulz, GPU single 32.7 s: ~8.8× vs the corrected
+> all-cores baseline, and about half of that GPU time was one fixable step (eigenvalues on the
+> CPU). Final numbers: R9.
 
 ---
 
@@ -183,6 +187,40 @@ Notes: Kaggle's 4 cores only give 1.4–2.2× over 1 core (memory bandwidth? not
 Kaggle's CPU is ~2–4× slower than MAC for PythTB (e.g. 8×8 serial 84 s vs 30 s): never mix the
 two machines' numbers in one comparison.
 
+## R8. Full pipeline with the faster Newton-Schulz, GPU vs PythTB all cores (KAG)
+
+What: as R7 (40 configs, W = 2, tutorial parameters, same seeds), GPU only vs PythTB on all
+4 cores. Code as of 21 Nov ~19:37: **with** early-stopping Newton-Schulz and the reliability
+check only in single precision; **without** Filip's baseline timing fix (so PythTB's 4-core time
+still includes its untimed diagnostics, ~15% high) and **without** the Hermitian eigenvalue step
+(eigenvalues still computed on Kaggle's CPU). Run cancelled at the start of 16×16 (outdated by
+then), so only the log was saved; numbers below are copied from it.
+Command: `python benchmarks/gpu_pipeline.py --sizes 8 12 --configs 40 --W 2.0 --devices cuda --skip-serial`
+· Kaggle run 21 Nov 19:37–19:52 (version 7) · log `results/kaggle/20261121-193743/pythtb-gpu-run.log`
+
+| Supercell (mesh) | PythTB 4 cores (as measured) | Ours GPU double | **Ours GPU single** | Z2 agrees |
+|---|---|---|---|---|
+| 8×8 (6×6) | 40.6 s | 25.3 s (1.6×) | **6.6 s (6.2×; ~5.2× corrected)** | 40/40 |
+| 12×12 (6×6) | 337.9 s | 117.8 s (2.9×) | **32.7 s (10.3×; ~8.8× corrected)** | 40/40 |
+
+"Corrected" = PythTB time × 0.85 (Filip's measured ~15% diagnostic share; not re-measured here).
+No Newton-Schulz fallbacks.
+
+Where the GPU time goes (single precision):
+
+| | Solve | Wilson total | of which: overlaps | Newton-Schulz | product | **eigenvalues (on CPU)** |
+|---|---|---|---|---|---|---|
+| 8×8 | 3.97 s | 2.61 s | 0.015 | 0.046 | 0.005 | **2.54** |
+| 12×12 | 15.86 s | 16.83 s | 0.125 | 0.735 | 0.079 | **15.89** |
+
+**Finding:** early stopping made Newton-Schulz almost free (0.05–0.7 s), so the Wilson loop is
+now almost entirely the eigenvalue step on Kaggle's slow CPU: **~half of the total GPU time at
+12×12**. Fixed afterwards (commit 66f7a14): eigenvalues via a Hermitian `eigh` on the GPU, 3–4×
+faster even on MAC's CPU; to be measured on KAG (R9).
+
+Also seen: PythTB on 4 cores at 16×16 took 184 s for its first 4 configs (~46 s per config per
+worker), so 16 configs ≈ 12 min on KAG.
+
 ---
 
 ## Still to measure
@@ -191,7 +229,7 @@ two machines' numbers in one comparison.
 - [x] Step 2: batched Wilson loop vs PythTB `berry_phase` (tests; R6, R7)
 - [x] Full pipeline end to end, GPU vs best CPU (R7)
 - [x] Single precision: Z2 agrees config by config (R7: 40/40 at 8×8 and 12×12)
-- [ ] Re-run R7 with the Wilson-loop speed-ups (GPU only + PythTB all-cores)
-- [ ] Re-run R7's PythTB all-cores baseline with the timing fix (`check=False`); update the headline
+- [x] Re-run R7 with the Newton-Schulz speed-up (R8)
+- [ ] R9: final speed run with the timing fix **and** the Hermitian eigenvalue step; update the headline
 - [ ] Use both T4s
 - [ ] Full phase-diagram sweep: CPU time vs GPU time (the headline for the pitch)
