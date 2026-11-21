@@ -173,14 +173,78 @@ Report: speed-up against each baseline, where the time goes (diagonalisation ver
 | Building supercells in PythTB is slow | Build once and add the diagonal on the GPU. |
 | Scope creep (conductance, Kwant, λ_R > 0) | Kept out of scope. See the cut list. |
 
-## Suggested timeline (adapt to the actual hackathon length)
+## Step-by-step plan (adapt durations to the hackathon length)
 
-1. **First:** parameter mapping, the clean-boundary check, and one disordered realization on the CPU with PythTB's Wilson loop. This decides how the demo is framed.
-2. **Then:** the batched GPU pipeline (build, eigh, Newton-Schulz Wilson loops, invariant), validated against the CPU on single realizations, in FP64 and FP32.
-3. **Then:** benchmarks against all baselines, with the profiling breakdown. This produces the headline number.
-4. **Then:** the production demo run (grid over W, Δ, L, with many realizations) and the Wc analysis against the paper.
-5. **If time remains:** the `spinv` cross-check at more points, finite-size scaling, the eigensolver-free projector, local-marker maps, and λ_R > 0.
-6. **Last:** the pitch (headline number, simple explanation, validation plot) and the write-up, with negative results explained.
+Each step has a **done when** check. Do not move on until it passes. Steps 1-2 are the go/no-go.
+
+### Step 0. Setup (all three)
+
+- Confirm the hackathon GPU, its memory, and FP64 rate. Set up a shared repo and a common environment (torch, numpy, PythTB from this fork).
+- Agree roles: **A** model and validation, **B** GPU pipeline, **C** benchmarks, analysis and pitch.
+- Done when: everyone can run a `torch.linalg.eigh` on the GPU and import PythTB.
+
+### Step 1. Model and parameter check (A)
+
+- Write `anderson_kane_mele(L, W, delta, soc=0.3, rashba=0, seed)` using `kane_mele`, `make_supercell`, and `set_onsite(..., mode="add")` with ε ~ U[-1, 1] x W.
+- Check the clean gap closes at δ = 3√3·λ_SO ≈ 1.56t (unit cell, W = 0). Check the hopping and SOC conventions against the paper.
+- Done when: the gap closes at about 1.56t and the model builds for L = 4-8.
+
+### Step 2. CPU reference and go/no-go (A)
+
+- Run PythTB's `berry_phase` (Wilson loop) on a disordered supercell, using a small twist mesh per spin block, and turn the Wannier-centre winding into a spin Chern number.
+- Test at δ = 1.45t, 1.65t, W = 0 and W ≈ t. Check mesh convergence, gap at E_F = 0, and noise at L = 8-16.
+- Time one realization at each L (this fills in the compute-budget table).
+- Done when: the invariant is correct in the clean limit and shows a trivial-to-topological change near W ≈ t at δ = 1.65t, or we have decided on the fallback (lead with the tool).
+
+### Step 3. External reference (A)
+
+- Clone `spinv`, run its Kane-Mele Anderson example, and check it works with this PythTB fork. Remember w = 2W.
+- Done when: `spinv` and our CPU invariant agree on a few small cases.
+
+### Step 4. GPU pipeline v1 (B, with A)
+
+- Build H₀(k) once and add the disorder diagonal on the GPU. Spin split. Batched `eigh` over (realization x k).
+- Batched overlaps, Newton-Schulz polar factor, pairwise product tree, winding, and invariant. Add the ‖X†X - I‖ guard with SVD fallback.
+- Done when: eigenvalues, Wannier centres and invariants match the CPU reference on 20+ single realizations, in FP64.
+
+### Step 5. Precision and robustness (B)
+
+- Add FP32. Measure the fraction of realizations whose classification differs from FP64, by W, especially near the transition.
+- Count realizations with a closed gap or failed Newton-Schulz.
+- Done when: we know where FP32 is safe, and the failure rates are reported.
+
+### Step 6. Benchmarks (C)
+
+- Implement the baselines: PythTB as-is, `use_tensorflow`, vectorised numpy, multiprocessing.
+- Measure time per realization versus L, realizations per hour, the time breakdown, and the maximum batch size. Use equal-accuracy settings.
+- Done when: there is one table with the speed-up against each baseline, and a plain explanation of the biggest speed-up.
+
+### Step 7. Production run (B and C)
+
+- Pick L (for example 8, 12, 16, 24) and realization counts from the budget table. Grid over W for δ = 1.45t, 1.65t, 1.85t, with 400-1000 realizations per point. Save raw results to disk as the run goes.
+- Run the same grid on the best CPU baseline for the "time to result" metric (or extrapolate from a subset, labelled as such).
+- Done when: raw invariant data exist for every grid point.
+
+### Step 8. Analysis (A and C)
+
+- Plot fraction topological versus W per L. Estimate Wc from the crossing, then fit the collapse (Wc, ν) with bootstrap errors.
+- Compare Wc at δ = 1.65t with the paper's W ≈ t, and Wc(δ) against Fig. 5 and the Born approximation (read the figure from the PDF).
+- Done when: one figure each for invariant versus W, the collapse, and Wc(δ) against the paper. Mismatches are explained.
+
+### Step 9. Extras, only if time remains (follows the cut list)
+
+- More `spinv` cross-checks, local Chern marker at the centre, sign-function projector backend, λ_R > 0.
+
+### Step 10. Pitch and write-up (C, with all)
+
+- Headline speed-up with the stronger baselines beside it, the simple explanation, and the validation plot.
+- A short list of assumptions and limitations (different observable from the paper, finite L, few twists, FP32 caveats).
+- Reproducible script that regenerates the figures from the saved data.
+- Done when: a 3-minute pitch can be given from the figures alone.
+
+### Time guide
+
+Roughly: steps 0-3 take the first 20-25%, steps 4-5 the next 25%, step 6 about 10-15%, steps 7-8 about 25%, and step 10 the last 10-15%. Start the pitch outline during step 6, not at the end.
 
 ## Cut list if time runs short
 
