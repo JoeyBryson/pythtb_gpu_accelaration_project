@@ -53,6 +53,13 @@ PRESETS = {
         ["analysis/sweep.py", "--size", "16", "--deltas", "1.65", "--samples", "100",
          "--W-max", "5", "--W-step", "0.25", "--out", "/kaggle/working/out/fss_16x16.csv"],
     ],
+    # "dense": 1,000 samples per point (20x Favata & Marrazzo's Fig. 7, which used 50) around the
+    # switch-on, 16x16, lambda_nu = 1.65, W = 1.0..3.0 step 0.25 (~45 min). Tight error bars.
+    "dense": [
+        ["analysis/sweep.py", "--size", "16", "--deltas", "1.65", "--samples", "1000",
+         "--W-min", "1.0", "--W-max", "3.0", "--W-step", "0.25",
+         "--out", "/kaggle/working/out/dense_16x16.csv"],
+    ],
     # "cost": what a full sweep costs, measured per sample on this machine and extrapolated:
     # PythTB as-is (all cores) vs C_up on all cores vs C_up on the GPU, at 8/12/16 (~10-15 min).
     "cost": [
