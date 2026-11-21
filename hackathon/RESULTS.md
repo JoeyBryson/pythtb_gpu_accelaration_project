@@ -16,14 +16,14 @@ T4 note: double precision is ~15× slower than single on this GPU (measured belo
 
 ## Headline so far
 
-> **Full pipeline (diagonalise → Wilson loop → Z2), 40 disorder configurations of a 12×12
-> supercell, same Kaggle machine (R9): PythTB on all 4 CPU cores 280 s, ours on one T4 in
-> single precision 19.5 s: 14.3× faster**, with Z2 identical to PythTB for all 40
-> configurations. 7.4× at 8×8, 11.8× at 16×16 (16 configs).
-> Baseline timed fairly (no diagnostics, Filip's fix). Earlier headlines (R7: 8.9×) used an
-> inflated baseline and the slow Wilson loop; superseded.
-> Not yet included: the second T4, the spin-block split (λ_R = 0), and a fix for the 16×16
-> eigenvalue fallbacks (see R9). Double precision on the T4 gives only 1.6–2.9× (R8).
+> **Full pipeline (diagonalise → Wilson loop → Z2) of a 16×16 supercell, Rashba = 0, same
+> Kaggle machine (R10): PythTB on all 4 CPU cores 575 s, ours on one T4 in single precision
+> 31 s: 18.3× faster** (16 configs); **15.9× at 12×12** (40 configs). Z2 identical to PythTB for
+> every configuration. Wannier centres accurate to ~1e-8 vs exact (eigenvalue step in double).
+> Speed-up grows with size: 4.4× at 8×8, 15.9× at 12×12, 18.3× at 16×16.
+> Baseline timed fairly (no diagnostics, Filip's fix). Superseded: R7 (8.9×, inflated baseline),
+> R9 (14.3× at 12×12, Rashba 0.25, eigenvalues ~1e-3 off at 16×16).
+> Not yet included: the second T4. On a T4, double precision overall gives only 1.6–2.9× (R8).
 
 ---
 
@@ -250,6 +250,42 @@ Findings:
   the GPU in double precision with a different mixing value before any CPU fallback.
 - Diagonalisation is now 70–85% of GPU time: the spin-block split (λ_R = 0) targets it.
 
+## R10. Rashba = 0, spin-block split, accurate eigenvalues (KAG)
+
+What: full pipeline, GPU single precision vs PythTB on all 4 cores, same machine, same seeds,
+W = 2, **Rashba = 0 on both sides** (team choice; other parameters tutorial), PythTB timed
+without diagnostics. Ours with the spin-block split (two half-size problems) and the eigenvalue
+step in double precision with a per-eigenvector check (c610abe, 2ef37ae).
+Command: `kaggle/run.py` preset "speed" at 2ef37ae (`gpu_pipeline.py --devices cuda --precisions
+single --skip-serial --no-reliability --rashba 0 --spin-blocks`) · Kaggle run 21 Nov 20:34–20:52
+(version 13) · files `results/kaggle/20261121-205243/out/*.csv` + log
+
+| Supercell (mesh) | Configs | PythTB 4 cores | **Ours T4 single** | **Speed-up** | Z2 agrees |
+|---|---|---|---|---|---|
+| 8×8 (6×6) | 40 | 32.8 s | 7.4 s | 4.4× | 40/40 |
+| 12×12 (6×6) | 40 | 267.3 s | 16.8 s | **15.9×** | 40/40 |
+| 16×16 (6×6) | 16 | 574.6 s | 31.3 s | **18.3×** | 16/16 |
+
+No Newton-Schulz fallbacks; eigenvalue retries 0/480, 5/480, 6/192, none needing the CPU.
+One test failed on KAG (`test_spin_blocks`: `.numpy()` on a GPU tensor, a test bug, fixed in
+315bff3); the engine's results are unaffected.
+
+Where the GPU time goes:
+
+| | Solve | Wilson total | of which eigenvalues (double) |
+|---|---|---|---|
+| 8×8 | 5.34 s (R9: 3.97) | 2.05 s | 2.02 |
+| 12×12 | 12.24 s (R9: 15.73) | 4.55 s | 4.33 |
+| 16×16 | 27.33 s (R9: 36.26) | 3.98 s | 3.66 (R9: 13.81) |
+
+Findings:
+- **Spin-block split on the GPU helps only for big supercells:** solve 1.3× faster at 12×12 and
+  16×16, but 1.3× *slower* at 8×8 (128×128 blocks are too small for the GPU's batched `eigh`).
+  On MAC's CPU it was 2.6× faster even at 8×8. The sweep uses it from 12×12 up.
+- **Accurate eigenvalues cost T4 time at small sizes** (2 s at 8×8, where the old method took 0.6 s),
+  because T4 double precision is slow; at 16×16 it's 3.7× *faster* than R9's step, which had CPU
+  fallbacks. Worth re-checking on an A100/H100 (fast double).
+
 ---
 
 ## Still to measure
@@ -260,7 +296,7 @@ Findings:
 - [x] Single precision: Z2 agrees config by config (R7: 40/40 at 8×8 and 12×12)
 - [x] Re-run R7 with the Newton-Schulz speed-up (R8)
 - [x] R9: final speed run with the timing fix **and** the Hermitian eigenvalue step (headline updated)
-- [ ] Eigenvalue fallbacks at 16×16 (retry on GPU in double before CPU)
-- [ ] Spin-block split for λ_R = 0
+- [x] Eigenvalue accuracy/fallbacks (R10: double step, per-eigenvector check)
+- [x] Spin-block split for λ_R = 0 (R10: helps from 12×12)
 - [ ] Use both T4s
 - [ ] Full phase-diagram sweep: CPU time vs GPU time (the headline for the pitch)
