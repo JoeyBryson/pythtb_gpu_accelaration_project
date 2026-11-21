@@ -76,6 +76,51 @@ cores and the workers share memory bandwidth (not yet checked).
 12×12 on 4×4 gave 0). Now caught by `topology.z2_margin` and flagged as unreliable; mesh
 minimum raised to 6. See `topology.py`.
 
+## Competitors: what their code actually does
+
+**PythTB 2.0** (read in `pythtb/wfarray.py`, 21 Nov): diagonalisation is batched over all
+k-points (one `eigh` on the stack). The Wilson loop is not: `berry_phase` loops in Python
+over every line (`for idx in it: ... self._berry_loop(wf_line)`). No disorder ensembles.
+
+**BerryEasy 0.2.1** (Tyner 2024, arXiv:2312.13051; read `src/BerryEasy/BerryEasyGPU.py`
+from the PyPI sdist, sha256 `579077cf…4add`, 21 Nov):
+- One k-point at a time: `HamBlk` builds H(k) on the CPU with PyBinding
+  (`solver.set_wave_vector([kx,ky,kz])`), copies it to the GPU (`cp.array(... .todense())`),
+  and calls `cp.linalg.eigh(H)` on that single matrix (lines 25–38).
+- Wilson loop as a Python loop of matrix products (`for i in kpts: ft=cp.dot(ft,proj(...))`,
+  lines 72–73), one line at a time (`for kk1 in range(ds2+1)`, line 60).
+- Uses **projectors in the full orbital space** (N×N, N = all orbitals), each built by a
+  Python loop of outer products over bands (`for i in bnds: ft=ft+cp.outer(...)`, lines 43–44),
+  instead of overlap matrices in the occupied-band space (n_occ × n_occ, half the size here).
+  No SVD.
+- The start point of each line is diagonalised twice (lines 67 and 70); final `eigvals`
+  runs on the CPU (`np.linalg.eigvals(cp.asnumpy(...))`, line 75).
+- No disorder loop in the package: left to the user.
+
+So "BerryEasy issues its GPU work call by call" is now verified from source, not inferred.
+It is also more general than us (any PyBinding/Kwant model, nested and spin-resolved
+Wilson loops), which is worth saying fairly.
+
+**spinv** (Favata & Marrazzo 2023; read github.com/roberta-favata/spinv at commit
+`3a530f9`, May 2023, 21 Nov):
+- **One diagonalisation per configuration**, at Γ only (`model.solve_one([0.,0.])`,
+  `_pythtb/singlepoint_invariant.py` line 59). Then one small `eigh` of P·Sz·P (n_occ × n_occ,
+  line 66) and four small matrix inverses (`common_func.dual_state_spin`). Spin Chern number
+  C_s; Z2 = C_s mod 2. Not an integer at finite size: converges as the supercell grows
+  (paper uses L = 15 to 42).
+- CPU NumPy only, one configuration at a time, no GPU. Disorder is a user loop.
+- **Written for PythTB 1.x** (`pythtb.tb_model`, `get_num_orbitals`, `solve_one`) and always
+  imports `tbmodels` too, so it won't run against our PythTB 2.0. Needs its own environment.
+- Disorder convention `0.5*w*(2*np.random.random()-1.0)` = uniform [−w/2, w/2]: **same as ours**.
+  Uses the global `np.random` state (seed with `np.random.seed`).
+- Kane-Mele parameters are given in units of λ_SO (`esite = esite*spin_orb`), and orbitals sit
+  at [0,0], [1/3,1/3] (ours: [1/3,1/3], [2/3,2/3]). Same physics, different bookkeeping.
+- Cost per configuration at L×L: one `eigh` of size 4L². Our pipeline: nk² of them plus Wilson
+  loops. At 8×8 with a 6×6 mesh that's 1 vs 36 diagonalisations of 256×256, so **spinv does
+  far less work per configuration** at the same size. Its catch: it needs big supercells to be
+  accurate, where one diagonalisation is large (L = 42 means 7056×7056).
+- **It would batch well too**: many configurations' Γ-point matrices in one GPU `eigh`.
+
 ## Open questions (to confirm)
 
 - **k-mesh rule** (`common.scaled_nk`): nk ≈ 48/n, even, minimum 4. Is Z2 stable at these meshes,
