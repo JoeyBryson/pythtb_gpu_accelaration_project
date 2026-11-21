@@ -36,7 +36,8 @@ COPYFILE_DISABLE=1 tar -C "$ROOT" --exclude='.venv' --exclude='__pycache__' --ex
     -czf "$STAGE/dataset/code.tar.gz" pyproject.toml README.md LICENSE pythtb hackathon
 # metadata files carry the account name in their ids: rewrite them for this user
 sed "s#oscarklemenz/#$USER_NAME/#" "$HERE/kaggle/dataset-metadata.json" > "$STAGE/dataset/dataset-metadata.json"
-sed -e "s#oscarklemenz/pythtb-gpu-run#$KERNEL#" -e "s#\"pythtb-gpu-run\"#\"$SLUG\"#" \
+sed -e "s#oscarklemenz/pythtb-gpu-hackathon-code#$DATASET#" \
+    -e "s#oscarklemenz/pythtb-gpu-run#$KERNEL#" -e "s#\"pythtb-gpu-run\"#\"$SLUG\"#" \
     "$HERE/kaggle/kernel-metadata.json" > "$STAGE/kernel/kernel-metadata.json"
 sed "s#^PRESET = \"speed\"#PRESET = \"$PRESET\"#" "$HERE/kaggle/run.py" > "$STAGE/kernel/run.py"
 grep -q "^PRESET = \"$PRESET\"" "$STAGE/kernel/run.py" || { echo "unknown preset handling"; exit 1; }
