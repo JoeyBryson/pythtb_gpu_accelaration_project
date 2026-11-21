@@ -282,10 +282,14 @@ def figure(d: dict, L: int, out: Path, gpu_speedup: float | None = None, seed: i
                 ax.plot([n], [pm], "o", color=colr, ms=6)
                 ax.annotate(f"{pm:.0%}", (n, pm), xytext=(6, 4), textcoords="offset points",
                             fontsize=10, color=colr)
+    if not rare:
+        _note(ax, "no W in this sweep where 0–10% of samples\nare topological past the peak",
+              loc=(0.03, 0.5))
     ax.set(xscale="log", ylim=(-0.03, 1.03), xlabel="samples per W (N)",
            ylabel="chance the experiment sees\nNO topological sample at all",
            title="e  Strong disorder: rare topological samples get missed")
-    ax.legend(loc="upper right", fontsize=9.5)
+    if rare:
+        ax.legend(loc="upper right", fontsize=9.5)
     ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
 
     # --- f: one distribution, few vs many samples ------------------------------------------

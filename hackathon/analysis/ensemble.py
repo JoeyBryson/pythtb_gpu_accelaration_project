@@ -116,6 +116,7 @@ class SweepConfig:
     seeds: str = "shared"  # "shared" or "independent"
     seed0: int = 0
     keep_flows: int = 0  # keep the Wannier flow of the first `keep_flows` samples per W
+    spin_blocks: bool = False  # solve spin up/down separately (rashba = 0 only; ~4x cheaper)
 
 
 def seeds_for(cfg: SweepConfig, iW: int) -> list[int]:
@@ -142,7 +143,8 @@ def run_sweep(cfg: SweepConfig, backend: Backend, progress: bool = True):
                 t0 = time.perf_counter()
                 res = run_batch(
                     n, W, nk, seeds, backend, check=True,
-                    keep_flows=cfg.keep_flows > 0, shift_fn=shift_fn, **params,
+                    keep_flows=cfg.keep_flows > 0, shift_fn=shift_fn,
+                    spin_blocks=cfg.spin_blocks, **params,
                 )
                 wall = time.perf_counter() - t0
                 stats = disorder_statistics(shift_fn(norb, W, seeds)[:, 0::2], sub)
