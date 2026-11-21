@@ -371,6 +371,30 @@ Command: `PRESET=fss bash kaggle/gpu_run.sh` · Kaggle run 21 Nov 21:58–22:19 
 - GPU time: 12×12, 4,200 samples in 9.6 min (0.14 s/sample); 16×16, 2,100 samples in 10.2 min
   (0.29 s/sample). By R12's rates the same work with PythTB on 4 CPU cores would take ~8 h + ~22 h.
 
+## R14. Critical disorder for the switch-on, from three sizes (analysis, MAC)
+
+What: logistic fit (binomial regression on the counts) of fraction topological vs W for
+λ_ν = 1.65, W in [1, 3], per supercell size, using R11 (8×8) and R13 (12×12, 16×16) data.
+Midpoint = where a size's curve passes 50%; width = how sharp its switch is; crossing = where
+two sizes' fitted curves meet (finite-size estimate of the critical W). Errors: parametric
+bootstrap, 2,000 resamples of every count. Command: `uv run python analysis/crossing.py` ·
+21 Nov ~22:50 · file `results/sweep/crossing_estimate.csv`
+
+| Size | Midpoint | Width |
+|---|---|---|
+| 8×8 | 2.003 ± 0.037 | 0.276 ± 0.022 |
+| 12×12 | 1.969 ± 0.030 | 0.189 ± 0.017 |
+| 16×16 | 1.945 ± 0.019 | 0.133 ± 0.010 |
+
+Crossings: 8/16 **1.892 ± 0.052**, 8/12 1.895 ± 0.143, 12/16 1.889 ± 0.128.
+
+- **The switch sharpens with size:** width halves from 8×8 to 16×16 (width × L ≈ 2.2 for all three).
+- **All pairs cross at W ≈ 1.89**; midpoints drift towards it (2.00 → 1.97 → 1.95).
+- Estimate: **W_c ≈ 1.89 ± 0.05** (our convention: energies in [−W/2, W/2]).
+- Caveats: logistic is a convenient shape, not a theory; three sizes only; crossings may drift
+  with size. Width ∝ 1/L is suggestive of a scaling exponent: **to check with the physics team**
+  before claiming. Will be refined with the 1,000-sample 16×16 run (preset "dense").
+
 ---
 
 ## Still to measure
@@ -387,4 +411,5 @@ Command: `PRESET=fss bash kaggle/gpu_run.sh` · Kaggle run 21 Nov 21:58–22:19 
 - [x] First sweep, 8×8 pilot (R11): disorder switches topology on at λ_ν = 1.65
 - [x] 12×12 and 16×16 sweeps (R13): the switch sharpens with size, crossing near W ≈ 1.9–2.0
 - [x] CPU time estimate for whole sweeps (R12)
-- [ ] Proper crossing / data-collapse estimate of the critical W (finite-size scaling analysis)
+- [x] Crossing estimate of the critical W (R14: 1.89 ± 0.05)
+- [ ] Refine with the 1,000-sample 16×16 run; data collapse / exponent (physics team)
