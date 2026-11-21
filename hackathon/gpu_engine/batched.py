@@ -88,10 +88,13 @@ def configs_per_chunk(nk: int, N: int, backend: Backend, budget_gb: float = 4.0)
 
 def solve_configs(
     model: TBModel, nk: int, W: float, seeds: list[int], backend: Backend,
-    chunk: int | None = None,
+    chunk: int | None = None, shift_fn=None,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Whole step 1 for C configurations of one clean model, `chunk` configurations per batch
     (default: as many as fit in memory, see configs_per_chunk).
+
+    shift_fn(norb, W, seeds) -> (C, 2*norb) on-site shifts; default `disorder_shifts`.
+    Lets analysis code try other disorder ensembles (e.g. analysis/ensemble.pinned_shifts).
 
     Returns energies (C, nk, nk, N) and occupied states (C, nk, nk, n_occ, N) on the device.
     """
@@ -99,12 +102,13 @@ def solve_configs(
     H0 = torch.as_tensor(clean_hamiltonians(model, nk), dtype=backend.cdtype, device=backend.device)
     N = H0.shape[-1]
     chunk = chunk or configs_per_chunk(nk, N, backend)
+    shift_fn = shift_fn or disorder_shifts
 
     all_e, all_u = [], []
     for start in range(0, len(seeds), chunk):  # usually just one or a few big batches
         part = seeds[start : start + chunk]
         d = torch.as_tensor(
-            disorder_shifts(model.norb, W, part), dtype=backend.rdtype, device=backend.device
+            shift_fn(model.norb, W, part), dtype=backend.rdtype, device=backend.device
         )
         e, u = solve(batched_hamiltonians(H0, d), n_occ)
         all_e.append(e)
