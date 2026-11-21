@@ -37,6 +37,11 @@ today). Always say which.
 
 - Compare against PythTB 2.0's own vectorised code, not a hand-written slow loop.
 - Warm up before timing (the first call pays import and allocation costs).
+- **Never time the reliability diagnostics.** `run_config(check=True)` (the default) adds an SVD
+  over every link, ~15–20% of the pipeline. Timed runs use `check=False`; the `z2_reliable` flags
+  come from one untimed pass (`cpu_baseline.reliability_pass`, shared by serial and parallel;
+  skip it with `--no-reliability`). Fixed 21 Nov ~19:30: earlier serial/parallel wall times
+  (R3, R7's 4-core column) include the diagnostics.
 - Clean/scaled: best of 3 runs (least affected by background noise); median also saved.
 - GPU timings must call `torch.cuda.synchronize()` before stopping the clock (use `gpu_engine.timed`).
 - Include host↔device copies in end-to-end GPU numbers.

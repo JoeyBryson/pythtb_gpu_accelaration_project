@@ -8,6 +8,11 @@ for what each scenario means and why it is there.
   serial    many disorder configs in a plain Python loop      (the naive baseline)
   parallel  many disorder configs spread over all CPU cores   (the strongest CPU baseline)
 
+Timing rule: the reliability diagnostics (run_config(check=True): an SVD over every link,
+~15-20% of the pipeline's cost) never run inside a timed region. Timed runs use check=False;
+the z2_reliable flags come from one separate, untimed pass (see reliability_pass), shared by
+serial and parallel runs of the same configurations. --no-reliability skips that pass.
+
 Examples (from the hackathon/ folder):
   uv run python benchmarks/cpu_baseline.py clean --sizes 2 4 6 8
   uv run python benchmarks/cpu_baseline.py scaled --sizes 4 8 12 16
@@ -49,16 +54,28 @@ def config_seeds(base_seed: int, configs: int) -> list[int]:
     return [int(s.generate_state(1)[0]) for s in np.random.SeedSequence(base_seed).spawn(configs)]
 
 
-def summarise(results: list[ConfigResult]) -> dict[str, float]:
-    """Total seconds per pipeline stage, plus the physics answers."""
-    trusted = [r.z2 for r in results if r.z2_reliable]  # only count answers we can trust
+def summarise(
+    results: list[ConfigResult], checked: list[ConfigResult] | None
+) -> dict[str, float]:
+    """Total seconds per pipeline stage (from the timed runs), plus the physics answers.
+
+    checked: the same configurations from the untimed reliability pass (or None if skipped),
+    which supplies z2_reliable. Its Z2 must equal the timed runs' Z2, config by config.
+    """
+    if checked is None:
+        trusted, n_unreliable = [], float("nan")
+    else:
+        if [r.z2 for r in results] != [c.z2 for c in checked]:
+            raise RuntimeError("timed and reliability passes gave different Z2: not deterministic?")
+        trusted = [c.z2 for c in checked if c.z2_reliable]  # only count answers we can trust
+        n_unreliable = len(results) - len(trusted)
     return {
         "t_build": sum(r.t_build for r in results),
         "t_solve": sum(r.t_solve for r in results),
         "t_wilson": sum(r.t_wilson for r in results),
         "t_z2": sum(r.t_z2 for r in results),
         "frac_topological": sum(trusted) / len(trusted) if trusted else float("nan"),
-        "n_unreliable": len(results) - len(trusted),
+        "n_unreliable": n_unreliable,
     }
 
 
@@ -99,18 +116,25 @@ def bench_clean_sizes(scenario: str, sizes: list[int], nk_for, repeats: int) -> 
 # ---------------------------------------------------------------- scenario: serial
 
 
-def bench_serial(n: int, nk: int, W: float, configs: int, seed: int) -> list[ConfigResult]:
-    """The naive baseline: one configuration after another in a Python loop."""
+def bench_serial(
+    n: int, nk: int, W: float, configs: int, seed: int,
+    workers: int | None = None, reliability: bool = True,
+) -> list[ConfigResult]:
+    """The naive baseline: one configuration after another in a Python loop.
+
+    Timed with check=False; `workers` processes run the untimed reliability pass.
+    """
     seeds = config_seeds(seed, configs)
     log(f"PythTB serial: {configs} configs of {n}x{n}, mesh {nk}x{nk}, W={W}")
     progress = Progress(f"PythTB serial {n}x{n}", configs)
     t0 = time.perf_counter()
     results = []
     for s in seeds:
-        results.append(run_config(n, W, nk, seed=s))
+        results.append(run_config(n, W, nk, seed=s, check=False))
         progress.step()
     wall = time.perf_counter() - t0
-    report("serial", n, nk, W, configs, wall, results, workers=1)
+    checked = reliability_pass(n, nk, W, seeds, workers or os.cpu_count()) if reliability else None
+    report("serial", n, nk, W, configs, wall, results, checked, workers=1)
     return results
 
 
@@ -125,28 +149,61 @@ def _one_blas_thread() -> None:
 
 
 def _run_config_task(args: tuple) -> ConfigResult:
+    """Timed worker task: the pipeline only, no reliability diagnostics."""
     n, W, nk, s = args
-    return run_config(n, W, nk, seed=s)
+    return run_config(n, W, nk, seed=s, check=False)
+
+
+def _run_config_checked_task(args: tuple) -> ConfigResult:
+    """Untimed worker task: the pipeline plus the reliability diagnostics."""
+    n, W, nk, s = args
+    return run_config(n, W, nk, seed=s, check=True)
+
+
+def _worker_pool(workers: int) -> ProcessPoolExecutor:
+    """One process per core, 1 BLAS thread each, same behaviour on macOS and Linux."""
+    # Apple Accelerate only reads its thread count when a process starts, so set it in
+    # the environment before the worker processes are created.
+    for var in ("VECLIB_MAXIMUM_THREADS", "OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+        os.environ[var] = "1"
+    return ProcessPoolExecutor(
+        workers, mp_context=mp.get_context("spawn"), initializer=_one_blas_thread
+    )
+
+
+_RELIABILITY_CACHE: dict[tuple, list[ConfigResult]] = {}
+
+
+def reliability_pass(
+    n: int, nk: int, W: float, seeds: list[int], workers: int
+) -> list[ConfigResult]:
+    """The z2_reliable flags for these configurations, from an UNTIMED pass with check=True.
+
+    Kept out of every timed region because the diagnostics cost ~15-20% of the pipeline
+    (21 Nov: 15% of serial wall time on KAG, ~20% on MBP). Runs on all cores and is cached,
+    so serial and parallel runs of the same configurations share one pass.
+    """
+    key = (n, nk, W, tuple(seeds))
+    if key not in _RELIABILITY_CACHE:
+        log(f"reliability pass (untimed): {len(seeds)} configs of {n}x{n} on {workers} processes")
+        with _worker_pool(workers) as pool:
+            tasks = [(n, W, nk, s) for s in seeds]
+            _RELIABILITY_CACHE[key] = list(pool.map(_run_config_checked_task, tasks))
+    return _RELIABILITY_CACHE[key]
 
 
 def bench_parallel(
-    n: int, nk: int, W: float, configs: int, seed: int, workers: int
+    n: int, nk: int, W: float, configs: int, seed: int, workers: int, reliability: bool = True,
 ) -> list[ConfigResult]:
     """The strongest simple CPU baseline: configurations are independent, so give each
     CPU core its own configuration (one process per core, 1 BLAS thread each).
 
     This is the comparison a sceptical judge would ask for, so we report it alongside
-    the serial loop.
+    the serial loop. Timed with check=False (see reliability_pass).
     """
-    # Apple Accelerate only reads its thread count when a process starts, so set it in
-    # the environment before the worker processes are created.
-    for var in ("VECLIB_MAXIMUM_THREADS", "OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
-        os.environ[var] = "1"
-
     seeds = config_seeds(seed, configs)
     tasks = [(n, W, nk, s) for s in seeds]
-    ctx = mp.get_context("spawn")  # same behaviour on macOS and Linux
-    with ProcessPoolExecutor(workers, mp_context=ctx, initializer=_one_blas_thread) as pool:
+    with _worker_pool(workers) as pool:
         # warm up every worker (imports, first allocation) before starting the clock
         list(pool.map(_run_config_task, [(1, 0.0, 4, 0)] * workers))
         log(f"PythTB parallel: {configs} configs of {n}x{n} on {workers} processes")
@@ -157,7 +214,8 @@ def bench_parallel(
             results.append(r)
             progress.step()
         wall = time.perf_counter() - t0
-    report("parallel", n, nk, W, configs, wall, results, workers=workers)
+    checked = reliability_pass(n, nk, W, seeds, workers) if reliability else None
+    report("parallel", n, nk, W, configs, wall, results, checked, workers=workers)
     return results
 
 
@@ -166,9 +224,9 @@ def bench_parallel(
 
 def report(
     scenario: str, n: int, nk: int, W: float, configs: int, wall: float,
-    results: list[ConfigResult], workers: int,
+    results: list[ConfigResult], checked: list[ConfigResult] | None, workers: int,
 ) -> None:
-    s = summarise(results)
+    s = summarise(results, checked)
     print(
         f"{n}x{n} supercell (H {matrix_dim(n)}x{matrix_dim(n)}), mesh {nk}x{nk}, "
         f"{configs} configs at W={W}, {workers} worker(s)\n"
@@ -176,8 +234,12 @@ def report(
         f"({wall / configs:.3f} s per config)\n"
         f"  stage time  build {s['t_build']:.2f}  solve {s['t_solve']:.2f}  "
         f"wilson {s['t_wilson']:.2f}  z2 {s['t_z2']:.3f}  (summed over configs)\n"
-        f"  physics     fraction topological = {s['frac_topological']:.2f}  "
-        f"({s['n_unreliable']} of {configs} Z2 answers flagged unreliable and left out)"
+        + (
+            f"  physics     fraction topological = {s['frac_topological']:.2f}  "
+            f"({s['n_unreliable']} of {configs} Z2 answers flagged unreliable and left out)"
+            if checked is not None
+            else "  physics     reliability pass skipped (--no-reliability)"
+        )
     )
     row = {
         "supercell": n, "matrix_dim": matrix_dim(n), "nk": nk, "W": W, "configs": configs,
@@ -212,6 +274,8 @@ def main() -> None:
         d.add_argument("--configs", type=int, default=20)
         d.add_argument("--seed", type=int, default=0)
         d.add_argument("--workers", type=int, default=os.cpu_count())
+        d.add_argument("--no-reliability", action="store_true",
+                       help="skip the untimed reliability pass (no z2_reliable flags)")
 
     args = p.parse_args()
     warm_up()
@@ -229,10 +293,14 @@ def main() -> None:
         common_args = (args.size, nk, args.W, args.configs, args.seed)
         if args.scenario in ("serial", "both"):
             print_header("serial", "disorder configs in a Python loop")
-            serial = bench_serial(*common_args)
+            serial = bench_serial(
+                *common_args, workers=args.workers, reliability=not args.no_reliability
+            )
         if args.scenario in ("parallel", "both"):
             print_header("parallel", f"disorder configs over {args.workers} processes")
-            parallel = bench_parallel(*common_args, workers=args.workers)
+            parallel = bench_parallel(
+                *common_args, workers=args.workers, reliability=not args.no_reliability
+            )
         if args.scenario == "both":
             same = [r.z2 for r in serial] == [r.z2 for r in parallel]
             print(f"serial and parallel give identical Z2 for every config: {same}")
