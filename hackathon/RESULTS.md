@@ -22,6 +22,11 @@ T4 note: double precision is ~15× slower than single on this GPU (measured belo
 > PythTB for all 40 configurations. Speed-up grows with size (3.8× at 8×8).
 > Not yet included: the faster Wilson loop (early-stopping Newton-Schulz, CPU eigenvalues),
 > the second T4, or the spin-block split. Double precision on the T4 gives only 2.1×.
+>
+> ⚠ **Baseline correction pending:** the 321 s all-cores time included PythTB's untimed
+> reliability diagnostics (~15% of wall time on KAG, see "Timing fix" under R7). Estimated
+> corrected baseline ~274 s, i.e. **~7.6×** rather than 8.9× (~3.3× rather than 3.8× at 8×8).
+> Re-run R7's PythTB parallel baseline with the fixed `cpu_baseline.py` before quoting.
 
 ---
 
@@ -64,6 +69,9 @@ Command: `uv run python benchmarks/cpu_baseline.py both --size {6,8} --configs 4
 | 8×8 | 6×6 | 30.1 s (0.75 s/config) | 7.1 s (0.18 s/config) | 4.2× | 1.00 (0 unreliable) |
 
 Serial and parallel gave identical Z2 for every configuration.
+
+⚠ Wall times here include the reliability diagnostics (`run_config(check=True)`): 15% of wall time measured on KAG, ~20% on MBP;
+machines; fixed 21 Nov ~19:30, see "Timing fix" under R7. The per-stage sums are unaffected.
 
 ## R4. Step 1 (batched diagonalisation): ours vs PythTB, 20 disorder configs
 
@@ -159,6 +167,18 @@ for **40/40 configurations in every column**; no Newton-Schulz fallbacks; none u
 GPU single, stage split: 8×8 solve 4.0 s / Wilson 5.8 s; 12×12 solve 15.8 s / Wilson 20.3 s.
 The Wilson loop taking longer than the diagonalisation is the bottleneck the later fix targets.
 
+**Timing fix (21 Nov ~19:30).** In this run the **PythTB 4-core times are too slow**: `bench_parallel`
+timed `run_config` with its default `check=True`, so its wall clock included the reliability
+diagnostics (an SVD over every link). The 1-core column was already right: it is the sum of
+per-config pipeline times, which exclude the diagnostics. Size of the effect, from this run's own
+`cpu_serial.csv` (wall clock vs sum of stage times, same configs): 99.2 vs 84.1 s at 8×8 and
+545.9 vs 465.8 s at 12×12, i.e. **15% of wall time**. Assuming the same share in the parallel run
+(not measured), the 4-core baseline is ~31.9 s (8×8) and ~274 s (12×12), and GPU single becomes
+**~3.3× and ~7.6×** (not 3.8× and 8.9×). `cpu_baseline.py` now times with `check=False` and takes
+the flags from one separate untimed pass (`reliability_pass`); `gpu_pipeline.py` uses it. On MBP
+the fix cut serial wall time 9.29 → 7.81 s and parallel 1.48 → 1.32 s (6×6, 20 configs), with
+identical Z2 and flags. **Re-run this table's PythTB columns before quoting it.**
+
 Notes: Kaggle's 4 cores only give 1.4–2.2× over 1 core (memory bandwidth? not checked).
 Kaggle's CPU is ~2–4× slower than MAC for PythTB (e.g. 8×8 serial 84 s vs 30 s): never mix the
 two machines' numbers in one comparison.
@@ -172,5 +192,6 @@ two machines' numbers in one comparison.
 - [x] Full pipeline end to end, GPU vs best CPU (R7)
 - [x] Single precision: Z2 agrees config by config (R7: 40/40 at 8×8 and 12×12)
 - [ ] Re-run R7 with the Wilson-loop speed-ups (GPU only + PythTB all-cores)
+- [ ] Re-run R7's PythTB all-cores baseline with the timing fix (`check=False`); update the headline
 - [ ] Use both T4s
 - [ ] Full phase-diagram sweep: CPU time vs GPU time (the headline for the pitch)
