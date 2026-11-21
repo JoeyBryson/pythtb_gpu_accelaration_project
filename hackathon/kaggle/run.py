@@ -5,10 +5,12 @@ Everything in hackathon/results/*.csv at the end comes back to your laptop.
 """
 
 import glob
+import os
 import shutil
 import subprocess
 import sys
 import tarfile
+import time
 from pathlib import Path
 
 # Commands to run, from inside hackathon/. Edit freely.
@@ -23,10 +25,13 @@ OUT = WORK / "out"
 
 
 def run(cmd: list[str], cwd: Path | None = None) -> int:
-    print(f"\n$ {' '.join(cmd)}", flush=True)
+    start = time.time()
+    print(f"\n[{time.strftime('%H:%M:%S')}] $ {' '.join(cmd)}", flush=True)
+    # PYTHONUNBUFFERED: child prints appear in the Kaggle log live, not in one lump at the end
+    env = {**os.environ, "PYTHONUNBUFFERED": "1"}
     # check=False: a failing job is reported but doesn't stop the later jobs
-    code = subprocess.run(cmd, check=False, cwd=cwd, text=True).returncode
-    print(f"[exit {code}]", flush=True)
+    code = subprocess.run(cmd, check=False, cwd=cwd, text=True, env=env).returncode
+    print(f"[{time.strftime('%H:%M:%S')}] exit {code} after {time.time() - start:.0f}s", flush=True)
     return code
 
 

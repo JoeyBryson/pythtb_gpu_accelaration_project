@@ -21,7 +21,7 @@ STAGE=$(mktemp -d)
 
 echo "== packing code"
 mkdir -p "$STAGE/dataset" "$STAGE/kernel"
-tar -C "$ROOT" --exclude='.venv' --exclude='__pycache__' --exclude='*.egg-info' \
+COPYFILE_DISABLE=1 tar -C "$ROOT" --exclude='.venv'   # COPYFILE_DISABLE: no macOS ._ files --exclude='__pycache__' --exclude='*.egg-info' \
     --exclude='.pytest_cache' --exclude='.ruff_cache' --exclude='hackathon/joeys_og_folder' \
     --exclude='hackathon/results' \
     -czf "$STAGE/dataset/code.tar.gz" pyproject.toml README.md LICENSE pythtb hackathon

@@ -51,7 +51,7 @@ def half_bz_rows(nk: int) -> np.ndarray:
 
 def run_batch(
     supercell: int, W: float, nk: int, seeds: list[int], backend: Backend,
-    check: bool = True, **params,
+    check: bool = True, progress=None, **params,
 ) -> BatchResult:
     """Z2 for every configuration (one per seed), timing each stage on the device.
 
@@ -59,6 +59,8 @@ def run_batch(
     overlaps). Note: here along k_y only (incl. the boundary link), whereas the CPU
     reference uses interior links along both axes, so the numbers differ slightly.
     It is timed separately and not part of the pipeline's cost.
+
+    progress: optional callable(n_done) called after each chunk (for progress logging).
     """
     if nk % 2:
         raise ValueError("Z2 needs an even nk (k = pi on the mesh)")
@@ -94,6 +96,9 @@ def run_batch(
         t["wilson"] += t2 - t1
         t["z2"] += t3 - t2
         fallbacks += info["ns_fallbacks"]
+        for key, val in info.items():  # Wilson sub-steps: t_overlaps, t_unitary, ...
+            if key.startswith("t_"):
+                t[key] = t.get(key, 0.0) + val
 
         if check:  # untimed diagnostic: is the mesh fine enough?
             phase = torch.as_tensor(boundary_phase(model), dtype=u.dtype, device=u.device)
@@ -103,6 +108,8 @@ def run_batch(
         else:
             min_overlap += [np.nan] * len(part)
         del energies, u, wcc
+        if progress is not None:
+            progress(len(part))
 
     t["total"] = t["solve"] + t["wilson"] + t["z2"]
     return BatchResult(

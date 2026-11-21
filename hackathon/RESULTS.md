@@ -16,10 +16,12 @@ T4 note: double precision is ~15× slower than single on this GPU (measured belo
 
 ## Headline so far
 
-> **Diagonalisation step, 20 disorder configurations of a 12×12 supercell (KAG): PythTB 146 s,
-> ours on the T4 in single precision 6.8 s: 21× faster, eigenvalues matching PythTB to 2e-5.**
-> Of that 21×: batching on the same CPU gives 5.0×, moving to the GPU a further 4.3×.
-> Caveat: baseline is PythTB on one core; the all-cores baseline on KAG is still to run.
+> **Full pipeline (diagonalise → Wilson loop → Z2), 40 disorder configurations of a 12×12
+> supercell, same Kaggle machine (R7): PythTB on all 4 CPU cores 321 s, ours on one T4 in
+> single precision 36 s: 8.9× faster** (12.9× vs PythTB on one core), with Z2 identical to
+> PythTB for all 40 configurations. Speed-up grows with size (3.8× at 8×8).
+> Not yet included: the faster Wilson loop (early-stopping Newton-Schulz, CPU eigenvalues),
+> the second T4, or the spin-block split. Double precision on the T4 gives only 2.1×.
 
 ---
 
@@ -137,13 +139,38 @@ PythTB's SVD (4.9 s vs 3.9 s at 6×6). Expected: on a CPU the SVD is fast and Ne
 does extra matrix multiplications (12 fixed steps; could stop early). Our method is designed
 for the GPU; on the CPU, PythTB on all cores remains the better choice. Worth saying in the pitch.
 
+## R7. Full pipeline, CPU vs GPU, same machine, 40 disorder configs (KAG)
+
+What: as R6, on Kaggle, with the GPU. PythTB serial and all-cores (4 procs) vs ours on CPU
+and T4, double and single. Same seeds, W = 2, tutorial parameters. Code as of 21 Nov ~18:05,
+i.e. **before** the Wilson-loop speed-ups (Newton-Schulz always 12 steps, GPU eigenvalues).
+Command: `python benchmarks/gpu_pipeline.py --sizes 8 12 --configs 40 --W 2.0` · Kaggle run
+21 Nov 18:21–19:10 (version 4) · files `results/kaggle/20261121-180746/out/*.csv` + log
+
+| Supercell (mesh) | PythTB 1 core | PythTB 4 cores | Ours CPU double | Ours CPU single | Ours GPU double | **Ours GPU single** |
+|---|---|---|---|---|---|---|
+| 8×8 (6×6) | 84.1 s | 37.6 s | 36.0 s (1.0×) | 20.8 s (1.8×) | 37.5 s (1.0×) | **9.8 s (3.8×)** |
+| 12×12 (6×6) | 465.8 s | 321.3 s | 251.7 s (1.3×) | 135.9 s (2.4×) | 155.4 s (2.1×) | **36.1 s (8.9×)** |
+
+Speed-ups in brackets are vs **PythTB on all 4 cores** (the credible baseline). PythTB 1-core
+time is the sum of per-config pipeline times (excl. reliability checks). Z2 agreed with PythTB
+for **40/40 configurations in every column**; no Newton-Schulz fallbacks; none unreliable.
+
+GPU single, stage split: 8×8 solve 4.0 s / Wilson 5.8 s; 12×12 solve 15.8 s / Wilson 20.3 s.
+The Wilson loop taking longer than the diagonalisation is the bottleneck the later fix targets.
+
+Notes: Kaggle's 4 cores only give 1.4–2.2× over 1 core (memory bandwidth? not checked).
+Kaggle's CPU is ~2–4× slower than MAC for PythTB (e.g. 8×8 serial 84 s vs 30 s): never mix the
+two machines' numbers in one comparison.
+
 ---
 
 ## Still to measure
 
-- [ ] PythTB **all-cores** baseline on KAG (same machine as the GPU numbers)
-- [ ] Step 2: batched Wilson loop (Newton-Schulz + tree product) vs PythTB `berry_phase`
-- [ ] Full pipeline (steps 1+2+Z2) end to end, GPU vs best CPU
-- [ ] Single precision: does Z2 still agree config by config?
+- [x] PythTB **all-cores** baseline on KAG (R7)
+- [x] Step 2: batched Wilson loop vs PythTB `berry_phase` (tests; R6, R7)
+- [x] Full pipeline end to end, GPU vs best CPU (R7)
+- [x] Single precision: Z2 agrees config by config (R7: 40/40 at 8×8 and 12×12)
+- [ ] Re-run R7 with the Wilson-loop speed-ups (GPU only + PythTB all-cores)
 - [ ] Use both T4s
 - [ ] Full phase-diagram sweep: CPU time vs GPU time (the headline for the pitch)

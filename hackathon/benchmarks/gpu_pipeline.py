@@ -20,7 +20,7 @@ import os
 
 import numpy as np
 import torch
-from common import hardware_info, save_rows, scaled_nk
+from common import Progress, hardware_info, log, save_rows, scaled_nk
 from cpu_baseline import bench_parallel, bench_serial, config_seeds
 
 from gpu_engine import get_backend
@@ -35,9 +35,11 @@ def main() -> None:
     p.add_argument("--nk", type=int, default=None, help="default: scaled_nk(size)")
     p.add_argument("--workers", type=int, default=os.cpu_count())
     p.add_argument("--skip-serial", action="store_true", help="skip the slow PythTB serial loop")
+    p.add_argument("--devices", nargs="+", default=["cpu", "cuda"],
+                   help="where to run ours: cpu, cuda or both (cuda skipped if unavailable)")
     args = p.parse_args()
 
-    devices = ["cpu"] + (["cuda"] if torch.cuda.is_available() else [])
+    devices = [d for d in args.devices if d == "cpu" or torch.cuda.is_available()]
     gpu = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "none"
     hw = hardware_info()
     print(f"full pipeline on CPU {hw['cpu']} ({hw['n_cpus']} cpus), GPU {gpu}\n")
@@ -61,8 +63,10 @@ def main() -> None:
         for device in devices:
             for precision in ("double", "single"):
                 be = get_backend(precision, device)
+                log(f"ours {device} {precision}: {args.configs} configs of {n}x{n}, mesh {nk}x{nk}")
                 run_batch(n, args.W, nk, seeds[:1], be, check=False)  # warm-up
-                out = run_batch(n, args.W, nk, seeds, be, check=True)
+                progress = Progress(f"ours {device} {precision} {n}x{n}", args.configs, every=1)
+                out = run_batch(n, args.W, nk, seeds, be, check=True, progress=progress.step)
                 t = out.timings["total"]
                 agree = int((out.z2 == ref_z2).sum())
                 line = (
@@ -70,6 +74,11 @@ def main() -> None:
                     f"(solve {out.timings['solve']:.3f}, wilson {out.timings['wilson']:.3f}, "
                     f"z2 {out.timings['z2']:.3f})  Z2 agrees {agree}/{args.configs}  "
                     f"unreliable {int((~out.reliable).sum())}  NS fallbacks {out.ns_fallbacks}"
+                    f"\n      wilson breakdown: "
+                    + "  ".join(
+                        f"{k[2:]} {out.timings[k]:.3f}"
+                        for k in ("t_overlaps", "t_unitary", "t_product", "t_eigvals")
+                    )
                 )
                 for name, (t_ref, _) in baselines.items():
                     line += f"\n      vs {name:15s} {t_ref:8.3f} s -> {t_ref / t:6.1f}x"
@@ -81,6 +90,8 @@ def main() -> None:
                     "t_solve": f"{out.timings['solve']:.4f}",
                     "t_wilson": f"{out.timings['wilson']:.4f}",
                     "t_z2": f"{out.timings['z2']:.4f}",
+                    **{k: f"{out.timings[k]:.4f}"
+                       for k in ("t_overlaps", "t_unitary", "t_product", "t_eigvals")},
                     "z2_agree": agree, "n_unreliable": int((~out.reliable).sum()),
                     "ns_fallbacks": out.ns_fallbacks, "workers": args.workers,
                 }

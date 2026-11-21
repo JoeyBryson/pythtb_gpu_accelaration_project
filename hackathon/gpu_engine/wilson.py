@@ -58,15 +58,23 @@ def unitary_part(M: torch.Tensor) -> tuple[torch.Tensor, int]:
 
         X <- X (3I - X^H X) / 2
 
-    Returns (U, number of matrices that needed the SVD fallback).
+    Stops early once every matrix has converged (checked every 2 steps from step 4: each
+    check costs one extra product and, on a GPU, a sync). Returns (U, number of matrices
+    that needed the SVD fallback).
     """
     eye = torch.eye(M.shape[-1], dtype=M.dtype, device=M.device)
+    tol = NS_TOL[M.dtype] * M.shape[-1]
     X = M
-    for _ in range(NS_MAX_STEPS):
-        X = 0.5 * X @ (3 * eye - X.mH @ X)
-    # convergence check: how far is each X from unitary?
+    for step in range(1, NS_MAX_STEPS + 1):
+        XhX = X.mH @ X
+        if step >= 4 and step % 2 == 0:
+            residual = torch.linalg.matrix_norm(XhX - eye, ord="fro")  # how far from unitary
+            if bool((residual <= tol).all()):
+                break
+        X = 0.5 * X @ (3 * eye - XhX)
+    # final convergence check: how far is each X from unitary?
     residual = torch.linalg.matrix_norm(X.mH @ X - eye, ord="fro")
-    bad = residual > NS_TOL[M.dtype] * M.shape[-1]
+    bad = residual > tol
     n_bad = int(bad.sum())
     if n_bad:  # rare: overlaps far from unitary (coarse mesh near a gap closing)
         V, _, Wh = torch.linalg.svd(M[bad], full_matrices=False)
@@ -101,16 +109,47 @@ def wannier_centres(
     """Wannier centres for every line of every configuration.
 
     u: (C, nk_x, nk_y, n_occ, N) occupied states from batched.solve_configs.
-    Returns wcc (C, nk_x, n_occ) in [0, 1), sorted per line, and info (fallback count).
+    Returns wcc (C, nk_x, n_occ) in [0, 1) on the CPU, sorted per line, and info
+    (fallback count and seconds per sub-step).
     """
+    on_gpu = u.is_cuda
+    clock = _Clock(on_gpu)
+
     phase = torch.as_tensor(boundary_phase(model), dtype=u.dtype, device=u.device)
     M = overlaps_along_ky(u, phase)
+    clock.lap("overlaps")
     if method == "newton-schulz":
         U, n_fallback = unitary_part(M)
     else:
         U, n_fallback = unitary_part_svd(M), 0
+    clock.lap("unitary")
     W = ordered_product(U)  # (C, nk_x, n, n)
-    evals = torch.linalg.eigvals(W)
+    clock.lap("product")
+    # Eigenvalues of the (non-Hermitian) Wilson matrices: done on the CPU. General eigen-
+    # solvers are slow on GPUs, and there are only C * nk_x of these small matrices.
+    evals = torch.linalg.eigvals(W.cpu())
     wcc = torch.remainder(-torch.angle(evals) / (2 * torch.pi), 1.0)
     wcc, _ = torch.sort(wcc, dim=-1)
-    return wcc, {"ns_fallbacks": n_fallback, "n_links": M.shape[:-2].numel()}
+    clock.lap("eigvals")
+    info = {"ns_fallbacks": n_fallback, "n_links": M.shape[:-2].numel(), **clock.laps}
+    return wcc, info
+
+
+class _Clock:
+    """Lap timer for sub-steps; synchronises the GPU so the laps are real."""
+
+    def __init__(self, on_gpu: bool):
+        import time
+
+        self._now, self.on_gpu, self.laps = time.perf_counter, on_gpu, {}
+        self._last = self._sync_now()
+
+    def _sync_now(self) -> float:
+        if self.on_gpu:
+            torch.cuda.synchronize()
+        return self._now()
+
+    def lap(self, name: str) -> None:
+        now = self._sync_now()
+        self.laps[f"t_{name}"] = now - self._last
+        self._last = now

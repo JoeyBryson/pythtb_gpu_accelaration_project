@@ -25,7 +25,7 @@ import time
 from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
-from common import print_header, save_rows, scaled_nk
+from common import Progress, log, print_header, save_rows, scaled_nk
 
 from gpu_engine.reference import ConfigResult, run_config
 
@@ -102,8 +102,13 @@ def bench_clean_sizes(scenario: str, sizes: list[int], nk_for, repeats: int) -> 
 def bench_serial(n: int, nk: int, W: float, configs: int, seed: int) -> list[ConfigResult]:
     """The naive baseline: one configuration after another in a Python loop."""
     seeds = config_seeds(seed, configs)
+    log(f"PythTB serial: {configs} configs of {n}x{n}, mesh {nk}x{nk}, W={W}")
+    progress = Progress(f"PythTB serial {n}x{n}", configs)
     t0 = time.perf_counter()
-    results = [run_config(n, W, nk, seed=s) for s in seeds]
+    results = []
+    for s in seeds:
+        results.append(run_config(n, W, nk, seed=s))
+        progress.step()
     wall = time.perf_counter() - t0
     report("serial", n, nk, W, configs, wall, results, workers=1)
     return results
@@ -144,8 +149,13 @@ def bench_parallel(
     with ProcessPoolExecutor(workers, mp_context=ctx, initializer=_one_blas_thread) as pool:
         # warm up every worker (imports, first allocation) before starting the clock
         list(pool.map(_run_config_task, [(1, 0.0, 4, 0)] * workers))
+        log(f"PythTB parallel: {configs} configs of {n}x{n} on {workers} processes")
+        progress = Progress(f"PythTB parallel {n}x{n}", configs)
         t0 = time.perf_counter()
-        results = list(pool.map(_run_config_task, tasks))
+        results = []
+        for r in pool.map(_run_config_task, tasks):  # results arrive in order as they finish
+            results.append(r)
+            progress.step()
         wall = time.perf_counter() - t0
     report("parallel", n, nk, W, configs, wall, results, workers=workers)
     return results
