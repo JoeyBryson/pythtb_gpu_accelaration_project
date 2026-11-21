@@ -36,6 +36,20 @@ PRESETS = {
         _TESTS,
         ["benchmarks/gpu_micro.py"],
     ],
+    # Disorder sweeps (analysis/sweep.py): lambda_nu = 1.0 and 1.65, Rashba 0. They write
+    # straight into /kaggle/working/out after every W point, so a cancelled run keeps its data.
+    # "sweep_pilot": 8x8, W 0..10 step 0.5, 100 samples per point (~10-15 min).
+    "sweep_pilot": [
+        _TESTS,
+        ["analysis/sweep.py", "--size", "8", "--samples", "100", "--W-step", "0.5",
+         "--out", "/kaggle/working/out/sweep_pilot_8x8.csv"],
+    ],
+    # "sweep_12": 12x12, W 0..10 step 0.25, 200 samples per point, plus the PythTB CPU estimate
+    # (~2-3 h: overnight).
+    "sweep_12": [
+        ["analysis/sweep.py", "--size", "12", "--samples", "200", "--W-step", "0.25",
+         "--cpu-baseline", "--out", "/kaggle/working/out/sweep_12x12.csv"],
+    ],
 }
 JOBS = PRESETS[PRESET]
 
