@@ -1,0 +1,40 @@
+[project]
+name = "pythtb-gpu-hackathon"
+version = "0.1.0"
+description = "GPU engine and disorder studies built alongside PythTB (SoTA Scientific Parallelism Hackathon)."
+requires-python = ">=3.12"
+dependencies = [
+  "pythtb",          # the fork in the repo root, installed editable (see [tool.uv.sources])
+  "numpy>=2.0",
+  "matplotlib>=3.9",
+  "torch>=2.4",      # Linux wheels from PyPI ship with CUDA; macOS wheels are CPU/MPS only
+  "tqdm",
+]
+
+[project.optional-dependencies]
+cupy = ["cupy-cuda12x"]  # only install on a CUDA 12 machine: `uv sync --extra cupy`
+
+[dependency-groups]
+dev = [
+  "pytest>=8",
+  "ruff",
+  "jupyterlab",
+  "ipykernel",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["gpu_engine"]  # installed editable, so notebooks/scripts anywhere can import it
+
+[tool.uv.sources]
+pythtb = { path = "..", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["gpu: needs a CUDA GPU (skipped automatically otherwise)"]
+
+[tool.ruff]
+line-length = 100
