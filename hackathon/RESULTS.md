@@ -23,6 +23,10 @@ T4 note: double precision is ~15× slower than single on this GPU (measured belo
 > Speed-up grows with size: 4.4× at 8×8, 15.9× at 12×12, 18.3× at 16×16.
 > Baseline timed fairly (no diagnostics, Filip's fix). Superseded: R7 (8.9×, inflated baseline),
 > R9 (14.3× at 12×12, Rashba 0.25, eigenvalues ~1e-3 off at 16×16).
+> **Time to a full disorder sweep (R12, estimated from measured per-sample rates, same Kaggle
+> machine, 16,400 samples):** at 16×16, PythTB on all 4 cores **~172 h (7 days)** vs our C_up
+> algorithm on one T4 **~2.1 h: 83× faster** (8.8× from the algorithm, 9.4× more from the GPU);
+> at 12×12, ~32 h vs ~55 min (35×).
 > Not yet included: the second T4. On a T4, double precision overall gives only 1.6–2.9× (R8).
 
 ---
@@ -315,6 +319,31 @@ and ~7–15× less time per point (6.5–9 s vs 44–135 s).
 
 Not yet: bigger sizes (transitions at 8×8 are smeared by finite size), the CPU time for the same
 sweep (the main sweep runs the CPU subset), and comparison with the papers (on hold).
+
+## R12. What a full sweep costs: PythTB vs C_up on CPU vs C_up on GPU (KAG)
+
+What: per-sample time of three ways to answer "topological or not?" on the SAME Kaggle machine
+(4 CPU cores + 1 T4), scaled to a full sweep of 16,400 samples (41 W values × 2 λ_ν × 200).
+Measured at λ_ν = 1.65, W = 2.0 (the transition: the GPU path refines the most samples there;
+the CPU baselines don't refine at all, so the GPU figures are conservative). Rashba 0, 6×6 mesh.
+  - PythTB as-is: Wilson loops + gap-tracking Z2, one process per core (24 / 12 / 8 samples)
+  - C_up on CPU: Joey's spin-up Chern number in NumPy, one process per core (same samples)
+  - C_up on GPU: the same algorithm batched on the T4, single precision, incl. refinement (100 samples)
+Command: `PRESET=cost bash kaggle/gpu_run.sh` (`benchmarks/sweep_cost.py --sizes 8 12 16`) ·
+Kaggle run 21 Nov 21:38–21:49 · files `results/kaggle/20261121-213825/out/sweep_cost.csv` + log
+
+| Supercell | PythTB (s/sample) | C_up CPU | C_up GPU | Sweep: PythTB | C_up CPU | **C_up GPU** | Algorithm | GPU on top | **Total** |
+|---|---|---|---|---|---|---|---|---|---|
+| 8×8 | 0.884 | 0.140 | 0.098 | 4.0 h | 38 min | 27 min | 6.3× | 1.4× | 9.0× |
+| 12×12 | 7.015 | 0.888 | 0.199 | 32.0 h | 4.0 h | **55 min** | 7.9× | 4.5× | **35.2×** |
+| 16×16 | 37.73 | 4.287 | 0.456 | 171.9 h | 19.5 h | **2.1 h** | 8.8× | **9.4×** | **82.7×** |
+
+Findings:
+- **Both gains are real and separate:** the better algorithm gives ~6–9× on any hardware; the GPU
+  adds 1.4× at 8×8 rising to 9.4× at 16×16. Bigger systems (what the physics needs) favour the GPU.
+- A 16×16 sweep goes from about a week of PythTB on 4 cores to about two hours on one T4.
+- These are **estimates** (measured rate × samples), not full runs; the CPU is Kaggle's 4 cores. A
+  bigger CPU narrows the gap, a bigger GPU (A100/H100) likely widens it: not measured.
 
 ---
 
