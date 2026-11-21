@@ -44,6 +44,15 @@ PRESETS = {
         ["analysis/sweep.py", "--size", "8", "--samples", "100", "--W-step", "0.5",
          "--out", "/kaggle/working/out/sweep_pilot_8x8.csv"],
     ],
+    # "fss": finite-size scaling with the C_up sweep (~30 min). 12x12 for both lambda_nu over the
+    # full W range, 16x16 for lambda_nu = 1.65 around the switch-on transition. With the 8x8 pilot
+    # (results/sweep/pilot_8x8_c_up.csv) this gives 8/12/16 curves on one plot.
+    "fss": [
+        ["analysis/sweep.py", "--size", "12", "--samples", "100", "--W-step", "0.5",
+         "--out", "/kaggle/working/out/fss_12x12.csv"],
+        ["analysis/sweep.py", "--size", "16", "--deltas", "1.65", "--samples", "100",
+         "--W-max", "5", "--W-step", "0.25", "--out", "/kaggle/working/out/fss_16x16.csv"],
+    ],
     # "cost": what a full sweep costs, measured per sample on this machine and extrapolated:
     # PythTB as-is (all cores) vs C_up on all cores vs C_up on the GPU, at 8/12/16 (~10-15 min).
     "cost": [
