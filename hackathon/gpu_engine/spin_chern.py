@@ -56,10 +56,16 @@ def clean_up_hamiltonians(model: TBModel, nk: int) -> np.ndarray:
     PythTB's flattened order is (orbital, spin): orb0 up, orb0 down, orb1 up, ... so the
     up block is every second row and column. Returns (nk*nk, n_orb, n_orb) complex.
     """
-    H = model.hamiltonian(k_grid(nk), flatten_spin_axis=True)
-    if np.abs(H[:, 0::2, 1::2]).max() > 1e-12:
-        raise ValueError("spin-up block needs S_z conservation: build the model with rashba=0")
-    return H[:, 0::2, 0::2]
+    # Built a few k-points at a time, keeping only the up block: the full spinful H for all k at
+    # once is (nk^2, 2n, 2n), ~6 GB at L = 20 with nk = 12, enough to run Kaggle out of RAM.
+    k = k_grid(nk)
+    up = []
+    for start in range(0, len(k), 8):
+        H = model.hamiltonian(k[start : start + 8], flatten_spin_axis=True)
+        if np.abs(H[:, 0::2, 1::2]).max() > 1e-12:
+            raise ValueError("spin-up block needs S_z conservation: build the model with rashba=0")
+        up.append(H[:, 0::2, 0::2].copy())  # copy: don't keep the full H alive through a view
+    return np.concatenate(up)
 
 
 def up_disorder(norb: int, W: float, seeds: list[int]) -> np.ndarray:
