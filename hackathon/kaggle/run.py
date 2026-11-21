@@ -44,6 +44,11 @@ PRESETS = {
         ["analysis/sweep.py", "--size", "8", "--samples", "100", "--W-step", "0.5",
          "--out", "/kaggle/working/out/sweep_pilot_8x8.csv"],
     ],
+    # "cost": what a full sweep costs, measured per sample on this machine and extrapolated:
+    # PythTB as-is (all cores) vs C_up on all cores vs C_up on the GPU, at 8/12/16 (~10-15 min).
+    "cost": [
+        ["benchmarks/sweep_cost.py", "--sizes", "8", "12", "16"],
+    ],
     # Spin-up Chern number C_up (gpu_engine.spin_chern; decision A in PART2_PLAN.md).
     # "chern_test": C_up GPU vs the validated CPU version + timing at 8/12/16 (~5 min).
     "chern_test": [
