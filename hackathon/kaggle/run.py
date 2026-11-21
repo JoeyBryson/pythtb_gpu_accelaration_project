@@ -14,9 +14,16 @@ import time
 from pathlib import Path
 
 # Commands to run, from inside hackathon/. Edit freely.
+# Current setting: the final speed benchmark (RESULTS.md R9). Our code on the GPU in single
+# precision vs PythTB on all CPU cores of the same machine, with Filip's timing fix (PythTB
+# timed without its reliability diagnostics) and the Hermitian eigenvalue step.
 JOBS = [
     ["-m", "pytest", "-q", "-p", "no:cacheprovider"],
-    ["benchmarks/gpu_pipeline.py", "--sizes", "8", "12", "--configs", "40", "--W", "2.0"],
+    ["benchmarks/gpu_pipeline.py", "--sizes", "8", "12", "--configs", "40", "--W", "2.0",
+     "--devices", "cuda", "--precisions", "single", "--skip-serial", "--no-reliability"],
+    # 16x16 with fewer configs: PythTB is slow here even on all cores
+    ["benchmarks/gpu_pipeline.py", "--sizes", "16", "--configs", "16", "--W", "2.0",
+     "--devices", "cuda", "--precisions", "single", "--skip-serial", "--no-reliability"],
 ]
 
 WORK = Path("/kaggle/working")

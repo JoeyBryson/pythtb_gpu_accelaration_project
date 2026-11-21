@@ -60,6 +60,39 @@ def test_newton_schulz_falls_back_to_svd_when_it_cannot_converge():
     torch.testing.assert_close(U, unitary_part_svd(M), atol=1e-10, rtol=0)
 
 
+@pytest.mark.parametrize("dtype", [torch.complex128, torch.complex64])
+def test_unitary_eigenvalues_match_general_solver(dtype):
+    """Includes exactly degenerate pairs, as Kramers pairs give at k = 0 and pi."""
+    from gpu_engine.wilson import unitary_eigenvalues
+
+    torch.manual_seed(0)
+    Q, _ = torch.linalg.qr(torch.randn(40, 16, 16, dtype=torch.complex128))
+    phases = torch.rand(40, 16, dtype=torch.float64) * 2 * torch.pi
+    phases[:20, 1::2] = phases[:20, 0::2]  # half the batch: every eigenvalue doubly degenerate
+    W = (Q * torch.exp(1j * phases).unsqueeze(-2)) @ Q.mH
+    lam, _ = unitary_eigenvalues(W.to(dtype))
+    got = torch.sort(torch.remainder(torch.angle(lam.to(torch.complex128)), 2 * torch.pi)).values
+    want = torch.sort(torch.remainder(phases, 2 * torch.pi)).values
+    tol = 1e-9 if dtype == torch.complex128 else 1e-4
+    assert (got - want).abs().max() < tol
+
+
+def test_unitary_eigenvalues_fall_back_when_mixing_fails():
+    """Two phases with equal cos + MIX*sin get mixed by eigh: must be caught and fixed."""
+    import math
+
+    from gpu_engine.wilson import _MIX, unitary_eigenvalues
+
+    phi = math.atan(_MIX)  # cos(t) + MIX sin(t) is symmetric about t = phi
+    phases = torch.tensor([[phi + 0.7, phi - 0.7, 2.0, 4.0]], dtype=torch.float64)
+    Q, _ = torch.linalg.qr(torch.randn(1, 4, 4, dtype=torch.complex128))
+    W = (Q * torch.exp(1j * phases).unsqueeze(-2)) @ Q.mH
+    lam, n_fallback = unitary_eigenvalues(W)
+    got = torch.sort(torch.remainder(torch.angle(lam), 2 * torch.pi)).values
+    assert n_fallback == 1
+    assert (got - torch.sort(torch.remainder(phases, 2 * torch.pi)).values).abs().max() < 1e-9
+
+
 @pytest.mark.parametrize("supercell", [1, 2])
 def test_clean_model_matches_pythtb(supercell):
     be = get_backend("double")

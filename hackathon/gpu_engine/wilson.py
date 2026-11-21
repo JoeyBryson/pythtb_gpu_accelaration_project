@@ -104,7 +104,7 @@ def ordered_product(U: torch.Tensor) -> torch.Tensor:
 
 
 def wannier_centres(
-    u: torch.Tensor, model: TBModel, method: str = "newton-schulz"
+    u: torch.Tensor, model: TBModel, method: str = "newton-schulz", eig_method: str = "hermitian"
 ) -> tuple[torch.Tensor, dict]:
     """Wannier centres for every line of every configuration.
 
@@ -125,14 +125,50 @@ def wannier_centres(
     clock.lap("unitary")
     W = ordered_product(U)  # (C, nk_x, n, n)
     clock.lap("product")
-    # Eigenvalues of the (non-Hermitian) Wilson matrices: done on the CPU. General eigen-
-    # solvers are slow on GPUs, and there are only C * nk_x of these small matrices.
-    evals = torch.linalg.eigvals(W.cpu())
+    if eig_method == "hermitian":
+        evals, n_eig_fallback = unitary_eigenvalues(W)
+        evals = evals.cpu()
+    else:  # "general": the plain non-Hermitian eigensolver, on the CPU (slow on GPUs)
+        evals, n_eig_fallback = torch.linalg.eigvals(W.cpu()), 0
     wcc = torch.remainder(-torch.angle(evals) / (2 * torch.pi), 1.0)
     wcc, _ = torch.sort(wcc, dim=-1)
     clock.lap("eigvals")
-    info = {"ns_fallbacks": n_fallback, "n_links": M.shape[:-2].numel(), **clock.laps}
+    info = {
+        "ns_fallbacks": n_fallback, "eig_fallbacks": n_eig_fallback,
+        "n_links": M.shape[:-2].numel(), **clock.laps,
+    }
     return wcc, info
+
+
+# Mixing weight for unitary_eigenvalues. Any fixed number not 0 works; an irrational-looking
+# one makes accidental ties (two different phases giving the same mixed value) unlikely.
+_MIX = 0.6180339887
+EIG_TOL = {torch.complex128: 1e-10, torch.complex64: 1e-4}
+
+
+def unitary_eigenvalues(W: torch.Tensor) -> tuple[torch.Tensor, int]:
+    """Eigenvalues of unitary matrices with a Hermitian eigensolver (fast and batched on GPUs).
+
+    A unitary W has eigenvalues e^{i theta} and an orthonormal set of eigenvectors. The
+    Hermitian matrix  H = Re-part + MIX * Im-part = (W + W^H)/2 + MIX (W - W^H)/(2i)
+    has the SAME eigenvectors (eigenvalues cos theta + MIX sin theta), so we diagonalise H
+    with `eigh` and read each eigenvalue of W back as v^H W v.
+
+    The one way this can go wrong: two different phases giving the same value of
+    cos + MIX sin, so eigh mixes their eigenvectors. We check every matrix
+    (|W V - V diag(lambda)| small?) and recompute any that fail with the general solver.
+
+    W: (..., n, n). Returns (eigenvalues (..., n) complex, number of matrices recomputed).
+    """
+    H = 0.5 * (W + W.mH) + _MIX * (W - W.mH) / 2j
+    _, V = torch.linalg.eigh(H)
+    lam = (V.conj() * (W @ V)).sum(dim=-2)  # diagonal of V^H W V, one per eigenvector
+    residual = torch.linalg.matrix_norm(W @ V - V * lam.unsqueeze(-2), ord="fro")
+    bad = residual > EIG_TOL[W.dtype] * W.shape[-1]
+    n_bad = int(bad.sum())
+    if n_bad:
+        lam[bad] = torch.linalg.eigvals(W[bad].cpu()).to(lam.device)
+    return lam, n_bad
 
 
 class _Clock:

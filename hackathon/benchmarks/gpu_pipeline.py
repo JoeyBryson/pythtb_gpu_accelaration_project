@@ -40,6 +40,8 @@ def main() -> None:
     p.add_argument("--skip-serial", action="store_true", help="skip the slow PythTB serial loop")
     p.add_argument("--no-reliability", action="store_true",
                    help="skip PythTB's untimed reliability pass (saves one parallel run)")
+    p.add_argument("--precisions", nargs="+", default=["double", "single"],
+                   choices=["double", "single"], help="which precisions to run ours in")
     p.add_argument("--devices", nargs="+", default=["cpu", "cuda"],
                    help="where to run ours: cpu, cuda or both (cuda skipped if unavailable)")
     args = p.parse_args()
@@ -68,19 +70,25 @@ def main() -> None:
         ref_z2 = np.array(baselines["pythtb_parallel"][1])
 
         for device in devices:
-            for precision in ("double", "single"):
+            for precision in args.precisions:
                 be = get_backend(precision, device)
                 log(f"ours {device} {precision}: {args.configs} configs of {n}x{n}, mesh {nk}x{nk}")
                 run_batch(n, args.W, nk, seeds[:1], be, check=False)  # warm-up
                 progress = Progress(f"ours {device} {precision} {n}x{n}", args.configs, every=1)
-                out = run_batch(n, args.W, nk, seeds, be, check=True, progress=progress.step)
+                # The reliability check (an SVD of every overlap) is untimed but slow in double
+                # precision on a T4, and its answer doesn't depend on precision: run it once,
+                # with the single-precision pass only.
+                out = run_batch(n, args.W, nk, seeds, be, check=(precision == "single"),
+                                progress=progress.step)
                 t = out.timings["total"]
+                checked = not np.isnan(out.min_overlap).all()
+                n_unrel = int((~out.reliable).sum()) if checked else "not checked"
                 agree = int((out.z2 == ref_z2).sum())
                 line = (
                     f"  ours {device:4s} {precision:6s} {t:8.3f} s  "
                     f"(solve {out.timings['solve']:.3f}, wilson {out.timings['wilson']:.3f}, "
                     f"z2 {out.timings['z2']:.3f})  Z2 agrees {agree}/{args.configs}  "
-                    f"unreliable {int((~out.reliable).sum())}  NS fallbacks {out.ns_fallbacks}"
+                    f"unreliable {n_unrel}  NS fallbacks {out.ns_fallbacks}"
                     f"\n      wilson breakdown: "
                     + "  ".join(
                         f"{k[2:]} {out.timings[k]:.3f}"
@@ -99,7 +107,7 @@ def main() -> None:
                     "t_z2": f"{out.timings['z2']:.4f}",
                     **{k: f"{out.timings[k]:.4f}"
                        for k in ("t_overlaps", "t_unitary", "t_product", "t_eigvals")},
-                    "z2_agree": agree, "n_unreliable": int((~out.reliable).sum()),
+                    "z2_agree": agree, "n_unreliable": n_unrel,
                     "ns_fallbacks": out.ns_fallbacks, "workers": args.workers,
                 }
                 for name, (t_ref, _) in baselines.items():
