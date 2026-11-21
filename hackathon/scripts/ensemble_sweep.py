@@ -59,6 +59,11 @@ def main() -> None:
     ap.add_argument("--keep-flows", type=int, default=200,
                     help="save Wannier flows for this many samples per W (0 = none)")
     ap.add_argument("--precision", choices=["double", "single"], default="double")
+    ap.add_argument("--invariant", choices=["auto", "c_up", "z2"], default="auto",
+                    help="c_up: spin-up Chern number (fastest; rashba = 0, uniform disorder); "
+                         "z2: gap-tracking Wilson loop. auto = c_up when possible")
+    ap.add_argument("--refine-nk", type=int, default=10,
+                    help="c_up: re-run unreliable samples on this mesh (0 = don't)")
     ap.add_argument("--spin-blocks", action="store_true",
                     help="solve spin up/down as separate half-size problems (needs --rashba 0)")
     ap.add_argument("--device", default=None, help="cpu / cuda (default: cuda if available)")
@@ -68,14 +73,20 @@ def main() -> None:
     if args.quick:
         args.L, args.samples, args.W = [2, 3], 40, [0, 1, 2, 3, 4, 6, 8, 12]
 
-    nk = {n: args.nk or DEFAULT_NK.get(n, 4) for n in args.L}
+    invariant = args.invariant
+    if invariant == "auto":
+        invariant = "c_up" if args.rashba == 0 and args.disorder == "uniform" else "z2"
+    # c_up converges at nk = 6 (team's analysis/stage0_chern_up.py, RESULTS.md R11/R12)
+    default_nk = {n: 6 for n in args.L} if invariant == "c_up" else DEFAULT_NK
+    nk = {n: args.nk or default_nk.get(n, 4) for n in args.L}
     cfg = SweepConfig(
         supercells=args.L, Ws=args.W, n_samples=args.samples, nk=nk, deltas=args.delta,
         soc=args.soc, rashba=args.rashba, disorder=args.disorder, seeds=args.seeds,
         seed0=args.seed0, keep_flows=args.keep_flows, spin_blocks=args.spin_blocks,
+        invariant=invariant, refine_nk=args.refine_nk or None,
     )
     be = get_backend(args.precision, args.device)
-    print(f"Hardware: {be.describe()}")
+    print(f"Hardware: {be.describe()}  |  invariant: {invariant}")
     print(f"{len(args.L) * len(args.delta) * len(args.W) * args.samples} samples, nk={nk}\n")
 
     rows, flows = run_sweep(cfg, be)

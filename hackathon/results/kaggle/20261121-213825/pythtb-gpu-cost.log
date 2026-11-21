@@ -1,0 +1,93 @@
+[{"stream_name":"stdout","time":15.32047443,"data":"code in /kaggle/working/proj ['LICENSE', 'README.md', 'hackathon', 'pyproject.toml', 'pythtb']\n"}
+,{"stream_name":"stdout","time":15.321514165,"data":"\n"}
+,{"stream_name":"stdout","time":15.32154975,"data":"[21:38:51] $ /usr/bin/python3 -m pip install -q -e /kaggle/working/proj\n"}
+,{"stream_name":"stdout","time":24.326194805,"data":"[21:39:00] exit 0 after 9s\n"}
+,{"stream_name":"stdout","time":24.326236055,"data":"\n"}
+,{"stream_name":"stdout","time":24.32623997,"data":"[21:39:00] $ /usr/bin/python3 -m pip install -q --no-deps -e /kaggle/working/proj/hackathon\n"}
+,{"stream_name":"stdout","time":28.508438518,"data":"[21:39:04] exit 0 after 4s\n"}
+,{"stream_name":"stdout","time":28.508484362,"data":"\n"}
+,{"stream_name":"stdout","time":28.508488542,"data":"[21:39:04] $ /usr/bin/python3 -m pip install -q threadpoolctl pytest\n"}
+,{"stream_name":"stdout","time":30.165875945,"data":"[21:39:06] exit 0 after 2s\n"}
+,{"stream_name":"stdout","time":30.165911298,"data":"\n"}
+,{"stream_name":"stdout","time":30.16591639,"data":"[21:39:06] $ /usr/bin/python3 benchmarks/sweep_cost.py --sizes 8 12 16\n"}
+,{"stream_name":"stdout","time":39.096393445,"data":"[21:39:15 +     1s] sweep cost estimate on CPU x86_64 (4 cores) and GPU Tesla T4; extrapolating to 16400 samples\n"}
+,{"stream_name":"stdout","time":39.096426429,"data":"[21:39:15 +     1s] 8x8, mesh 6x6: timing GPU C_up on 100 samples ...\n"}
+,{"stream_name":"stderr","time":40.260079441,"data":"[W1121 21:39:16.069237982 Context.cpp:444] Warning: torch.backends.cuda.preferred_linalg_library is an experimental feature. If you see any error or unexpected behavior when this flag is set please file an issue on GitHub. (function operator())\n"}
+,{"stream_name":"stdout","time":53.747304917,"data":"[21:39:29 +    16s] 8x8: timing C_up in NumPy on all cores, 24 samples ...\n"}
+,{"stream_name":"stdout","time":57.879214563,"data":"[21:39:33 +    20s] 8x8: timing PythTB on all cores, 24 samples ...\n"}
+,{"stream_name":"stdout","time":61.36793681,"data":"[21:39:37 +    23s] PythTB parallel: 24 configs of 8x8 on 4 processes\n"}
+,{"stream_name":"stdout","time":64.916309522,"data":"[21:39:40 +    27s] PythTB parallel 8x8: 2/24 configs, 4s elapsed, ~39s left\n"}
+,{"stream_name":"stdout","time":65.089242694,"data":"[21:39:41 +    27s] PythTB parallel 8x8: 4/24 configs, 4s elapsed, ~19s left\n"}
+,{"stream_name":"stdout","time":68.494784912,"data":"[21:39:44 +    31s] PythTB parallel 8x8: 6/24 configs, 7s elapsed, ~21s left\n"}
+,{"stream_name":"stdout","time":68.651518331,"data":"[21:39:44 +    31s] PythTB parallel 8x8: 8/24 configs, 7s elapsed, ~15s left\n"}
+,{"stream_name":"stdout","time":71.974854509,"data":"[21:39:47 +    34s] PythTB parallel 8x8: 10/24 configs, 11s elapsed, ~15s left\n"}
+,{"stream_name":"stdout","time":72.148682395,"data":"[21:39:48 +    34s] PythTB parallel 8x8: 12/24 configs, 11s elapsed, ~11s left\n"}
+,{"stream_name":"stdout","time":75.544911045,"data":"[21:39:51 +    38s] PythTB parallel 8x8: 14/24 configs, 14s elapsed, ~10s left\n"}
+,{"stream_name":"stdout","time":75.690999479,"data":"[21:39:51 +    38s] PythTB parallel 8x8: 16/24 configs, 14s elapsed, ~7s left\n"}
+,{"stream_name":"stdout","time":79.072727701,"data":"[21:39:55 +    41s] PythTB parallel 8x8: 18/24 configs, 18s elapsed, ~6s left\n"}
+,{"stream_name":"stdout","time":79.220871089,"data":"[21:39:55 +    41s] PythTB parallel 8x8: 20/24 configs, 18s elapsed, ~4s left\n"}
+,{"stream_name":"stdout","time":82.551907438,"data":"[21:39:58 +    45s] PythTB parallel 8x8: 22/24 configs, 21s elapsed, ~2s left\n"}
+,{"stream_name":"stdout","time":82.580073835,"data":"[21:39:58 +    45s] PythTB parallel 8x8: 24/24 configs, 21s elapsed, ~0s left\n"}
+,{"stream_name":"stdout","time":85.774466254,"data":"8x8 supercell (H 256x256), mesh 6x6, 24 configs at W=2.0, 4 worker(s)\n"}
+,{"stream_name":"stdout","time":85.77449821,"data":"  wall time      21.21 s   -\u003e     1.13 configs/s  (0.884 s per config)\n"}
+,{"stream_name":"stdout","time":85.77450532,"data":"  stage time  build 3.16  solve 50.91  wilson 30.14  z2 0.020  (summed over configs)\n"}
+,{"stream_name":"stdout","time":85.774510722,"data":"  physics     reliability pass skipped (--no-reliability)\n"}
+,{"stream_name":"stdout","time":85.779829993,"data":"  saved to /kaggle/working/proj/hackathon/results/cpu_parallel.csv\n"}
+,{"stream_name":"stdout","time":85.779851285,"data":"\n"}
+,{"stream_name":"stdout","time":85.779867901,"data":"[21:40:01 +    48s] 8x8 per sample: PythTB 0.884 s | C_up CPU 0.140 s | C_up GPU 0.0979 s\n"}
+,{"stream_name":"stdout","time":85.779929261,"data":"[21:40:01 +    48s] 8x8 whole sweep (16400 samples): PythTB ~4.0 h | C_up CPU ~38.2 min | C_up GPU ~26.8 min  -\u003e  algorithm 6.3x, GPU on top 1.4x, total 9.0x\n"}
+,{"stream_name":"stdout","time":85.779947852,"data":"[21:40:01 +    48s] 12x12, mesh 6x6: timing GPU C_up on 100 samples ...\n"}
+,{"stream_name":"stdout","time":106.553280609,"data":"[21:40:22 +    69s] 12x12: timing C_up in NumPy on all cores, 12 samples ...\n"}
+,{"stream_name":"stdout","time":120.900158303,"data":"[21:40:36 +    83s] 12x12: timing PythTB on all cores, 12 samples ...\n"}
+,{"stream_name":"stdout","time":124.330222809,"data":"[21:40:40 +    86s] PythTB parallel: 12 configs of 12x12 on 4 processes\n"}
+,{"stream_name":"stdout","time":151.979824282,"data":"[21:41:07 +   114s] PythTB parallel 12x12: 1/12 configs, 28s elapsed, ~304s left\n"}
+,{"stream_name":"stdout","time":152.22933125,"data":"[21:41:08 +   114s] PythTB parallel 12x12: 2/12 configs, 28s elapsed, ~139s left\n"}
+,{"stream_name":"stdout","time":152.589712295,"data":"[21:41:08 +   115s] PythTB parallel 12x12: 3/12 configs, 28s elapsed, ~85s left\n"}
+,{"stream_name":"stdout","time":152.774463351,"data":"[21:41:08 +   115s] PythTB parallel 12x12: 4/12 configs, 28s elapsed, ~57s left\n"}
+,{"stream_name":"stdout","time":180.095640508,"data":"[21:41:36 +   142s] PythTB parallel 12x12: 5/12 configs, 56s elapsed, ~78s left\n"}
+,{"stream_name":"stdout","time":181.194247213,"data":"[21:41:37 +   143s] PythTB parallel 12x12: 6/12 configs, 57s elapsed, ~57s left\n"}
+,{"stream_name":"stdout","time":181.455398779,"data":"[21:41:37 +   144s] PythTB parallel 12x12: 7/12 configs, 57s elapsed, ~41s left\n"}
+,{"stream_name":"stdout","time":181.455594964,"data":"[21:41:37 +   144s] PythTB parallel 12x12: 8/12 configs, 57s elapsed, ~29s left\n"}
+,{"stream_name":"stdout","time":207.687221547,"data":"[21:42:03 +   170s] PythTB parallel 12x12: 9/12 configs, 83s elapsed, ~28s left\n"}
+,{"stream_name":"stdout","time":208.063158802,"data":"[21:42:04 +   170s] PythTB parallel 12x12: 10/12 configs, 84s elapsed, ~17s left\n"}
+,{"stream_name":"stdout","time":208.506711565,"data":"[21:42:04 +   171s] PythTB parallel 12x12: 11/12 configs, 84s elapsed, ~8s left\n"}
+,{"stream_name":"stdout","time":208.506756548,"data":"[21:42:04 +   171s] PythTB parallel 12x12: 12/12 configs, 84s elapsed, ~0s left\n"}
+,{"stream_name":"stdout","time":209.246915067,"data":"12x12 supercell (H 576x576), mesh 6x6, 12 configs at W=2.0, 4 worker(s)\n"}
+,{"stream_name":"stdout","time":209.246979216,"data":"  wall time      84.18 s   -\u003e     0.14 configs/s  (7.015 s per config)\n"}
+,{"stream_name":"stdout","time":209.246988006,"data":"  stage time  build 3.65  solve 235.87  wilson 95.09  z2 0.011  (summed over configs)\n"}
+,{"stream_name":"stdout","time":209.246993241,"data":"  physics     reliability pass skipped (--no-reliability)\n"}
+,{"stream_name":"stdout","time":209.252223286,"data":"  saved to /kaggle/working/proj/hackathon/results/cpu_parallel.csv\n"}
+,{"stream_name":"stdout","time":209.252240224,"data":"\n"}
+,{"stream_name":"stdout","time":209.25252308,"data":"[21:42:05 +   171s] 12x12 per sample: PythTB 7.015 s | C_up CPU 0.888 s | C_up GPU 0.1994 s\n"}
+,{"stream_name":"stdout","time":209.252716053,"data":"[21:42:05 +   171s] 12x12 whole sweep (16400 samples): PythTB ~32.0 h | C_up CPU ~4.0 h | C_up GPU ~54.5 min  -\u003e  algorithm 7.9x, GPU on top 4.5x, total 35.2x\n"}
+,{"stream_name":"stdout","time":209.253016947,"data":"[21:42:05 +   171s] 16x16, mesh 6x6: timing GPU C_up on 100 samples ...\n"}
+,{"stream_name":"stdout","time":256.665864817,"data":"[21:42:52 +   219s] 16x16: timing C_up in NumPy on all cores, 8 samples ...\n"}
+,{"stream_name":"stdout","time":308.442936873,"data":"[21:43:44 +   271s] 16x16: timing PythTB on all cores, 8 samples ...\n"}
+,{"stream_name":"stdout","time":312.006491224,"data":"[21:43:48 +   274s] PythTB parallel: 8 configs of 16x16 on 4 processes\n"}
+,{"stream_name":"stdout","time":467.650929306,"data":"[21:46:23 +   430s] PythTB parallel 16x16: 1/8 configs, 156s elapsed, ~1090s left\n"}
+,{"stream_name":"stdout","time":467.651290357,"data":"[21:46:23 +   430s] PythTB parallel 16x16: 2/8 configs, 156s elapsed, ~467s left\n"}
+,{"stream_name":"stdout","time":467.651307828,"data":"[21:46:23 +   430s] PythTB parallel 16x16: 3/8 configs, 156s elapsed, ~259s left\n"}
+,{"stream_name":"stdout","time":467.651314945,"data":"[21:46:23 +   430s] PythTB parallel 16x16: 4/8 configs, 156s elapsed, ~156s left\n"}
+,{"stream_name":"stdout","time":608.151709537,"data":"[21:48:44 +   570s] PythTB parallel 16x16: 5/8 configs, 296s elapsed, ~178s left\n"}
+,{"stream_name":"stdout","time":608.472015946,"data":"[21:48:44 +   571s] PythTB parallel 16x16: 6/8 configs, 296s elapsed, ~99s left\n"}
+,{"stream_name":"stdout","time":611.234485208,"data":"[21:48:47 +   573s] PythTB parallel 16x16: 7/8 configs, 299s elapsed, ~43s left\n"}
+,{"stream_name":"stdout","time":613.82849268,"data":"[21:48:49 +   576s] PythTB parallel 16x16: 8/8 configs, 302s elapsed, ~0s left\n"}
+,{"stream_name":"stdout","time":614.553363976,"data":"16x16 supercell (H 1024x1024), mesh 6x6, 8 configs at W=2.0, 4 worker(s)\n"}
+,{"stream_name":"stdout","time":614.553414094,"data":"  wall time     301.82 s   -\u003e     0.03 configs/s  (37.728 s per config)\n"}
+,{"stream_name":"stdout","time":614.553421281,"data":"  stage time  build 4.08  solve 900.16  wilson 289.33  z2 0.007  (summed over configs)\n"}
+,{"stream_name":"stdout","time":614.553426116,"data":"  physics     reliability pass skipped (--no-reliability)\n"}
+,{"stream_name":"stdout","time":614.55871435,"data":"  saved to /kaggle/working/proj/hackathon/results/cpu_parallel.csv\n"}
+,{"stream_name":"stdout","time":614.558757936,"data":"\n"}
+,{"stream_name":"stdout","time":614.558974117,"data":"[21:48:50 +   577s] 16x16 per sample: PythTB 37.728 s | C_up CPU 4.287 s | C_up GPU 0.4560 s\n"}
+,{"stream_name":"stdout","time":614.558998395,"data":"[21:48:50 +   577s] 16x16 whole sweep (16400 samples): PythTB ~171.9 h | C_up CPU ~19.5 h | C_up GPU ~2.1 h  -\u003e  algorithm 8.8x, GPU on top 9.4x, total 82.7x\n"}
+,{"stream_name":"stdout","time":614.562978548,"data":"saved to /kaggle/working/proj/hackathon/results/sweep_cost.csv\n"}
+,{"stream_name":"stdout","time":615.326911809,"data":"[21:48:51] exit 0 after 585s\n"}
+,{"stream_name":"stdout","time":615.328170203,"data":"\n"}
+,{"stream_name":"stdout","time":615.328197128,"data":"saved: ['cpu_parallel.csv', 'sweep_cost.csv']\n"}
+,{"stream_name":"stderr","time":617.649423548,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":617.649479319,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":617.956398331,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":617.956443306,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":618.82968291,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":619.941064194,"data":"[NbConvertApp] Writing 294615 bytes to __results__.html\n"}
+]
