@@ -1,0 +1,5 @@
+timestamp,scenario,supercell,nk,configs,W,device,gpu,precision,t_ours,t_solve,t_wilson,t_z2,z2_agree,n_unreliable,ns_fallbacks,workers,t_pythtb_serial,speedup_vs_pythtb_serial,t_pythtb_parallel,speedup_vs_pythtb_parallel,host,cpu,os,n_cpus,blas,numpy
+2026-11-21T18:07:02,full_pipeline,6,8,40,2.0,cpu,,double,13.2297,8.2835,4.9433,0.0029,40,0,0,10,13.5319,1.02,3.1296,0.24,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T18:07:02,full_pipeline,6,8,40,2.0,cpu,,single,7.1349,4.8948,2.2373,0.0028,40,0,0,10,13.5319,1.90,3.1296,0.44,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T18:07:02,full_pipeline,8,6,40,2.0,cpu,,double,28.0325,18.5476,9.4817,0.0032,40,0,0,10,29.8300,1.06,8.3719,0.30,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T18:07:02,full_pipeline,8,6,40,2.0,cpu,,single,15.9650,11.5176,4.4447,0.0027,40,0,0,10,29.8300,1.87,8.3719,0.52,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5

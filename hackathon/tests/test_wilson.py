@@ -1,0 +1,99 @@
+"""Batched Wilson loop (step 2) vs PythTB's berry_phase, configuration by configuration.
+
+Wannier centres live on a circle [0, 1), and their order within a line is arbitrary, so
+we compare each line's sorted set with the periodic distance.
+Tolerances: 1e-8 for complex128, 1e-4 for complex64 (CLAUDE.md testing rules).
+"""
+
+import numpy as np
+import pytest
+import torch
+
+from gpu_engine import get_backend
+from gpu_engine.batched import solve_configs
+from gpu_engine.reference import (
+    clean_kane_mele,
+    disordered_kane_mele,
+    half_bz_flow,
+    periodic_distance,
+    solve,
+)
+from gpu_engine.reference import wannier_centres as pythtb_wannier_centres
+from gpu_engine.topology import z2_from_wannier_flow
+from gpu_engine.wilson import ordered_product, unitary_part, unitary_part_svd, wannier_centres
+
+TOL = {"double": 1e-8, "single": 1e-4}
+
+
+def assert_same_centres(ours: np.ndarray, ref: np.ndarray, tol: float) -> None:
+    """Both (nk_x, n): compare each line as a set of points on the circle."""
+    ours = np.sort(ours % 1.0, axis=-1)
+    ref = np.sort(ref % 1.0, axis=-1)
+    # sorting on a circle can split a pair across 0/1; align by trying the cyclic shifts
+    for line_ours, line_ref in zip(ours, ref, strict=True):
+        best = min(
+            periodic_distance(np.roll(line_ours, s), line_ref).max() for s in range(len(line_ref))
+        )
+        assert best < tol, f"Wannier centres differ by {best:.2e} (tol {tol:.0e})"
+
+
+def test_tree_product_equals_sequential_product():
+    U = torch.randn(3, 7, 4, 4, dtype=torch.complex128)  # 7 = odd, exercises the carry
+    seq = U[:, 0]
+    for i in range(1, 7):
+        seq = seq @ U[:, i]
+    torch.testing.assert_close(ordered_product(U), seq)
+
+
+def test_newton_schulz_matches_svd_on_near_unitary_matrices():
+    Q, _ = torch.linalg.qr(torch.randn(50, 8, 8, dtype=torch.complex128))
+    M = 0.9 * Q + 0.02 * torch.randn(50, 8, 8, dtype=torch.complex128)  # like real overlaps
+    U_ns, n_fallback = unitary_part(M)
+    torch.testing.assert_close(U_ns, unitary_part_svd(M), atol=1e-10, rtol=0)
+    assert n_fallback == 0
+
+
+def test_newton_schulz_falls_back_to_svd_when_it_cannot_converge():
+    M = torch.randn(5, 6, 6, dtype=torch.complex128) * 0.05  # far from unitary
+    U, n_fallback = unitary_part(M)
+    assert n_fallback > 0
+    torch.testing.assert_close(U, unitary_part_svd(M), atol=1e-10, rtol=0)
+
+
+@pytest.mark.parametrize("supercell", [1, 2])
+def test_clean_model_matches_pythtb(supercell):
+    be = get_backend("double")
+    model, nk = clean_kane_mele(supercell), 8
+    _, u = solve_configs(model, nk, 0.0, [0], be)
+    wcc, info = wannier_centres(u, model)
+    ref = pythtb_wannier_centres(solve(model, nk), model.norb)
+    assert_same_centres(wcc[0].cpu().numpy(), ref, TOL["double"])
+    assert info["ns_fallbacks"] == 0
+
+
+@pytest.mark.parametrize("precision", ["double", "single"])
+@pytest.mark.parametrize("method", ["newton-schulz", "svd"])
+def test_disordered_configs_match_pythtb_one_by_one(precision, method):
+    be = get_backend(precision)
+    n, nk, W, seeds = 2, 8, 3.0, [0, 1, 2]
+    _, u = solve_configs(clean_kane_mele(n), nk, W, seeds, be)
+    wcc, _ = wannier_centres(u, clean_kane_mele(n), method=method)
+    for c, s in enumerate(seeds):
+        model = disordered_kane_mele(n, W, np.random.default_rng(s))
+        ref = pythtb_wannier_centres(solve(model, nk), model.norb)
+        assert_same_centres(wcc[c].double().cpu().numpy(), ref, TOL[precision])
+
+
+@pytest.mark.parametrize("precision", ["double", "single"])
+def test_z2_matches_reference_config_by_config(precision):
+    """The number we actually care about: same Z2 as the CPU pipeline for each config."""
+    be = get_backend(precision)
+    n, nk, seeds = 2, 8, [0, 1, 2, 3]
+    for W, expected in [(0.5, 1), (20.0, 0)]:
+        _, u = solve_configs(clean_kane_mele(n), nk, W, seeds, be)
+        wcc, _ = wannier_centres(u, clean_kane_mele(n))
+        for c, s in enumerate(seeds):
+            model = disordered_kane_mele(n, W, np.random.default_rng(s))
+            wfa = solve(model, nk)
+            flow = half_bz_flow(wfa, wcc[c].double().cpu().numpy())
+            assert z2_from_wannier_flow(flow) == expected

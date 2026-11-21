@@ -13,9 +13,8 @@ from pathlib import Path
 
 # Commands to run, from inside hackathon/. Edit freely.
 JOBS = [
-    ["scripts/check_env.py"],
     ["-m", "pytest", "-q", "-p", "no:cacheprovider"],
-    ["benchmarks/gpu_step1.py", "--sizes", "4", "8", "12", "--configs", "20"],
+    ["benchmarks/gpu_pipeline.py", "--sizes", "8", "12", "--configs", "40", "--W", "2.0"],
 ]
 
 WORK = Path("/kaggle/working")

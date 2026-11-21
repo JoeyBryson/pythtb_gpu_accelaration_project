@@ -1,0 +1,13 @@
+timestamp,scenario,supercell,nk,configs,W,device,gpu,precision,t_pythtb_serial,t_ours,speedup_vs_pythtb_serial,max_eig_error,answers_match,host,cpu,os,n_cpus,blas,numpy
+2026-11-21T17:56:56,step1_batched_solve,4,12,20,2.0,cpu,,double,5.3557,1.7706,3.02,8.22e-15,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,4,12,20,2.0,cpu,,single,5.3557,1.3546,3.95,3.53e-06,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,4,12,20,2.0,cuda,Tesla T4,double,5.3557,11.8382,0.45,1.24e-14,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,4,12,20,2.0,cuda,Tesla T4,single,5.3557,2.1581,2.48,8.15e-06,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,8,6,20,2.0,cpu,,double,24.5714,7.5877,3.24,1.47e-14,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,8,6,20,2.0,cpu,,single,24.5714,4.9927,4.92,4.31e-06,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,8,6,20,2.0,cuda,Tesla T4,double,24.5714,10.0080,2.46,3.24e-14,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,8,6,20,2.0,cuda,Tesla T4,single,24.5714,1.9709,12.47,1.04e-05,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,12,6,20,2.0,cpu,,double,146.4098,48.7383,3.00,2.53e-14,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,12,6,20,2.0,cpu,,single,146.4098,29.2959,5.00,5.89e-06,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,12,6,20,2.0,cuda,Tesla T4,double,146.4098,35.1878,4.16,2.31e-14,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
+2026-11-21T17:56:56,step1_batched_solve,12,6,20,2.0,cuda,Tesla T4,single,146.4098,6.8368,21.41,1.65e-05,True,79ff1acb1435,x86_64,Linux-6.18.55+-x86_64-with-glibc2.39,4,openblas:4t,2.1.3
