@@ -1,0 +1,5 @@
+timestamp,scenario,supercell,nk,configs,W,device,gpu,precision,t_pythtb_serial,t_ours,speedup_vs_pythtb_serial,max_eig_error,answers_match,host,cpu,os,n_cpus,blas,numpy
+2026-11-21T17:46:27,step1_batched_solve,4,12,20,2.0,cpu,,double,1.8097,1.4070,1.29,6.66e-15,True,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T17:46:27,step1_batched_solve,4,12,20,2.0,cpu,,single,1.8097,0.7824,2.31,4.33e-06,True,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T17:46:27,step1_batched_solve,8,6,20,2.0,cpu,,double,10.3094,9.4752,1.09,7.55e-15,True,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T17:46:27,step1_batched_solve,8,6,20,2.0,cpu,,single,10.3094,5.6918,1.81,6.51e-06,True,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
