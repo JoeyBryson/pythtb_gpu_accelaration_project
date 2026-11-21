@@ -49,15 +49,23 @@ PDFs' vector graphics (`analysis/extract_paper_data.py`).
 
 ## Method
 
-**Per configuration** (`gpu_engine.pipeline.run_batch`):
-1. Build the clean H(k) once, then add a random diagonal for each configuration.
-2. Run a batched `eigh` over configurations × k-points.
-3. Run batched Wilson loops along k_y (Newton-Schulz with SVD fallback, tree product) to get the Wannier centres.
-4. Compute Z₂ from the Wannier-centre flow between k_x = 0 and π, plus the reliability checks.
+**Per configuration** (`gpu_engine.spin_chern.run_spin_chern`; decision A, 21 Nov):
+1. Build the clean **spin-up block** of H(k) once (λ_R = 0 conserves S_z), then add a random diagonal for each
+   configuration.
+2. Run a batched `eigh` over configurations × k-points, on half-size matrices.
+3. Compute the overlaps along k_y and a batched `slogdet`. The phase of det(Wilson loop) gives the **sum of the
+   spin-up Wannier centres** on each k_x line.
+4. **C↑ = winding of that sum** as k_x goes round the zone, and **Z₂ = C↑ mod 2**. Reliable if the largest wrapped
+   step is ≤ 0.4 and the spin-up gap is open. Flagged configs are re-run at nk = 10.
+
+Why not the gap-tracking Z₂ (`pipeline.run_batch`)? Near W ≈ 2 it flagged 85–95% of configs, and its answers
+changed with nk (up to 6/20). C↑ gave the same answer at nk = 6 and 10 for 137/140 configs (L = 8, 12;
+W = 1–8), and all 3 changes were flagged. Evidence: `analysis/stage0_chern_up.py`, `results/stage0*_chern_up*.csv`.
+The gap-tracking Z₂ stays as a cross-check, and for λ_R ≠ 0.
 
 **Per (L, W)**, over M configurations:
 - **f** = fraction topological = (reliable configs with Z₂ = 1) / (reliable configs)
-- **u** = fraction unreliable, split by reason (no gap, `z2_margin`, `min_overlap`)
+- **u** = fraction unreliable after refinement, split by reason (largest step > 0.4, spin-up gap closed)
 
 Use the **same seeds at every W**: each configuration keeps its disorder pattern, scaled by W. Error bars come
 from a bootstrap over seeds.
@@ -76,33 +84,34 @@ from a bootstrap over seeds.
 
 | # | Stage | Where | Done when |
 |---|---|---|---|
-| 0 | **Go/no-go:** `reference.run_config(8, W, nk=6, seed=s, delta=1.65, rashba=0)`, W ∈ {0, 1, 2, 3, 5, 8}, 20 seeds | CPU, about 5 min | f ≈ 0 → partial → ≈ 1 → ≈ 0, with u reported |
-| 1 | **GPU equals CPU:** `run_batch` and `run_config`, same seeds, W ∈ {1, 2, 3}, single and double | GPU | Identical Z₂ for every reliable config |
-| 2 | **Z₂ cross-check:** spin-up Wilson-loop winding C↑ per config. Z₂ must equal C↑ mod 2 for every reliable config. | GPU | 100% agreement, or disagreements explained |
-| 3 | **Pilot:** W ∈ {1.5, 2.0, 2.5, 6.5, 7.0, 7.5}, L ∈ {8, 12}, nk = 6 vs 10, M = 50. Measure seconds per config. | GPU | Mesh fixed (f stable within error bars); time budget known |
+| 0 | ✓ **Go/no-go** (`analysis/stage0_go_no_go.py`, L = 8, 20 seeds). Physics GO; gap-tracking Z₂ not converged near W ≈ 2 | CPU | Done 21 Nov |
+| 0b | ✓ **Invariant convergence** (`analysis/stage0_chern_up.py`): C↑ stable at nk = 6 vs 10 for 137/140 configs; f(L = 8) = 0, 0.3, 1.0, 0.95, 0.2 at W = 1, 2, 3, 5, 8; f(W = 2) rises from 0.33 (L = 8) to 0.75 (L = 12) | CPU | Done 21 Nov: decision A = C↑ |
+| 1 | **GPU equals CPU:** `tests/test_spin_chern.py` (C↑ sample by sample, single and double) | GPU | All pass |
+| 2 | **Cross-check:** gap-tracking Z₂ against C↑ mod 2 on the reliable configs of both | GPU | Disagreements explained (they occur where gap tracking is flagged) |
+| 3 | **Pilot / timing:** `benchmarks/gpu_spin_chern.py` at L ∈ {8, 12, 16}; check that nk = 10 refinement suffices at L = 16 | GPU | Seconds per config known; scope decided (base or stretch, `PART2_PLAN.md`) |
 | 4 | **Coarse scan:** W 0 to 8 in steps of 0.25 (Favata's grid), L ∈ {8, 12, 16}, M = 200 | GPU | f(W) for each L; rough Wc₁ and Wc₂ |
 | 5 | **Finite-size-scaling runs:** about 10 W values within ±0.6 of each coarse Wc, L ∈ {8, 12, 16} (+24 if spin-split), M = 500 | GPU | Crossings W*(L₁, L₂) with errors |
 | 6 | **Analysis:** crossings, drift, optional collapse, robustness (below) | CPU | Wc₁ (and Wc₂) ± statistical ± systematic error |
 | 7 | **CPU comparison:** `cpu_baseline.py parallel` on the same machine, on a subset, extrapolated and labelled as such | same machine | Measured time to the whole dataset, GPU vs best CPU |
 | 8 | **Figures and write-up** | — | See below |
 
-**Compute estimate** (T4, single precision, from RESULTS R4a and R5; to be measured in stage 3): about 0.1, 0.5
-and 1.3 s per config at L = 8, 12 and 16. Stage 4 is about 3.5 h and stage 5 about 3 h per transition on one T4,
+**Compute estimate** (to be replaced by the stage 3 measurement): the old full-spin pipeline measured 0.245 and
+0.90 s per config at L = 8 and 12 (R7, T4, single). C↑ diagonalises a half-size block and skips Newton-Schulz,
+so expect several times less. Stage 4 is about 3.5 h and stage 5 about 3 h per transition on one T4,
 roughly halved with both T4s. L = 24 needs the spin split (about 8x cheaper diagonalisation). Laptop CPU
 equivalent, all 10 cores: roughly 15 h per transition at L ≤ 16.
 
 **Raw output:** append every config to `results/tai_165_raw.csv` as it finishes:
-`L, nk, W, seed, z2, z2_margin, min_overlap, band_gap, reliable, precision, device, timestamp`.
+`L, nk_used, W, seed, c_up, z2, max_step, gap_up, reliable, precision, device, timestamp`.
 
 ## Robustness checks (stage 6)
 
 - **Reliability bias:** recompute Wc with the unreliable configs counted as Z₂ = 0, then as Z₂ = 1. The shift is
   a systematic error.
-- **Mesh:** Wc at nk = 6 vs 10 at the largest L.
+- **Mesh:** Wc with refinement at nk = 10 vs 14 at the largest L.
 - **Precision:** single vs double precision on a subset near Wc₁.
 - **Crossing drift:** W* for (8, 12), (12, 16) and (16, 24). Report the trend, and use it as a systematic error.
-- **Gap policy:** `reliable` uses the *indirect* gap at the moment; the Wilson loop only needs a *direct* gap at
-  each k. Log both and agree the policy with Oscar before stage 4.
+- **Threshold:** Wc with the largest-step threshold at 0.35 and 0.45 instead of 0.4.
 
 ## Figures
 
