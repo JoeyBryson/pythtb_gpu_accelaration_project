@@ -286,6 +286,36 @@ Findings:
   because T4 double precision is slow; at 16×16 it's 3.7× *faster* than R9's step, which had CPU
   fallbacks. Worth re-checking on an A100/H100 (fast double).
 
+## R11. First disorder sweep: pilot, 8×8, both λ_ν (KAG)
+
+What: fraction of disorder samples that are topological vs disorder strength W, for λ_ν = 1.0
+(topological when clean) and λ_ν = 1.65 (normal when clean); λ_SO = 0.3, λ_R = 0, 8×8
+supercells, 6×6 k-mesh (uncertain samples re-run at 10×10), 100 samples per point, W from 0 to 10
+in steps of 0.5. Invariant: Joey's spin-up Chern number C_up (Z2 = C_up mod 2), GPU single
+precision, cuSOLVER determinant fix (d823336).
+Command: `PRESET=sweep_pilot bash kaggle/gpu_run.sh` (`analysis/sweep.py --size 8 --samples 100
+--W-step 0.5`) · Kaggle run 21 Nov 21:23–21:30 · data `results/sweep/pilot_8x8_c_up.csv`,
+plot `results/sweep/pilot_8x8_c_up.png` (raw: `results/kaggle/20261121-212251/`)
+
+**Result:**
+- λ_ν = 1.65 (normal when clean): 0% topological up to W = 1, then **disorder switches it on**:
+  13% at W = 1.5, **60% at W = 2.0**, 80% at 2.5, ~100% for W = 3.5–4.5; then it is destroyed again,
+  crossing 50% near W ≈ 7.
+- λ_ν = 1.0 (topological when clean): 100% up to W = 4.5, crossing **~50% at W ≈ 7**, ~3% at W = 10.
+- Above W ≈ 5 the two curves coincide within error bars: strong disorder washes out the
+  difference between the clean starting points.
+- Uncertain (after refinement): 0–7 of 100 per point; gap closed: 0 everywhere.
+- **GPU time for the whole sweep: 5.1 min** (42 points, 4,200 samples, 0.074 s per sample incl. refinement).
+
+Cross-check with the independent gap-tracking Z2 (cancelled 8×8 run, version 3, 21:00–21:14,
+numbers from its log; same λ_ν = 1.0, W = 0–6.5, 100 samples): 100% up to W = 3.5, 99% at 4–4.5,
+98% at 5.0, 92% at 5.5, 81% at 6.0, 58% at 6.5, vs C_up 100/100/99/96/87/64%. Agrees within
+~1–2 standard errors, with far fewer uncertain samples for C_up (3–6 vs 22–28 per point at W = 6–6.5)
+and ~7–15× less time per point (6.5–9 s vs 44–135 s).
+
+Not yet: bigger sizes (transitions at 8×8 are smeared by finite size), the CPU time for the same
+sweep (the main sweep runs the CPU subset), and comparison with the papers (on hold).
+
 ---
 
 ## Still to measure
@@ -299,4 +329,5 @@ Findings:
 - [x] Eigenvalue accuracy/fallbacks (R10: double step, per-eigenvector check)
 - [x] Spin-block split for λ_R = 0 (R10: helps from 12×12)
 - [ ] Use both T4s
-- [ ] Full phase-diagram sweep: CPU time vs GPU time (the headline for the pitch)
+- [x] First sweep, 8×8 pilot (R11): disorder switches topology on at λ_ν = 1.65
+- [ ] Main sweep at 12×12 (+16×16) with the CPU time estimate (the headline for the pitch)
