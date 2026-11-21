@@ -1,0 +1,43 @@
+# uv run python benchmarks/profile_wilson.py   (2026-11-21 19:06)
+CPU arm (12 cpus, BLAS accelerate), torch 2.15.0, torch threads 8, GPU none
+6 configs at W=4.0 (team convention), Wilson loop along k_y, NS_MAX_STEPS=12
+
+=== 3x3 supercell, mesh 16x16: 1536 links of 18x18, 96 Wilson matrices
+  PythTB berry_phase (per-line loop, SVD):  0.142 s
+  ours cpu double: overlaps     7.7  NS   117.4  check     5.3  SVD    98.0  product     4.5  eigvals     4.9 ms
+      Wilson total: NS path 0.140 s ( 1.0x vs PythTB), SVD path 0.115 s ( 1.2x); NS is 1.2x the SVD time
+      overlap singular values: min 0.963; NS residual (worst link) by step: 4e-03 1e-05 1e-10 2e-15 9e-16 8e-16 8e-16 8e-16 ...; steps to reach tol 2e-11: 4
+      NS + check, stopping early: 12 steps 126.7 ms (max|U-U_svd| 5e-15) | 4 steps 44.2 ms (max|U-U_svd| 5e-15) | 3 steps 33.9 ms (max|U-U_svd| 5e-11)
+      1 torch thread: NS 121.1 ms (vs 117.4 with 8), SVD 98.3 ms (vs 98.0)
+  ours cpu single: overlaps     5.2  NS    80.6  check     3.4  SVD    74.1  product     3.0  eigvals     4.1 ms
+      Wilson total: NS path 0.096 s ( 1.5x vs PythTB), SVD path 0.086 s ( 1.6x); NS is 1.1x the SVD time
+      overlap singular values: min 0.963; NS residual (worst link) by step: 4e-03 1e-05 4e-07 4e-07 4e-07 4e-07 4e-07 4e-07 ...; steps to reach tol 2e-04: 2
+      NS + check, stopping early: 12 steps 86.5 ms (max|U-U_svd| 2e-06) | 4 steps 31.0 ms (max|U-U_svd| 2e-06) | 3 steps 23.5 ms (max|U-U_svd| 2e-06)
+      1 torch thread: NS 83.7 ms (vs 80.6 with 8), SVD 73.1 ms (vs 74.1)
+
+=== 6x6 supercell, mesh 8x8: 384 links of 72x72, 48 Wilson matrices
+  PythTB berry_phase (per-line loop, SVD):  0.589 s
+  ours cpu double: overlaps    24.1  NS   283.7  check    11.6  SVD   408.7  product    10.4  eigvals    58.4 ms
+      Wilson total: NS path 0.388 s ( 1.5x vs PythTB), SVD path 0.502 s ( 1.2x); NS is 0.7x the SVD time
+      overlap singular values: min 0.979; NS residual (worst link) by step: 1e-03 1e-06 1e-12 3e-15 2e-15 2e-15 2e-15 2e-15 ...; steps to reach tol 7e-11: 3
+      NS + check, stopping early: 12 steps 293.7 ms (max|U-U_svd| 4e-15) | 4 steps 104.5 ms (max|U-U_svd| 4e-15) | 3 steps 79.7 ms (max|U-U_svd| 4e-13)
+      1 torch thread: NS 291.4 ms (vs 283.7 with 8), SVD 411.1 ms (vs 408.7)
+  ours cpu single: overlaps    13.9  NS   179.0  check     7.8  SVD   344.3  product     6.3  eigvals    40.6 ms
+      Wilson total: NS path 0.248 s ( 2.4x vs PythTB), SVD path 0.405 s ( 1.5x); NS is 0.5x the SVD time
+      overlap singular values: min 0.979; NS residual (worst link) by step: 1e-03 2e-06 1e-06 1e-06 9e-07 1e-06 1e-06 1e-06 ...; steps to reach tol 7e-04: 2
+      NS + check, stopping early: 12 steps 197.6 ms (max|U-U_svd| 2e-06) | 4 steps 71.1 ms (max|U-U_svd| 1e-06) | 3 steps 55.5 ms (max|U-U_svd| 1e-06)
+      1 torch thread: NS 193.1 ms (vs 179.0 with 8), SVD 336.4 ms (vs 344.3)
+
+=== 8x8 supercell, mesh 6x6: 216 links of 128x128, 36 Wilson matrices
+  PythTB berry_phase (per-line loop, SVD):  1.484 s
+  ours cpu double: overlaps    39.8  NS   467.4  check    21.5  SVD   860.7  product    16.6  eigvals   266.2 ms
+      Wilson total: NS path 0.811 s ( 1.8x vs PythTB), SVD path 1.183 s ( 1.3x); NS is 0.5x the SVD time
+      overlap singular values: min 0.979; NS residual (worst link) by step: 1e-03 1e-06 1e-12 4e-15 3e-15 3e-15 3e-15 3e-15 ...; steps to reach tol 1e-10: 3
+      NS + check, stopping early: 12 steps 491.9 ms (max|U-U_svd| 4e-15) | 4 steps 177.3 ms (max|U-U_svd| 3e-15) | 3 steps 137.8 ms (max|U-U_svd| 3e-13)
+      1 torch thread: NS 504.0 ms (vs 467.4 with 8), SVD 870.3 ms (vs 860.7)
+  ours cpu single: overlaps    19.6  NS   279.8  check    12.3  SVD   595.5  product     9.6  eigvals   192.2 ms
+      Wilson total: NS path 0.514 s ( 2.9x vs PythTB), SVD path 0.817 s ( 1.8x); NS is 0.5x the SVD time
+      overlap singular values: min 0.979; NS residual (worst link) by step: 1e-03 3e-06 2e-06 1e-06 2e-06 2e-06 2e-06 1e-06 ...; steps to reach tol 1e-03: 2
+      NS + check, stopping early: 12 steps 289.8 ms (max|U-U_svd| 2e-06) | 4 steps 104.1 ms (max|U-U_svd| 1e-06) | 3 steps 81.2 ms (max|U-U_svd| 1e-06)
+      1 torch thread: NS 310.0 ms (vs 279.8 with 8), SVD 596.0 ms (vs 595.5)
+

@@ -1,0 +1,43 @@
+# uv run --with line_profiler --with scipy python benchmarks/profile_solve_model.py   (2026-11-21 19:07)
+CPU arm (12 cpus, BLAS accelerate, numpy 2.5.5), torch 2.15.0
+
+1. Line profile of solve_model, 24x24 mesh (ms; lines >= 1% of the total shown)
+   --- 1x1 (M=4): total 2.1 ms
+   _sol_ham                     1.1 ms  50.8%  eval, evec = np.linalg.eigh(ham_use)
+   _sol_ham                     0.2 ms   8.1%  if not np.allclose(ham, ham.swapaxes(-1, -2).conj()):
+   _hamiltonian_periodic        0.1 ms   6.8%  unique_R, R_inv = np.unique(R_per, axis=0, return_inverse=True)
+   _hamiltonian_periodic        0.1 ms   2.5%  R_phases = self._phases_from_reduced_dot_products(k_vecs @ unique_R.T)
+   _hamiltonian_periodic        0.1 ms   2.4%  self._add_spinful_onsite_blocks(ham, site_energies)
+   _hamiltonian_periodic        0.0 ms   1.8%  np.conj(orb_phases_exp[:, :, None])
+   _hamiltonian_periodic        0.0 ms   1.2%  T_inner += np.conj(T_inner.swapaxes(-2, -1))
+   set_states                   0.1 ms   3.2%  phases = self._get_phases(inverse=False)
+   --- 3x3 (M=36): total 121.7 ms
+   _sol_ham                   106.6 ms  87.6%  eval, evec = np.linalg.eigh(ham_use)
+   _sol_ham                     7.7 ms   6.4%  if not np.allclose(ham, ham.swapaxes(-1, -2).conj()):
+   _hamiltonian_periodic        2.1 ms   1.7%  np.conj(orb_phases_exp[:, :, None])
+   _hamiltonian_periodic        1.4 ms   1.1%  T_inner += np.conj(T_inner.swapaxes(-2, -1))
+   --- 6x6 (M=144): total 2555.5 ms
+   _sol_ham                  2322.2 ms  90.9%  eval, evec = np.linalg.eigh(ham_use)
+   _sol_ham                   137.3 ms   5.4%  if not np.allclose(ham, ham.swapaxes(-1, -2).conj()):
+   _hamiltonian_periodic       34.6 ms   1.4%  np.conj(orb_phases_exp[:, :, None])
+   --- 8x8 (M=256): total 10726.0 ms
+   _sol_ham                  9944.5 ms  92.7%  eval, evec = np.linalg.eigh(ham_use)
+   _sol_ham                   484.8 ms   4.5%  if not np.allclose(ham, ham.swapaxes(-1, -2).conj()):
+
+2. Diagonalisation variants on the same H(k) stack, 24x24 mesh (s, best of 3)
+   3x3 (M=36, 576 matrices, H = 12 MB): eigh 0.106  eigvalsh 0.051  hermiticity check 0.007  scipy occupied-only (loop) 0.209
+   8x8 (M=256, 576 matrices, H = 604 MB): eigh 9.742  eigvalsh 2.955  hermiticity check 0.415  scipy occupied-only (loop) 11.333
+
+3. torch CPU eigh vs thread count: 6x6, 6 configs x 8x8 mesh = 384 matrices of 144x144 (s)
+   numpy eigh c128: 1.516
+   torch  8 thread(s): eigh c128 1.627  c64 0.879
+   torch  1 thread(s): eigh c128 1.673  c64 0.921
+
+
+# VECLIB_MAXIMUM_THREADS=1 OPENBLAS_NUM_THREADS=1 uv run python benchmarks/profile_solve_model.py --part 2
+CPU arm (12 cpus, BLAS accelerate, numpy 2.5.5), torch 2.15.0
+
+2. Diagonalisation variants on the same H(k) stack, 24x24 mesh (s, best of 3)
+   3x3 (M=36, 576 matrices, H = 12 MB): eigh 0.110  eigvalsh 0.054  hermiticity check 0.008
+   8x8 (M=256, 576 matrices, H = 604 MB): eigh 9.997  eigvalsh 3.013  hermiticity check 0.470
+

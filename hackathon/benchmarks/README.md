@@ -29,9 +29,74 @@ All run with `uv run python benchmarks/cpu_baseline.py <scenario> ...` from `hac
 | `parallel` | N disorder configs, one per CPU core (1 BLAS thread each) | **the strongest simple CPU baseline**: what a judge will ask "did you compare against?" |
 | `both` | `serial` then `parallel` on the same configs | also checks both give identical Z2 for every config |
 
+### Comparison and profiling scripts
+
+| Script | What it measures | Output |
+|---|---|---|
+| `team_tools_sweep.py` | The disorder sweep (W × configs → fraction topological) through **every engine on the same seeds**: PythTB serial, PythTB parallel, batched solve + PythTB Wilson (`pyW`), batched pipeline with `wilson.py` Newton-Schulz (`NS`, i.e. `pipeline.run_batch` unchanged), the same with the SVD unitary part (`SVD`). Each in double (`-d`) and single (`-s`); CUDA variants are added automatically on a GPU machine. | `results/team_tools_sweep.csv` |
+| `profile_solve_model.py` | Line profile of PythTB's `WFArray.solve_model`; variants of the diagonalisation (eigenvalues only, 1 BLAS thread, SciPy occupied-only, the Hermiticity check); torch CPU `eigh` vs thread count. | `results/profile_solve_model.txt` |
+| `profile_wilson.py` | Stage times of `wilson.py` vs PythTB's `berry_phase` on the same states; Newton-Schulz residual per step; what stopping early saves; torch thread count. | `results/profile_wilson.txt` |
+| `tf_metal_vs_numpy.py` | PythTB's own `use_tensorflow=True` path on a Mac with Apple's Metal plugin: which ops Metal can run, `solve_model` NumPy vs TF, Metal float32 matmul, TF CPU thread scaling. | `results/tf_metal_vs_numpy.txt` |
+| `../scripts/sample_cpu_sim.py` | First end-to-end sanity simulation with plain PythTB (clean Z2 checks, stage timings, small disorder sweep); `--tensorflow` swaps in TF `eigh`. **Uses Orth et al.'s disorder convention [−W, W]**, unlike the rest of our code. | `results/sample_cpu_*` |
+
+`results/benchmark_comparison.html` is a one-page summary (charts + tables) of everything above.
+Results and their analysis: [`../RESULTS.md`](../RESULTS.md), sections R7 onwards.
+
 **Which number do we quote?** The GPU speed-up for the disorder sweep should be quoted
 against `parallel` (honest) and may also be shown against `serial` (what users do
 today). Always say which.
+
+## How a comparison is made (detail)
+
+These are the rules the scripts above follow. New benchmarks should follow them too.
+
+**Same materials in every engine.** Seeds come from `cpu_baseline.config_seeds` (per W:
+`config_seeds(seed + 1000*W, configs)`), and `batched.disorder_shifts` draws exactly the same
+random numbers as `reference.disordered_kane_mele`, so every engine diagonalises identical
+Hamiltonians. Every timing is reported next to a config-by-config check against PythTB serial:
+Z2 identical, band gap within 1e-8 (double) or 1e-3 (single). A row that prints `NO` must not
+be quoted.
+
+**What is inside the clock.** Wall time (`time.perf_counter`) around the whole engine call:
+building H, host↔device copies, solve, Wilson loop and Z2. On a GPU, `sync()` before reading the
+clock. Outside the clock: process-pool start-up and worker warm-up, one warm-up call per engine
+(imports, kernel loading, first allocation), and every reliability diagnostic.
+
+**Diagnostics are never timed.** `reference.run_config(check=True)` (the default) runs an SVD over
+every link to get `min_overlap`; that adds **~20% of wall time** (measured at 3×3, 6×6 and 8×8).
+Timed PythTB runs therefore use `check=False`, and the `z2_reliable` flags come from a separate,
+untimed `check=True` pass over the same seeds. Batched engines are timed with
+`run_batch(check=False)`. ⚠ `cpu_baseline.py serial/parallel` still time `run_config` with the
+default `check=True`, so the *wall times* in `cpu_serial.csv` / `cpu_parallel.csv` (R3) are ~20%
+too slow (their per-stage sums are fine). Fix: pass `check=False` in `bench_serial` and
+`_run_config_task`, and get the flags from an untimed pass.
+
+**Repeats.** Sweeps: one timed pass per W, 9 values of W × 6 configs = 54 configs per supercell, so
+noise averages out across W (per-W times varied by under 5%). Profiling scripts: best of 3 after
+one warm-up call.
+
+**Threads decide who wins on a CPU, so record them.**
+- PythTB parallel: one process per core, 1 BLAS thread each (environment variables set before
+  the workers start, because Accelerate reads them only at start-up).
+- NumPy's batched `eigh` uses one core however many BLAS threads it is given (R7).
+- PyTorch's CPU `eigh`, batched matmul (Newton-Schulz) and SVD take the same time with 8 threads
+  or 1 on these batch shapes (R7, R10). So on a CPU our batched engine runs on one core.
+- TensorFlow's CPU `eigh` does spread a batch over cores (R8).
+
+**One benchmark at a time** on an otherwise idle machine: the sweep's parallel step uses every core.
+
+**Mac specifics.** No CUDA; PyTorch MPS has no complex `eigh`; TensorFlow-Metal runs only float32
+matmul on the GPU (R8). Numbers from a Mac are CPU numbers. TensorFlow needs a throwaway
+environment pinned to `tensorflow==2.18.1` + `tensorflow-metal` 1.2.0 (newer TensorFlow fails to
+load the plugin), which also pulls NumPy 2.0.2: compare TF only against NumPy timed in the same
+environment, as `tf_metal_vs_numpy.py` does.
+
+**Conventions that differ between scripts.**
+- Disorder: our code draws from [−W/2, W/2]; `sample_cpu_sim.py` and Orth et al. use [−W, W]
+  (W_ours = 2 × W_Orth, see `VALIDATION.md`).
+- Mesh: team scripts use `scaled_nk` on a gamma-centred grid; `sample_cpu_sim.py` uses a fixed nk
+  on k ∈ [0, 1). Both contain k = 0 and k = π, which Z2 needs.
+- PythTB's TF path returns `energies` with a complex dtype; take `np.real` before comparing.
 
 ## Rules (from CLAUDE.md)
 
@@ -72,7 +137,15 @@ Solve is ~70% and Wilson ~30% of the time at every size, matching the prep profi
 Parallel gains only ~4× on 10 cores, probably because this laptop mixes fast and slow
 cores and the workers share memory bandwidth (not yet checked).
 
-**Found while benchmarking:** a coarse mesh can give the wrong Z2 on big supercells (clean
+**Found while benchmarking:**
+- `run_config(check=True)` inside the timed region inflates PythTB wall times by ~20% (see
+  "How a comparison is made" above). Affects R3's wall times.
+- On CPU, PyTorch ops on our batches are effectively single-threaded, so the batched engine
+  loses to PythTB on all cores (R9). The batched design only pays off on a GPU.
+- Newton-Schulz converges in 3–4 steps (double) / 2 steps (single) on our overlaps, but
+  `wilson.py` always runs 12 (R11).
+
+Earlier: a coarse mesh can give the wrong Z2 on big supercells (clean
 12×12 on 4×4 gave 0). Now caught by `topology.z2_margin` and flagged as unreliable; mesh
 minimum raised to 6. See `topology.py`.
 

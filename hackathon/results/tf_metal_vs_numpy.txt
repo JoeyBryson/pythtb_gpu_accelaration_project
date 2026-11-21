@@ -1,0 +1,34 @@
+# uv run --with "tensorflow==2.18.1" --with tensorflow-metal python benchmarks/tf_metal_vs_numpy.py   (2026-11-21 19:10)
+Hardware: arm64 | macOS-27.2.1-arm64-arm-64bit
+TensorFlow 2.18.1, tensorflow-metal 1.2.0, NumPy 2.0.2
+Devices: ['/physical_device:CPU:0', '/physical_device:GPU:0']
+1. Can the Metal plugin run this op on the GPU? (soft placement off)
+             complex128   complex64     float64     float32
+   matmul            no          no          no         GPU
+   eigh              no          no          no          no
+   svd               no          no          no          no
+   eig               no          no          no          no
+   -> PythTB's TF path uses complex128 eigh, so on a Mac it runs on the CPU.
+2. WFArray.solve_model, clean Kane-Mele supercell, 24x24 mesh, complex128 (s)
+    n    M    numpy       tf  tf/numpy   max|dE|
+    1    4    0.002    0.002     1.50x   4.9e-15
+    2   16    0.015    0.006     0.38x   1.0e-14
+    3   36    0.119    0.027     0.23x   1.8e-14
+    4   64    0.362    0.087     0.24x   3.6e-14
+    6  144    2.496    0.607     0.24x   7.7e-14
+    8  256   10.801    3.290     0.30x   1.1e-13
+   (tf/numpy > 1 means TensorFlow is slower)
+3. Batched float32 matmul (the one op Metal runs), 576 x M x M (ms)
+      M    numpy    metal
+     64      0.5      1.2
+    256     19.9     10.0
+    512    120.3     44.8
+   Metal timing includes copying the result back to NumPy.
+4. solve_model 6x6, 24x24 mesh, vs TF CPU thread count (fresh process each)
+   numpy: 2.485 s
+   tf, intra-op threads       1, metal plugin         1.2.0: 3.332 s
+   tf, intra-op threads       4, metal plugin         1.2.0: 1.039 s
+   tf, intra-op threads default, metal plugin         1.2.0: 0.650 s
+
+# uv run --with "tensorflow==2.18.1" python benchmarks/tf_metal_vs_numpy.py --intra-op-threads 0   (no Metal plugin)
+   tf, intra-op threads default, metal plugin not installed: 0.641 s
