@@ -345,6 +345,32 @@ Findings:
 - These are **estimates** (measured rate × samples), not full runs; the CPU is Kaggle's 4 cores. A
   bigger CPU narrows the gap, a bigger GPU (A100/H100) likely widens it: not measured.
 
+## R13. Finite-size scaling: 12×12 and 16×16 sweeps (KAG)
+
+What: as R11 (C_up, λ_SO = 0.3, λ_R = 0, 100 samples per point, 6×6 mesh, uncertain re-run at
+10×10) at bigger supercells: 12×12 for both λ_ν over W = 0–10 (step 0.5); 16×16 for λ_ν = 1.65
+over W = 0–5 (step 0.25), around the switch-on.
+Command: `PRESET=fss bash kaggle/gpu_run.sh` · Kaggle run 21 Nov 21:58–22:19 · data
+`results/sweep/fss_12x12_c_up.csv`, `results/sweep/fss_16x16_c_up.csv` (raw:
+`results/kaggle/20261121-215811/`) · slides `results/figures/slides/3_disorder_switch.png`,
+`4_sizes.png`
+
+**Switch-on at λ_ν = 1.65 (fraction topological):**
+
+| W | 1.5 | 1.75 | 2.0 | 2.25 | 2.5 | 3.0 |
+|---|---|---|---|---|---|---|
+| 8×8 (R11) | 0.13 | | 0.60 | | 0.80 | 0.97 |
+| 12×12 | 0.06 | | 0.60 | | 0.90 | 1.00 |
+| 16×16 | 0.02 | 0.20 | 0.65 | 0.87 | 0.98 | 1.00 |
+
+- **The switch sharpens with system size** (bigger: lower before, higher after) and the curves
+  cross near **W ≈ 1.9–2.0** (rough, from linear interpolation between points; a proper
+  crossing/collapse analysis is still to do). The hallmark of a genuine transition.
+- Switch-off (12×12): crosses 50% near W ≈ 7.0 (λ_ν = 1.0) and W ≈ 6.7 (λ_ν = 1.65), as at 8×8.
+- Uncertain after refinement: 0–11 of 100 per point (most at 16×16, W = 1.75); gap closed: 0.
+- GPU time: 12×12, 4,200 samples in 9.6 min (0.14 s/sample); 16×16, 2,100 samples in 10.2 min
+  (0.29 s/sample). By R12's rates the same work with PythTB on 4 CPU cores would take ~8 h + ~22 h.
+
 ---
 
 ## Still to measure
@@ -359,4 +385,6 @@ Findings:
 - [x] Spin-block split for λ_R = 0 (R10: helps from 12×12)
 - [ ] Use both T4s
 - [x] First sweep, 8×8 pilot (R11): disorder switches topology on at λ_ν = 1.65
-- [ ] Main sweep at 12×12 (+16×16) with the CPU time estimate (the headline for the pitch)
+- [x] 12×12 and 16×16 sweeps (R13): the switch sharpens with size, crossing near W ≈ 1.9–2.0
+- [x] CPU time estimate for whole sweeps (R12)
+- [ ] Proper crossing / data-collapse estimate of the critical W (finite-size scaling analysis)
