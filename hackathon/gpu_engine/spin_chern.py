@@ -73,6 +73,25 @@ def boundary_phase_up(model: TBModel) -> np.ndarray:
     return np.exp(-2j * np.pi * np.asarray(model.orb_vecs) @ np.array([0.0, 1.0]))
 
 
+def _det_phase(M: torch.Tensor) -> torch.Tensor:
+    """sign = det M / |det M| for a batch of matrices (complex, on M's device).
+
+    On CUDA, slogdet uses a batched LU factorisation. With PyTorch's default MAGMA backend that
+    crashed on a Kaggle T4 (torch 2.11 + CUDA 13, 21 Nov: "illegal memory access in
+    magma_cgetrf_batched", complex64, 8x8 supercell). cuSOLVER is used for this call instead;
+    the previous backend is restored afterwards. A crash like that corrupts the CUDA context,
+    so it can't be caught and retried in the same process.
+    """
+    if not M.is_cuda:
+        return torch.linalg.slogdet(M)[0]
+    previous = torch.backends.cuda.preferred_linalg_library()
+    torch.backends.cuda.preferred_linalg_library("cusolver")
+    try:
+        return torch.linalg.slogdet(M)[0]
+    finally:
+        torch.backends.cuda.preferred_linalg_library(previous)
+
+
 def chern_from_states(u: torch.Tensor, phase: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
     """C_up and max wrapped step per configuration.
 
@@ -82,7 +101,7 @@ def chern_from_states(u: torch.Tensor, phase: torch.Tensor) -> tuple[torch.Tenso
     nxt = torch.roll(u, shifts=-1, dims=2)  # u(k_y + dk); the last one wraps round ...
     nxt[:, :, -1] = nxt[:, :, -1] * phase  # ... and is really u(k_y = 0) + G
     M = u.conj() @ nxt.transpose(-1, -2)  # (C, nk, nk, n, n)
-    sign, _ = torch.linalg.slogdet(M)  # det M = sign * exp(logabsdet); sign is complex
+    sign = _det_phase(M)  # det M = sign * exp(logabsdet); sign is complex
     p = -torch.angle(sign).sum(dim=2) / (2 * torch.pi)  # (C, nk): sum of centres, mod 1
     d = torch.roll(p, shifts=-1, dims=1) - p  # step k_x -> k_x + dk, closing the loop
     d = torch.remainder(d + 0.5, 1.0) - 0.5  # wrap each step into (-1/2, 1/2]

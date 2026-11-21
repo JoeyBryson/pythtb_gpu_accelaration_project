@@ -37,12 +37,12 @@ def c_up(model, nk):
     D = np.exp(-2j * np.pi * np.asarray(model.orb_vecs) @ np.array([0.0, 1.0]))
     nxt = np.roll(u, -1, axis=1); nxt[:, -1] = nxt[:, -1] * D
     M = u.conj() @ np.swapaxes(nxt, -1, -2)                   # (kx, ky, n, n)
-    sign, logdet = np.linalg.slogdet(M)
+    sign, _ = np.linalg.slogdet(M)
     phase = np.angle(sign).sum(axis=1)                        # arg det W(kx), one number per line
     p = -phase / (2 * np.pi)                                  # sum of up-spin Wannier centres, mod 1
     d = np.diff(np.append(p, p[0]))
     d = (d + 0.5) % 1.0 - 0.5                                 # wrap each step into (-1/2, 1/2]
-    return int(round(d.sum())), float(np.abs(d).max()), gap
+    return round(float(d.sum())), float(np.abs(d).max()), gap
 
 def task(a):
     L, W, s, nk = a
