@@ -17,20 +17,13 @@ T4 note: double precision is ~15× slower than single on this GPU (measured belo
 ## Headline so far
 
 > **Full pipeline (diagonalise → Wilson loop → Z2), 40 disorder configurations of a 12×12
-> supercell, same Kaggle machine (R7): PythTB on all 4 CPU cores 321 s, ours on one T4 in
-> single precision 36 s: 8.9× faster** (12.9× vs PythTB on one core), with Z2 identical to
-> PythTB for all 40 configurations. Speed-up grows with size (3.8× at 8×8).
-> Not yet included: the faster Wilson loop (early-stopping Newton-Schulz, CPU eigenvalues),
-> the second T4, or the spin-block split. Double precision on the T4 gives only 2.1×.
->
-> ⚠ **Baseline correction pending:** the 321 s all-cores time included PythTB's untimed
-> reliability diagnostics (~15% of wall time on KAG, see "Timing fix" under R7). Estimated
-> corrected baseline ~274 s, i.e. **~7.6×** rather than 8.9× (~3.3× rather than 3.8× at 8×8).
-> Re-run R7's PythTB parallel baseline with the fixed `cpu_baseline.py` before quoting.
->
-> **Latest (R8, 12×12):** with faster Newton-Schulz, GPU single 32.7 s: ~8.8× vs the corrected
-> all-cores baseline, and about half of that GPU time was one fixable step (eigenvalues on the
-> CPU). Final numbers: R9.
+> supercell, same Kaggle machine (R9): PythTB on all 4 CPU cores 280 s, ours on one T4 in
+> single precision 19.5 s: 14.3× faster**, with Z2 identical to PythTB for all 40
+> configurations. 7.4× at 8×8, 11.8× at 16×16 (16 configs).
+> Baseline timed fairly (no diagnostics, Filip's fix). Earlier headlines (R7: 8.9×) used an
+> inflated baseline and the slow Wilson loop; superseded.
+> Not yet included: the second T4, the spin-block split (λ_R = 0), and a fix for the 16×16
+> eigenvalue fallbacks (see R9). Double precision on the T4 gives only 1.6–2.9× (R8).
 
 ---
 
@@ -221,6 +214,42 @@ faster even on MAC's CPU; to be measured on KAG (R9).
 Also seen: PythTB on 4 cores at 16×16 took 184 s for its first 4 configs (~46 s per config per
 worker), so 16 configs ≈ 12 min on KAG.
 
+## R9. Final speed run: fair baseline + all Wilson-loop speed-ups (KAG)
+
+What: full pipeline, GPU single precision vs PythTB on all 4 cores, same machine, same seeds,
+W = 2, tutorial parameters. **PythTB timed without its diagnostics** (Filip's fix, fb0cd23) and
+our Wilson loop with early-stopping Newton-Schulz and Hermitian eigenvalues (66f7a14).
+Command: `kaggle/run.py` JOBS at 66f7a14 (`gpu_pipeline.py --devices cuda --precisions single
+--skip-serial --no-reliability`, sizes 8 and 12 with 40 configs, 16 with 16) · Kaggle run
+21 Nov 19:57–20:17 (version 9) · files `results/kaggle/20261121-195518/out/*.csv` + log
+
+| Supercell (mesh) | Configs | PythTB 4 cores | **Ours T4 single** | **Speed-up** | Z2 agrees |
+|---|---|---|---|---|---|
+| 8×8 (6×6) | 40 | 34.3 s | 4.6 s | **7.4×** | 40/40 |
+| 12×12 (6×6) | 40 | 280.2 s | 19.5 s | **14.3×** | 40/40 |
+| 16×16 (6×6) | 16 | 607.2 s | 51.6 s | **11.8×** | 16/16 |
+
+No Newton-Schulz fallbacks, no unreliable answers. All 38 tests passed on KAG first.
+
+Where the GPU time goes:
+
+| | Solve | Wilson total | overlaps | Newton-Schulz | product | eigenvalues |
+|---|---|---|---|---|---|---|
+| 8×8 | 3.97 s | 0.63 s | 0.015 | 0.044 | 0.004 | 0.57 |
+| 12×12 | 15.73 s | 3.79 s | 0.127 | 0.606 | 0.062 | 2.99 |
+| 16×16 | 36.26 s | 15.36 s | 0.237 | 1.185 | 0.122 | **13.81** |
+
+Findings:
+- Fair baseline confirmed: PythTB's 4-core time fell 338 → 280 s at 12×12 (−17%) vs R8, in line
+  with Filip's ~15% estimate.
+- The Hermitian eigenvalue step cut that sub-step 15.9 → 3.0 s at 12×12 (R8 → R9).
+- **Why 16×16 is lower than 12×12:** with 512 eigenvalues per Wilson matrix in single
+  precision, ~1 in 6 matrices fails the eigenvalue safety check (checked on MAC: 2 of 12 at
+  16×16, residuals 0.11 vs tolerance 0.05) and falls back to the general solver on Kaggle's CPU,
+  which is slow at 512×512. Answers stay correct; time doesn't. Fix planned: retry failures on
+  the GPU in double precision with a different mixing value before any CPU fallback.
+- Diagonalisation is now 70–85% of GPU time: the spin-block split (λ_R = 0) targets it.
+
 ---
 
 ## Still to measure
@@ -230,6 +259,8 @@ worker), so 16 configs ≈ 12 min on KAG.
 - [x] Full pipeline end to end, GPU vs best CPU (R7)
 - [x] Single precision: Z2 agrees config by config (R7: 40/40 at 8×8 and 12×12)
 - [x] Re-run R7 with the Newton-Schulz speed-up (R8)
-- [ ] R9: final speed run with the timing fix **and** the Hermitian eigenvalue step; update the headline
+- [x] R9: final speed run with the timing fix **and** the Hermitian eigenvalue step (headline updated)
+- [ ] Eigenvalue fallbacks at 16×16 (retry on GPU in double before CPU)
+- [ ] Spin-block split for λ_R = 0
 - [ ] Use both T4s
 - [ ] Full phase-diagram sweep: CPU time vs GPU time (the headline for the pitch)
