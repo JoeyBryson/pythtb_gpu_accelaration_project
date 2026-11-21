@@ -35,6 +35,8 @@ from style import (
 HERE = Path(__file__).resolve().parent.parent
 COST = HERE / "results" / "kaggle" / "20261121-213825" / "out" / "sweep_cost.csv"  # R12
 PILOT = HERE / "results" / "sweep" / "pilot_8x8_c_up.csv"  # R11
+FSS12 = HERE / "results" / "sweep" / "fss_12x12_c_up.csv"  # R13
+FSS16 = HERE / "results" / "sweep" / "fss_16x16_c_up.csv"  # R13
 
 
 def rows(path: Path) -> list[dict]:
@@ -128,7 +130,7 @@ def slide_split(size: int = 16) -> Path:
 
 
 def slide_disorder_switch() -> Path:
-    data = rows(PILOT)
+    data = rows(FSS12)
     fig, ax = new_slide()
     ax.axvspan(1.25, 2.75, color=TINT, zorder=0)
     for lam, colour, label in ((1.0, BLUE, "topological when perfect"),
@@ -157,12 +159,51 @@ def slide_disorder_switch() -> Path:
     ax.set_xlabel("disorder strength (how imperfect the material is)")
     ax.set_ylabel("samples that are topological")
     titled(fig, "Imperfections can make a material topological",
-           "Fraction of 100 random imperfect samples per point that are topological, 8×8 supercells",
+           "Fraction of 100 random imperfect samples per point that are topological, 12×12 supercells",
            r"Kane-Mele model, $\lambda_{SO}$ = 0.3, $\lambda_R$ = 0; $\lambda_\nu$ = 1.0 (blue) and 1.65 "
-           "(orange). Bands: ± 1 standard error. 4,200 samples in 5 min on one T4. RESULTS.md R11.")
+           "(orange). Bands: ± 1 standard error. 4,200 samples in 10 min on one T4. RESULTS.md R13.")
     return save(fig, "3_disorder_switch.png", left=0.09, right=0.86, bottom=0.17, top=0.76)
 
 
+# ---------------------------------------------------------------- 4. sizes
+
+
+def slide_sizes() -> Path:
+    """Finite-size scaling of the switch-on: lambda_nu = 1.65, three supercell sizes."""
+    from style import BLUE_DARK
+
+    curves = [(PILOT, 8, "#86b6ef"), (FSS12, 12, "#3987e5"), (FSS16, 16, BLUE_DARK)]
+    fig, ax = new_slide()
+    ax.axvspan(1.85, 2.0, color=TINT, zorder=0)
+    for path, n, colour in curves:
+        pts = sorted((float(r["W"]), float(r["frac_topological"]), float(r["stderr"]))
+                     for r in rows(path) if abs(float(r["lambda_nu"]) - 1.65) < 1e-9
+                     and float(r["W"]) <= 4.0 + 1e-9)
+        W, f, e = (np.array(v) for v in zip(*pts, strict=True))
+        ax.fill_between(W, np.clip(f - e, 0, 1), np.clip(f + e, 0, 1), color=colour, alpha=0.2,
+                        linewidth=0)
+        ax.plot(W, f, color=colour, lw=3.5, marker="o", ms=6, markeredgecolor=SURFACE,
+                markeredgewidth=1.5, label=f"{n}×{n} supercell")
+    ax.text(1.925, 1.06, "curves cross\nW ≈ 1.9–2.0", ha="center", va="bottom", fontsize=14,
+            color=INK_2)
+    ax.text(2.75, 0.32, "bigger systems:\na sharper switch", fontsize=17, fontweight="bold",
+            color=INK, va="center")
+    ax.set_xlim(0.9, 4.0)
+    ax.set_ylim(-0.03, 1.2)
+    ax.set_yticks([0, 0.5, 1], ["0%", "50%", "100%"])
+    ax.yaxis.grid(True)
+    ax.spines["left"].set_visible(False)
+    ax.legend(loc="lower right", fontsize=15)
+    ax.set_xlabel("disorder strength (how imperfect the material is)")
+    ax.set_ylabel("samples that are topological")
+    titled(fig, "The switch gets sharper as the system grows",
+           "The hallmark of a real transition: three system sizes, 100 imperfect samples per point",
+           r"Kane-Mele, $\lambda_\nu$ = 1.65 (ordinary when perfect), $\lambda_{SO}$ = 0.3, "
+           r"$\lambda_R$ = 0. Bands: ± 1 standard error. 16×16: 2,100 samples in 10 min on one T4. "
+           "RESULTS.md R13.")
+    return save(fig, "4_sizes.png", left=0.09, right=0.95, bottom=0.17, top=0.76)
+
+
 if __name__ == "__main__":
-    for make in (slide_speed, slide_split, slide_disorder_switch):
+    for make in (slide_speed, slide_split, slide_disorder_switch, slide_sizes):
         print(f"wrote {make()}")

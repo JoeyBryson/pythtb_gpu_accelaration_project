@@ -1,0 +1,94 @@
+[{"stream_name":"stdout","time":13.719625463,"data":"code in /kaggle/working/proj ['LICENSE', 'README.md', 'hackathon', 'pyproject.toml', 'pythtb']\n"}
+,{"stream_name":"stdout","time":13.720690369,"data":"\n"}
+,{"stream_name":"stdout","time":13.720706716,"data":"[21:58:33] $ /usr/bin/python3 -m pip install -q -e /kaggle/working/proj\n"}
+,{"stream_name":"stdout","time":22.960180616,"data":"[21:58:42] exit 0 after 9s\n"}
+,{"stream_name":"stdout","time":22.960277727,"data":"\n"}
+,{"stream_name":"stdout","time":22.960286132,"data":"[21:58:42] $ /usr/bin/python3 -m pip install -q --no-deps -e /kaggle/working/proj/hackathon\n"}
+,{"stream_name":"stdout","time":27.248094349,"data":"[21:58:46] exit 0 after 4s\n"}
+,{"stream_name":"stdout","time":27.24813477,"data":"\n"}
+,{"stream_name":"stdout","time":27.248138528,"data":"[21:58:46] $ /usr/bin/python3 -m pip install -q threadpoolctl pytest\n"}
+,{"stream_name":"stdout","time":28.98077025,"data":"[21:58:48] exit 0 after 2s\n"}
+,{"stream_name":"stdout","time":28.980810592,"data":"\n"}
+,{"stream_name":"stdout","time":28.980814675,"data":"[21:58:48] $ /usr/bin/python3 analysis/sweep.py --size 12 --samples 100 --W-step 0.5 --out /kaggle/working/out/fss_12x12.csv\n"}
+,{"stream_name":"stdout","time":38.144212414,"data":"[21:58:57 +     1s] sweep 12x12, mesh 6 (refine 10), lambda_nu [1.0, 1.65], 21 W values x 100 samples, single, invariant c_up, spin blocks True, on Tesla T4 (16 GB), single precision / CPU x86_64 (4)\n"}
+,{"stream_name":"stderr","time":39.750788547,"data":"[W1121 21:58:59.820503598 Context.cpp:444] Warning: torch.backends.cuda.preferred_linalg_library is an experimental feature. If you see any error or unexpected behavior when this flag is set please file an issue on GitHub. (function operator())\n"}
+,{"stream_name":"stdout","time":55.820558091,"data":"[21:59:15 +    19s] lambda_nu=1.00 W= 0.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":68.008682074,"data":"[21:59:27 +    31s] lambda_nu=1.00 W= 0.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.0s\n"}
+,{"stream_name":"stdout","time":80.186062899,"data":"[21:59:39 +    43s] lambda_nu=1.00 W= 1.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.0s\n"}
+,{"stream_name":"stdout","time":92.417968039,"data":"[21:59:52 +    55s] lambda_nu=1.00 W= 1.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":104.631613972,"data":"[22:00:04 +    68s] lambda_nu=1.00 W= 2.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":116.856769364,"data":"[22:00:16 +    80s] lambda_nu=1.00 W= 2.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":129.104143596,"data":"[22:00:28 +    92s] lambda_nu=1.00 W= 3.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":141.309241211,"data":"[22:00:40 +   104s] lambda_nu=1.00 W= 3.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":153.513151586,"data":"[22:00:53 +   117s] lambda_nu=1.00 W= 4.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":165.732550012,"data":"[22:01:05 +   129s] lambda_nu=1.00 W= 4.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":177.945881452,"data":"[22:01:17 +   141s] lambda_nu=1.00 W= 5.00: topological 99/100 = 0.9900 +- 0.0099  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":191.498959188,"data":"[22:01:31 +   155s] lambda_nu=1.00 W= 5.50: topological 95/99 = 0.9596 +- 0.0198  (unreliable 1, gap closed 0, refined 1)  13.4s\n"}
+,{"stream_name":"stdout","time":206.942412746,"data":"[22:01:46 +   170s] lambda_nu=1.00 W= 6.00: topological 74/97 = 0.7629 +- 0.0432  (unreliable 3, gap closed 0, refined 7)  15.3s\n"}
+,{"stream_name":"stdout","time":222.388136988,"data":"[22:02:01 +   185s] lambda_nu=1.00 W= 6.50: topological 59/97 = 0.6082 +- 0.0496  (unreliable 3, gap closed 0, refined 7)  15.3s\n"}
+,{"stream_name":"stdout","time":239.739646887,"data":"[22:02:19 +   203s] lambda_nu=1.00 W= 7.00: topological 53/95 = 0.5579 +- 0.0510  (unreliable 5, gap closed 0, refined 13)  17.2s\n"}
+,{"stream_name":"stdout","time":255.13631371,"data":"[22:02:34 +   218s] lambda_nu=1.00 W= 7.50: topological 25/95 = 0.2632 +- 0.0452  (unreliable 5, gap closed 0, refined 7)  15.2s\n"}
+,{"stream_name":"stdout","time":269.881399897,"data":"[22:02:49 +   233s] lambda_nu=1.00 W= 8.00: topological 15/98 = 0.1531 +- 0.0364  (unreliable 2, gap closed 0, refined 5)  14.6s\n"}
+,{"stream_name":"stdout","time":285.617145425,"data":"[22:03:05 +   249s] lambda_nu=1.00 W= 8.50: topological 6/92 = 0.0652 +- 0.0257  (unreliable 8, gap closed 0, refined 8)  15.6s\n"}
+,{"stream_name":"stdout","time":300.349809486,"data":"[22:03:19 +   263s] lambda_nu=1.00 W= 9.00: topological 4/97 = 0.0412 +- 0.0202  (unreliable 3, gap closed 0, refined 5)  14.6s\n"}
+,{"stream_name":"stdout","time":314.782929971,"data":"[22:03:34 +   278s] lambda_nu=1.00 W= 9.50: topological 3/98 = 0.0306 +- 0.0174  (unreliable 2, gap closed 0, refined 4)  14.3s\n"}
+,{"stream_name":"stdout","time":326.909525492,"data":"[22:03:46 +   290s] lambda_nu=1.00 W=10.00: topological 3/100 = 0.0300 +- 0.0171  (unreliable 0, gap closed 0, refined 0)  12.0s\n"}
+,{"stream_name":"stdout","time":339.092289039,"data":"[22:03:58 +   302s] lambda_nu=1.65 W= 0.00: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.0s\n"}
+,{"stream_name":"stdout","time":351.273013506,"data":"[22:04:10 +   314s] lambda_nu=1.65 W= 0.50: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.0s\n"}
+,{"stream_name":"stdout","time":363.477613804,"data":"[22:04:23 +   327s] lambda_nu=1.65 W= 1.00: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  12.1s\n"}
+,{"stream_name":"stdout","time":377.644076295,"data":"[22:04:37 +   341s] lambda_nu=1.65 W= 1.50: topological 6/99 = 0.0606 +- 0.0240  (unreliable 1, gap closed 0, refined 3)  14.0s\n"}
+,{"stream_name":"stdout","time":392.811260705,"data":"[22:04:52 +   356s] lambda_nu=1.65 W= 2.00: topological 58/97 = 0.5979 +- 0.0498  (unreliable 3, gap closed 0, refined 6)  15.0s\n"}
+,{"stream_name":"stdout","time":408.934357117,"data":"[22:05:08 +   372s] lambda_nu=1.65 W= 2.50: topological 84/93 = 0.9032 +- 0.0307  (unreliable 7, gap closed 0, refined 9)  16.0s\n"}
+,{"stream_name":"stdout","time":422.501930189,"data":"[22:05:22 +   386s] lambda_nu=1.65 W= 3.00: topological 99/99 = 1.0000 +- 0.0000  (unreliable 1, gap closed 0, refined 1)  13.4s\n"}
+,{"stream_name":"stdout","time":436.042525407,"data":"[22:05:35 +   399s] lambda_nu=1.65 W= 3.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 1)  13.4s\n"}
+,{"stream_name":"stdout","time":449.607431528,"data":"[22:05:49 +   413s] lambda_nu=1.65 W= 4.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 1)  13.4s\n"}
+,{"stream_name":"stdout","time":463.16631701,"data":"[22:06:02 +   426s] lambda_nu=1.65 W= 4.50: topological 98/100 = 0.9800 +- 0.0140  (unreliable 0, gap closed 0, refined 1)  13.4s\n"}
+,{"stream_name":"stdout","time":477.003891769,"data":"[22:06:16 +   440s] lambda_nu=1.65 W= 5.00: topological 96/100 = 0.9600 +- 0.0196  (unreliable 0, gap closed 0, refined 2)  13.7s\n"}
+,{"stream_name":"stdout","time":491.465731072,"data":"[22:06:31 +   454s] lambda_nu=1.65 W= 5.50: topological 91/100 = 0.9100 +- 0.0286  (unreliable 0, gap closed 0, refined 4)  14.3s\n"}
+,{"stream_name":"stdout","time":508.177736253,"data":"[22:06:47 +   471s] lambda_nu=1.65 W= 6.00: topological 82/95 = 0.8632 +- 0.0353  (unreliable 5, gap closed 0, refined 11)  16.6s\n"}
+,{"stream_name":"stdout","time":523.585947587,"data":"[22:07:03 +   487s] lambda_nu=1.65 W= 6.50: topological 56/97 = 0.5773 +- 0.0502  (unreliable 3, gap closed 0, refined 7)  15.3s\n"}
+,{"stream_name":"stdout","time":539.296039749,"data":"[22:07:18 +   502s] lambda_nu=1.65 W= 7.00: topological 37/97 = 0.3814 +- 0.0493  (unreliable 3, gap closed 0, refined 8)  15.6s\n"}
+,{"stream_name":"stdout","time":555.969979289,"data":"[22:07:35 +   519s] lambda_nu=1.65 W= 7.50: topological 24/95 = 0.2526 +- 0.0446  (unreliable 5, gap closed 0, refined 11)  16.5s\n"}
+,{"stream_name":"stdout","time":571.345926253,"data":"[22:07:50 +   534s] lambda_nu=1.65 W= 8.00: topological 22/98 = 0.2245 +- 0.0421  (unreliable 2, gap closed 0, refined 7)  15.2s\n"}
+,{"stream_name":"stdout","time":586.422956337,"data":"[22:08:06 +   549s] lambda_nu=1.65 W= 8.50: topological 8/99 = 0.0808 +- 0.0274  (unreliable 1, gap closed 0, refined 6)  14.9s\n"}
+,{"stream_name":"stdout","time":600.475111533,"data":"[22:08:20 +   564s] lambda_nu=1.65 W= 9.00: topological 6/98 = 0.0612 +- 0.0242  (unreliable 2, gap closed 0, refined 3)  13.9s\n"}
+,{"stream_name":"stdout","time":612.605089506,"data":"[22:08:32 +   576s] lambda_nu=1.65 W= 9.50: topological 1/100 = 0.0100 +- 0.0099  (unreliable 0, gap closed 0, refined 0)  12.0s\n"}
+,{"stream_name":"stdout","time":624.745146572,"data":"[22:08:44 +   588s] lambda_nu=1.65 W=10.00: topological 1/100 = 0.0100 +- 0.0099  (unreliable 0, gap closed 0, refined 0)  12.0s\n"}
+,{"stream_name":"stdout","time":624.745184637,"data":"[22:08:44 +   588s] done: 42 new points in 9.6 min of GPU time -\u003e /kaggle/working/out/fss_12x12.csv\n"}
+,{"stream_name":"stdout","time":628.108683075,"data":"[22:08:47] exit 0 after 599s\n"}
+,{"stream_name":"stdout","time":628.108720211,"data":"\n"}
+,{"stream_name":"stdout","time":628.108726755,"data":"[22:08:47] $ /usr/bin/python3 analysis/sweep.py --size 16 --deltas 1.65 --samples 100 --W-max 5 --W-step 0.25 --out /kaggle/working/out/fss_16x16.csv\n"}
+,{"stream_name":"stdout","time":630.641861462,"data":"[22:08:50 +     1s] sweep 16x16, mesh 6 (refine 10), lambda_nu [1.65], 21 W values x 100 samples, single, invariant c_up, spin blocks True, on Tesla T4 (16 GB), single precision / CPU x86_64 (4)\n"}
+,{"stream_name":"stderr","time":632.916918876,"data":"[W1121 22:08:52.986567125 Context.cpp:444] Warning: torch.backends.cuda.preferred_linalg_library is an experimental feature. If you see any error or unexpected behavior when this flag is set please file an issue on GitHub. (function operator())\n"}
+,{"stream_name":"stdout","time":659.805144033,"data":"[22:09:19 +    30s] lambda_nu=1.65 W= 0.00: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.5s\n"}
+,{"stream_name":"stdout","time":686.69923322,"data":"[22:09:46 +    57s] lambda_nu=1.65 W= 0.25: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.6s\n"}
+,{"stream_name":"stdout","time":713.284259207,"data":"[22:10:12 +    83s] lambda_nu=1.65 W= 0.50: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.3s\n"}
+,{"stream_name":"stdout","time":739.868220874,"data":"[22:10:39 +   110s] lambda_nu=1.65 W= 0.75: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.3s\n"}
+,{"stream_name":"stdout","time":766.593370046,"data":"[22:11:06 +   137s] lambda_nu=1.65 W= 1.00: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.5s\n"}
+,{"stream_name":"stdout","time":793.252194845,"data":"[22:11:32 +   163s] lambda_nu=1.65 W= 1.25: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.4s\n"}
+,{"stream_name":"stdout","time":824.902116123,"data":"[22:12:04 +   195s] lambda_nu=1.65 W= 1.50: topological 2/98 = 0.0204 +- 0.0143  (unreliable 2, gap closed 0, refined 2)  31.4s\n"}
+,{"stream_name":"stdout","time":864.997395024,"data":"[22:12:44 +   235s] lambda_nu=1.65 W= 1.75: topological 18/89 = 0.2022 +- 0.0426  (unreliable 11, gap closed 0, refined 14)  39.8s\n"}
+,{"stream_name":"stdout","time":905.082107355,"data":"[22:13:24 +   275s] lambda_nu=1.65 W= 2.00: topological 60/93 = 0.6452 +- 0.0496  (unreliable 7, gap closed 0, refined 14)  39.8s\n"}
+,{"stream_name":"stdout","time":940.855433225,"data":"[22:14:00 +   311s] lambda_nu=1.65 W= 2.25: topological 83/95 = 0.8737 +- 0.0341  (unreliable 5, gap closed 0, refined 8)  35.5s\n"}
+,{"stream_name":"stdout","time":972.586270754,"data":"[22:14:32 +   343s] lambda_nu=1.65 W= 2.50: topological 96/98 = 0.9796 +- 0.0143  (unreliable 2, gap closed 0, refined 2)  31.4s\n"}
+,{"stream_name":"stdout","time":999.37733782,"data":"[22:14:58 +   369s] lambda_nu=1.65 W= 2.75: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.5s\n"}
+,{"stream_name":"stdout","time":1026.165013457,"data":"[22:15:25 +   396s] lambda_nu=1.65 W= 3.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.5s\n"}
+,{"stream_name":"stdout","time":1052.869863854,"data":"[22:15:52 +   423s] lambda_nu=1.65 W= 3.25: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.4s\n"}
+,{"stream_name":"stdout","time":1079.567744637,"data":"[22:16:19 +   450s] lambda_nu=1.65 W= 3.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.4s\n"}
+,{"stream_name":"stdout","time":1106.249987778,"data":"[22:16:45 +   476s] lambda_nu=1.65 W= 3.75: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.4s\n"}
+,{"stream_name":"stdout","time":1137.153472337,"data":"[22:17:16 +   507s] lambda_nu=1.65 W= 4.00: topological 99/99 = 1.0000 +- 0.0000  (unreliable 1, gap closed 0, refined 1)  30.6s\n"}
+,{"stream_name":"stdout","time":1168.082980234,"data":"[22:17:47 +   538s] lambda_nu=1.65 W= 4.25: topological 99/99 = 1.0000 +- 0.0000  (unreliable 1, gap closed 0, refined 1)  30.7s\n"}
+,{"stream_name":"stdout","time":1194.843903653,"data":"[22:18:14 +   565s] lambda_nu=1.65 W= 4.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.5s\n"}
+,{"stream_name":"stdout","time":1221.505772595,"data":"[22:18:41 +   592s] lambda_nu=1.65 W= 4.75: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  26.4s\n"}
+,{"stream_name":"stdout","time":1252.342873248,"data":"[22:19:11 +   622s] lambda_nu=1.65 W= 5.00: topological 95/99 = 0.9596 +- 0.0198  (unreliable 1, gap closed 0, refined 1)  30.6s\n"}
+,{"stream_name":"stdout","time":1252.342910466,"data":"[22:19:11 +   622s] done: 21 new points in 10.2 min of GPU time -\u003e /kaggle/working/out/fss_16x16.csv\n"}
+,{"stream_name":"stdout","time":1253.047803453,"data":"[22:19:12] exit 0 after 625s\n"}
+,{"stream_name":"stdout","time":1253.048535152,"data":"\n"}
+,{"stream_name":"stdout","time":1253.048550344,"data":"saved: ['fss_12x12.csv', 'fss_16x16.csv']\n"}
+,{"stream_name":"stderr","time":1255.580679469,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":1255.580712343,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":1255.915582337,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":1255.915606954,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":1256.866158037,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":1258.075853516,"data":"[NbConvertApp] Writing 296475 bytes to __results__.html\n"}
+]
