@@ -70,8 +70,8 @@ Command: `uv run python benchmarks/cpu_baseline.py both --size {6,8} --configs 4
 
 Serial and parallel gave identical Z2 for every configuration.
 
-⚠ Wall times here include the reliability diagnostics (`run_config(check=True)`): 15% of wall time measured on KAG, ~20% on MBP;
-machines; fixed 21 Nov ~19:30, see "Timing fix" under R7. The per-stage sums are unaffected.
+⚠ Wall times here include the reliability diagnostics (`run_config(check=True)`): 15% of wall time measured on KAG, ~20% on MBP.
+Fixed 21 Nov ~19:30, see "Timing fix" under R7. The per-stage sums are unaffected.
 
 ## R4. Step 1 (batched diagonalisation): ours vs PythTB, 20 disorder configs
 
