@@ -41,6 +41,17 @@ def test_too_coarse_mesh_is_flagged():
     assert fine.z2 == 1 and fine.z2_reliable
 
 
+def test_near_clean_transition_coarse_mesh_is_flagged():
+    """Regression (21 Nov): Orth et al. 2016 say lambda_nu < 3*sqrt(3)*lambda_SO = 1.559 is
+    topological (rashba = 0). At lambda_nu = 1.50 a 12x12 mesh gives the wrong Z2; the
+    overlap check must flag it, and a 72x72 mesh must give the right, trusted answer."""
+    params = {"delta": 1.50, "soc": 0.3, "rashba": 0.0}
+    coarse = run_config(1, W=0, nk=12, **params)
+    assert coarse.z2 == 0 and not coarse.z2_reliable
+    fine = run_config(1, W=0, nk=72, **params)
+    assert fine.z2 == 1 and fine.z2_reliable
+
+
 def test_odd_mesh_gives_no_z2():
     assert run_config(1, W=0, nk=7).z2 is None
 

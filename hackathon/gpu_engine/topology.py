@@ -16,7 +16,14 @@ next. An odd total means Z2 = 1.
 
 Status: method chosen by the GPU-engine side; to be confirmed by the physics team.
 
-Known weak spot: the tracking miscounts if the beads move further in one k_x step than
+Two known weak spots, each with its own check:
+
+1. Coarse mesh near a transition (checked by RELIABLE_OVERLAP). When the band gap is
+small, the states change fast between neighbouring k-points, the Wilson loop itself
+becomes inaccurate, and Z2 can come out wrong. Found 21 Nov: clean model at
+lambda_nu = 1.55 (gap 0.018) gave the wrong Z2 on every mesh up to 72x72.
+
+2. The tracking miscounts if the beads move further in one k_x step than
 the gaps between them. This gets *worse* for bigger supercells, because there are more
 beads (2n^2 for an n x n supercell) so the gaps are smaller. Found 21 Nov: a clean
 12x12 supercell on a 4x4 mesh gave Z2 = 0 (wrong); 6x6 and finer gave 1 (right).
@@ -32,6 +39,13 @@ import numpy as np
 # Below this margin, a Z2 answer is flagged as unreliable (see z2_margin). Chosen from the
 # 21 Nov test: the one wrong answer had margin 0.002, every right answer had >= 0.38.
 RELIABLE_MARGIN = 0.1
+
+# Below this, the k-mesh is too coarse for the Wilson loop itself (see
+# reference.min_overlap_singular_value). Found 21 Nov near the clean transition
+# (lambda_nu close to 3*sqrt(3)*lambda_SO): every wrong Z2 had <= 0.738, every right one
+# >= 0.755. 0.8 is deliberately conservative: it flags some right answers as unsure,
+# never (in that test) a wrong one as safe. To re-check on disordered supercells.
+RELIABLE_OVERLAP = 0.8
 
 
 def largest_gap_midpoint(centres: np.ndarray) -> tuple[float, float]:

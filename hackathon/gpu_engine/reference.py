@@ -19,7 +19,7 @@ import numpy as np
 from pythtb import Mesh, TBModel, WFArray
 from pythtb.models import kane_mele
 
-from .topology import RELIABLE_MARGIN, z2_from_wannier_flow, z2_margin
+from .topology import RELIABLE_MARGIN, RELIABLE_OVERLAP, z2_from_wannier_flow, z2_margin
 
 # Tutorial parameters (topological phase), from CLAUDE.md.
 TUTORIAL_PARAMS = {"delta": 1.0, "t": 1.0, "soc": 0.3, "rashba": 0.25}
@@ -87,6 +87,30 @@ def wannier_centres(wfa: WFArray, n_occ: int, axis_idx: int = 1) -> np.ndarray:
     return np.asarray(phases) / (2 * np.pi)
 
 
+def min_overlap_singular_value(wfa: WFArray, n_occ: int) -> float:
+    """Is the k-mesh fine enough? Smallest singular value of the overlap matrices
+    between neighbouring k-points, over the whole mesh, both directions.
+
+    The overlap M = <u(k)|u(k + dk)> of the occupied states is nearly a rotation when the
+    mesh is fine: all singular values close to 1. Near a gap closing the states change
+    fast, singular values drop, and both the Wilson loop (here) and Newton-Schulz (on the
+    GPU) become unreliable. Links across the zone boundary are skipped, because they need
+    PythTB's extra boundary phase; the interior links are enough for this check.
+
+    Not part of the timed pipeline: it's a diagnostic (an SVD per link, so not cheap).
+    """
+    u = np.asarray(wfa[...])  # (nk, nk, n_states, n_orb, 2) complex
+    u = u.reshape(*u.shape[:3], -1)[:, :, :n_occ]  # occupied states, spin flattened
+    smallest = np.inf
+    for axis in (0, 1):
+        n = u.shape[axis]
+        here = np.take(u, range(n - 1), axis=axis)
+        there = np.take(u, range(1, n), axis=axis)
+        overlaps = np.conj(here) @ np.swapaxes(there, -1, -2)  # (..., n_occ, n_occ)
+        smallest = min(smallest, np.linalg.svd(overlaps, compute_uv=False).min())
+    return float(smallest)
+
+
 def half_bz_flow(wfa: WFArray, centres: np.ndarray) -> np.ndarray:
     """Reorder Wannier centres (from wilson along axis 1) to run k_x = 0 ... 0.5 (pi).
 
@@ -109,33 +133,41 @@ class ConfigResult:
     """Everything we measure for one configuration (one imperfect material)."""
 
     z2: int | None  # None if the mesh can't give Z2 (odd nk)
-    z2_margin: float | None  # how safe the Z2 answer is (see topology.z2_margin)
+    z2_margin: float | None  # how safe the gap tracking was (see topology.z2_margin)
+    min_overlap: float | None  # is the mesh fine enough? (see min_overlap_singular_value)
     band_gap: float  # negative = bands overlap (metal), Z2 not meaningful
     t_build: float  # seconds per stage
     t_solve: float
     t_wilson: float
     t_z2: float
+    t_check: float = 0.0  # reliability diagnostics; NOT included in t_total
 
     @property
     def t_total(self) -> float:
+        """The pipeline's cost: build + solve + wilson + z2 (diagnostics excluded)."""
         return self.t_build + self.t_solve + self.t_wilson + self.t_z2
 
     @property
     def z2_reliable(self) -> bool:
-        """True if the Z2 answer can be trusted: gapped, and gap tracking was safe."""
+        """True only if every check passes: gapped, mesh fine enough, tracking safe."""
         return (
             self.z2 is not None
             and self.band_gap > 0
+            and self.min_overlap is not None
+            and self.min_overlap >= RELIABLE_OVERLAP
             and self.z2_margin is not None
             and self.z2_margin >= RELIABLE_MARGIN
         )
 
 
-def run_config(supercell: int, W: float, nk: int, seed: int | None = None, **params) -> ConfigResult:
+def run_config(
+    supercell: int, W: float, nk: int, seed: int | None = None, check: bool = True, **params
+) -> ConfigResult:
     """Run the whole pipeline for one configuration, timing each stage.
 
     W = 0 gives the clean model. `seed` makes the disorder reproducible: the same seed
     always produces the same material, so CPU and GPU runs can be compared exactly.
+    check=False skips the (untimed) reliability diagnostics; z2_reliable is then False.
     """
     t0 = time.perf_counter()
     if W == 0:
@@ -158,14 +190,19 @@ def run_config(supercell: int, W: float, nk: int, seed: int | None = None, **par
         margin = z2_margin(flow)
     t4 = time.perf_counter()
 
+    overlap = min_overlap_singular_value(wfa, n_occ) if check else None
+    t5 = time.perf_counter()
+
     return ConfigResult(
         z2=z2,
         z2_margin=margin,
+        min_overlap=overlap,
         band_gap=band_gap(wfa, n_occ),
         t_build=t1 - t0,
         t_solve=t2 - t1,
         t_wilson=t3 - t2,
         t_z2=t4 - t3,
+        t_check=t5 - t4,
     )
 
 
