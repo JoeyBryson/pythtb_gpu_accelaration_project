@@ -20,7 +20,7 @@ USER_NAME="${KAGGLE_USER:-oscarklemenz}"
 PRESET="${PRESET:-speed}"
 DATASET="$USER_NAME/pythtb-gpu-hackathon-code"
 # each preset is its own Kaggle job, so different presets don't replace each other's runs
-SLUG="pythtb-gpu-run"; [ "$PRESET" != "speed" ] && SLUG="pythtb-gpu-$PRESET"
+SLUG="pythtb-gpu-run"; [ "$PRESET" != "speed" ] && SLUG="pythtb-gpu-${PRESET//_/-}"  # Kaggle ids: no underscores
 KERNEL="$USER_NAME/$SLUG"
 grep -q "^    \"$PRESET\": \[" "$HERE/kaggle/run.py" || {
     echo "unknown PRESET '$PRESET': see PRESETS in kaggle/run.py"; exit 1; }
