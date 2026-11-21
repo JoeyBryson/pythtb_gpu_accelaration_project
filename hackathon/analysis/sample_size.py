@@ -166,7 +166,7 @@ def _note(ax, text, loc=(0.03, 0.95)):
 
 
 def figure(d: dict, L: int, out: Path, gpu_speedup: float | None = None, seed: int = 0,
-           n_boot: int = 300):
+           hardware: str = "a laptop CPU", n_boot: int = 300):
     rng = np.random.default_rng(seed)
     Ws, Z, R, _ = tables(d, L)
     S = len(Z)
@@ -183,7 +183,7 @@ def figure(d: dict, L: int, out: Path, gpu_speedup: float | None = None, seed: i
     fig.text(0.01, 0.952,
              f"{L}×{L} Kane–Mele supercells (δ = {d['delta'][0]:g}, λ_SO = {d['soc'][0]:g}, "
              f"λ_R = {d['rashba'][0]:g}), disorder ε ~ U[−W/2, W/2]. {S} disorder patterns per W "
-             f"in total ({_fmt_time(t_total)} on a laptop CPU); every 'experiment' below is a "
+             f"in total ({_fmt_time(t_total)} on {hardware}); every 'experiment' below is a "
              "subset of them.", fontsize=11.5, color=MUTED, ha="left", va="top")
 
     # --- a-c: the phase curve from independent experiments of size N -------------------------
@@ -255,7 +255,7 @@ def figure(d: dict, L: int, out: Path, gpu_speedup: float | None = None, seed: i
     yt = [v for v in (0.02, 0.05, 0.1, 0.2, 0.5, 1, 2) if sd.min() / 2 <= v <= sd.max() * 2]
     ax.set_yticks(yt, [f"{v:g}" for v in yt])
     labels = [f"{n}\n{_fmt_time(n * t_sample)}" for n in Ns]
-    xl = (f"samples per W (N)  ·  CPU time per curve, scaled from the measured "
+    xl = (f"samples per W (N)  ·  time per curve on {hardware}, scaled from the measured "
           f"{S}-sample sweep")
     if gpu_speedup:
         labels = [f"{lab}\n{_fmt_time(n * t_sample / gpu_speedup)}" for lab, n in zip(labels, Ns)]
@@ -307,7 +307,7 @@ def figure(d: dict, L: int, out: Path, gpu_speedup: float | None = None, seed: i
              "checks). a–c: disjoint groups of disorder patterns. d: 300 bootstrap experiments per "
              "N, resampling whole patterns across W. e: exact probability for subsets drawn "
              "without replacement. f: resolved samples of one random 20-sample subset vs all; "
-             "why the imbalance matters is to check with the physics side. CPU times are scaled "
+             "why the imbalance matters is to check with the physics side. Times are scaled "
              "from one measured sweep.",
              fontsize=9.5, color=MUTED, ha="left", va="top", wrap=True)
     fig.savefig(out, dpi=140, bbox_inches="tight")
@@ -452,7 +452,14 @@ def main() -> None:
     L = args.L or int(np.max(d["L"]))
     sizes = one_slice(load_rows(args.sizes_csv), None) if args.sizes_csv else None
     out = args.csv.with_name(args.csv.stem + "_sample_size.png")
-    figure(d, L, out, args.gpu_speedup)
+    hw = "a laptop CPU"
+    meta = args.csv.with_suffix(".json")
+    if meta.exists():
+        import json
+
+        desc = json.loads(meta.read_text()).get("hardware", "")
+        hw = desc.split(" (")[0] if desc and not desc.startswith("CPU") else hw
+    figure(d, L, out, args.gpu_speedup, hardware=hw)
     backup_figure(d, L, out.with_name(out.stem + "_backup.png"), sizes)
     print(f"Saved {out} and {out.stem}_backup.png")
 
