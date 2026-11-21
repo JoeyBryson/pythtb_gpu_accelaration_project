@@ -38,7 +38,8 @@ RESULTS = Path(__file__).resolve().parents[1] / "results"
 # 3 | nk. Missing K skips the gap minimum and lowers the overlap check non-monotonically
 # (clean 2x2: min overlap 0.85, 0.72, 0.76, 0.87, 0.80, 0.90 at nk = 12, 14, 16, 18, 20, 24).
 # So for 3 not dividing n we use nk divisible by 6. TO CHECK: convergence for n >= 5.
-DEFAULT_NK = {2: 18, 3: 16, 4: 18, 5: 12, 6: 10, 8: 12, 10: 12, 12: 8}
+DEFAULT_NK = {2: 18, 3: 16, 4: 18, 5: 12, 6: 10, 8: 12, 10: 12, 12: 8, 16: 6}
+# 16x16: nk=6 as in the team's runs (RESULTS.md R2/R10); clean Z2 correct there. TO CHECK.
 
 
 def main() -> None:
@@ -58,6 +59,8 @@ def main() -> None:
     ap.add_argument("--keep-flows", type=int, default=200,
                     help="save Wannier flows for this many samples per W (0 = none)")
     ap.add_argument("--precision", choices=["double", "single"], default="double")
+    ap.add_argument("--spin-blocks", action="store_true",
+                    help="solve spin up/down as separate half-size problems (needs --rashba 0)")
     ap.add_argument("--device", default=None, help="cpu / cuda (default: cuda if available)")
     ap.add_argument("--tag", default="run")
     ap.add_argument("--quick", action="store_true", help="tiny sweep for a laptop check")
@@ -69,7 +72,7 @@ def main() -> None:
     cfg = SweepConfig(
         supercells=args.L, Ws=args.W, n_samples=args.samples, nk=nk, deltas=args.delta,
         soc=args.soc, rashba=args.rashba, disorder=args.disorder, seeds=args.seeds,
-        seed0=args.seed0, keep_flows=args.keep_flows,
+        seed0=args.seed0, keep_flows=args.keep_flows, spin_blocks=args.spin_blocks,
     )
     be = get_backend(args.precision, args.device)
     print(f"Hardware: {be.describe()}")

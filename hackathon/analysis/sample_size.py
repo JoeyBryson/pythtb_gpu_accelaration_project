@@ -269,7 +269,11 @@ def figure(d: dict, L: int, out: Path, gpu_speedup: float | None = None, seed: i
     ax = fig.add_subplot(gs[1, 4:8])
     j_peak = int(np.nanargmax(p_all))
     k_topo_all = k_all  # resolved topological draws, counted out of ALL S draws
-    rare = [j for j in range(j_peak + 1, len(Ws)) if 0 < k_topo_all[j] <= 0.1 * S]
+    # rare = topological in at most 10% of all draws; prefer the strong-disorder side
+    rare_after = [j for j in range(j_peak + 1, len(Ws)) if 0 < k_topo_all[j] <= 0.1 * S]
+    rare_before = [j for j in range(j_peak) if 0 < k_topo_all[j] <= 0.1 * S]
+    rare = rare_after or rare_before
+    side = "Strong disorder" if rare_after else "Near onset"
     Nr = np.unique(np.round(np.logspace(0, np.log10(S), 40)).astype(int))
     for j, colr in zip(rare[-2:], (TOPO, ACCENT)):
         k = int(k_topo_all[j])
@@ -282,10 +286,14 @@ def figure(d: dict, L: int, out: Path, gpu_speedup: float | None = None, seed: i
                 ax.plot([n], [pm], "o", color=colr, ms=6)
                 ax.annotate(f"{pm:.0%}", (n, pm), xytext=(6, 4), textcoords="offset points",
                             fontsize=10, color=colr)
+    if not rare:
+        _note(ax, "no W in this sweep where 0–10% of samples\nare topological",
+              loc=(0.03, 0.5))
     ax.set(xscale="log", ylim=(-0.03, 1.03), xlabel="samples per W (N)",
            ylabel="chance the experiment sees\nNO topological sample at all",
-           title="e  Strong disorder: rare topological samples get missed")
-    ax.legend(loc="upper right", fontsize=9.5)
+           title=f"e  {side}: rare topological samples get missed")
+    if rare:
+        ax.legend(loc="upper right", fontsize=9.5)
     ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
 
     # --- f: one distribution, few vs many samples ------------------------------------------
