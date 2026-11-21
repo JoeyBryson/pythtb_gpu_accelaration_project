@@ -105,7 +105,7 @@ def split_spin_blocks(H: torch.Tensor) -> torch.Tensor:
 
 def solve_configs(
     model: TBModel, nk: int, W: float, seeds: list[int], backend: Backend,
-    chunk: int | None = None, spin_blocks: bool = False,
+    chunk: int | None = None, spin_blocks: bool = False, shift_fn=None,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Whole step 1 for C configurations of one clean model, `chunk` configurations per batch
     (default: as many as fit in memory, see configs_per_chunk).
@@ -117,6 +117,9 @@ def solve_configs(
         gap at half filling, each spin block contributes exactly half its states (the count is
         fixed across the zone while the gap is open, and equal for both spins at k = 0, where
         time reversal maps one block onto the other), so each takes its lowest n_occ/2.
+
+    shift_fn(norb, W, seeds) -> (C, 2*norb) on-site shifts; default `disorder_shifts`.
+    Lets analysis code try other disorder ensembles (e.g. analysis/ensemble.pinned_shifts).
     """
     n_occ = model.norb  # half filling
     H0 = torch.as_tensor(clean_hamiltonians(model, nk), dtype=backend.cdtype, device=backend.device)
@@ -124,12 +127,13 @@ def solve_configs(
     if spin_blocks:
         H0 = split_spin_blocks(H0)  # (K, 2, N/2, N/2)
     chunk = chunk or configs_per_chunk(nk, N // 2 if spin_blocks else N, backend)
+    shift_fn = shift_fn or disorder_shifts
 
     all_e, all_u = [], []
     for start in range(0, len(seeds), chunk):  # usually just one or a few big batches
         part = seeds[start : start + chunk]
         d = torch.as_tensor(
-            disorder_shifts(model.norb, W, part), dtype=backend.rdtype, device=backend.device
+            shift_fn(model.norb, W, part), dtype=backend.rdtype, device=backend.device
         )
         if spin_blocks:
             d = d[:, 0::2].unsqueeze(1)  # same shift for both spins: (c, 1, N/2), broadcasts

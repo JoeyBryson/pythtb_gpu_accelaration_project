@@ -1,0 +1,100 @@
+[{"stream_name":"stdout","time":7.629201925,"data":"code in /kaggle/working/proj ['LICENSE', 'README.md', 'hackathon', 'pyproject.toml', 'pythtb']\n"}
+,{"stream_name":"stdout","time":7.629964461,"data":"\n"}
+,{"stream_name":"stdout","time":7.629976126,"data":"[21:23:34] $ /usr/bin/python3 -m pip install -q -e /kaggle/working/proj\n"}
+,{"stream_name":"stdout","time":15.517350267,"data":"[21:23:42] exit 0 after 8s\n"}
+,{"stream_name":"stdout","time":15.51740427,"data":"\n"}
+,{"stream_name":"stdout","time":15.517410121,"data":"[21:23:42] $ /usr/bin/python3 -m pip install -q --no-deps -e /kaggle/working/proj/hackathon\n"}
+,{"stream_name":"stdout","time":19.447467455,"data":"[21:23:46] exit 0 after 4s\n"}
+,{"stream_name":"stdout","time":19.447511095,"data":"\n"}
+,{"stream_name":"stdout","time":19.447516014,"data":"[21:23:46] $ /usr/bin/python3 -m pip install -q threadpoolctl pytest\n"}
+,{"stream_name":"stdout","time":21.052418311,"data":"[21:23:47] exit 0 after 2s\n"}
+,{"stream_name":"stdout","time":21.052462632,"data":"\n"}
+,{"stream_name":"stdout","time":21.052467352,"data":"[21:23:47] $ /usr/bin/python3 -m pytest -q -p no:cacheprovider\n"}
+,{"stream_name":"stdout","time":67.145953932,"data":"...............................................................          [100%]\n"}
+,{"stream_name":"stdout","time":67.14823472,"data":"=============================== warnings summary ===============================\n"}
+,{"stream_name":"stdout","time":67.14825109,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:64\n"}
+,{"stream_name":"stdout","time":67.148268429,"data":"  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'\n"}
+,{"stream_name":"stdout","time":67.148273702,"data":"    prop = Group((name + Suppress(\"=\") + comma_separated(value)) | oneOf(_CONSTANTS))\n"}
+,{"stream_name":"stdout","time":67.148278822,"data":"\n"}
+,{"stream_name":"stdout","time":67.148283434,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":67.148288347,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":67.14829309,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":67.148297801,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":67.148302543,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":67.148307264,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85\n"}
+,{"stream_name":"stdout","time":67.14831207,"data":"  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'\n"}
+,{"stream_name":"stdout","time":67.148317141,"data":"    parse = parser.parseString(pattern)\n"}
+,{"stream_name":"stdout","time":67.148321729,"data":"\n"}
+,{"stream_name":"stdout","time":67.148326124,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":67.148330845,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":67.148335589,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":67.148340276,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":67.148362831,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":67.148366802,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89\n"}
+,{"stream_name":"stdout","time":67.148370627,"data":"  /usr/local/lib/python3.13/dist-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'\n"}
+,{"stream_name":"stdout","time":67.148374754,"data":"    parser.resetCache()\n"}
+,{"stream_name":"stdout","time":67.148378346,"data":"\n"}
+,{"stream_name":"stdout","time":67.148732308,"data":"../../../../usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:45\n"}
+,{"stream_name":"stdout","time":67.148737976,"data":"  /usr/local/lib/python3.13/dist-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'\n"}
+,{"stream_name":"stdout","time":67.148742175,"data":"    ParserElement.enablePackrat()\n"}
+,{"stream_name":"stdout","time":67.148745991,"data":"\n"}
+,{"stream_name":"stdout","time":67.148749545,"data":"-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n"}
+,{"stream_name":"stdout","time":67.148836918,"data":"63 passed, 14 warnings in 44.30s\n"}
+,{"stream_name":"stdout","time":70.100462262,"data":"[21:24:36] exit 0 after 49s\n"}
+,{"stream_name":"stdout","time":70.100505715,"data":"\n"}
+,{"stream_name":"stdout","time":70.10051024,"data":"[21:24:36] $ /usr/bin/python3 analysis/sweep.py --size 8 --samples 100 --W-step 0.5 --out /kaggle/working/out/sweep_pilot_8x8.csv\n"}
+,{"stream_name":"stdout","time":72.459705276,"data":"[21:24:39 +     1s] sweep 8x8, mesh 6 (refine 10), lambda_nu [1.0, 1.65], 21 W values x 100 samples, single, invariant c_up, spin blocks False, on Tesla T4 (16 GB), single precision / CPU x86_64 (4)\n"}
+,{"stream_name":"stderr","time":73.067935911,"data":"[W1121 21:24:39.288349736 Context.cpp:444] Warning: torch.backends.cuda.preferred_linalg_library is an experimental feature. If you see any error or unexpected behavior when this flag is set please file an issue on GitHub. (function operator())\n"}
+,{"stream_name":"stdout","time":79.973367716,"data":"[21:24:46 +     8s] lambda_nu=1.00 W= 0.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.7s\n"}
+,{"stream_name":"stdout","time":86.568539288,"data":"[21:24:53 +    15s] lambda_nu=1.00 W= 0.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.5s\n"}
+,{"stream_name":"stdout","time":93.159846764,"data":"[21:24:59 +    21s] lambda_nu=1.00 W= 1.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.5s\n"}
+,{"stream_name":"stdout","time":99.76452762,"data":"[21:25:06 +    28s] lambda_nu=1.00 W= 1.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.5s\n"}
+,{"stream_name":"stdout","time":106.38958854,"data":"[21:25:13 +    35s] lambda_nu=1.00 W= 2.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.6s\n"}
+,{"stream_name":"stdout","time":113.0167669,"data":"[21:25:19 +    41s] lambda_nu=1.00 W= 2.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.6s\n"}
+,{"stream_name":"stdout","time":119.622779475,"data":"[21:25:26 +    48s] lambda_nu=1.00 W= 3.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.5s\n"}
+,{"stream_name":"stdout","time":126.216714377,"data":"[21:25:32 +    54s] lambda_nu=1.00 W= 3.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.5s\n"}
+,{"stream_name":"stdout","time":132.83003638899999,"data":"[21:25:39 +    61s] lambda_nu=1.00 W= 4.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.6s\n"}
+,{"stream_name":"stdout","time":139.423610205,"data":"[21:25:46 +    68s] lambda_nu=1.00 W= 4.50: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.5s\n"}
+,{"stream_name":"stdout","time":146.01488112,"data":"[21:25:52 +    74s] lambda_nu=1.00 W= 5.00: topological 99/100 = 0.9900 +- 0.0099  (unreliable 0, gap closed 0, refined 0)  6.5s\n"}
+,{"stream_name":"stdout","time":153.359238695,"data":"[21:26:00 +    82s] lambda_nu=1.00 W= 5.50: topological 95/99 = 0.9596 +- 0.0198  (unreliable 1, gap closed 0, refined 3)  7.3s\n"}
+,{"stream_name":"stdout","time":161.222103584,"data":"[21:26:07 +    89s] lambda_nu=1.00 W= 6.00: topological 84/97 = 0.8660 +- 0.0346  (unreliable 3, gap closed 0, refined 6)  7.8s\n"}
+,{"stream_name":"stdout","time":170.345540327,"data":"[21:26:17 +    99s] lambda_nu=1.00 W= 6.50: topological 60/94 = 0.6383 +- 0.0496  (unreliable 6, gap closed 0, refined 13)  9.1s\n"}
+,{"stream_name":"stdout","time":178.770025873,"data":"[21:26:25 +   107s] lambda_nu=1.00 W= 7.00: topological 47/97 = 0.4845 +- 0.0507  (unreliable 3, gap closed 0, refined 9)  8.4s\n"}
+,{"stream_name":"stdout","time":186.860099442,"data":"[21:26:33 +   115s] lambda_nu=1.00 W= 7.50: topological 30/96 = 0.3125 +- 0.0473  (unreliable 4, gap closed 0, refined 7)  8.0s\n"}
+,{"stream_name":"stdout","time":194.421853033,"data":"[21:26:41 +   123s] lambda_nu=1.00 W= 8.00: topological 27/100 = 0.2700 +- 0.0444  (unreliable 0, gap closed 0, refined 4)  7.5s\n"}
+,{"stream_name":"stdout","time":201.804434748,"data":"[21:26:48 +   130s] lambda_nu=1.00 W= 8.50: topological 14/98 = 0.1429 +- 0.0353  (unreliable 2, gap closed 0, refined 3)  7.3s\n"}
+,{"stream_name":"stdout","time":209.169172542,"data":"[21:26:55 +   137s] lambda_nu=1.00 W= 9.00: topological 12/98 = 0.1224 +- 0.0331  (unreliable 2, gap closed 0, refined 3)  7.3s\n"}
+,{"stream_name":"stdout","time":216.538626084,"data":"[21:27:03 +   145s] lambda_nu=1.00 W= 9.50: topological 6/100 = 0.0600 +- 0.0237  (unreliable 0, gap closed 0, refined 3)  7.3s\n"}
+,{"stream_name":"stdout","time":223.726032667,"data":"[21:27:10 +   152s] lambda_nu=1.00 W=10.00: topological 3/98 = 0.0306 +- 0.0174  (unreliable 2, gap closed 0, refined 2)  7.1s\n"}
+,{"stream_name":"stdout","time":230.383530251,"data":"[21:27:17 +   159s] lambda_nu=1.65 W= 0.00: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.6s\n"}
+,{"stream_name":"stdout","time":237.007177938,"data":"[21:27:23 +   165s] lambda_nu=1.65 W= 0.50: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.6s\n"}
+,{"stream_name":"stdout","time":243.626604036,"data":"[21:27:30 +   172s] lambda_nu=1.65 W= 1.00: topological 0/100 = 0.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 0)  6.6s\n"}
+,{"stream_name":"stdout","time":252.24820135,"data":"[21:27:38 +   180s] lambda_nu=1.65 W= 1.50: topological 12/93 = 0.1290 +- 0.0348  (unreliable 7, gap closed 0, refined 10)  8.6s\n"}
+,{"stream_name":"stdout","time":260.857862289,"data":"[21:27:47 +   189s] lambda_nu=1.65 W= 2.00: topological 56/94 = 0.5957 +- 0.0506  (unreliable 6, gap closed 0, refined 10)  8.6s\n"}
+,{"stream_name":"stdout","time":269.836145885,"data":"[21:27:56 +   198s] lambda_nu=1.65 W= 2.50: topological 77/96 = 0.8021 +- 0.0407  (unreliable 4, gap closed 0, refined 12)  8.9s\n"}
+,{"stream_name":"stdout","time":277.906174517,"data":"[21:28:04 +   206s] lambda_nu=1.65 W= 3.00: topological 96/99 = 0.9697 +- 0.0172  (unreliable 1, gap closed 0, refined 7)  8.0s\n"}
+,{"stream_name":"stdout","time":285.441507263,"data":"[21:28:12 +   214s] lambda_nu=1.65 W= 3.50: topological 99/99 = 1.0000 +- 0.0000  (unreliable 1, gap closed 0, refined 4)  7.5s\n"}
+,{"stream_name":"stdout","time":292.617746338,"data":"[21:28:19 +   221s] lambda_nu=1.65 W= 4.00: topological 100/100 = 1.0000 +- 0.0000  (unreliable 0, gap closed 0, refined 2)  7.1s\n"}
+,{"stream_name":"stdout","time":299.229042789,"data":"[21:28:25 +   227s] lambda_nu=1.65 W= 4.50: topological 99/100 = 0.9900 +- 0.0099  (unreliable 0, gap closed 0, refined 0)  6.6s\n"}
+,{"stream_name":"stdout","time":306.23468555,"data":"[21:28:32 +   234s] lambda_nu=1.65 W= 5.00: topological 97/100 = 0.9700 +- 0.0171  (unreliable 0, gap closed 0, refined 1)  7.0s\n"}
+,{"stream_name":"stdout","time":314.491308673,"data":"[21:28:41 +   243s] lambda_nu=1.65 W= 5.50: topological 82/94 = 0.8723 +- 0.0344  (unreliable 6, gap closed 0, refined 8)  8.2s\n"}
+,{"stream_name":"stdout","time":322.250869244,"data":"[21:28:48 +   250s] lambda_nu=1.65 W= 6.00: topological 83/97 = 0.8557 +- 0.0357  (unreliable 3, gap closed 0, refined 5)  7.7s\n"}
+,{"stream_name":"stdout","time":330.513362192,"data":"[21:28:57 +   259s] lambda_nu=1.65 W= 6.50: topological 61/97 = 0.6289 +- 0.0491  (unreliable 3, gap closed 0, refined 8)  8.2s\n"}
+,{"stream_name":"stdout","time":338.413938201,"data":"[21:29:05 +   267s] lambda_nu=1.65 W= 7.00: topological 47/96 = 0.4896 +- 0.0510  (unreliable 4, gap closed 0, refined 6)  7.8s\n"}
+,{"stream_name":"stdout","time":345.954363853,"data":"[21:29:12 +   274s] lambda_nu=1.65 W= 7.50: topological 25/97 = 0.2577 +- 0.0444  (unreliable 3, gap closed 0, refined 4)  7.5s\n"}
+,{"stream_name":"stdout","time":354.580411925,"data":"[21:29:21 +   283s] lambda_nu=1.65 W= 8.00: topological 15/93 = 0.1613 +- 0.0381  (unreliable 7, gap closed 0, refined 10)  8.6s\n"}
+,{"stream_name":"stdout","time":362.133654031,"data":"[21:29:28 +   290s] lambda_nu=1.65 W= 8.50: topological 6/98 = 0.0612 +- 0.0242  (unreliable 2, gap closed 0, refined 4)  7.5s\n"}
+,{"stream_name":"stdout","time":370.04105704,"data":"[21:29:36 +   298s] lambda_nu=1.65 W= 9.00: topological 9/97 = 0.0928 +- 0.0295  (unreliable 3, gap closed 0, refined 6)  7.8s\n"}
+,{"stream_name":"stdout","time":377.954037993,"data":"[21:29:44 +   306s] lambda_nu=1.65 W= 9.50: topological 5/98 = 0.0510 +- 0.0222  (unreliable 2, gap closed 0, refined 6)  7.9s\n"}
+,{"stream_name":"stdout","time":384.573780763,"data":"[21:29:51 +   313s] lambda_nu=1.65 W=10.00: topological 2/100 = 0.0200 +- 0.0140  (unreliable 0, gap closed 0, refined 0)  6.6s\n"}
+,{"stream_name":"stdout","time":384.573841209,"data":"[21:29:51 +   313s] done: 42 new points in 5.1 min of GPU time -\u003e /kaggle/working/out/sweep_pilot_8x8.csv\n"}
+,{"stream_name":"stdout","time":385.190307738,"data":"[21:29:51] exit 0 after 315s\n"}
+,{"stream_name":"stdout","time":385.191061688,"data":"\n"}
+,{"stream_name":"stdout","time":385.191092216,"data":"saved: ['sweep_pilot_8x8.csv']\n"}
+,{"stream_name":"stderr","time":387.284208873,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":387.284260302,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":387.501349799,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":387.50138905,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":388.244790937,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":389.165489119,"data":"[NbConvertApp] Writing 293946 bytes to __results__.html\n"}
+]

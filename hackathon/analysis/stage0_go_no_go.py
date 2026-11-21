@@ -86,7 +86,7 @@ def summarise(rows: list[dict]) -> None:
         ri = np.array([x["reliable_indirect"] for x in r])
         rd = np.array([x["reliable_direct"] for x in r])
 
-        def frac(mask):
+        def frac(mask, z=z):
             return f"{z[mask].mean():.2f} ({mask.sum():2d})" if mask.any() else "  -- ( 0)"
 
         print(

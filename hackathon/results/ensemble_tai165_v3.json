@@ -1,0 +1,44 @@
+{
+  "config": {
+    "supercells": [
+      2,
+      3,
+      4
+    ],
+    "Ws": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      2.5,
+      3.0,
+      3.5,
+      4.0,
+      5.0,
+      6.0,
+      8.0,
+      10.0,
+      12.0
+    ],
+    "n_samples": 120,
+    "nk": {
+      "2": 18,
+      "3": 16,
+      "4": 18
+    },
+    "deltas": [
+      1.65
+    ],
+    "soc": 0.3,
+    "rashba": 0.0,
+    "disorder": "uniform",
+    "seeds": "shared",
+    "seed0": 0,
+    "keep_flows": 200
+  },
+  "hardware": "CPU, double precision",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "disorder_convention": "eps_i ~ U[-W/2, W/2] per site, both spins (ours; Orth uses [-W, W], i.e. W_ours = 2 W_Orth)",
+  "written": "2026-11-21 19:51:58"
+}

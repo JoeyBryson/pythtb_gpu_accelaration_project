@@ -55,7 +55,9 @@ K kernels push -p "$STAGE/kernel" --accelerator NvidiaTeslaT4
 while true; do
     STATUS=$(K kernels status "$KERNEL" | tail -1)
     echo "$(date +%H:%M:%S) $STATUS"
-    case "$STATUS" in *COMPLETE*|*ERROR*|*CANCEL*) break ;; esac
+    # stop on a final state only: right after a cancel is requested Kaggle hasn't saved the
+    # output yet, so downloading then gives an empty folder (happened 21 Nov)
+    case "$STATUS" in *COMPLETE*|*ERROR*|*CANCEL_ACKNOWLEDGED*) break ;; esac
     sleep 20
 done
 
