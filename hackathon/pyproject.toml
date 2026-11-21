@@ -4,11 +4,12 @@ version = "0.1.0"
 description = "GPU engine and disorder studies built alongside PythTB (SoTA Scientific Parallelism Hackathon)."
 requires-python = ">=3.12"
 dependencies = [
-  "pythtb",          # the fork in the repo root, installed editable (see [tool.uv.sources])
+  "pythtb", # the fork in the repo root, installed editable (see [tool.uv.sources])
   "numpy>=2.0",
   "matplotlib>=3.9",
-  "torch>=2.4",      # Linux wheels from PyPI ship with CUDA; macOS wheels are CPU/MPS only
+  "torch>=2.4", # Linux wheels from PyPI ship with CUDA; macOS wheels are CPU/MPS only
   "tqdm",
+  "threadpoolctl>=3.8.0",
 ]
 
 [project.optional-dependencies]
@@ -35,6 +36,12 @@ pythtb = { path = "..", editable = true }
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = ["gpu: needs a CUDA GPU (skipped automatically otherwise)"]
+# Spurious floating-point flags from numpy on Apple Accelerate (see benchmarks/common.py)
+filterwarnings = [
+  "ignore:divide by zero encountered in (det|slogdet|matmul):RuntimeWarning",
+  "ignore:overflow encountered in (det|slogdet|matmul):RuntimeWarning",
+  "ignore:invalid value encountered in (det|slogdet|matmul):RuntimeWarning",
+]
 
 [tool.ruff]
 line-length = 100

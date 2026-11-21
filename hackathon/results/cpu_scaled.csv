@@ -1,0 +1,5 @@
+timestamp,scenario,supercell,matrix_dim,nk,repeats,t_solve,t_wilson,t_total,t_total_median,z2,z2_margin,z2_reliable,host,cpu,os,n_cpus,blas,numpy
+2026-11-21T16:49:01,cpu_scaled,4,64,12,3,0.0812,0.0380,0.1232,0.1244,1,0.875,True,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T16:49:01,cpu_scaled,8,256,6,3,0.5040,0.2347,0.7524,0.7565,1,0.316,True,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T16:49:01,cpu_scaled,12,576,6,3,3.0209,1.2463,4.2986,4.3284,1,0.565,True,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
+2026-11-21T16:49:01,cpu_scaled,16,1024,6,3,16.6375,5.7820,22.4771,22.6422,1,0.439,True,Oscars-MacBook-Air.local,arm,macOS-15.7.9-arm64-arm-64bit,10,accelerate,2.5.5
