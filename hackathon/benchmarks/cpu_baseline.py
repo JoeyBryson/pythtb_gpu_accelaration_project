@@ -118,22 +118,26 @@ def bench_clean_sizes(scenario: str, sizes: list[int], nk_for, repeats: int) -> 
 
 def bench_serial(
     n: int, nk: int, W: float, configs: int, seed: int,
-    workers: int | None = None, reliability: bool = True,
+    workers: int | None = None, reliability: bool = True, params: dict | None = None,
 ) -> list[ConfigResult]:
     """The naive baseline: one configuration after another in a Python loop.
 
     Timed with check=False; `workers` processes run the untimed reliability pass.
+    params: model parameters passed to run_config (e.g. {"rashba": 0.0}); default tutorial.
     """
+    params = params or {}
     seeds = config_seeds(seed, configs)
     log(f"PythTB serial: {configs} configs of {n}x{n}, mesh {nk}x{nk}, W={W}")
     progress = Progress(f"PythTB serial {n}x{n}", configs)
     t0 = time.perf_counter()
     results = []
     for s in seeds:
-        results.append(run_config(n, W, nk, seed=s, check=False))
+        results.append(run_config(n, W, nk, seed=s, check=False, **params))
         progress.step()
     wall = time.perf_counter() - t0
-    checked = reliability_pass(n, nk, W, seeds, workers or os.cpu_count()) if reliability else None
+    checked = (
+        reliability_pass(n, nk, W, seeds, workers or os.cpu_count(), params) if reliability else None
+    )
     report("serial", n, nk, W, configs, wall, results, checked, workers=1)
     return results
 
@@ -150,14 +154,14 @@ def _one_blas_thread() -> None:
 
 def _run_config_task(args: tuple) -> ConfigResult:
     """Timed worker task: the pipeline only, no reliability diagnostics."""
-    n, W, nk, s = args
-    return run_config(n, W, nk, seed=s, check=False)
+    n, W, nk, s, params = args
+    return run_config(n, W, nk, seed=s, check=False, **params)
 
 
 def _run_config_checked_task(args: tuple) -> ConfigResult:
     """Untimed worker task: the pipeline plus the reliability diagnostics."""
-    n, W, nk, s = args
-    return run_config(n, W, nk, seed=s, check=True)
+    n, W, nk, s, params = args
+    return run_config(n, W, nk, seed=s, check=True, **params)
 
 
 def _worker_pool(workers: int) -> ProcessPoolExecutor:
@@ -175,7 +179,7 @@ _RELIABILITY_CACHE: dict[tuple, list[ConfigResult]] = {}
 
 
 def reliability_pass(
-    n: int, nk: int, W: float, seeds: list[int], workers: int
+    n: int, nk: int, W: float, seeds: list[int], workers: int, params: dict | None = None
 ) -> list[ConfigResult]:
     """The z2_reliable flags for these configurations, from an UNTIMED pass with check=True.
 
@@ -183,17 +187,19 @@ def reliability_pass(
     (21 Nov: 15% of serial wall time on KAG, ~20% on MBP). Runs on all cores and is cached,
     so serial and parallel runs of the same configurations share one pass.
     """
-    key = (n, nk, W, tuple(seeds))
+    params = params or {}
+    key = (n, nk, W, tuple(seeds), tuple(sorted(params.items())))
     if key not in _RELIABILITY_CACHE:
         log(f"reliability pass (untimed): {len(seeds)} configs of {n}x{n} on {workers} processes")
         with _worker_pool(workers) as pool:
-            tasks = [(n, W, nk, s) for s in seeds]
+            tasks = [(n, W, nk, s, params) for s in seeds]
             _RELIABILITY_CACHE[key] = list(pool.map(_run_config_checked_task, tasks))
     return _RELIABILITY_CACHE[key]
 
 
 def bench_parallel(
     n: int, nk: int, W: float, configs: int, seed: int, workers: int, reliability: bool = True,
+    params: dict | None = None,
 ) -> list[ConfigResult]:
     """The strongest simple CPU baseline: configurations are independent, so give each
     CPU core its own configuration (one process per core, 1 BLAS thread each).
@@ -201,11 +207,12 @@ def bench_parallel(
     This is the comparison a sceptical judge would ask for, so we report it alongside
     the serial loop. Timed with check=False (see reliability_pass).
     """
+    params = params or {}
     seeds = config_seeds(seed, configs)
-    tasks = [(n, W, nk, s) for s in seeds]
+    tasks = [(n, W, nk, s, params) for s in seeds]
     with _worker_pool(workers) as pool:
         # warm up every worker (imports, first allocation) before starting the clock
-        list(pool.map(_run_config_task, [(1, 0.0, 4, 0)] * workers))
+        list(pool.map(_run_config_task, [(1, 0.0, 4, 0, {})] * workers))
         log(f"PythTB parallel: {configs} configs of {n}x{n} on {workers} processes")
         progress = Progress(f"PythTB parallel {n}x{n}", configs)
         t0 = time.perf_counter()
@@ -214,7 +221,7 @@ def bench_parallel(
             results.append(r)
             progress.step()
         wall = time.perf_counter() - t0
-    checked = reliability_pass(n, nk, W, seeds, workers) if reliability else None
+    checked = reliability_pass(n, nk, W, seeds, workers, params) if reliability else None
     report("parallel", n, nk, W, configs, wall, results, checked, workers=workers)
     return results
 

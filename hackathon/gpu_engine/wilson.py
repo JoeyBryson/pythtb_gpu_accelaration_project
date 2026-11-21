@@ -37,9 +37,14 @@ NS_MAX_STEPS = 12
 NS_TOL = {torch.complex128: 1e-12, torch.complex64: 1e-5}
 
 
-def boundary_phase(model: TBModel, G: tuple[float, float] = (0.0, 1.0)) -> np.ndarray:
-    """D = exp(-2 pi i G.tau) for each state (spin flattened): u(k + G) = D * u(k). Shape (N,)."""
-    tau = np.repeat(np.asarray(model.orb_vecs), 2, axis=0)  # same position for both spins
+def boundary_phase(
+    model: TBModel, G: tuple[float, float] = (0.0, 1.0), spin_blocks: bool = False
+) -> np.ndarray:
+    """D = exp(-2 pi i G.tau) for each state: u(k + G) = D * u(k).
+    Shape (N,) with spin flattened, or (N/2,) per spin block (one entry per orbital)."""
+    tau = np.asarray(model.orb_vecs)
+    if not spin_blocks:
+        tau = np.repeat(tau, 2, axis=0)  # same position for both spins
     return np.exp(-2j * np.pi * tau @ np.asarray(G))
 
 
@@ -108,14 +113,21 @@ def wannier_centres(
 ) -> tuple[torch.Tensor, dict]:
     """Wannier centres for every line of every configuration.
 
-    u: (C, nk_x, nk_y, n_occ, N) occupied states from batched.solve_configs.
+    u: (C, nk_x, nk_y, n_occ, N) occupied states from batched.solve_configs, or
+       (C, 2, nk_x, nk_y, n_occ/2, N/2) with spin_blocks=True (Rashba = 0). Then each spin
+       block gets its own Wilson loops (half-size matrices), and the two blocks' Wannier
+       centres are combined per line: the same set the full problem gives, because the
+       overlaps and Wilson matrices are block-diagonal in spin.
     Returns wcc (C, nk_x, n_occ) in [0, 1) on the CPU, sorted per line, and info
     (fallback count and seconds per sub-step).
     """
     on_gpu = u.is_cuda
     clock = _Clock(on_gpu)
+    spin_blocks = u.ndim == 6
 
-    phase = torch.as_tensor(boundary_phase(model), dtype=u.dtype, device=u.device)
+    phase = torch.as_tensor(
+        boundary_phase(model, spin_blocks=spin_blocks), dtype=u.dtype, device=u.device
+    )
     M = overlaps_along_ky(u, phase)
     clock.lap("overlaps")
     if method == "newton-schulz":
@@ -132,6 +144,8 @@ def wannier_centres(
         evals = torch.linalg.eigvals(W.cpu())
         eig_stats = {"eig_retried": 0, "eig_cpu": int(W.shape[:-2].numel())}
     wcc = torch.remainder(-torch.angle(evals) / (2 * torch.pi), 1.0)
+    if spin_blocks:  # (C, 2, nk_x, n/2) -> (C, nk_x, n): both spins' centres on each line
+        wcc = wcc.movedim(1, -2).flatten(-2)
     wcc, _ = torch.sort(wcc, dim=-1)
     clock.lap("eigvals")
     info = {
