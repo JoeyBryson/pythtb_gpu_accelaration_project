@@ -1,0 +1,42 @@
+{
+  "config": {
+    "supercells": [
+      16
+    ],
+    "Ws": [
+      1.0,
+      2.0,
+      2.5,
+      3.0,
+      5.0,
+      10.0
+    ],
+    "n_samples": 12,
+    "nk": {
+      "16": 6
+    },
+    "deltas": [
+      1.65
+    ],
+    "soc": 0.3,
+    "rashba": 0.0,
+    "disorder": "uniform",
+    "seeds": "shared",
+    "seed0": 0,
+    "keep_flows": 0,
+    "spin_blocks": true
+  },
+  "hardware": "CPU, single precision",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
+  "disorder_convention": "eps_i ~ U[-W/2, W/2] per site, both spins (ours; Orth uses [-W, W], i.e. W_ours = 2 W_Orth)",
+  "written": "2026-11-21 21:41:46",
+  "combined_from": [
+    "results/ensemble_L16_part0.csv",
+    "results/ensemble_L16_part12.csv",
+    "results/ensemble_L16_part24.csv",
+    "results/ensemble_L16_part36.csv",
+    "results/ensemble_L16_part48.csv",
+    "results/ensemble_L16_part60.csv"
+  ],
+  "note": "6 processes run in parallel (2 threads each) on the same laptop; batch_seconds are per-process wall times under contention"
+}
