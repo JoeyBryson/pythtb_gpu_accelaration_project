@@ -35,6 +35,7 @@ class BatchResult:
     eig_retried: int = 0  # Wilson matrices whose eigenvalues needed the GPU retry
     eig_cpu: int = 0  # ... and of those, the ones that needed the slow CPU solver
     n_wilson: int = 0  # Wilson matrices in total
+    flows: np.ndarray | None = None  # (C, nk/2 + 1, n_occ) Wannier flow, if keep_flows=True
 
     @property
     def reliable(self) -> np.ndarray:
@@ -54,7 +55,8 @@ def half_bz_rows(nk: int) -> np.ndarray:
 
 def run_batch(
     supercell: int, W: float, nk: int, seeds: list[int], backend: Backend,
-    check: bool = True, progress=None, spin_blocks: bool = False, **params,
+    check: bool = True, progress=None, spin_blocks: bool = False,
+    keep_flows: bool = False, shift_fn=None, **params,
 ) -> BatchResult:
     """Z2 for every configuration (one per seed), timing each stage on the device.
 
@@ -66,13 +68,15 @@ def run_batch(
     progress: optional callable(n_done) called after each chunk (for progress logging).
     spin_blocks: solve spin up and down as separate half-size problems (needs rashba = 0;
     ~4x cheaper diagonalisation, same answers; see batched.solve_configs).
+    keep_flows=True also returns the half-zone Wannier flow of every configuration (for
+    ensemble plots). shift_fn: alternative disorder generator, see batched.solve_configs.
     """
     if nk % 2:
         raise ValueError("Z2 needs an even nk (k = pi on the mesh)")
     model = clean_kane_mele(supercell, **params)
     n_occ, N = model.norb, 2 * model.norb
     t = {"solve": 0.0, "wilson": 0.0, "z2": 0.0, "check": 0.0}
-    z2, margin, gap, min_overlap, fallbacks = [], [], [], [], 0
+    z2, margin, gap, min_overlap, fallbacks, kept = [], [], [], [], 0, []
     eig = {"eig_retried": 0, "eig_cpu": 0, "n_wilson": 0}
     rows = half_bz_rows(nk)
 
@@ -85,7 +89,8 @@ def run_batch(
         sync(backend)
         t0 = time.perf_counter()
         energies, u = solve_configs(
-            model, nk, W, part, backend, chunk=len(part), spin_blocks=spin_blocks
+            model, nk, W, part, backend, chunk=len(part), spin_blocks=spin_blocks,
+            shift_fn=shift_fn,
         )
         sync(backend)
         t1 = time.perf_counter()
@@ -97,6 +102,8 @@ def run_batch(
         flows = wcc[:, rows].double().cpu().numpy()  # (c, nk/2 + 1, n_occ)
         z2 += [z2_from_wannier_flow(f) for f in flows]
         margin += [z2_margin(f) for f in flows]
+        if keep_flows:
+            kept.append(flows.astype(np.float32))
         g = energies[..., n_occ].amin(dim=(1, 2)) - energies[..., n_occ - 1].amax(dim=(1, 2))
         gap += g.double().cpu().tolist()
         t3 = time.perf_counter()
@@ -127,4 +134,5 @@ def run_batch(
     return BatchResult(
         np.array(z2), np.array(margin), np.array(min_overlap), np.array(gap), t, fallbacks,
         **eig,
+        flows=np.concatenate(kept) if keep_flows else None,
     )
