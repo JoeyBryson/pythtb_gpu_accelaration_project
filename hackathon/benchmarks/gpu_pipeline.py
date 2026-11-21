@@ -88,7 +88,8 @@ def main() -> None:
                     f"  ours {device:4s} {precision:6s} {t:8.3f} s  "
                     f"(solve {out.timings['solve']:.3f}, wilson {out.timings['wilson']:.3f}, "
                     f"z2 {out.timings['z2']:.3f})  Z2 agrees {agree}/{args.configs}  "
-                    f"unreliable {n_unrel}  NS fallbacks {out.ns_fallbacks}"
+                    f"unreliable {n_unrel}  NS fallbacks {out.ns_fallbacks}  "
+                    f"eig retried {out.eig_retried}/{out.n_wilson} (cpu {out.eig_cpu})"
                     f"\n      wilson breakdown: "
                     + "  ".join(
                         f"{k[2:]} {out.timings[k]:.3f}"
@@ -109,6 +110,8 @@ def main() -> None:
                        for k in ("t_overlaps", "t_unitary", "t_product", "t_eigvals")},
                     "z2_agree": agree, "n_unreliable": n_unrel,
                     "ns_fallbacks": out.ns_fallbacks, "workers": args.workers,
+                    "eig_retried": out.eig_retried, "eig_cpu": out.eig_cpu,
+                    "n_wilson": out.n_wilson,
                 }
                 for name, (t_ref, _) in baselines.items():
                     row[f"t_{name}"] = f"{t_ref:.4f}"

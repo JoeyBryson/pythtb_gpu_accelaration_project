@@ -126,49 +126,84 @@ def wannier_centres(
     W = ordered_product(U)  # (C, nk_x, n, n)
     clock.lap("product")
     if eig_method == "hermitian":
-        evals, n_eig_fallback = unitary_eigenvalues(W)
+        evals, eig_stats = unitary_eigenvalues(W)
         evals = evals.cpu()
     else:  # "general": the plain non-Hermitian eigensolver, on the CPU (slow on GPUs)
-        evals, n_eig_fallback = torch.linalg.eigvals(W.cpu()), 0
+        evals = torch.linalg.eigvals(W.cpu())
+        eig_stats = {"eig_retried": 0, "eig_cpu": int(W.shape[:-2].numel())}
     wcc = torch.remainder(-torch.angle(evals) / (2 * torch.pi), 1.0)
     wcc, _ = torch.sort(wcc, dim=-1)
     clock.lap("eigvals")
     info = {
-        "ns_fallbacks": n_fallback, "eig_fallbacks": n_eig_fallback,
+        "ns_fallbacks": n_fallback, **eig_stats, "n_wilson": int(W.shape[:-2].numel()),
         "n_links": M.shape[:-2].numel(), **clock.laps,
     }
     return wcc, info
 
 
-# Mixing weight for unitary_eigenvalues. Any fixed number not 0 works; an irrational-looking
-# one makes accidental ties (two different phases giving the same mixed value) unlikely.
+# Mixing weights for unitary_eigenvalues. Any fixed number not 0 works; irrational-looking
+# ones make accidental ties (two different phases giving the same mixed value) unlikely.
+# The second is used to retry the rare matrices where the first one fails.
 _MIX = 0.6180339887
-EIG_TOL = {torch.complex128: 1e-10, torch.complex64: 1e-4}
+_MIX_RETRY = -1.4142135623
+# Accuracy bar per eigenvalue (the step always runs in double precision, see below). W is
+# normal, so if |W v - lambda v| <= tol for a unit vector v, lambda is within tol of a true
+# eigenvalue (Bauer-Fike), i.e. the Wannier centre is within tol / 2pi. Checked per
+# eigenvector, not per matrix: a matrix-wide norm let errors of ~1e-3 through at n = 512 in
+# single precision (found 21 Nov).
+EIG_TOL = 1e-10
 
 
-def unitary_eigenvalues(W: torch.Tensor) -> tuple[torch.Tensor, int]:
+def _hermitian_eig(W: torch.Tensor, mix: float) -> tuple[torch.Tensor, torch.Tensor]:
+    """One attempt: eigenvalues of unitary W via eigh of a Hermitian mix of W and W^H.
+    Returns (eigenvalues (..., n), worst per-eigenvector residual |W v - lambda v| per matrix)."""
+    H = 0.5 * (W + W.mH) + mix * (W - W.mH) / 2j
+    _, V = torch.linalg.eigh(H)
+    lam = (V.conj() * (W @ V)).sum(dim=-2)  # diagonal of V^H W V, one per eigenvector
+    per_vector = torch.linalg.vector_norm(W @ V - V * lam.unsqueeze(-2), dim=-2)  # (..., n)
+    return lam, per_vector.amax(dim=-1)
+
+
+def unitary_eigenvalues(W: torch.Tensor) -> tuple[torch.Tensor, dict]:
     """Eigenvalues of unitary matrices with a Hermitian eigensolver (fast and batched on GPUs).
 
     A unitary W has eigenvalues e^{i theta} and an orthonormal set of eigenvectors. The
-    Hermitian matrix  H = Re-part + MIX * Im-part = (W + W^H)/2 + MIX (W - W^H)/(2i)
-    has the SAME eigenvectors (eigenvalues cos theta + MIX sin theta), so we diagonalise H
-    with `eigh` and read each eigenvalue of W back as v^H W v.
+    Hermitian matrix  H = (W + W^H)/2 + MIX (W - W^H)/(2i)  has the SAME eigenvectors
+    (eigenvalues cos theta + MIX sin theta), so we diagonalise H with `eigh` and read each
+    eigenvalue of W back as v^H W v.
 
-    The one way this can go wrong: two different phases giving the same value of
-    cos + MIX sin, so eigh mixes their eigenvectors. We check every matrix
-    (|W V - V diag(lambda)| small?) and recompute any that fail with the general solver.
+    Always done in DOUBLE precision, even in a single-precision run: in single precision
+    eigh can't separate eigenvalues closer than ~1e-6 and the Rayleigh read-back loses
+    accuracy (1e-3 errors at n = 512, 21 Nov). The Wilson matrices are small and few
+    (one n_occ x n_occ per line), so double costs little. A single-precision W is first made
+    exactly unitary in double with two Newton-Schulz steps (it moves by ~1e-5, below the 1e-4
+    single-precision tolerance); otherwise its tiny non-unitarity would fail the check.
 
-    W: (..., n, n). Returns (eigenvalues (..., n) complex, number of matrices recomputed).
+    It can still go wrong when two different phases give (nearly) the same cos + MIX sin, so
+    eigh mixes their eigenvectors. Every eigenvector is checked, and failures go through:
+      1. retry on the same device with a different MIX (cheap: few matrices)
+      2. only if that also fails: the general (non-Hermitian) solver on the CPU (slow)
+
+    W: (..., n, n). Returns (eigenvalues (..., n) complex128, {"eig_retried", "eig_cpu"} counts).
     """
-    H = 0.5 * (W + W.mH) + _MIX * (W - W.mH) / 2j
-    _, V = torch.linalg.eigh(H)
-    lam = (V.conj() * (W @ V)).sum(dim=-2)  # diagonal of V^H W V, one per eigenvector
-    residual = torch.linalg.matrix_norm(W @ V - V * lam.unsqueeze(-2), ord="fro")
-    bad = residual > EIG_TOL[W.dtype] * W.shape[-1]
-    n_bad = int(bad.sum())
-    if n_bad:
-        lam[bad] = torch.linalg.eigvals(W[bad].cpu()).to(lam.device)
-    return lam, n_bad
+    Wd = W.to(torch.complex128)
+    if W.dtype != torch.complex128:
+        eye = torch.eye(W.shape[-1], dtype=Wd.dtype, device=Wd.device)
+        for _ in range(2):  # Newton-Schulz polish: nearest unitary matrix, in double
+            Wd = 0.5 * Wd @ (3 * eye - Wd.mH @ Wd)
+    lam, residual = _hermitian_eig(Wd, _MIX)
+    bad = residual > EIG_TOL
+    stats = {"eig_retried": int(bad.sum()), "eig_cpu": 0}
+    if stats["eig_retried"]:
+        lam_retry, res_retry = _hermitian_eig(Wd[bad], _MIX_RETRY)
+        still_bad = res_retry > EIG_TOL
+        stats["eig_cpu"] = int(still_bad.sum())
+        if stats["eig_cpu"]:
+            lam_retry[still_bad] = torch.linalg.eigvals(Wd[bad][still_bad].cpu()).to(
+                lam_retry.device
+            )
+        lam[bad] = lam_retry
+    return lam, stats
 
 
 class _Clock:
