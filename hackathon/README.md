@@ -40,6 +40,7 @@ complex128/complex `eigh`. That's fine for correctness work, but **benchmark num
 | `notebooks/` | exploration + plots for the pitch | anyone |
 | `results/` | small CSV/PNG outputs (large arrays are git-ignored) | anyone |
 | `tests/` | pytest; compare to `reference.py` with tolerances written down | all |
+| `kaggle/`, `modal_gpu/` | run on a cloud GPU from your laptop: free Kaggle T4, or any Modal GPU (`uvx modal run modal_gpu/app.py --gpu A100`) | GPU engine |
 | `prep/` | pre-event work (also see `../GPU_experimentation/test_scripts/`) | — |
 
 ## Quick example
