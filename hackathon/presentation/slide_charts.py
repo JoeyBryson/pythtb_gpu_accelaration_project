@@ -37,6 +37,7 @@ COST = HERE / "results" / "kaggle" / "20261121-213825" / "out" / "sweep_cost.csv
 PILOT = HERE / "results" / "sweep" / "pilot_8x8_c_up.csv"  # R11
 FSS12 = HERE / "results" / "sweep" / "fss_12x12_c_up.csv"  # R13
 FSS16 = HERE / "results" / "sweep" / "fss_16x16_c_up.csv"  # R13
+PHASEMAP = HERE / "results" / "sweep" / "phasemap_12x12_c_up.csv"  # R15
 
 
 def rows(path: Path) -> list[dict]:
@@ -204,6 +205,67 @@ def slide_sizes() -> Path:
     return save(fig, "4_sizes.png", left=0.09, right=0.95, bottom=0.17, top=0.76)
 
 
+# ---------------------------------------------------------------- 5. phase map
+
+
+def slide_phase_map(path: Path = PHASEMAP, out: str = "5_phase_map.png") -> Path:
+    """lambda_nu x W map of the fraction topological, with the 50% boundary."""
+    from matplotlib.colors import LinearSegmentedColormap
+
+    data = rows(path)
+    lams = sorted({float(r["lambda_nu"]) for r in data})
+    Ws = sorted({float(r["W"]) for r in data})
+    grid = np.full((len(lams), len(Ws)), np.nan)
+    for r in data:
+        grid[lams.index(float(r["lambda_nu"])), Ws.index(float(r["W"]))] = float(r["frac_topological"])
+
+    # sequential, one hue: near-surface = ordinary, dark blue = topological (validated ramp steps)
+    cmap = LinearSegmentedColormap.from_list(
+        "topo", ["#f4f3ef", "#cde2fb", "#86b6ef", "#3987e5", "#1c5cab", "#0d366b"])
+    fig, ax = new_slide()
+    dW = Ws[1] - Ws[0] if len(Ws) > 1 else 1
+    dl = lams[1] - lams[0] if len(lams) > 1 else 1
+    im = ax.imshow(grid, origin="lower", aspect="auto", cmap=cmap, vmin=0, vmax=1,
+                   extent=(Ws[0] - dW / 2, Ws[-1] + dW / 2, lams[0] - dl / 2, lams[-1] + dl / 2),
+                   interpolation="nearest")
+    clean = 3 * np.sqrt(3) * 0.3  # clean-limit phase boundary, lambda_nu = 3 sqrt(3) lambda_SO
+    above = np.array(lams) > clean  # the 50% line only where disorder does the switching
+    if above.sum() > 1 and len(Ws) > 1:
+        ax.contour(Ws, np.array(lams)[above], grid[above], levels=[0.5], colors=[INK],
+                   linewidths=2.5)
+    ax.axhline(clean, color="white", lw=1.5, ls=(0, (5, 4)), alpha=0.8)
+    ax.text(Ws[-1] + dW / 2 - 0.08, clean - dl * 0.15, "perfect material changes phase here",
+            ha="right", va="top", fontsize=12, color="white")
+    ax.text(0.35, lams[0] + 0.4 * (clean - lams[0]), "topological", fontsize=18, fontweight="bold",
+            color="white", va="center")
+    ax.text(0.35, lams[-1] - 0.25 * (lams[-1] - clean), "ordinary", fontsize=18, fontweight="bold",
+            color=INK, va="center")
+    ax.text(3.0, clean + 0.45 * (lams[-1] - clean), "disorder made\nit topological", fontsize=17,
+            fontweight="bold", color="white", va="center", ha="center")
+    cbar = fig.colorbar(im, ax=ax, fraction=0.03, pad=0.02, ticks=[0, 0.5, 1])
+    cbar.ax.set_yticklabels(["0%", "50%", "100%"])
+    cbar.ax.tick_params(labelsize=12, colors=MUTED)
+    cbar.outline.set_visible(False)
+    cbar.set_label("samples that are topological", fontsize=13, color=INK_2)
+    ax.set_xlabel("disorder strength (how imperfect the material is)")
+    ax.set_ylabel(r"staggered potential $\lambda_\nu$ (the material's starting point)")
+    for side in ("left", "bottom"):
+        ax.spines[side].set_visible(False)
+    n_cells = sum(1 for r in data)
+    n_samples = sum(int(r["samples"]) for r in data)
+    t = sum(float(r["t_gpu"]) + float(r["t_refine"]) for r in data) / 60
+    size = data[0]["supercell"]
+    titled(fig, "Where imperfections create topology",
+           f"Fraction topological over {n_cells} combinations of material and disorder, "
+           f"{size}×{size} supercells",
+           rf"Kane-Mele, $\lambda_{{SO}}$ = 0.3, $\lambda_R$ = 0. Line: 50% boundary. "
+           f"{n_samples:,} samples in {t:.0f} min on one T4. RESULTS.md R15.")
+    return save(fig, out, left=0.1, right=0.93, bottom=0.17, top=0.76)
+
+
 if __name__ == "__main__":
-    for make in (slide_speed, slide_split, slide_disorder_switch, slide_sizes):
+    makers = [slide_speed, slide_split, slide_disorder_switch, slide_sizes]
+    if PHASEMAP.exists():
+        makers.append(slide_phase_map)
+    for make in makers:
         print(f"wrote {make()}")
