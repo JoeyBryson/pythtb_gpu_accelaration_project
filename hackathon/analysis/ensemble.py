@@ -49,6 +49,7 @@ from gpu_engine.backend import Backend
 from gpu_engine.batched import disorder_shifts
 from gpu_engine.pipeline import run_batch
 from gpu_engine.reference import TUTORIAL_PARAMS, clean_kane_mele
+from gpu_engine.spin_chern import run_spin_chern
 
 CLEAN_BOUNDARY_FACTOR = 3 * np.sqrt(3)  # clean transition at delta = 3 sqrt(3) soc (rashba = 0)
 
@@ -117,6 +118,8 @@ class SweepConfig:
     seed0: int = 0
     keep_flows: int = 0  # keep the Wannier flow of the first `keep_flows` samples per W
     spin_blocks: bool = False  # solve spin up/down separately (rashba = 0 only; ~4x cheaper)
+    invariant: str = "z2"  # "c_up" (spin-up Chern number, rashba = 0, fastest) or "z2"
+    refine_nk: int | None = 10  # c_up only: unreliable samples re-run on this mesh
 
 
 def seeds_for(cfg: SweepConfig, iW: int) -> list[int]:
@@ -140,6 +143,9 @@ def run_sweep(cfg: SweepConfig, backend: Backend, progress: bool = True):
             norb = len(sub)
             for iW, W in enumerate(cfg.Ws):
                 seeds = seeds_for(cfg, iW)
+                if cfg.invariant == "c_up":
+                    rows += _c_up_rows(cfg, backend, n, nk, delta, W, seeds, sub, progress)
+                    continue
                 t0 = time.perf_counter()
                 res = run_batch(
                     n, W, nk, seeds, backend, check=True,
@@ -170,6 +176,44 @@ def run_sweep(cfg: SweepConfig, backend: Backend, progress: bool = True):
                           f"(reliable only {z.mean() if len(z) else float('nan'):.2f}, "
                           f"{reliable.mean():.0%} reliable), {wall:.2f} s")
     return rows, flows
+
+
+def _c_up_rows(cfg, backend, n, nk, delta, W, seeds, sub, progress) -> list[dict]:
+    """One (L, delta, W) point with the spin-up Chern number (gpu_engine.spin_chern).
+
+    Same per-sample columns as the Z2 path where they mean the same thing; differences:
+    band_gap is the smallest DIRECT gap of the spin-up block over the mesh; the reliability
+    check is max_step <= spin_chern.STEP_THRESHOLD (no gap tracking, no SVD), so z2_margin and
+    min_overlap are nan; nk_used says whether a sample was refined to cfg.refine_nk.
+    """
+    if cfg.rashba != 0 or cfg.disorder != "uniform":
+        raise ValueError("invariant c_up needs rashba = 0 and uniform disorder (use z2)")
+    t0 = time.perf_counter()
+    res = run_spin_chern(n, W, nk, seeds, backend, delta=delta, soc=cfg.soc,
+                         refine_nk=cfg.refine_nk)
+    wall = time.perf_counter() - t0
+    stats = disorder_statistics(disorder_shifts(len(sub), W, seeds)[:, 0::2], sub)
+    z2, reliable = res.z2, res.reliable
+    rows = [{
+        "L": n, "delta": delta, "soc": cfg.soc, "rashba": cfg.rashba,
+        "W": W, "sample": i, "seed": s, "disorder": cfg.disorder,
+        "seeds_mode": cfg.seeds, "nk": nk, "precision": backend.precision,
+        "invariant": "c_up", "c_up": int(res.c_up[i]), "max_step": res.max_step[i],
+        "nk_used": int(res.nk_used[i]),
+        "z2": int(z2[i]), "reliable": int(reliable[i]),
+        "band_gap": res.gap_up[i], "z2_margin": np.nan, "min_overlap": np.nan,
+        **{k: v[i] for k, v in stats.items()},
+        "delta_eff": delta + stats["eps_A_minus_B"][i] / 2,
+        "batch_ns_fallbacks": 0,
+        "batch_seconds": wall,
+    } for i, s in enumerate(seeds)]
+    if progress:
+        z = z2[reliable]
+        print(f"  L={n} delta={delta:g} W={W:5.2f}: P(Z2=1)={z2.mean():.2f} "
+              f"(reliable only {z.mean() if len(z) else float('nan'):.2f}, "
+              f"{reliable.mean():.0%} reliable, {res.timings['n_refined']} refined), "
+              f"{wall:.2f} s")
+    return rows
 
 
 def save_rows(rows: list[dict], path: Path, cfg: SweepConfig, backend: Backend) -> None:
