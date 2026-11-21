@@ -18,7 +18,11 @@ Written Sat 21 Nov, about 20:00. Code freeze Sun about 15:00, so **about 19 h le
 | **Stage 0 go/no-go** (L = 8, CPU) | ✓ **Physics GO**: f = 0 → 0.2 → 0.7 → 0.8 → 0.15 over W = 0 to 8 |
 | Gap-tracking Z₂ near the transition | ✗ Not converged: 85–95% flagged at W ≈ 2, and up to 6/20 answers change with nk. **The cause is the gap-tracking count, not the physics or the mesh.** |
 | **Decision A: invariant** | ✓ **Spin-up Chern number C↑ from the winding of arg det(Wilson loop), Z₂ = C↑ mod 2.** Same answer at nk = 6 and 10 for 137/140 samples (L = 8 and 12, W = 1–8). All 3 changes are flagged by largest step > 0.4. Rule: nk = 6, re-run flagged samples at nk = 10. (`analysis/stage0_chern_up.py`, `results/stage0*_chern_up*.csv`) |
-| GPU version of C↑ | Written: `gpu_engine/spin_chern.py`, `tests/test_spin_chern.py`, `benchmarks/gpu_spin_chern.py`. First Kaggle run in progress (Sat about 21:00). |
+| GPU version of C↑ | ✓ `gpu_engine/spin_chern.py`. All tests pass on the T4 (63 passed, R11 run), after Oscar's cuSOLVER fix for a crash in the default LU routine (d823336). |
+| Production runner | ✓ `analysis/sweep.py` (Oscar): saves per point, resumes, refines, CPU estimate. Uses C↑ by default (`--invariant c_up`). |
+| **First sweep (R11, 8×8, T4)** | ✓ λν = 1.65: 0% → 60% (W = 2) → about 100% (W = 3.5–4.5) → 50% near W ≈ 7. **GPU time 5.1 min** for 4,200 samples. Cross-checked: the CPU C↑ on the same 100 seeds at W = 2 gives identical counts (56/94). |
+| Ensemble analysis (Filip) | ✓ `analysis/ensemble*.py`, `sample_size.py`: per-sample data, population and sample-size figures (L = 2–4, gap-tracking Z₂, CPU double). |
+| Many-GPU runner | ✓ `modal_runs/app.py` (Modal, separate from `kaggle/`). Presets test → timing → pilot → wc1 → wc2 → fig5 → big. **Blocked:** the workspace spend limit must be raised in the Modal dashboard. |
 | Gap policy (direct vs indirect) | ✓ Not an issue: identical in every sample |
 
 ## The plan in five phases

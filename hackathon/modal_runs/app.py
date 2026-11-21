@@ -124,8 +124,9 @@ def preset_jobs(preset: str, small_gpu: str, big_gpu: str) -> list[dict]:
 
 
 # rough seconds per sample on an A100, single precision, incl. ~20% refinement (estimates until
-# the `timing` preset measures them; L4 assumed ~2x slower)
-EST_S = {8: 0.01, 12: 0.04, 16: 0.2, 24: 1.7, 32: 10.0}
+# the `timing` preset measures them; L4 assumed ~2x slower). L = 8 from R11: 0.074 s per sample
+# on a T4 incl. refinement, so ~0.02 s on an A100 (small matrices: overheads dominate).
+EST_S = {8: 0.02, 12: 0.05, 16: 0.2, 24: 1.7, 32: 10.0}
 
 
 def estimate(jobs: list[dict]) -> tuple[float, float]:
