@@ -1,0 +1,1130 @@
+                                                                     Floquet topological transitions in extended Kane-Mele models with disorder
+
+                                                                               Liang Du, Paul D. Schnase, Aaron D. Barr, Ariel R. Barr, and Gregory A. Fiete
+                                                                                  Department of Physics, The University of Texas at Austin, Austin, TX 78712, USA
+                                                                                                              (Dated: May 14, 2018)
+                                                                      In this work we use Floquet theory to theoretically study the influence of circularly polarized light on disor-
+                                                                   dered two-dimensional models exhibiting topological transitions. We find circularly polarized light can induce
+                                                                   a topological transition in extended Kane-Mele models that include additional hopping terms and on-site dis-
+                                                                   order. The topological transitions are understood from the Floquet-Bloch band structure of the clean system at
+                                                                   high symmetry points in the first Brillouin zone. The light modifies the equilibrium band structure of the clean
+arXiv:1805.04208v1 [cond-mat.mes-hall] 10 May 2018
+
+
+
+
+                                                                   system in such a way that the smallest gap in the Brillouin zone can be shifted from the M points to the K(K 0 )
+                                                                   points, the Γ point, or even other lower symmetry points. The movement of the minimal gap point through the
+                                                                   Brillouin zone as a function of laser parameters is explained in the high frequency regime through the Magnus
+                                                                   expansion. In the disordered model, we compute the Bott index to reveal topological phases and transitions.
+                                                                   The disorder can induce transitions from topologically non-trivial states to trivial states or vice versa, both ex-
+                                                                   amples of Floquet topological Anderson transitions. As a result of the movement of the minimal gap point
+                                                                   through the Brillouin zone as a function of laser parameters, the nature of the topological phases and transitions
+                                                                   is laser-parameter dependent–a contrasting behavior to the Kane-Mele model.
+
+
+                                                                          I.    INTRODUCTION                                   Mele (GKM) model and dimerized Kane-Mele (DKM) model
+                                                                                                                               (described in this paper in Sec. II). They found that low and
+                                                        Research on topological band insulators has seen dra-                  intermediate levels of disorder tend to stabilize the topological
+                                                     matic progress in the past decade.1–4 The phenomenology is                phase for both models. Further, taking the Coulomb interac-
+                                                     even richer when inter-particle interactions are taken into ac-           tion into account tends to destabilize the topological phase in
+                                                     count and fractionalized phases result.5–9 Starting from a non-           the dimerized Kane-Mele model, but stabilize the topological
+                                                     interacting band structure, the Coulomb interaction can in-               phase in the GKM model. Hence the GKM and DKM pro-
+                                                     duce a topological transition.10–12 For example, in the two-              vide contrasting behavior to each other, and also to the more
+                                                     dimensional honeycomb lattice, the Dirac points are stable                heavily studied Kane-Mele model, thus illustrating the phe-
+                                                     to weak Coulomb interaction, while the bulk gap will open                 nomenological richness of topological phases and transitions
+                                                     at a finite critical Coulomb interaction.13–15 In the kagome              under different conditions.
+                                                     lattice, there is a flat band and a quadratic band touch-                    To summarize, the location of the Dirac point in momentum
+                                                     ing point which is perturbatively unstable to the Coulomb                 space in a clean (disorder-free) system is crucial to determin-
+                                                     interaction.10,16 Recently, an active direction of research has           ing the effect of bond or on-site disorder. In this paper, we
+                                                     been to study the topological transition by periodically driv-            show that starting from a fixed equilibrium model Hamilto-
+                                                     ing a non-interacting system to a non-equilibrium state, called           nian, periodically driving the system out-of-equilibrium via
+                                                     a Floquet topological insulator.17 A periodic drive can be re-            a laser can shift the Dirac point between different high sym-
+                                                     alized in a cold atom system with an optical lattice potential            metry points, for example, from an M to a K or a Γ point.
+                                                     generated by changing the laser field,18,19 or in the solid state         These shifts are computed in detail, and provide a platform
+                                                     by illumination with a monochromatic laser field.20–36                    to study differences in the effects of bond and on-site dis-
+                                                        In equilibrium, topological insulators induced by Ander-               order in the presence of a laser field. Out-of-equilibrium, a
+                                                     son (on-site) disorder have been well studied in the past                 disorder-induced transition between topologically trivial and
+                                                     decade.37–48 Within the Born approximation, Anderson disor-               nontrivial states is characterized by the disorder-averaged Bott
+                                                     der will induce a negative correction to the mass and chemical            index.53 Prior non-equilibrium work studied the honeycomb
+                                                     potential, which in turn may induce a topological transition.38           lattice with staggered on-site A-B sub-lattice potentials in the
+                                                     Song et al.49 studied the effect of different types of disorder           presence of disorder.54,55
+                                                     on the topological transition in the Haldane model where a                   In this paper, we focus on laser- and disorder-induced topo-
+                                                     Dirac point is situated at the K, K 0 points. Their study shows           logical transitions. Before turning to the disorder-induced
+                                                     that on-site disorder and bond disorder have different effects            Floquet topological phase transition in the GKM and DKM
+                                                     on the topological transition. Bond disorder tends to prohibit            models, we first study the Floquet-Bloch band structure where
+                                                     the system from undergoing a phase transition to a topological            a gap closing and reopening process is observed. The effect
+                                                     Anderson insulator, contrary to the effect of Anderson disor-             of disorder on the clean Floquet system is studied and the re-
+                                                     der. When the Kane-Mele model50,51 is generalized to include              sults qualitatively explained considering the energy scales of
+                                                     third-neighbor hopping, or dimerized first-neighbor hopping               the system gap size and the total bandwidth.
+                                                     terms along the z direction, the linear crossing can shift from              The organization in this paper is as follows. In Sec.II,
+                                                     a K, K 0 point to an M point.52 At the M point, the bond and              we describe the generalized Kane-Mele and dimerized Kane-
+                                                     on-site disorder have the same effect on the mass renormal-               Mele models. The Floquet topological transition, the Floquet-
+                                                     ization, and both enhance the topological state in the weak               Bloch band structure and the related low-energy theory are
+                                                     disorder limit.52 Hung et al.52 studied the generalized Kane-             described in Sec.IV. In Sec.V, we study the topological transi-
+                                                                                                                                                                          2
+
+tion in the generalized and dimerized Kane-Mele models sub-                           The DKM Hamiltonian in real-space is given by,
+ject to both laser illumination and on-site disorder. Finally, in
+                                                                                                −t1 (c†i ci+δ1 + c†i ci+δ2 ) − td c†i ci+δ3 + h.c.
+                                                                                             X
+Sec.VII, we summarize our main conclusions.                                            σ
+                                                                                      HDKM =
+                                                                                                 i∈A
+
+                                                                                                                                   σvij c†i cj ,
+                                                                                                                          X
+                        II.    MODEL HAMILTONIAN                                                          + iλsoc                                                        (2)
+                                                                                                                          hhijii
+
+
+(a)                                                      (b)
+                                                                                    where td is the nearest-neighbor hopping parameter along the
+                                                                   K    M3          vertical direction (δ3 in Fig.1(a)). For conciseness, we write
+                                                          M2                 M1
+                                                                                    the Hamiltonian with a general form,
+
+                                                                                                    −t1 (c†i ci+δ1 + c†i ci+δ2 ) − td c†i ci+δ3 + h.c.
+                                                                                               X
+               B
+                                                         K0             Γ
+                                                                                        Hσ =
+                         a2             a1                                                     i∈A
+          δ3
+                                                                                                                          σvij c†i cj − t3                    c†i cj .
+                                                                                                                  X                                 X
+                                                                                                   + iλsoc                                                               (3)
+               A
+         δ1        δ2                                                                                            hhijii                            hhhijiii
+
+                                                                                    In this form, we have the GKM model when td = t1 and we
+FIG. 1. (Color online) (a) Honeycomb lattice with two sub-lattices                  have the DKM when t3 = 0.0, td 6= t1 . Fourier transform-
+in one unit cell (shaded area), labeled A (open circles) and B                      ing the Hamiltonian in Eq.(3) to momentum space, we obtain
+                                                                                    H σ = k ψk† Hk ψk with ψk = (ckA , ckB )T , where ckA and
+                                                                                            P
+(filled
+    √ circles). Three nearest-neighbor
+                             √                 unit vectors are δ1 =
+(− 3/2, −1/2)a, δ2 = ( 3/2, −1/2)a, δ3 = (0, 1)a, with a the                        ckB define annihilation operators on the two basis sites in the
+nearest-neighbor distance.
+                     √       Lattice translational vectors√are labeled as           unit cell shown in Fig.1(a). In the following, we focus on the
+a1 = δ3 − δ1 = ( 3/2, 3/2)a, a2 = δ3 − δ2 = (− 3/2, 3/2)a.                          spin-↑ Hamiltonian only,
+The blue dashed lines represent the imaginary second-neighbor hop-
+ping (spin-orbit coupling) and the arrow directions represent posi-                                                                        
+                                                                                                            0            −f1 (k) − t3 f3 (k)
+tive signs. (b) First Brillouin zone of the underlying√  triangular Bra-                  Hk↑ =
+vais lattice with√ reciprocal lattice vector b1 = ( 3, 1)2π/(3a)
+                                                                                                   −f1∗ (k) − t3 f3∗ (k)         0
+                                                                                                                          
+and b2√= (− 3, 1)2π/(3a). High          √ symmetry points are K =                                  −2λso g(k)         0
+(−2π/ 3, 2π)/(3a), K0 = (−4π/             3, 0)/(3a) and time reversal                          +                             ,                 (4)
+                                  √                                                                      0       2λso g(k)
+invariant momenta M1,2 = (± 3π, π)/(3a), M3 = (0, 2π)/(3a).
+All filled circles are equivalent to K and all open circles are equiv-              where g(k) ≡ − sin(k · a1 ) + sin(k · a2 ) + sin(k · a1 −
+alent to K0 . The Floquet quasi-band structure is plotted along the
+                                                                                    k · a2 ), f1 (k) = td + t1 e−ik·a1 + t1 e−ik·a2 , and f3 (k) =
+momentum path K 0 − Γ − M3 − K − M2 − K 0 in the first Brillouin
+zone.
+                                                                                    e−ik·(a1 +a2 ) + 2 cos(k
+                                                                                                       √       · a1 − k · a2 ). The√translational vec-
+                                                                                    tors are a1 = ( 3/2,  √ 3/2)a, a2 = (− 3/2, 3/2)a, and
+   We study both the generalized Kane-Mele (GKM) tight-                             a3 = a1 − a2 = ( 3, 0)a, with a the lattice constant. The
+binding Hamiltonian with third-nearest neighbor hopping                             reciprocal-lattice
+                                                                                     √                                 √ can be chosen as b1 =
+                                                                                                       primitive vectors
+terms and the dimerized Kane-Mele (DKM) model with                                  ( 3, 1)2π/(3a), and b2 = (− 3, 1)2π/(3a). For the GKM
+                                                                                                                                                         0
+dimerized hopping parameter in the vertical direction on the                        model, the gap√ opened at the Γ point is |6(t1 + t3 )|, the K, K
+honeycomb lattice (Fig.1(a)). The GKM Hamiltonian in real-                          points are |6 3t2 |, and the M1,2,3 points are 2|t1 − 3t3 |. In
+space is given by,                                                                  this paper, we fix t1 = 1.0, t2 = −0.3 to make sure the equi-
+                       X †                                                          librium system band gap is situated at the M points.
+                                           σvij c†i cj
+                                        X
+           σ
+        HGKM    = − t1    ci cj + iλsoc                                                When Eq.(3) is exposed to a normally incident laser field,
+                                     hiji                      hhijii               the time-dependent Hamiltonian can be expressed as,
+                                                c†i cj
+                                      X
+                              − t3                                            (1)             Xh                                              i
+                                     hhhijiii
+                                                                                     H(t) =        −t1 c†i ci+δ1 − t1 c†i ci+δ2 − td c†i ci+δ3 e−iAij (t)
+                                                                                             i∈A
+where t1 (t3 ) is the isotropic hopping integral between first-
+                                                                                                                c†i cj e−iAij (t) + h.c.
+                                                                                                      X
+                                                                                              − t3
+(third-) nearest neighbors, c†i (cj ) creates (annihilates) an elec-
+                                                                                                     hhhijiii
+tron with spin σ on site i (j) of the honeycomb lattice (the spin
+                                                                                                                  σvij c†i cj e−iAij (t) ,
+                                                                                                          X
+subindex is omitted for simplicity), and hiji limits the sum-                                 + iλsoc                                                                    (5)
+mation to nearest neighbors, hhijii and hhhijiii limit the sum-                                          hhijii
+mation to second- and third-nearest neighbors, respectively.
+Here λsoc is the spin-orbit coupling strength, σ = 1(−1)                            where Aij (t)      =    A(t) · (Rj − Ri ), A(t)            =
+for a spin-↑ (↓) sector Hamiltonian, vij = 1 for the counter-                       A0 [sin(Ωt), cos(Ωt)] is the vector potential with A0 the
+clockwise hopping shown in Fig.1(a) with dashed arrow lines,                        amplitude and Ω the frequency of the laser. The relation
+and vij = −1 for clockwise hopping. In Eq.(1) only the spin-                        Rj = Ri + δi with i = 1, 2, 3 for each term holds. In Eq.(5),
+σ part of the Hamiltonian is written explicitly. The Hamilto-                       we set Planck’s constant ~ = 1, the speed of light c = 1, the
+                                                         σ
+nian with opposite spin-σ̄ is the time-reversal of HGKM       .                     charge of the electron e = 1, and adopt the Coulomb gauge
+                                                                                                                                                                                         3
+
+                1                                                               1
+ Chern number       GKM, t3=0.0                     (a)                             DKM, td=1.5               (b)                           III.   FLOQUET THEORY
+
+
+
+
+                                                                 Chern number
+                0                                                               0
+                                                                                                                             In this paper, we illuminate the system with monochromatic
+                                                                                                                          (single frequency) light, which renders the Hamiltonian time-
+           -1                                                              -1
+                                                                                                                          periodic: H(t) = H(t + T ) where T is the period of the laser
+                                                                                                                          drive. Hence, Floquet’s theorem is applicable. The Floquet
+           -20.0                                                           -20.0
+                           1.0      2.0
+                                    A0
+                                              3.0         4.0                              1.0    2.0
+                                                                                                  A0
+                                                                                                        3.0         4.0   eigenfunction in real space for the time-periodic Hamiltonian
+                1
+                    GKM, t3=0.2                     (c)
+                                                                                1
+                                                                                    DKM, td=2.0               (d)
+                                                                                                                          can be expressed as,
+
+                                                                                                                                            |Ψα (t)i = e−iα t |φα (t)i,              (10)
+ Chern number
+
+
+
+
+                                                                 Chern number
+                0
+
+                                                                                0
+                                                                                                                          where |φα (t)i = |φα (t+T )i are the Floquet quasi-modes and
+           -1
+                                                                                                                          α is the corresponding quasi-energy for band α. Substituting
+                                                                                                                          the wave function above into the time-dependent Schrödinger
+           -20.0                                                           -10.0
+                           1.0      2.0
+                                    A0
+                                              3.0         4.0                              1.0    2.0
+                                                                                                  A0
+                                                                                                        3.0         4.0
+                                                                                                                          equation, and defining the Floquet Hamiltonian operator as
+                2
+                    GKM, t3=0.4                     (e)
+                                                                                1
+                                                                                    DKM, td=2.5               (f)         H(t) = H(t) − i∂/∂t, one finds
+                1
+                                                                                                                                            H(t)|φkα (t)i = α |φα (t)i.              (11)
+ Chern number
+
+
+
+
+                                                                 Chern number
+
+
+
+
+                0                                                               0
+                                                                                                                          Here we restrict the quasienergy to be in the first Floquet zone,
+           -1                                                                                                             i.e., −Ω/2 < α < Ω/2. (Note that we have made use of a
+                                                                                                                          spin-independent coupling to the laser field so that all bands
+           -2                                                              -1
+             0.0           1.0      2.0       3.0         4.0                0.0           1.0    2.0   3.0         4.0
+                                    A0                                                            A0                      are 2-fold degenerate. Henceforth, we suppress the spin de-
+                                                                                                                          generacy.) Solving for the Floquet states in Fourier space,
+FIG. 2. (Color online) The spin Chern number as a function of laser                                                                                    X
+amplitude A0 for the generalized Kane-Mele model [Eq. (1)] with                                                                             |φα (t)i =     eimΩt |φ̃mα i,              (12)
+t3 = 0.0 (a), t3 = 0.20 (c), t3 = 0.40 (e) and the dimerized Kane-                                                                                      m
+Mele model [Eq. (2)] with td = 1.5 (b), td = 2.0 (d), td = 2.50 (f).
+The remaining parameters are nearest-neighbor hopping t1 = 1.0,                                                           where m = 0, ±1, ±2, · · · and |φ̃m
+                                                                                                                                                            kα i is a real space vector
+spin-orbit coupling λ = 0.3, and laser frequency Ω = 10.0. All the                                                        which obeys,
+calculations are done with 2500 k-points in the first Brillouin zone
+and 9 Floquet copies.
+                                                                                                                                    X
+                                                                                                                                       (Hnm + mΩδnm )|φ̃m               m
+                                                                                                                                                            α i = α |φ̃α i,       (13)
+                                                                                                                                       m
+
+by setting the scalar potential φ = 0. We ignore the tiny effect                                                          with matrix elements of the Floquet Hamiltonian written as,
+of the magnetic field of the laser field. The units of energy are
+                                                                                                                                               1 T
+                                                                                                                                                  Z
+expressed in terms of the nearest-neighbor hopping amplitude                                                                           Hnm =          dte−i(n−m)Ωt H(t).          (14)
+t1 , for t1 = 1,                                                                                                                               T 0
+                      
+                            0        −f1 (k, t)
+                                                                                                                         Here m and n are integers ranging from −∞ to ∞. Thus, the
+            Hk↑ (t) =                                                                                                     Floquet matrix is an infinite-dimensional time-independent
+                        −f1∗ (k, t)      0
+                                                                                                                        matrix. In this paper, we consider the laser frequency to be
+                        −iλso g(k, t) −t3 f3 (k, t)                                                                       comparable to or larger than the bandwidth of the system, so a
+                    +                                 ,       (6)
+                        −t3 f3∗ (k, t) iλso g(k, t)                                                                       truncation of the components to be in m, n = −2, −1, 0, 1, 2
+                                                                                                                          is a good approximation. We have numerically verified that
+where                                                                                                                     including a larger range of m, n has a very small numerical
+                                                                                                                          impact on our results.
+                         g(k, t) ≡ eik·a1 −iA(t)·a1 − e−ik·a1 +iA(t)·a1
+                                                                                                                             For circularly polarized light with vector potential A(t) =
+                                   − eik·a2 −iA(t)·a2 + e−ik·a2 +iA(t)·a2                                                 A0 [sin(Ωt), cos(Ωt)], the matrix elements of the Floquet-
+                                                                                                                          Bloch Hamiltonian are
+                                   − eik·a3 −iA(t)·a3 + e−ik·a3 +iA(t)·a3 ,                                    (7)
+                                                                                                                                        1 T
+                                                                                                                                          Z
+                                                                                                                              Hnmij
+                                                                                                                                    =         dte−i(n−m)Ωt exp[−iAij (t)]H ij ,      (15)
+                                                                                                                                       T 0
+                       f1 (k, t) = td e−iA(t)·δ3 + t1 e−ik·a1 e−iA(t)·δ1
+                                                                                                                          from the expression with the general form,
+                                                                + t1 e−ik·a2 e−iA(t)·δ2 ,                      (8)
+                                                                                                                                       1 T
+                                                                                                                                         Z
+and                                                                                                                            fnm =          dte−i(n−m)Ωt exp[−iA(t) · d].           (16)
+                                                                                                                                       T 0
+     f3 (k, t) = e−ik·(a1 +a2 ) eiA(t)·2δ3 + eik·a3 e−iA(t)·(a1 +δ2 )
+                                                                                                                          Here we used d = Rj − Ri , and define dx /|d| = cos θ,
+                                  −ik·a3 −iA(t)·(a2 +δ1 )
+                            +e            e                                         .                          (9)        dy /|d| = sin θ. For nearest-neighbor hopping terms, |d| = 1,
+                                                                                                                                                                                                           4
+
+     ���                       (��)        ���                  (��)        ���                  (��)        ���                  (��)        ���                  (��)        ���                  (��)
+
+
+     ���                                   ���                              ���                              ���                              ���                              ���
+
+
+     ���                                   ���                              ���                              ���                              ���                              ���
+�
+
+
+
+
+                                      �
+
+
+
+
+                                                                       �
+
+
+
+
+                                                                                                        �
+
+
+
+
+                                                                                                                                         �
+
+
+
+
+                                                                                                                                                                          �
+    -���                                  -���                             -���                             -���                             -���                             -���
+
+
+    -���                                  -���                             -���                             -���                             -���                             -���
+       ��        Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��
+
+
+     ���                       (��)        ���                  (��)        ���                  (��)        ���                  (��)        ���                  (��)        ���                  (��)
+
+
+     ���                                   ���                              ���                              ���                              ���                              ���
+
+
+     ���                                   ���                              ���                              ���                              ���                              ���
+�
+
+
+
+
+                                      �
+
+
+
+
+                                                                       �
+
+
+
+
+                                                                                                        �
+
+
+
+
+                                                                                                                                         �
+
+
+
+
+                                                                                                                                                                          �
+    -���                                  -���                             -���                             -���                             -���                             -���
+
+
+    -���                                  -���                             -���                             -���                             -���                             -���
+       ��        Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��
+
+
+     ���                       (��)        ���                  (��)        ���                  (��)        ���                  (��)        ���                  (��)        ���                  (��)
+
+
+     ���                                   ���                              ���                              ���                              ���                              ���
+
+
+     ���                                   ���                              ���                              ���                              ���                              ���
+�
+
+
+
+
+                                      �
+
+
+
+
+                                                                       �
+
+
+
+
+                                                                                                        �
+
+
+
+
+                                                                                                                                         �
+
+
+
+
+                                                                                                                                                                          �
+    -���                                  -���                             -���                             -���                             -���                             -���
+
+
+    -���                                  -���                             -���                             -���                             -���                             -���
+       ��        Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��          ��   Γ   ��   �   �� ��
+
+
+
+
+FIG. 3. (Color online) The Floquet-Bloch band structure of the Kane-Mele model [Eq. (1) with t3 = 0.0] with parameters t1 = 1.0, λ = 0.3
+and Ω = 10.0, (a1) A0 = 0.0, (a2) A0 = 0.4, (a3) A0 = 0.8, (a4) A0 = 1.2, (a5) A0 = 1.6, (a6) A0 = 2.0. The Floquet-Bloch band
+structure of the generalized Kane-Mele model [Eq. (1)] with parameters t1 = 1.0, λ = 0.3, t3 = 0.4 and Ω = 10.0 are shown in middle
+panes, (b1) A0 = 0.0, (b2) A0 = 0.4, (b3) A0 = 0.8, (b4) A0 = 1.2, (b5) A0 = 1.6, (b6) A0 = 2.0. The Floquet-Bloch band structure of the
+dimerized Kane-Mele model [Eq. (2)] with parameters t1 = 1.0, λ = 0.3, td = 2.4 and Ω = 10.0 are shown in bottom panes, (c1) A0 = 0.0,
+(c2) A0 = 0.4, (c3) A0 = 0.8, (c4) A0 = 1.2, (c5) A0 = 1.6, (c6) A0 = 2.0. Note the solid lines denote the Floquet band structure with laser
+intensity A0 shown above; the dashed lines show the data for A0 − 0.2 for comparison.
+
+
+θ = ±5π/6, ±π/6, ∓π/2. Substituting the vector potential                                                     of spin Chern number. This is the starting point of the non-
+into the above equation gives,                                                                               equilibrium study shown in Fig.2(a),(c),(e).
+                                                                                                                In the DKM model, by comparison, the system gap is de-
+    1 T
+       Z
+           dte−i(n−m)Ωt exp[−iA0 (dx sin Ωt + dy cos Ωt)]                                                    termined by the bands at the M3 point. By tuning the dimer-
+    T 0                                                                                                      ized nearest-neighbor hopping, the transition from topologi-
+  =Jm−n (A0 |d|) exp[i(n − m)θ],                      (17)                                                   cally non-trivial (C = −1) to topologically trivial (C = 0) oc-
+                                                                                                             curs. Increasing the dimerized hopping parameter will close
+where Jn (x) is the Bessel function of first kind.                                                           the gap at the M3 point (C3 rotational symmetry is broken),
+                                                                                                             and reopen the gap at the critical value td = 2.0, inducing a
+                                                                                                             change of Chern number ∆C = ±1. This is the starting point
+ IV.        SPIN CHERN NUMBER FOR THE DISORDER-FREE                                                          of the non-equilibrium study in Fig.2 (b),(d),(f).
+                          SYSTEM                                                                                The spin Chern number shows complicated structure for
+                                                                                                             both the GKM and DKM models when illuminated with a
+            A.   Spin Chern number and Floquet band structure                                                laser. Since Fig.2(a),(b),(c),(d) have very similar structure,
+                                                                                                             our analysis of the topological transition will be focused on
+   In Fig.2, we plot the spin Chern number as a function of                                                  Fig.2(a),(e),(f). The transition at weak laser intensity can be
+laser intensity for different third-neighbor hopping parame-                                                 easily understood. In Fig.2(a), increasing the laser intensity
+ters t3 = 0.0, 0.2, 0.4 in the generalized Kane-Mele model                                                   will induce the transition from topologically non-trivial states
+[Eq.(1)] and different dimerized hopping parameters td =                                                     to topologically trivial states. This transition can be under-
+1.5, 2.0, 2.5 in the dimerized Kane-Mele model [Eq.(2)].                                                     stood by plotting the band structure as a function of laser in-
+   In the equilibrium case (absent the laser, i.e. A0 = 0) of the                                            tensity A0 , as in Fig.3(a1-a6). At A0 = 0.0 (laser absent),
+GKM model, the system gap is determined by the bands at the                                                  the system gap is determined by the energy difference at the
+M1,2,3 points. By tuning the third-neighbor hopping param-                                                   M1,2,3 points (Fig.3(a1)). Increasing the laser intensity tends
+eter, the transition from topologically non-trivial (C = −1)                                                 to form a flat band in the region M3 −K−M2 −K 0 (Fig.3(a3)).
+to topologically trivial (C = 2) occurs at the critical value of                                             Further increasing laser intensity will set the K(K 0 ) point to
+t3 = 1/3, where the gap at M1,2,3 (C3 rotational symme-                                                      determine the band gap (Fig.3(a4)). Increasing the laser in-
+try is conserved) closes and reopens, inducing a ±3 change                                                   tensity still further will close, and then reopen, the gap at the
+                                                                                                                                                                                                                                                                                                                                            5
+
+                                                                          ���○○ ○ ○ ○                                                                                                                                                   ���
+K point (Fig.3(a5-a6)), inducing the Chern number change                                     ○
+                                                                                                 ○
+                                                                                                                                                                     ○        Γ                               (�)
+                                                                                                                                                                                                                                                                          ○
+                                                                                                                                                                                                                                                                                                                          ○    Γ      (�)
+∆C = ±1 for K(K 0 ). This explains the topological transition
+                                                                                                     ○
+                                                                                                         ○                                                                                                                                                                    ○
+
+                                                                                                                                                                              K                                                                                                                                                K
+                                                                                                             ○
+                                                                                                                 ○                                                   □                                                                                                            ○                                       □
+
+at A0 = 1.5. In Fig.2(e), the first transition at A0 = 0.4 is             ���
+                                                                                                                     ○
+                                                                                                                         ○
+                                                                                                                                                                     ●        M3                                                        ���                                           ○
+                                                                                                                                                                                                                                                                                                                          ●    M3
+induced by the three M points’ band closing and reopening                                                                    ○
+                                                                                                                                 ○                                                                                                                                                        ○
+
+
+
+
+                                                                   ����
+
+
+
+
+                                                                                                                                                                                                                      ����
+                                                                              □□□                                                                                                                                                          □□□
+(Chern number change ±1 for each M point) driven by laser
+                                                                                                                                     ○
+                                                                                     □                                                                                                                                                            □                                           ○
+                                                                                         □                                               ○                                                                                                            □
+                                                                                             □                                                                                                                                                            □
+                                                                                     □                     ○                                        ○○○                                                                                                                                           ○
+coupling, while the second transition at A0 = 1.5 is because              ���
+                                                                                       □
+                                                                              ●●●●●● ●●● □ ●●
+                                                                                               ●●
+                                                                                                             ○
+                                                                                                                                        ○
+                                                                                                                                          ○
+                                                                                                                                            ○
+                                                                                                                                              ○
+                                                                                                                                                ○○
+                                                                                                                                                                                                                                        ���
+                                                                                                                                                                                                                                                              □
+                                                                                                                                                                                                                                                                  □
+                                                                                                                                                                                                                                                                      □               ●
+                                                                                                                                                                                                                                                                                            ●●
+                                                                                                                                                                                                                                                                                          ●● ○●           ●○
+                                                                                                                                                                                                                                                                                                             ○
+                                                                                                                                                                                                                                                                                                               ○
+
+
+of the K(K 0 ) points closing and reopening (Chern number
+                                                                                           □       ●           ○                                                                                                                                                                                         ○    ●
+                                                                                                     ●                                ○                                                                                                                                           ●                    ○
+                                                                                             □         ●                                                                                                                                                                  □●                       ●●●
+                                                                                                                                                                                                                                                                                                     ○ ●●
+                                                                                                                                                                                                                                                                                                      ○           ●
+                                                                                                         ●       ○                  ○                                                                                                                                                          ●●○ ○         ●
+                                                                                               □           ●                      ○                                                                                                                       ●□                                 ● ○               ●      ●
+                                                                                                                   ○                                                                                                                                                      ○                ○○
+                                                                                                                                                                                                                                                                                          ○●
+
+change ±1 for K or K 0 point). In Fig.2(f), the first transition
+                                                                                                 □           ●                  ○                                                                                                                       ●                       ●
+                                                                                                               ●                                      □                                                                                                      □                         ○○●                   □□
+                                                                                                   □                 □ □ □ □ □ ○ ● ● ● ●●●●●●●●
+                                                                                                                     ○                              □□●                                                                                               ●                     ○ □ ● ○○ ●                   □□
+                                                                                                                 □□
+                                                                                                                 ●             □●
+                                                                                                                                □               □
+                                                                                                                                                  □                                                                                                            □          □□□ □□○  □□                  □
+                                                                                                     □         □ ● ○         ○● □                                                                                                                   ●                   □                            □
+                                                                                                             □       ●       ●      □         □                                                                                            ●●
+                                                                                                                                                                                                                                              ●                  □    □      ○    ○● □ ●
+                                                                                                                                                                                                                                                                                       □□          □
+                                                                                                                                      □ □□                                                                                                                                                       □
+at A0 = 0.8 is due to the M3 point closing and reopening
+                                                                                                       □ □                 ●                                                                                                                    ● ●
+                                                                                                                         ○○                                                                                                                                                    ○○   ●●    □□ □
+                                                                          ���                            □             ●●               □
+                                                                                                                                                                                                                                        ���      ●                 □□                        □
+                                                                            ���                                                                  ���                                                            ���                       ���                                                             ���                              ���
+(Chern number change ±1), and the transition at A0 = 1.8 is                                                                                      ��                                                                                                                                                       ��
+due to the K(K 0 ) points closing and reopening (Chern num-               ���                                            ○
+                                                                                                                                                                                                                                         ���
+                                                                                                                                                                                                                                                                                                                                        (�)
+                                                                                                                                                                                                              (�)
+ber change ±1) for K or K 0 point. The picture can be con-                                                                   ○
+
+                                                                                                                                 ○
+                                                                                                                                                                     ○        Γ
+
+firmed by plotting the Floquet band structure with different                                                                         ○
+                                                                                                                                                                     □        K
+                                                                              □□□
+                                                                                                                                                                                                                                                                                          ��(�)
+
+
+
+
+                                                                                                                                                                                                                      ������ ��������
+                                                                          ���
+                                                                                     □
+                                                                                         □
+                                                                                                                                                                              M3                                                         ���
+laser intensities.                                                                           □
+                                                                                                 □
+                                                                                                                                         ○                           ●
+                                                                                                                                                                                                              ○ ○○○
+                                                                                                     □                                       ○
+                                                                                                                                                                                                      ○
+                                                                                                                                                                                                          ○                                                                                                                    ��(��)
+
+
+
+
+                                                                   ����
+                                                                                                         □
+                                                                                                                                                                                                  ○
+                                                                                                             □                                   ○                                            ○
+                                                                                                                 □                                                                        ○
+                                                                                                                     □                               ○                                ○
+                                                                                                                         □
+                                                                          ���                                                □                           ○
+                                                                                                                                                                                  ○
+                                                                                                                                                                                                                                         ���
+   B.    Low energy Hamiltonian in the high frequency limit                                                                      □
+                                                                                                                                     □                       ○            ○
+                                                                                                                                                                              ○
+                                                                                                                                                                                                                                                                                                                              � � ( � �)
+                                                                                                                                         □                                                       □□           □□□□
+                                                                                                                                                                 ○    ○                   □   □□
+                                                                              ●● ●                                                           □                                   □
+                                                                                                                                                                              □□
+                                       √                                             ●
+                                                                                         ●
+                                                                                             ●
+                                                                                                 ●                       ●●
+                                                                                                                                      □
+                                                                                                                                 ● ●●●● ●
+                                                                                                                                        □                ●
+                                                                                                                                                               ○ □□
+                                                                                                                                                         □ ●● □ □ ○
+                                                                                                                                                                    ○□
+                                                                                                                                                                       □
+
+
+
+   The position of the K point is (4π/3 3, 0) (and symmetry
+                                                                                                                                                                                     ●●●●
+                                                                                                     ●               ●                                     □ □ ●●                ●●●
+                                                                                                         ●●●                                                    ○ ● ●● ●●● ● ● ●
+                                                                          ���                                                                                                                                                           -���
+                                                                            ���                                                                  ���                                                            ���                           �                               �                                   �             �           �
+related points), and the low-energy Hamiltonian at the high-                                                                                     ��                                                                                                                                                               �
+frequency limit is given by,
+              √        √                          !                FIG. 4. (Color online) The energy gaps at high symmetry points
+             3 3λJ0 ( 3A0 ) (t1 − td )J0 (A0 )                     are plotted with dots. The dashed line indicates the energy gap in
+    H0 =                           √      √         .   (18)
+             (t1 − td )J0 (A0 ) −3 3λJ0 ( 3A0 )                    the theoretical infinite-frequency limit. (a) Generalized Kane-Mele
+                                                                   model with t3 = 0.0. (b) Generalized Kane-Mele model with t3 =
+                                                                   0.4. (c) Dimerized Kane-Mele model with td = 2.5. (d) The zero-th
+For the generalized Kane-Mele model, we have t1 = td . Then
+                                                                   order Bessel function of first kind used in the infinite frequency limit.
+the eigenvalues will be
+                          √      √                                                                    √
+                  E± = ±3 3λJ0 ( 3A0 ),                 (19)        The position of the M2 point is (− 3π/3, π/3),
+which depend on only√the spin-orbit coupling λ and scaled
+                                                                                                        !
+                                                                                                0 f M2
+by Bessel function J ( 3A0 ). For the dimerized Kane-Mele                              H0 =               ,                                                                                                                                                                                                                         (25)
+model, the Hamiltonian is independent of the third-neighbor                                   fM2 0
+hopping terms t3 . The eigenvalues are                             with fM2 = −td J0 (A0 ) + 3t3 J0 (2A0 ). The eigenvalues are
+           q           √
+   E± = ± 27λ2 J0 ( 3A0 )2 + (t1 − td )2 J0 (A0 )2 . (20)                                                        E± = ± |−td J0 (A0 ) + 3t3 J0 (2A0 )| .                                                                                                                                                                            (26)
+                                                                   For the generalized Kane-Mele model, we have t1 = td , and
+  The position of M3 point is (0, 2π/3), and the low-energy        the eigenvalues will be
+Hamiltonian up to second order in A0 is given by,
+                                     !                                                                                   E± = ± |t1 J0 (A0 ) − 3t3 J0 (2A0 )| .                                                                                                                                                                     (27)
+                             0 fM3
+                   H0 =                 ,              (21)        For the dimerized Kane-Mele model, the Hamiltonian is inde-
+                           f M3 0                                  pendent of the third-neighbor hopping terms t3 , and the eigen-
+                                                                   values are
+with fM3 = (2t1 −td )J0 (A0 )−3t3 J0 (2A0 ). The eigenvalues
+are                                                                                                                                                                  E± = ± |td J0 (A0 )| .                                                                                                                                         (28)
+
+        E± = ± |(2t1 − td )J0 (A0 ) − 3t3 J0 (2A0 )| .     (22)    The gap for each high symmetry point in the high-frequency
+                                                                   limit is summarized in Table I. The gap size at each high sym-
+For the generalized Kane-Mele model, we have t1 = td , then        metry k point is plotted with a dashed line in Fig.4. The exact
+the eigenvalues will be                                            gap size is plotted with dots, as a comparison. For the Kane-
+                                                                   Mele model and the GKM model, the gap calculated using the
+              E± = ± |t1 J0 (A0 ) − 3t3 J0 (2A0 )| .       (23)    high-frequency approximation can capture the main feature of
+                                                                   the exact results, especially for the gap closing points of Γ, K,
+For the dimerized Kane-Mele model, the Hamiltonian is inde-        and M3 , which correspond to the spin Chern number change.
+pendent of third-neighbor hopping terms t3 . The eigenvalues       For the DKM Hamiltonian, the high frequency results are in
+are                                                                good agreement for both the Γ and K points. Apparently, for
+                                                                   the M3 points, high-order corrections are needed to explain
+                 E± = ± |(2t1 − td )J0 (A0 )| .            (24)    the gap closing point around A0 = 0.8.
+                                                                                                                                                                                                      6
+
+
+                                         TABLE I. Energy gap at high symmetry point in the theoretical infinite frequency limit.
+
+
+                                        K(K0 )                                                    M1 (M2 )                               M3                                    Γ
+
+                                   √      √
+GKM                               6 3λJ0 ( 3A0 )                                      2 |t1 J0 (A0 ) − 3t3 J0 (2A0 )| 2 |t1 J0 (A0 ) − 3t3 J0 (2A0 )| 6 |t1 J0 (A0 ) + t3 J0 (2A0 )|
+                       q         √
+DKM 2                   27λ2 J0 ( 3A0 )2 + (t1 − td )2 J0 (A0 )2                              2 |td J0 (A0 )|               2 |(2t1 − td )J0 (A0 )|               2 |(2t1 + td )J0 (A0 )|
+
+
+
+
+               1                                                                  1                                                                   1
+                                                             (a1)                                                                (b1)                                                          (c1)
+
+
+                                                                                                                                                      0
+  Bott index
+
+
+
+
+                                                                     Bott index
+
+
+
+
+                                                                                                                                         Bott index
+               0                                                                  0
+                                    A0 = 0.20    A0 = 1.20                                              A0 = 0.20    A0 = 1.20                                     A0 = 0.20       A0 = 1.20
+                                    A0 = 0.40    A0 = 1.40                                              A0 = 0.40    A0 = 1.40                  -1                 A0 = 0.30       A0 = 1.40
+                                    A0 = 0.60    A0 = 1.60                                              A0 = 0.60    A0 = 1.60                                     A0 = 0.60       A0 = 1.60
+                                    A0 = 0.80    A0 = 1.80                                              A0 = 0.80    A0 = 1.80                                     A0 = 0.80       A0 = 1.80
+                                    A0 = 1.00    A0 = 2.00                                              A0 = 1.00    A0 = 2.00                                     A0 = 1.00       A0 = 2.00
+         -1                                                                 -1                                                                  -2
+                   0       2      4 U     6         8           10                    0       2       4 U     6         8           10                    0   2   4 U     6           8           10
+                                      dis                                                                 dis                                                         dis
+               1                                                                  1                                                                   1
+                                                             (d1)                                                                (e1)                                                          (f1)
+  Bott index
+
+
+
+
+                                                                     Bott index
+
+
+
+
+                                                                                                                                         Bott index
+
+               0                                                                  0                                                                   0
+                                    A0 = 0.20    A0 = 1.20                                              A0 = 0.20    A0 = 1.20                                     A0 = 0.20       A0 = 1.20
+                                    A0 = 0.40    A0 = 1.40                                              A0 = 0.40    A0 = 1.40                                     A0 = 0.40       A0 = 1.40
+                                    A0 = 0.60    A0 = 1.60                                              A0 = 0.60    A0 = 1.60                                     A0 = 0.60       A0 = 1.60
+                                    A0 = 0.80    A0 = 1.80                                              A0 = 0.80    A0 = 1.80                                     A0 = 0.80       A0 = 1.80
+                                    A0 = 1.00    A0 = 2.00                                              A0 = 1.00    A0 = 2.00                                     A0 = 1.00       A0 = 2.00
+         -1                                                                 -1                                                                  -1
+                   0       2      4 U     6         8           10                    0       2       4 U     6         8           10                    0   2   4 U     6           8           10
+                                      dis                                                                 dis                                                         dis
+
+
+FIG. 5. (Color online) Top panel: The phase diagram in the plane of laser intensity A0 and on-site disorder Udis for both GKM with t3 = 0.0
+(a), t3 = 0.2 (b), t3 = 0.4 (c) and DKM with td = 1.5 (d), td = 2.0 (e), td = 2.5 (f). Note the color scale for (c) is different from the
+others. The phase diagram can serve as a visual guide. The detailed data with Bott index as a function of disorder strength are plotted in the
+lower panels. Middle panel: Generalized Kane-Mele model with t3 = 0.0 (a1), t3 = 0.2 (b1), t3 = 0.4 (c1) from left to right. Bottom panel:
+dimerized Kane-Mele model with td = 1.5 (d1), td = 2.0 (e1), td = 2.5 (f1) from left to right. The remaining model parameters are fixed at
+t1 = 1.0, λ = 0.3, Ω = 10.0.
+
+
+         V.            PHASE DIAGRAM AND BOTT INDEX FOR THE                                                  In the clean system limit (Udis = 0), the system makes a topo-
+                               DISORDERED SYSTEM                                                             logical transition as the laser intensity increases, inducing the
+                                                                                                             Dirac points to close and reopen (shown in Fig.3). The inclu-
+                                                                                                             sion of disorder in the weak disorder region, do not change
+   In the top panels of Fig.5(a-d), we plot the phase diagram                                                the original states from topological trivial or non-trivial. In
+of the GKM model with parameter t3 = 0.0, 0.2, 0.4 and the                                                   the strong disorder limit, a topologically trivial (Bott index=0)
+DKM model with td = 1.5, 2.0, 2.5. The remaining parame-                                                     Anderson insulator appears.
+ters are fixed at t1 = 1.0, λ = −0.3, Ω = 10.0. The detailed                                                    The most interesting phenomena occur for intermediate lev-
+data corresponding to the phase diagram–the Bott index as a                                                  els of disorder. Consider Fig.5 (a), (c), and (f), which rep-
+function of disorder at different laser intensities–are plotted in                                           resents the Kane-Mele model, the GKM, and the DKM, re-
+the middle panels for GKM with t3 = 0.0, 0.2, 0.4 from left to                                               spectively. Reading the figures horizontally, for fixed disorder
+right and the bottom panels for DKM with td = 1.5, 2.0, 2.5.                                                 strength, as the laser intensity increases, the transition from
+                                                                                                                                     7
+
+the topologically non-trivial state to the topologically trivial      der. We find the highest values of the data for A0 = 0.6, 0.8 do
+state occurs in Fig.5(a). These results are not easy to explain       not reach 1, which would indicate a topologically non-trivial
+because the band structure at the starting point with finite dis-     state. This is explained as a finite size effect because larger
+order strength is not well-defined (momentum is not a good            system sizes move the Bott index towards 1; more detail is
+quantum number). As an alternative, one can read the figure           provided as an appendix.
+vertically, for fixed laser intensity, and study the effect of dis-
+order on the the original Floquet Bloch states. In this way,
+the starting point is the Floquet-Bloch band structure shown             VI.   CHERN NUMBER FOR DISORDERED SYSTEM
+in Fig.3 in the first Floquet zone −Ω/2 < Ek < Ω/2.                               WITH AN ON-RESONANT LASER
+   Let us focus on Fig.5(a) and Fig.5(a1) first. We define
+the critical disorder strength as the point where the Bott in-           In this section, we study the topological invariant as a func-
+dex deviates from 1. A monotonic behavior is observed for             tion of laser intensity and on-site disorder while fixing the
+A0 = 0.2, 0.4, · · · 1.6. By inspecting the Floquet band struc-       laser frequency to be on-resonant (~Ω < W , where W is
+ture for A0 = 0.2, 0.4, 0.6, 0.8 [Fig.3(a2-a3)], one realizes         the bandwidth of equilibrium model Hamiltonian). In the on-
+the band gap at the M point does not change much while the            resonant regime, the high-frequency expansion is not expected
+band width is narrowing. This observation explains the re-            to be accurate and the system may display a complex evolu-
+sults here because for weak laser intensity, the hopping terms        tion as a function of laser parameters.
+are renormalized by a Bessel function Jn (x) < 1, while the              In the top panels of Fig.6, we plot the Chern number as
+on-site disorder term remains unchanged. Thus, critical dis-          a function of on-site disorder Udis for (a) GKM model with
+order will decrease at weak laser intensity. Further increasing       t3 = 0.0 (bandwidth 6t1 ), (b) GKM model with t3 = 0.2
+A0 = 1.0, 1.2, 1.4, 1.6 [Fig.3(a4-a5)], the Floquet-Bloch band        (bandwidth 7.2t1 ) and (c) DKM model with td = 1.5 (band-
+structure is significantly changed (the system gap shifts to the      width 7.0t1 ). The remaining model parameters are fixed at
+K point). In this process, both the bandwidth and system gap          t1 = 1.0, λ = 0.3, Ω = 5.0. The laser intensity is var-
+decrease, which decreases the critical disorder strength faster.      ied through A0 = 0.2, 0.4, 0.6, · · · , 2.0. We focus on the
+Finally, at laser intensity A0 = 1.8, 2.0 [Fig.3(a6)], the band-      clean limit first, increasing the laser intensity from A0 = 0.2
+width decreases dramatically while the system gap starts to           to A0 = 2.0, and note the Chern number will change from
+increase, and the competition between them determines the             C = 3 to C = 1 which is ∆C = 2. This behavior can
+critical disorder strength.                                           be understood by considering the decrease of the laser fre-
+   Next, we turn to the Bott index as a function of disor-            quency from infinity to finite on-resonant frequency: At in-
+der for the generalized Kane-Mele model with t3 = 0.4,                finite laser frequency, the original equilibrium bandwidth is
+shown in Fig.5(c1). First we consider low laser intensity:            rescaled by a Bessel function of the first kind. For example,
+A0 = 0.2, 0.3. As the laser intensity is increased from               the effective bandwidths Weff are 6|J0 (A0 )t1 | for the Kane-
+A0 = 0.2 to A0 = 0.3, both the bandwidth and the gap at               Mele model, 6|J0 (A0 )t1 + 2J0 (2A0 )t3 | for the GKM model
+the M point get smaller, which explains why the critical Udis         and 2|J (A0 )(td + 2t1 )| for the DKM model. The next order
+decreases. Around A0 = 0.4, the system gap at the M point             correction in the high-frequency limit is a correction to this
+closes and reopens. Further increasing the laser intensity to         effective bandwidth. When the laser frequency is decreased
+A0 = 0.6, 0.8 will increase the gap at the M point, which             to be equal to the effective bandwidth, the “top” of a “lower”
+pushes the critical Udis to larger values. Further increasing         Floquet copy will touch the “bottom” of the “upper” Floquet
+A0 to 1.0 and 1.2, the system gap shifts to the K point (shown        band at E = −Ω/2. Further decreasing the frequency will
+in Fig.3(b5)); this pushes the critical disorder to smaller val-      generate a quadratic band crossing and a small but finite laser
+ues. The system gap at the K point closes and reopens at              intensity will open a gap between the band crossing, changing
+A0 = 1.4. Finally, the minimal gap shifts to the Γ point, and         the Chern number by ∆C = ±2.
+further decreases as the laser intensity increases to A0 = 2.0,          To further illustrate the picture above, the Floquet-
+which explains the critical disorder strength moving to smaller       Bloch band structure in the clean-limit (absence of dis-
+values from A0 = 1.8 to A0 = 2.0.                                     order) is plotted for different laser intensities A0 =
+   Finally, by looking at the data for the dimerized KM model         0.0, 0.4, 0.8, 1.2, 1.6, 2.0 in (a1-a6) for the KM model with
+in Fig.5(f1), we find a similar story, except differing for A0 <      t3 = 0.0, (b1-b6) for the GKM model with t3 = 0.2 and
+0.8. We focus our discussion on this region. The starting point       (c1-c6) for the DKM model with td = 1.5. The quasi-energy
+here is the topological trivial state with spin Chern number          bands are plotted from −Ω to Ω/2 which includes the copy in
+C = 0. For weak laser intensity A0 = 0.2, 0.4, adding disor-          the Floquet zone −Ω/2 <  < Ω/2 and half of the lower copy
+der does not change the Bott index. The gap is relative large         −Ω <  < −Ω/2 to show the band crossing point at Γ. We
+here, and neither weak nor intermediate disorder can close the        focus on the behavior of the Chern number with the laser in-
+gap and generate band inversion. Strong disorder, however,            tensity A0 = 0.8. In the KM model, the Floquet-Bloch band
+will localize all the states. This idea is confirmed by inspect-      structure is shown in Fig.6(a3). The system gap is situated
+ing the data for A0 = 0.6, 0.8. Here the gap at the M3 point          very close to the Γ point and is small compared to the system
+gets smaller, and the intermediate disorder strength will close       gap at the M3 point. In this way, a small amount of disor-
+the gap and reopen it, which can be explained by the Born             der will close the gap around the |Γ| point first (changing the
+approximation, where the mass is renormalized through disor-          Chern number by 2), and then close the gap at the M3 point,
+                                                                                                                                                                                                                                                                           8
+
+                   3                                                         (a)                              3                                                        (b)                               3                                                        (c)
+                                             A0 = 0.20           A0 = 1.20                                                                 A0 = 0.20       A0 = 1.20                                                                  A0 = 0.20       A0 = 1.20
+                                             A0 = 0.40           A0 = 1.40                                                                 A0 = 0.40       A0 = 1.40                                                                  A0 = 0.40       A0 = 1.40
+                                             A0 = 0.60           A0 = 1.60                                                                 A0 = 0.60       A0 = 1.60                                                                  A0 = 0.60       A0 = 1.60
+    Chern number
+
+
+
+
+                                                                                               Chern number
+
+
+
+
+                                                                                                                                                                                          Chern number
+                   2                         A0 = 0.80           A0 = 1.80                                    2                            A0 = 0.80       A0 = 1.80                                     2                            A0 = 0.80       A0 = 1.80
+                                             A0 = 1.00           A0 = 2.00                                                                 A0 = 1.00       A0 = 2.00                                                                  A0 = 1.00       A0 = 2.00
+
+
+
+                   1                                                                                          1                                                                                          1
+
+
+
+                   0                                                                                          0                                                                                          0
+                        0       2          4 U     6                8              10                             0       2           4 U     6               8              10                              0        2           4 U     6              8              10
+                                               dis                                                                                        dis                                                                                         dis
+      ���                                             ���                                      ���                                              ���                                      ���                                               ���
+                                          (��)                                     (��)                                             (��)                                     (��)                                              (��)                                 (��)
+
+
+      ���                                             ���                                      ���                                              ���                                      ���                                               ���
+�
+
+
+
+
+                                                 �
+
+
+
+
+                                                                                          �
+
+
+
+
+                                                                                                                                           �
+
+
+
+
+                                                                                                                                                                                    �
+
+
+
+
+                                                                                                                                                                                                                                      �
+    -���                                             -���                                     -���                                             -���                                     -���                                              -���
+
+
+
+    -���                                             -���                                     -���                                             -���                                     -���                                              -���
+                   ��       Γ   ��   �   �� ��          ��   Γ          ��   �   �� ��                 ��             Γ   ��   �   �� ��          ��   Γ       ��   �   �� ��                 ��                 Γ   ��   �   �� ��          ��   Γ      ��   �    �� ��
+
+      ���                                             ���                                      ���                                              ���                                      ���                                               ���
+                                          (��)                                     (��)                                             (��)                                     (��)                                              (��)                                 (��)
+
+
+      ���                                             ���                                      ���                                              ���                                      ���                                               ���
+�
+
+
+
+
+                                                 �
+
+
+
+
+                                                                                          �
+
+
+
+
+                                                                                                                                           �
+
+
+
+
+                                                                                                                                                                                    �
+
+
+
+
+                                                                                                                                                                                                                                      �
+    -���                                             -���                                     -���                                             -���                                     -���                                              -���
+
+
+
+    -���                                             -���                                     -���                                             -���                                     -���                                              -���
+                   ��       Γ   ��   �   �� ��          ��   Γ          ��   �   �� ��                 ��             Γ   ��   �   �� ��          ��   Γ       ��   �   �� ��                 ��                 Γ   ��   �   �� ��          ��   Γ      ��   �    �� ��
+
+      ���                                             ���                                      ���                                              ���                                      ���                                               ���
+                                          (��)                                     (��)                                             (��)                                     (��)                                              (��)                                 (��)
+
+
+      ���                                             ���                                      ���                                              ���                                      ���                                               ���
+�
+
+
+
+
+                                                 �
+
+
+
+
+                                                                                          �
+
+
+
+
+                                                                                                                                           �
+
+
+
+
+                                                                                                                                                                                    �
+
+
+
+
+                                                                                                                                                                                                                                      �
+    -���                                             -���                                     -���                                             -���                                     -���                                              -���
+
+
+
+    -���                                             -���                                     -���                                             -���                                     -���                                              -���
+                   ��       Γ   ��   �   �� ��          ��   Γ          ��   �   �� ��                 ��             Γ   ��   �   �� ��          ��   Γ       ��   �   �� ��                 ��                 Γ   ��   �   �� ��          ��   Γ      ��   �    �� ��
+
+
+
+
+FIG. 6. (Color online) The Chern number as a function of on-site disorder Udis for (a) GKM model with t3 = 0.0, (b) GKM model with
+t3 = 0.2 (c) DKM model with td = 1.5. The remaining model parameters are fixed at with t1 = 1.0, λ = 0.3, Ω = 5.0. The Floquet-Bloch
+band structure in the clean-limit (absence of disorder) are plotted for different laser intensity A0 = 0.0, 0.4, 0.8, 1.2, 1.6, 2.0 in (a1-a6) for
+GKM model with t3 = 0.0, (b1-b6) for GKM model with t3 = 0.2 and (c1-c6) for DKM model with td = 1.5.
+
+
+changing the Chern number by 1. The magnitude C = 1 is                                                                                          from 1 to 0, which is determined by the energy gap at E =
+the result of the gap differences at energy E = −Ω/2 and                                                                                        0.0.
+E = 0.0. This picture is confirmed by comparing the data
+for the GKM model with t3 = 0.2 [shown in Fig.6(b) and
+(b3)]. Since the original bandwidth of the model is larger than                                                                                                                         VII.                     CONCLUSION
+the bandwidth of KM model, the gap formed at E = −Ω/2 is
+larger. This may generate the larger critical disorder to change
+the Chern number by ±2. Secondly, the energy gap difference                                                                                        In this paper we theoretically studied the topological prop-
+at energy at E = −Ω/2 and E = 0.0 is relatively smaller,                                                                                        erties of the generalized Kane-Mele (GKM) model with third-
+which induces the smaller magnitude of C = 1.                                                                                                   neighbor hopping t3 and the dimerized Kane-Mele (DKM)
+                                                                                                                                                model with dimerized hopping td along the vertical direction
+   For the DKM model with A0 = 0.8, the Chern number                                                                                            [along δ3 in Fig.1(a)] under illumination by a circularly polar-
+changes from 1 to 2 with small disorder strength and comes                                                                                      ized monochromatic laser field. In the absence of the laser, the
+back to 1 as the disorder increases. By inspecting the Floquet-                                                                                 GKM model has a critical value of t3 = 1/3, where topolog-
+Bloch band structure in Fig.6(c3), we realize there is a linear                                                                                 ical trivial and non-trivial states occur for values larger and
+crossing between the Γ and M3 points. A small amount of                                                                                         smaller than the critical t3 , respectively. The DKM model
+disorder can induce an effective mass which generate a band                                                                                     has critical td = 2.0 where topological trivial and non-trivial
+inversion and a Chern number change ±1. Further increasing                                                                                      states occur for values larger and smaller than the critical td ,
+the intensity will close the gap and bring one back to C = 1.                                                                                   respectively.
+Continuing to increase the disorder will induce the transition                                                                                     To include both topologically trivial and non-trivial states
+                                                                                                                                                                                    9
+
+as starting points, we chose t3 = 0.0, 0.2, 0.4 for the GKM           phenomenology for disordered Floquet systems.
+model and td = 1.5, 2.0, 2.5 for the DKM model. Their com-
+plicated phase structures were studied numerically, both in
+the high-frequency off-resonant case and the low-frequency                                             APPENDIX: FINITE SIZE EFFECT
+resonant case. The topological transitions are explained us-
+ing the Floquet-Bloch band structure, where we find the laser           The finite size effect on the non-quantized region of the Bott
+will close and reopen Dirac points, inducing a Chern number           index where the Floquet-Anderson topological transition oc-
+change ∆C = ±1 for each Dirac point. Further, we found                curs is studied here. In Fig.5(c1) there exists a plateau around
+the laser can shift the system gap between different high sym-        the Bott index 1 with A0 = 0.2, 0.3 and (f1) the Bott index
+metry points. For example, the minimal gap may shift from             does not reach 1 with A0 = 0.6, 0.8. Here we studied the two
+an M point to a K point in the Kane-Mele model [shown in              cases with different size to check what the finite size effect is.
+Fig.3(a1-a6)] or even shift to some point without high sym-             In Fig.7, we plot the disorder- averaged Bott index as a
+metry for the DKM model [shown in Fig.3(c1-c6)]. The band             function of disorder for different system sizes. It is clear that
+structure, and the system gap at high symmetry points, is ex-         with increasing system size, the non-quantized region of the
+plained using the low-energy Hamiltonian based on a high fre-         Bott index becomes sharper, which is consistent with previ-
+quency expansion for the off-resonant case.                           ous studies.52,54 Further, in Fig.7(b), we realize there will be a
+                                                                      quantized area with increasing cluster size.
+   Finally, we study the effect of on-site disorder in the GKM
+and DKM model under a periodic laser drive (Floquet sys-
+tem). Topological states are sustained with weak disorder, and                                               ACKNOWLEDGEMENTS
+destroyed by strong disorder, similar to the case in equilib-
+rium. In addition, weak disorder may even generate a topolog-           We acknowledge helpful discussions with Hsiang-Hsuan
+ically trivial state from a non-trivial one providing a level of      Hung, Yang Ge, Quansheng Wu, and Yingyue Boretz. We
+material control through the interplay of disorder and a peri-        gratefully acknowledge funding from Army Research Office
+odic drive. Compared to the more heavily studied Kane-Mele            Grant No. W911NF-14-1-0579, NSF Grant No. DMR-
+model with disorder, the minimal gap evolution through the            1507621, and NSF Materials Research Science and Engineer-
+Brillouin zone for teh GKM and DKM models presents new                ing Center Grant No. DMR-1720595.
+
+
+
+
+1                                                                                       0                                                   1.0
+   J. E. Moore, Nature 464, 194 (2010).                                                         N=12                    (a)                                                  (b)
+2                                                                                               N=18                                                  N=12
+   M. Z. Hasan and C. L. Kane, Rev. Mod. Phys. 82, 3045 (2010).                                 N=24                                                  N=18
+ 3                                                                                              N=30                                                  N=24
+   X.-L. Qi and S.-C. Zhang, Rev. Mod. Phys. 83, 1057 (2011).
+                                                                           Bott index
+
+
+
+
+                                                                                                                                   Bott index
+                                                                                                                                                      N=30
+ 4
+   Y. Ando, J. Phys. Soc. Japan 82, 102001 (2013).                                -1                                                        0.5
+ 5
+   J. Maciejko and G. A. Fiete, Nat. Phys. 11, 385 (2015).
+ 6
+   A. Stern, Annu. Rev. Condens. Matter Phys. 7, 349 (2016).
+ 7
+   W. Witczak-Krempa, G. Chen, Y. B. Kim, and L. Balents, Annu.                   -2                                                        0.0
+                                                                                            0      2    4 U     6   8         10                  0      2   4 U     6   8         10
+   Rev. Condens. Matter Phys. 5, 57 (2014).                                                                 dis                                                  dis
+ 8
+   A. Mesaros and Y. Ran, Phys. Rev. B 87, 155115 (2013).
+ 9
+   X. Chen, Z.-C. Gu, Z.-X. Liu, and X.-G. Wen, Phys. Rev. B 87,      FIG. 7. (Color online) (a) The Bott index as a function of on-site
+   155114 (2013).                                                     disorder Udis for the GKM with t3 = 0.4 and laser intensity A0 =
+10
+   K. Sun, H. Yao, E. Fradkin, and S. A. Kivelson, Phys. Rev. Lett.   0.2. (b) The Bott index as a function of on-site disorder Udis for
+   103, 046811 (2009).                                                the DKM model with td = 2.5 and laser intensity A0 = 0.8. The
+11
+   F. Xue and X.-X. Zhang, Phys. Rev. B 96, 195160 (2017).            remaining model parameters are fixed at t1 = 1.0, λ = 0.3, Ω =
+12
+   F. Xue and A. H. MacDonald, , 1 (2017), arXiv:1710.00410.          10.0. Different cluster sizes are chosen to illustrate the finite size
+13
+   Z. Y. Meng, T. C. Lang, S. Wessel, F. F. Assaad, and A. Mura-      effect. The total number of lattice sites are N × N × 2 where the 2
+   matsu, Nature 464, 847 (2010).                                     comes from the number of atoms in one unit cell.
+14
+   M. Hohenadler, T. C. Lang, and F. F. Assaad, Phys. Rev. Lett.
+   106, 100403 (2011).
+15
+   S.-L. Yu, X. C. Xie, and J.-X. Li, Phys. Rev. Lett. 107, 010401
+   (2011).                                                            21
+                                                                         T. Kitagawa, E. Berg, M. Rudner, and E. Demler, Phys. Rev. B
+16
+   Y.-F. Wang, Z.-C. Gu, C.-D. Gong, and D. N. Sheng, Phys. Rev.         82, 235114 (2010).
+   Lett. 107, 146803 (2011).                                          22
+                                                                         B. M. Fregoso, Y. H. Wang, N. Gedik, and V. Galitski, Phys. Rev.
+17
+   N. H. Lindner, G. Refael, and V. Galitski, Nat. Phys. 7, 490          B 88, 155129 (2013).
+   (2011).                                                            23
+                                                                         M. Sentef, M. Claassen, A. Kemper, B. Moritz, T. Oka, J. Freer-
+18
+   G. Jotzu, M. Messer, R. Desbuquois, M. Lebrat, T. Uehlinger,          icks, and T. Devereaux, Nat. Commun. 6, 7047 (2015).
+   D. Greif, and T. Esslinger, Nature 515, 237 (2014).                24
+                                                                         Y. H. Wang, H. Steinberg, P. Jarillo-Herrero, and N. Gedik, Sci-
+19
+   T. Bilitewski and N. R. Cooper, Phys. Rev. A 91, 063611 (2015).       ence 342, 453 (2013).
+20
+   T. Oka and H. Aoki, Phys. Rev. B 79, 081406 (2009).                25
+                                                                         F. Mahmood, C.-K. Chan, Z. Alpichshev, D. Gardner, Y. Lee, P. A.
+                                                                         Lee, and N. Gedik, Nat. Phys. 12, 306 (2016).
+                                                                                                                                          10
+
+26                                                                       40
+   H. L. Calvo, L. E. F. Foa Torres, P. M. Perez-Piskunow, C. A.            H. Jiang, S. Cheng, Q.-f. Sun, and X. C. Xie, Phys. Rev. Lett.
+   Balseiro, and G. Usaj, Phys. Rev. B 91, 241404 (2015).                   103, 036803 (2009).
+27                                                                       41
+   V. Dal Lago, M. Atala, and L. E. F. Foa Torres, Phys. Rev. A 92,         E. Prodan, T. L. Hughes, and B. A. Bernevig, Phys. Rev. Lett.
+   023624 (2015).                                                           105, 115501 (2010).
+28                                                                       42
+   P. M. Perez-Piskunow, L. E. F. Foa Torres, and G. Usaj, Phys.            V. Chua and G. A. Fiete, Phys. Rev. B 84, 195129 (2011).
+                                                                         43
+   Rev. A 91, 043625 (2015).                                                D. Xu, J. Qi, J. Liu, V. Sacksteder, X. Xie, and H. Jiang, Phys.
+29
+   P. M. Perez-Piskunow, G. Usaj, C. A. Balseiro, and L. E. F. F.           Rev. B 85, 1 (2012).
+                                                                         44
+   Torres, Phys. Rev. B 89, 121401 (2014).                                  Q. Wu, L. Du, and V. E. Sacksteder, Phys. Rev. B 88, 045429
+30
+   H. Dehghani, T. Oka, and A. Mitra, Phys. Rev. B 90, 195429               (2013).
+                                                                         45
+   (2014).                                                                  J. Song and E. Prodan, Phys. Rev. B 89, 224203 (2014).
+31                                                                       46
+   H. Dehghani, T. Oka, and A. Mitra, Phys. Rev. B 91, 155422               J. Song, C. Fine, and E. Prodan, Phys. Rev. B 90, 184201 (2014).
+                                                                         47
+   (2015).                                                                  A. Girschik, F. Libisch, and S. Rotter, Phys. Rev. B 91, 214204
+32
+   L. D’Alessio and M. Rigol, Nat. Commun. 6, 8336 (2015).                  (2015).
+33                                                                       48
+   V. E. Sacksteder and Q. Wu, Phys. Rev. B 94, 205424 (2016),              C. P. Orth, T. Sekera, C. Bruder, and T. L. Schmidt, Sci. Rep. 6,
+   arXiv:1605.02203.                                                        24007 (2016).
+34                                                                       49
+   L. Du, X. Zhou, and G. A. Fiete, Phys. Rev. B 95, 035136 (2017).         J. Song, H. Liu, H. Jiang, Q.-f. Sun, and X. C. Xie, Phys. Rev. B
+35
+   Y. Ge and M. Rigol, Phys. Rev. A 96, 023610 (2017).                      85, 195125 (2012).
+36                                                                       50
+   Q. Chen, L. Du, and G. A. Fiete, Phys. Rev. B 97, 035422 (2018).         C. L. Kane and E. J. Mele, Phys. Rev. Lett. 95, 146802 (2005).
+37                                                                       51
+   J. Li, R.-L. Chu, J. K. Jain, and S.-Q. Shen, Phys. Rev. Lett. 102,      C. L. Kane and E. J. Mele, Phys. Rev. Lett. 95, 226801 (2005).
+                                                                         52
+   136806 (2009).                                                           H.-H. Hung, A. Barr, E. Prodan, and G. A. Fiete, Phys. Rev. B
+38
+   C. W. Groth, M. Wimmer, A. R. Akhmerov, J. Tworzydło, and                94, 235132 (2016).
+                                                                         53
+   C. W. J. Beenakker, Phys. Rev. Lett. 103, 196805 (2009).                 T. A. Loring and M. B. Hastings, EPL (Europhysics Lett. 92,
+39
+   H. Jiang, L. Wang, Q.-f. Sun, and X. C. Xie, Phys. Rev. B 80,            67004 (2010).
+                                                                         54
+   165316 (2009).                                                           P. Titum, N. H. Lindner, M. C. Rechtsman, and G. Refael, Phys.
+                                                                            Rev. Lett. 114, 056801 (2015).
+                                                                         55
+                                                                            P. Titum, E. Berg, M. S. Rudner, G. Refael, and N. H. Lindner,
+                                                                            Phys. Rev. X 6, 021013 (2016).
+

@@ -1,0 +1,653 @@
+                 Photonic Topological Anderson Insulators
+
+Simon Stützer1, Yonatan Plotnik2, Yaakov Lumer3, Paraj Titum4, Netanel Lindner2, Mordechai
+Segev2, Mikael C. Rechtsman5, and Alexander Szameit1
+
+
+1
+Institute for Physics, Rostock University, Albert-Einstein-Straße 23, 18055 Rostock,
+Germany
+2
+Physics Department and Solid State Institute, Technion – Israel Institute of Technology,
+Haifa 32000, Israel
+3
+Department of Electrical and Systems Engineering, University of Pennsylvania,
+Philadelphia, PA 19104, USA
+4
+Joint Quantum Institute, NIST/University of Maryland, College Park, Maryland 20742 USA
+5
+Department of Physics, Pennsylvania State University, University Park, PA 16802, USA
+
+
+The hallmark property of two-dimensional topological materials is the incredible
+robustness of the quantized Hall conductivity to disorder6. That robustness arises
+from the fact that in the topological band gap, transport can occur only along the
+edges modes, which are immune to scattering. However, for sufficiently strong
+disorder, the band gap closes and the system becomes topologically trivial as all
+states become localized, such that all transport vanishes- in accordance with
+Anderson localization7,12. It therefore came as a surprise when it was suggested
+that, for a two-dimensional quantum spin-Hall topological system, the opposite
+could occur. In so-called topological Anderson insulators15, the emergence of
+protected edge states and quantized transport is caused by the introduction of
+disorder. However, to date, the observation of the topological Anderson insulator
+phase has been elusive. In this article, we report the first experimental
+demonstration of a topological Anderson insulator. We do that in a photonic
+implementation: an array of helical, evanescently-coupled waveguides in a detuned
+honeycomb geometry. Under proper conditions, adding on-site disorder, in the
+form of random variations in the refractive index contrast defining the waveguides,
+drives the system from a trivial phase into a topological state.
+The recent demonstration of photonic topological insulators18–20 has shown that
+topological phenomena are not limited to the motion of electrons in solid-state materials.
+Rather, topological protection is a general wave phenomenon that applies equally well to
+many wave systems, including electromagnetic waves18–29, acoustic waves30,31,
+mechanical waves32,33, and cold atoms34,35. Among these, photonic topological systems
+have been found to be useful in demonstrating effects that would be otherwise unavailable
+in the context of condensed matter physics, for example very strong strain36,37, non-
+Hermitian behavior38,39, and the concept of topological bound states in the continuum40,41
+(among others). Furthermore, topological photonic systems provide a complementary set
+of potential technological applications, including new mechanisms for integrated optical
+isolation and general robustness to photonic device fabrication imperfections.
+
+
+Here, we demonstrate the first topological Anderson insulator. Our experiments are
+carried out in a photonic platform, as proposed theoretically42, based on a time-reversal-
+broken Floquet topological insulator system. However, the key result is universal, and it
+specifically applies also to the BHZ model for the quantum spin Hall effect15. Namely, for
+certain parameters, adding disorder causes our system to pass from a topologically trivial
+regime, where there is no transport and all states are Anderson-localized, into a
+topological regime, where we observe unidirectional edge transport. The experimental
+platform we use is an array of evanescently-coupled helical waveguides, where the
+diffraction of light through the system is described by the paraxial wave equation, that is
+mathematically equivalent to the Schrodinger equation. A closely related system was used
+for the observation of Floquet photonic topological insulators16.
+
+
+To explain the mechanism underlying our photonic topological Anderson insulator (PTAI),
+we start with the honeycomb lattice of helical waveguides18, a photonic Floquet topological
+insulator (see methods section for details of the mathematical description). Detuning the
+two triangular sublattices breaks the parity symmetry of the structure. The detuning opens
+a trivial bandgap, and can be quantified by the quantity 𝑚𝑚𝛿𝛿 , interpreted as the mass
+associated with the quasiparticle governed by the effective Dirac equation of the
+honeycomb lattice in the absence of the periodic driving (helicity of the waveguides, in our
+photonic system). In the tuned case (𝑚𝑚𝛿𝛿 = 0) the Dirac cone dispersion is equivalent to
+that of massless relativistic particles. Such detuning can be realized experimentally in
+waveguide arrays by simply allowing the two honeycomb sublattices to have different
+refractive index contrasts.
+
+
+The mechanism according to which we realize the PTAI is schematically depicted in Fig.
+1. The band structure of the honeycomb lattice with waveguides which are straight and
+identical, such that the induced gauge field 𝑨𝑨(𝑧𝑧) = 0 and 𝑚𝑚𝛿𝛿 = 046, is shown in Fig. 1(a).
+This is a ribbon band structure (associated with the zig-zag edge, which is the termination
+along the left side of the lattices drawn in Fig. 1), which includes both edge and bulk bands.
+This is exactly the band structure of graphene47, a two-dimensional material made of a
+honeycomb lattice of carbon atoms. As known in graphene physics, the ribbon band
+structure comprises two Dirac cones (red ellipses in Fig. 1(a)) that are connected by a flat
+band of edge states48. The valleys arise from Dirac cones, whose dispersion is equivalent
+to that of massless relativistic particles. When the waveguides follow a helical trajectory
+such that 𝑨𝑨(𝑧𝑧) is non-zero (Fig. 1(b)), the z-reversal symmetry is broken, and a band gap
+opens. In this case each valley acquires an opposite mass, namely 𝑚𝑚𝜏𝜏 and −𝑚𝑚𝜏𝜏 ,
+respectively, for the left and right valleys. These opposite masses imply that the edge
+states cross the band gap, with each edge state localized to opposite sides of the
+structure. Therefore, the band gap is topological; the edge states form a single scatter-
+free chiral edge state that is localized to the perimeter of the structure. This is the essence
+of the Floquet topological insulator18.
+
+
+  Consider now what happens when the sublattices of the Floquet topological insulator
+are detuned. Introducing non-zero detuning breaks the parity symmetry of the lattice,
+which adds a positive mass term 𝑚𝑚𝛿𝛿 to each valley. If the detuning is large enough (𝑚𝑚𝛿𝛿 >
+𝑚𝑚𝜏𝜏 ), the masses 𝑚𝑚𝜏𝜏 + 𝑚𝑚𝛿𝛿 and −𝑚𝑚𝜏𝜏 + 𝑚𝑚𝛿𝛿 in both valleys become positive and the band
+gap turns into a trivial one (Fig. 1(c)). In other words, the outcome of a sufficiently detuned
+honeycomb lattice of helical waveguides is a topologically trivial system with broken parity
+and time-reversal symmetry. This is where the disorder comes into play: as recently
+proposed42 this system can be driven into a topologically non-trivial phase using disorder
+(Fig. 1(d)). More specifically, it was shown42 (using the Born approximation) that
+introducing on-site disorder (i.e., randomizing the refractive index contrasts of the
+waveguides) causes an effective decrease of the detuning 𝑚𝑚𝛿𝛿 . The decrease in 𝑚𝑚𝛿𝛿 grows
+stronger as the disorder strength is increased. Thus, upon introducing disorder and
+increasing its strength, the band gap closes when 𝑚𝑚𝜏𝜏 = 𝑚𝑚𝛿𝛿 and reopens for 𝑚𝑚𝜏𝜏 > 𝑚𝑚𝛿𝛿 .
+When the gap reopens, the system is topological (Fig. 1(e)). This is precisely the PTAI
+effect: adding disorder brings the system from being topologically trivial (𝑚𝑚𝛿𝛿 > 𝑚𝑚𝜏𝜏 ) to
+topologically non-trivial (𝑚𝑚𝜏𝜏 > 𝑚𝑚𝛿𝛿 ).
+
+
+ The schematic depiction of the waveguide configuration is shown in Fig. 2(a). In this
+setting, it is essential to control which states are excited. We do that by adding a one-
+dimensional auxiliary array - a “straw” - through which we selectively excite the modes of
+the system at a fixed energy (i.e., kz). More specifically, in a 1D waveguide array, tilting
+the phase front of the wave illuminating the input facet determines the momentum of the
+excited Bloch mode49. Here, such selective excitation is especially important because we
+would like to excite states entirely within the gap, to determine whether the gap is trivial or
+topological. By controlling the tilt angle of input of the beam, we can control 𝑘𝑘𝑥𝑥 , the Bloch
+wavevector in the horizontal direction. The band structure (𝑘𝑘𝑧𝑧 vs. 𝑘𝑘𝑥𝑥 ) of the straw is shown
+in the inset in Fig. 2(a). We fix 𝑘𝑘𝑧𝑧 (the Floquet quasienergy) by choosing 𝑘𝑘𝑥𝑥 , as 𝑘𝑘𝑧𝑧 is
+conserved even as the beam travels through the straw and enters the honeycomb array.
+Thus, simply by changing the incidence angle of the beam, we can tune through the band
+structure of the honeycomb lattice. This is the photonic analogue of tuning the “Fermi level”
+in a solid-state system. The bandwidth in 𝑘𝑘𝑧𝑧 of the straw depends on 𝑘𝑘𝑥𝑥 and is relatively
+wide (determined by the number of sites in the straw and fabrication precision), limiting
+our ability to perform precise spectroscopy. However, it remains a highly useful tool to
+control the quasienergy of the modes excited in the honeycomb lattice.
+
+
+ We first consider a system that breaks z-reversal symmetry (𝑚𝑚𝜏𝜏 ≠ 0) with identical (non-
+detuned) waveguides (𝑚𝑚𝛿𝛿 = 0), and essentially repeat the previously realized Floquet
+topological insulator18. Specifically, we use a helix pitch of 𝑍𝑍 = 1𝑐𝑐𝑐𝑐 and radius of 𝑅𝑅 =
+10𝜇𝜇𝜇𝜇; at our probe wavelength (𝜆𝜆 = 633𝑛𝑛𝑛𝑛), this corresponds to a dimensionless gauge
+field strength of |𝐴𝐴| = 𝑘𝑘𝑘𝑘𝑘𝑘𝑘𝑘 = 1.26 (with 𝑘𝑘 = 2𝜋𝜋𝑛𝑛0 /𝜆𝜆; 𝛺𝛺 = 2𝜋𝜋/𝑍𝑍, ambient refractive index
+𝑛𝑛0 = 1.45 and 𝑎𝑎 = 14𝜇𝜇𝜇𝜇 nearest-neighbor spacing). Due to the helicity of the
+waveguides, the system has a topological band gap located at quasienergy 𝑘𝑘𝑧𝑧 = 0, and
+we expect to find a chiral edge state in this band gap (the Floquet band structure is shown
+in the inset to Fig. 2(a)). This is precisely what we see: Fig. 2(b) shows the output facet of
+the array in the case where 𝑘𝑘𝑧𝑧 lies in the band gap (at top), and the case when it lies in
+the band (at bottom). When 𝑘𝑘𝑧𝑧 is in the gap, a chiral edge state is excited: the optical
+wavepacket is launched from the straw, it couples to the chiral edge state, where is
+propagates unidirectionally upwards in a clockwise direction around the honeycomb
+lattice, but not penetrating into the lattice itself. On the other hand, when 𝑘𝑘𝑧𝑧 lies in the band
+- the wavepacket couples to bulk states, hence it penetrates into the lattice and spreads
+throughout the array, while not staying confined to the edge. The evolution of the edge
+state is shown in Fig. 2(c): as the input beam is brought closer to the array, the edge state
+travels farther along the edge until it passes the top corner. The fact that it moves upwards
+only, and stays confined to the edge is a signature of the chirality of the edge state. We
+note that for the choice of parameters of the waveguide array used in the experiment, the
+spatial frequency of the helix Ω is smaller than the total bandwidth (6𝑐𝑐) in the absence of
+the helix. This results in an additional topological gap, which opens around quasienergy
+𝑘𝑘𝑧𝑧 = π/cm, and hosts chiral edge states, as shown in Fig 2(a). However, by using the
+selective excitation through the straw, in this experiment we always excite states whose
+quasienergies are close to 𝑘𝑘𝑧𝑧 = 0, and do not probe states with quasienergy near 𝑘𝑘𝑧𝑧 =
+π/cm.
+
+
+  We now fabricate another photonic lattice, where we introduce detuning between the
+sublattices (𝑚𝑚𝛿𝛿 ≠ 0) of the honeycomb structure by making their refractive index contrasts
+different. In practice, this is done by changing the speed of the laser-writing beam during
+the fabrication process (higher writing speed results in a lower refractive index of the
+waveguides). In a series of six waveguide arrays, we systematically increase this
+detuning, decreasing the gap size as 𝑚𝑚𝛿𝛿 increases, and examine how much the wave,
+launched through the straw, penetrates into the lattice (plotted in Fig. 3). To do that, we
+choose 𝑘𝑘𝑥𝑥 = 𝜋𝜋/2𝑎𝑎, where the Bloch wavenumber in the straw corresponds to the 𝑘𝑘𝑧𝑧 in the
+center of the band gap of the honeycomb lattice. For sufficiently strong detuning 𝑚𝑚𝛿𝛿 we
+observe the emergence of a sharp decrease in penetration depth into the array. This
+corresponds to the closing of the topological and reopening of the trivial band gap at 𝑘𝑘𝑥𝑥 =
+0, and this constraints 𝑚𝑚𝛿𝛿 to be larger than 1.5/cm). Indeed, in the trivial gap, no states
+whatsoever are present neither in the bulk nor at the edge, hence there is no coupling to
+bulk modes. This situation corresponds to launching a wave directly at an energy at the
+center of the bandgap of a photonic crystal, where no wave can penetrate and the light is
+completely reflected. The inability to penetrate into the lattice, and especially the inability
+to couple to edge states, establishes that we have introduced sufficiently strong detuning
+(sufficiently large 𝑚𝑚𝛿𝛿 ) to have opened the trivial band gap, which does not support edge
+modes.
+  Next, we introduce disorder, and prove the formation of the PTAI, namely, we add on-
+site disorder and observe whether the mid-gap excitation allows coupling to the topological
+edge state. The disorder enters the right hand side of Eq. (1) on the right-hand side with
+the additional term, 𝑤𝑤𝑟𝑟𝑖𝑖 𝜓𝜓𝑖𝑖 , where 𝑟𝑟𝑖𝑖 is a uniformly-distributed random variable between
+−0.5 and 0.5, and 𝑤𝑤 is the disorder strength. We find that for sufficiently strong disorder
+(corresponding to a maximum variation in laser write-speed of 8mm/min), the mid-gap
+excitation is able to couple into the lattice, including partially to the bulk, but overall light
+stays largely confined to the edge (see Fig. 4(a-c)), i.e., populating the edge state. As we
+move the input beam closer to the array, the light coupled to the edge state propagates
+further along the edge, much as in the non-disordered case of Fig. 2(c). We find the group
+velocity of the edge state to be 21µm/cm. The beam moves up along the left edge, implying
+the presence of a chiral edge state (that was not present when the system was not
+disordered). We emphasize that the light moves along the edge in a unidirectional fashion:
+only up, never down. For comparison, we show the same scenario, but with no disorder,
+in Fig. 4(d-f). Clearly – when no disorder is present, there is no observable edge state,
+and minimal bulk penetration, i.e., the beam launched into the topologically trivial photonic
+bandgap is reflected. The small amount of bulk penetration seen in Fig. 4(d-f) likely arises
+from the non-zero linewidth of the input beam in 𝑘𝑘𝑧𝑧 . The observation of the appearance of
+the chiral edge state when the disorder is sufficiently strong is the smoking gun of the PTAI
+phase42. Figure 4(g) shows a phase diagram for the system as a function of detuning, 𝑚𝑚𝛿𝛿 ,
+and disorder strength, 𝑤𝑤. The phase diagram is obtained by calculating the Bott index of
+the Floquet band42,51 which lies in the quasienergy interval 0 ≤ 𝑘𝑘𝑧𝑧 ≤ π/cm. The Bott index
+essentially counts42 the number of chiral edge states traversing the gap at 𝑘𝑘𝑧𝑧 = π/cm
+minus the number of chiral edge states traversing the gap at 𝑘𝑘𝑧𝑧 = 0. The gap at 𝑘𝑘𝑧𝑧 = π/cm
+hosts a single chiral edge states throughout the entire range of parameters shown;
+therefore, a Bott index of 0 corresponds to a topological gap at 𝑘𝑘𝑧𝑧 = 0 and a Bott index of
+1 corresponds to a trivial gap at 𝑘𝑘𝑧𝑧 = 0. Figure 4(g) shows the Bott index averaged over
+an ensemble with fixed disorder strength 𝑤𝑤 52,53. The phase diagram clearly shows that,
+by adding sufficiently strong disorder, we necessarily take the system from the trivial into
+the topological phase. Naturally, for considerably stronger disorder, localization sets in,
+rendering the system Anderson localized15.
+ The experiments presented here demonstrate the manifestation of a topological
+Anderson insulator, using a photonic platform. The TAI phase is a clear example of the
+complex relationship between topology and disorder in two dimensions: it goes beyond
+the notion that in topological systems, conduction is simply quantized until disorder is
+sufficiently strong to close the band gap47. It shows that disorder is a key variable in
+probing phases of electrons and light, in the sense that even in seemingly trivial systems,
+topological behavior can emerge when disorder is introduced at sufficient strengths. We
+expect that our experimental realization of this phase will stimulate a range of new
+theoretical and experimental studies exploring the role of disorder in tuning between
+topological phases. This prompts various important questions: can the topological
+Anderson insulator phase be realized in optical lattices of ultracold atoms, where
+topological quantities can be observed via bulk wavepacket dynamics, rather than by
+chiral edge states? Furthermore, what happens to the topological Anderson insulator
+phase in the presence of interactions, whether in optical, atomic, or condensed matter
+systems? Is there a topological Anderson insulator phase in the quantum many-body
+regime? The answers to these questions are now in experimental reach.
+
+
+
+
+Data availability statements
+All data generated or analysed during this study are included in this published article (and
+its supplementary information files).
+
+
+Author Contributions
+All authors contributed considerably to the work.
+References
+
+
+1. Klitzing, K. v., Dorda, G. & Pepper, M. New Method for High-Accuracy Determination
+
+    of the Fine-Structure Constant Based on Quantized Hall Resistance. Phys. Rev. Lett.
+
+    45, 494–497 (1980).
+
+2. Thouless, D. J., Kohmoto, M., Nightingale, M. P. & den Nijs, M. Quantized Hall
+
+    Conductance in a Two-Dimensional Periodic Potential. Phys. Rev. Lett. 49, 405–408
+
+    (1982).
+
+3. Kane, C. L. & Mele, E. J. Z 2 topological order and the quantum spin Hall effect. Phys.
+
+    Rev. Lett. 95, 146802 (2005).
+
+4. Bernevig, B. A., Hughes, T. L. & Zhang, S.-C. Quantum Spin Hall Effect and
+
+    Topological Phase Transition in HgTe Quantum Wells. Science 314, 1757–1761
+
+    (2006).
+
+5. König, M., Wiedmann, S., Brüne, C., Roth, A., Buhmann, H., Molenkamp, L. W., Qi,
+
+    X.-L. & Zhang, S.-C. Quantum Spin Hall Insulator State in HgTe Quantum Wells.
+
+    Science 318, 766–770 (2007).
+
+6. Hasan, M. Z. & Kane, C. L. Colloquium: Topological insulators. Rev. Mod. Phys. 82,
+
+    3045–3067 (2010).
+
+7. Anderson, P. W. Absence of Diffusion in Certain Random Lattices. Phys. Rev. 109,
+
+    1492–1505 (1958).
+
+8. Schwartz, T., Bartal, G., Fishman, S. & Segev, M. Transport and Anderson localization
+
+    in disordered two-dimensional photonic lattices. Nature 446, 52–55 (2007).
+
+9. Lahini, Y., Avidan, A., Pozzi, F., Sorel, M., Morandotti, R., Christodoulides, D. N. &
+
+    Silberberg, Y. Anderson Localization and Nonlinearity in One-Dimensional Disordered
+
+    Photonic Lattices. Phys. Rev. Lett. 100, 13906 (2008).
+10. Billy, J., Josse, V., Zuo, Z., Bernard, A., Hambrecht, B., Lugan, P., Clément, D.,
+
+    Sanchez-Palencia, L., Bouyer, P. & Aspect, A. Direct observation of Anderson
+
+    localization of matter waves in a controlled disorder. Nature 453, 891–894 (2008).
+
+11. Hu, H., Strybulevych, A., Page, J. H., Skipetrov, S. E. & van Tiggelen, B. A.
+
+    Localization of ultrasound in a three-dimensional elastic network. Nat. Phys. 4, 945–
+
+    948 (2008).
+
+12. Segev, M., Silberberg, Y. & Christodoulides, D. N. Anderson localization of light. Nat.
+
+    Photonics 7, 197–204 (2013).
+
+13. Levi, L., Rechtsman, M., Freedman, B., Schwartz, T., Manela, O. & Segev, M.
+
+    Disorder-Enhanced Transport in Photonic Quasicrystals. Science 332, 1541–1544
+
+    (2011).
+
+14. Sheinfux, H. H., Lumer, Y., Ankonina, G., Genack, A. Z., Bartal, G. & Segev, M.
+
+    Observation of Anderson localization in disordered nanophotonic structures. Science
+
+    356, 953–956 (2017).
+
+15. Li, J., Chu, R.-L., Jain, J. K. & Shen, S.-Q. Topological Anderson Insulator. Phys. Rev.
+
+    Lett. 102, 136806 (2009).
+
+16. Girschik, A., Libisch, F. & Rotter, S. Topological insulator in the presence of spatially
+
+    correlated disorder. Phys. Rev. B 88, 14201 (2013).
+
+17. Girschik, A., Libisch, F. & Rotter, S. Percolating states in the topological Anderson
+
+    insulator. Phys. Rev. B 91, 214204 (2015).
+
+18. Rechtsman, M. C., Zeuner, J. M., Plotnik, Y., Lumer, Y., Podolsky, D., Dreisow, F.,
+
+    Nolte, S., Segev, M. & Szameit, A. Photonic Floquet topological insulators. Nature
+
+    496, 196–200 (2013).
+
+19. Hafezi, M., Mittal, S., Fan, J., Migdall, A. & Taylor, J. M. Imaging topological edge
+
+    states in silicon photonics. Nat. Photonics 7, 1001–1005 (2013).
+20. Cheng, X., Jouvaud, C., Ni, X., Mousavi, S. H., Genack, A. Z. & Khanikaev, A. B.
+
+    Robust reconfigurable electromagnetic pathways within a photonic topological
+
+    insulator. Nat. Mater. 15, 542–548 (2016).
+
+21. Haldane, F. D. M. & Raghu, S. Possible Realization of Directional Optical Waveguides
+
+    in Photonic Crystals with Broken Time-Reversal Symmetry. Phys. Rev. Lett. 100,
+
+    13904 (2008).
+
+22. Wang, Z., Chong, Y. D., Joannopoulos, J. D. & Soljačić, M. Reflection-Free One-Way
+
+    Edge Modes in a Gyromagnetic Photonic Crystal. Phys. Rev. Lett. 100, 13905 (2008).
+
+23. Wang, Z., Chong, Y., Joannopoulos, J. D. & Soljacic, M. Observation of unidirectional
+
+    backscattering-immune topological electromagnetic states. Nature 461, 772–775
+
+    (2009).
+
+24. Umucalılar, R. O. & Carusotto, I. Artificial gauge field for photons in coupled cavity
+
+    arrays. Phys. Rev. A 84, 43804 (2011).
+
+25. Hafezi, M., Demler, E. A., Lukin, M. D. & Taylor, J. M. Robust optical delay lines with
+
+    topological protection. Nat. Phys. 7, 907–912 (2011).
+
+26. Fang, K., Yu, Z. & Fan, S. Realizing effective magnetic field for photons by controlling
+
+    the phase of dynamic modulation. Nat. Photonics 6, 782–787 (2012).
+
+27. Khanikaev, A. B., Hossein Mousavi, S., Tse, W.-K., Kargarian, M., MacDonald, A. H.
+
+    & Shvets, G. Photonic topological insulators. Nat. Mater. 12, 233–239 (2013).
+
+28. Maczewsky, L. J., Zeuner, J. M., Nolte, S. & Szameit, A. Observation of photonic
+
+    anomalous Floquet topological insulators. Nat. Commun. 8, ncomms13756 (2017).
+
+29. Mukherjee, S., Spracklen, A., Valiente, M., Andersson, E., Öhberg, P., Goldman, N. &
+
+    Thomson, R. R. Experimental observation of anomalous topological edge modes in a
+
+    slowly driven photonic lattice. Nat. Commun. 8, (2017).
+30. Khanikaev, A. B., Fleury, R., Mousavi, S. H. & Alù, A. Topologically robust sound
+
+    propagation in an angular-momentum-biased graphene-like resonator lattice. Nat.
+
+    Commun. 6, 8260 (2015).
+
+31. Yang, Z., Gao, F., Shi, X., Lin, X., Gao, Z., Chong, Y. & Zhang, B. Topological
+
+    Acoustics. Phys. Rev. Lett. 114, 114301 (2015).
+
+32. Süsstrunk, R. & Huber, S. D. Observation of phononic helical edge states in a
+
+    mechanical topological insulator. Science 349, 47–50 (2015).
+
+33. Nash, L. M., Kleckner, D., Read, A., Vitelli, V., Turner, A. M. & Irvine, W. T. M.
+
+    Topological mechanics of gyroscopic metamaterials. Proc. Natl. Acad. Sci. 112,
+
+    14495–14500 (2015).
+
+34. Jotzu, G., Messer, M., Desbuquois, R., Lebrat, M., Uehlinger, T., Greif, D. & Esslinger,
+
+    T. Experimental realization of the topological Haldane model with ultracold fermions.
+
+    Nature 515, 237–240 (2014).
+
+35. Aidelsburger, M., Lohse, M., Schweizer, C., Atala, M., Barreiro, J. T., Nascimbène, S.,
+
+    Cooper, N. R., Bloch, I. & Goldman, N. Measuring the Chern number of Hofstadter
+
+    bands with ultracold bosonic atoms. Nat. Phys. 11, nphys3171 (2014).
+
+36. Rechtsman, M. C., Plotnik, Y., Zeuner, J. M., Song, D., Chen, Z., Szameit, A. & Segev,
+
+    M. Topological Creation and Destruction of Edge States in Photonic Graphene. Phys.
+
+    Rev. Lett. 111, 103901 (2013).
+
+37. Rechtsman, M. C., Zeuner, J. M., Tünnermann, A., Nolte, S., Segev, M. & Szameit, A.
+
+    Strain-induced pseudomagnetic field and photonic Landau levels in dielectric
+
+    structures. Nat. Photonics 7, 153–158 (2013). (I prefer to keep this one)
+
+38. Zeuner, J. M., Rechtsman, M. C., Plotnik, Y., Lumer, Y., Nolte, S., Rudner, M. S.,
+
+    Segev, M. & Szameit, A. Observation of a Topological Transition in the Bulk of a Non-
+
+    Hermitian System. Phys. Rev. Lett. 115, 40402 (2015).
+39. Weimann, S., Kremer, M., Plotnik, Y., Lumer, Y., Nolte, S., Makris, K., Segev, M.,
+
+    Rechtsman, M. C. & Szameit, A. Topologically protected bound states in photonic
+
+    parity–time-symmetric crystals. Nat. Mater. 16, 433-438 (2017).
+
+40. Plotnik, Y., Peleg, O., Dreisow, F., Heinrich, M., Nolte, S., Szameit, A. & Segev, M.
+
+    Experimental Observation of Optical Bound States in the Continuum. Phys. Rev. Lett.
+
+    107, 183901 (2013).
+
+41. Zhen, B., Hsu, C. W., Lu, L., Stone, A. D. & Soljačić, M. Topological Nature of Optical
+
+    Bound States in the Continuum. Phys. Rev. Lett. 113, 257401 (2014).
+
+42. Titum, P., Lindner, N. H., Rechtsman, M. C. & Refael, G. Disorder-Induced Floquet
+
+    Topological Insulators. Phys. Rev. Lett. 114, 56801 (2015).
+
+43. Oka, T. & Aoki, H. Photovoltaic Hall effect in graphene. Phys. Rev. B 79, 81406 (2009).
+
+44. Kitagawa, T., Berg, E., Rudner, M. & Demler, E. Topological characterization of
+
+    periodically driven quantum systems. Phys. Rev. B 82, 235114 (2010).
+
+45. Lindner, N. H., Refael, G. & Galitski, V. Floquet topological insulator in semiconductor
+
+    quantum wells. Nat. Phys. 7, 490–495 (2011).
+
+46. Peleg, O., Bartal, G., Freedman, B., Manela, O., Segev, M. & Christodoulides, D. N.
+
+    Conical Diffraction and Gap Solitons in Honeycomb Photonic Lattices. Phys. Rev. Lett.
+
+    98, 103901 (2007).
+
+47. Castro Neto, A. H., Guinea, F., Peres, N. M. R., Novoselov, K. S. & Geim, A. K. The
+
+    electronic properties of graphene. Rev. Mod. Phys. 81, 109–162 (2009).
+
+48. Nakada, K., Fujita, M., Dresselhaus, G. & Dresselhaus, M. S. Edge state in graphene
+
+    ribbons: Nanometer size effect and edge shape dependence. Phys. Rev. B 54,
+
+    17954–17961 (1996).
+
+49. Morandotti, R., Peschel, U., Aitchison, J. S., Eisenberg, H. S. & Silberberg, Y.
+
+    Dynamics of Discrete Solitons in Optical Waveguide Arrays. Phys. Rev. Lett. 83,
+
+    2726–2729 (1999).
+50. Szameit, A. & Nolte, S. Discrete optics in femtosecond-laser-written photonic
+
+   structures. J. Phys. B At. Mol. Opt. Phys. 43, 163001 (2010).
+
+51. Hastings, M. B. & Loring, T. A. Topological insulators and C∗-algebras: Theory and
+
+   numerical practice. Ann. Phys. 326, 1699–1759 (2011).
+
+52. Rudner, M. S., Lindner, N. H., Berg, E. & Levin, M. Anomalous Edge States and the
+
+   Bulk-Edge Correspondence for Periodically Driven Two-Dimensional Systems. Phys.
+
+   Rev. X 3, 031005 (2013).
+
+53. Titum, P., Berg, E., Rudner, M. S., Refael, G. & Lindner, N. H. Anomalous Floquet-
+
+   Anderson Insulator as a Nonadiabatic Quantized Charge Pump. Phys. Rev. X 6,
+
+   021013 (2016).
+Figure 1: Mechanism of realizing the topological insulator phase in a photonic waveguide
+lattice. The parameters for the band structure calculations are chosen for illustration
+purposes. In a trivial honeycomb lattice with straight waveguides (a), the time-reversal
+symmetry is broken by helical waveguide trajectories, such that a topological band gap
+opens (b). Breaking the parity of the structure by sufficiently detuning the sublattices, a
+trivial band gap forms (c). Sufficiently strong disorder suppresses the effect of the parity
+breaking terms and moves the system into the topological Anderson insulator phase (d).
+Panel (e) shows the band structure corresponding to the renormalized parameters in the
+topological Anderson insulator phase, as obtained from the Born approximation (Please
+note that this figure is a pedagogical description: there is no well-defined band structure
+in the disordered case).
+Figure 2: Setup and functionality of the lattice system. (a) Hybrid structure composed of a
+one-dimensional straw and a two-dimensional honeycomb lattice of helical waveguides
+with the corresponding dispersion relations. (b) Determining the correct input angle for the
+incident light such that a chiral edge states in the topological gap is excited. If the launch
+angle does not correspond to excitation in the gap, extensive coupling into the lattice bulk
+is observed. (c) Changing the input position facilitates observing the evolution of the edge
+state as they propagate along the edge and pass the upper corner, never penetrating into
+the bulk.
+Figure 3: Engineering the topologically trivial phase. For sufficiently strong detuning
+between the sublattices of the honeycomb a trivial gap opens, such that the chiral edge
+state ceases to exist and all incident light is reflected back into the straw. The experiments
+show the light intensity pattern as it exits the helical waveguide array, and the measured
+integrated intensity at the boundary. For zero detuning, the exiting light resides only on
+the edge (hallmarking the topological insulator phase). When the detuning is small, the
+system is still in the topological phase and almost all the exiting light resides on the edge.
+When the detuning is further increased – the system becomes topologically trivial, and the
+incident light is entirely reflected.
+Figure 4: Formation of the PTAI. When adding sufficient disorder, the system is driven into
+the topological Anderson insulator phase and chiral edge states form. This is proven by
+moving the excitation in the straw close to the (disordered) honeycomb lattice, such that
+the edge state crawls up the edge and travels even around the corner (a-c). In comparison,
+in the fully ordered detuned helical honeycomb lattice essentially all light is reflected into
+the straw, with only a small part penetrating into the bulk without exciting any edge mode
+(d-f). A phase diagram showing the trivial and topological phases is shown in (g) as a
+function of the detuning mass 𝑚𝑚𝛿𝛿 and disorder strength, 𝑤𝑤 . The phase diagram is
+established by a calculation of the Bott index42,51-53 (a Bott index of 1 corresponds to a
+trivial gap at 𝜀𝜀 = 0 while a Bott index of 0 corresponds to topological gap 𝜀𝜀 = 0, see text).
+The red arrow indicates the trajectory through the phase diagram as the system starts
+from the trivial phase and enters the topological phase with increasing disorder strength.
+Methods
+
+Honeycomb photonic lattice with helical waveguides:
+The equation describing the diffraction of a paraxial beam of light in this lattice can be
+written, under the tight-binding approximation, as:
+
+
+                                                                                         � (𝑧𝑧)𝜓𝜓,
+                  𝑖𝑖𝜕𝜕𝑧𝑧 𝜓𝜓𝑖𝑖 = 𝑐𝑐 ∑<𝑖𝑖,𝑗𝑗> 𝑒𝑒 −𝑖𝑖𝑨𝑨(𝑧𝑧)⋅𝒓𝒓𝑖𝑖,𝑗𝑗 𝜓𝜓𝑗𝑗 + 𝑚𝑚𝛿𝛿 𝛿𝛿𝑖𝑖 𝜓𝜓𝑖𝑖 ≡ 𝐻𝐻          (1)
+
+
+where z is the distance of propagation along the waveguide axis; 𝜓𝜓𝑖𝑖 is the envelope
+function of the electric field in the ith waveguide; 𝑐𝑐 is the coupling strength between
+waveguides; 𝑨𝑨(𝑧𝑧) = 𝑘𝑘𝑘𝑘𝑘𝑘𝑘𝑘(𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐𝑐, 𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠, 0) is the gauge field induced by the helicity; 𝑘𝑘 is
+the wavenumber of the light in the medium (fused silica); 𝑅𝑅 is the helix radius; 𝛺𝛺 is the
+spatial frequency associated with the helix; 𝑎𝑎 is the nearest-neighbor spacing; 𝒓𝒓𝑛𝑛,𝑚𝑚 is the
+displacement vector pointing from waveguide 𝑖𝑖 to 𝑗𝑗. The honeycomb lattice comprises two
+triangular sublattices. The parameter 𝛿𝛿𝑖𝑖 takes the value 1 in one sublattice and -1 in the
+other, such that the on-site energies of the two are separated by the detuning 2𝑚𝑚𝛿𝛿 .
+                   � (𝑧𝑧) as the Hamiltonian at propagation distance z, and the summation
+Equation 1 defines 𝐻𝐻
+therein is taken over nearest-neighbor waveguides. This is exactly the Schrödinger
+equation, where z takes the role of the temporal (time) coordinate. Since 𝑨𝑨(𝑧𝑧) is z-
+dependent and periodic, the solutions to Eq. (1) can be obtained by employing Floquet’s
+theorem. Thus, the band structure can be obtained by diagonalizing the unitary evolution
+operator for one periodM1-M3.
+
+
+
+Details of the fabricated lattice:
+The spacing between adjacent waveguides is a=14µm, which results in a coupling
+strength c=1.8cm-1. The waveguides are written using the laser direct write technologyM4
+with an average writing speed of 90mm/min. A broad input beam (wavelength 633nm) is
+incident on the straw, with a beam waist of ~100µm.
+
+
+
+Decay length of the edge state:
+We extract the decay length of the edge state from the experimental data. To achieve this,
+we studied the intensity profile of the light propagating along the edge. To average over
+the disorder potential, we integrated the intensity per pixel along a direction parallel to the
+edge, and obtained the averaged intensity as a function of distance from the edge. The
+intensity profile, shown in Supplementary Fig. 1(a), decays with increasing distance to the
+edge, with peaks at the waveguide positions. We fit the envelope of the intensity profile to
+an exponential decay which results in a decay length of the edge state of 24 µm, see
+Supplementary Fig. 1(b). This length scale is thus much (more than 6 times) smaller than
+the system size, which is 158 µm. This result demonstrates that the experimental system
+in which we observed the topological phenomena observe is robust even in though the
+system has a finite size, as any experimental system must be system. We emphasize that
+we do not observe any light at the far edge of the sample (the edge opposite to the point
+where the straw meets the sample), which demonstrates that the edge decay length, as
+well as the bulk localization length at the energies we are probing, are strongly localized.
+
+
+We compared the experimentally obtained value of the decay length of the edge states
+with theoretical values obtained from a numerical simulation of tight binding model. To
+extract the decay length from the numerical simulation, we numerically computed the
+Green’s function 𝐺𝐺𝑁𝑁 (𝒓𝒓𝟎𝟎 , 𝒓𝒓, 𝑁𝑁𝑁𝑁) = ⟨𝒓𝒓|𝑈𝑈(𝑡𝑡 = 𝑁𝑁𝑁𝑁, 0)|𝒓𝒓𝟎𝟎 ⟩, evolved over N periods. From the
+Fourier transform of the Green function in time, we computed 𝑔𝑔𝑁𝑁 (𝒓𝒓𝟎𝟎 , 𝒓𝒓, 𝜀𝜀) =
+〈|𝐺𝐺𝑁𝑁 (𝒓𝒓𝟎𝟎 , 𝒓𝒓, 𝜀𝜀)|2 〉, where the brackets denotes disorder averaging [for more details on the
+definition of these quantities42. For initial positions 𝒓𝒓𝟎𝟎 localized on the edge, and for epsilon
+in the mobility gap (near quasienergy 𝜀𝜀 = 0), the function 𝑔𝑔𝑁𝑁 (𝒓𝒓𝟎𝟎 , 𝒓𝒓, 𝜀𝜀) shows propagation
+along the edge and an exponentially localized profile confined from the edge. We
+integrated 𝑔𝑔𝑁𝑁 (𝒓𝒓𝟎𝟎 , 𝒓𝒓, 𝜀𝜀 = 0), averaged over 100 realizations, along the direction parallel to
+the edge. We extract the decay length from the decay profile of the result (which is only a
+function of the distance from the edge). The results, shown in Supplementary Fig. 1(c)
+give a decay length of 6.5 lattice constants, which is in reasonable agreement with the
+experimental result.
+
+
+From the numerically obtained disorder averaged Green’s function, we also extract the
+localization length of the bulk. We take an initial position 𝑟𝑟0 in the bulk of the system, and
+plot the corresponding function 𝑔𝑔𝑁𝑁 (𝒓𝒓𝟎𝟎 , 𝒓𝒓, 𝜀𝜀 = 0) = 〈|𝐺𝐺𝑁𝑁 (𝒓𝒓𝟎𝟎 , 𝒓𝒓, 𝜀𝜀)|2 〉, see Supplementary Fig.
+1(d). This yields a bulk localization length of 4 lattice constants. Our numerical analysis
+thus shows that the bulk localization length is indeed much smaller than the system size,
+which guarantees well defined edge states and topologically protected edge transport.
+We note that the numerical simulation is based on a tight binding model, which is only an
+approximation to the actual dynamics of light in the optical system. Thus, we cannot expect
+perfect agreement between the numerical results from the tight binding model and the
+numerical data. Still, the length scales we extract from the experiment and the numerical
+simulation are in qualitative agreement, and the edge localization length in the optical
+system should be determined directly from the experimental data, as we have done above.
+
+
+Spatial frequency resolution of the experimental system:
+The plot in Supplementary Fig. 2 shows the integrated intensity at the boundary of the
+lattice as a function of the excitation angle in the straw for the disordered-detuned state in
+the topological Anderson phase, indicating the presence or absence of an edge state. For
+𝑘𝑘 = 𝜋𝜋/2 the formation of the edge state is clearly visible. The plot in Supplementary Fig.
+3 shows the integrated intensity in the bulk in the trivial phase as a function of the excitation
+angle in the straw. Here we see that bulk penetration is at its minimum within the band
+gap (𝑘𝑘 = 𝜋𝜋/2), indicating a trivial band gap.
+
+
+
+
+M1. Oka, T. & Aoki, H. Photovoltaic Hall effect in graphene. Phys. Rev. B 79, 81406
+
+    (2009).
+
+M2. Kitagawa, T., Berg, E., Rudner, M. & Demler, E. Topological characterization of
+
+    periodically driven quantum systems. Phys. Rev. B 82, 235114 (2010).
+
+M3. Lindner, N. H., Refael, G. & Galitski, V. Floquet topological insulator in semiconductor
+
+    quantum wells. Nat. Phys. 7, 490–495 (2011).
+
+M4. Szameit, A. & Nolte, S. Discrete optics in femtosecond-laser-written photonic
+
+    structures. J. Phys. B At. Mol. Opt. Phys. 43, 163001 (2010).
+

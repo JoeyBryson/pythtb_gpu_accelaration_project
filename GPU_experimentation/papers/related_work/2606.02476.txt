@@ -1,0 +1,1209 @@
+                                                                                 Leveraging structural disorder to enhance topological phases
+
+                                                                                  Laura Gómez Paz ,1, ∗ Peru d’Ornellas ,2 and Adolfo G. Grushin 2, 3, 1, †
+                                                                               1
+                                                                                 Université Grenoble Alpes, CNRS, Grenoble INP, Institut Néel, 38000 Grenoble, France
+                                                                    2
+                                                                        Donostia International Physics Center, P. Manuel de Lardizabal 4, 20018 Donostia-San Sebastian, Spain
+                                                                            3
+                                                                              IKERBASQUE, Basque Foundation for Science, Maria Diaz de Haro 3, 48013 Bilbao, Spain
+                                                                                                                 (Dated: June 2, 2026)
+                                                                      On-site disorder can be leveraged to induce a transition from a trivial to a topological insulator. However it
+                                                                   is unclear if structural disorder in the absence of on-site disorder can aid a similar transition and, if so, which
+                                                                   kind of structural disorder is more favourable. We numerically show that structural disorder can enhance and
+                                                                   sustain a topological phase up to strong disorder in two dimensions provided that one penalizes atomic sites from
+arXiv:2606.02476v1 [cond-mat.mes-hall] 1 Jun 2026
+
+
+
+
+                                                                   being close to one another. However, we find this effect is absent in three dimensions, where structural disorder
+                                                                   appears generically detrimental to the phase. In our calculations we include disorder that can scramble the global
+                                                                   spin-reference frame, an overlooked type of disorder expected to exist in strongly disordered solids. This disorder
+                                                                   fatally scrambles the information necessary for the spin-Bott and the spin-Chern marker to correctly diagnose
+                                                                   a topological phase. By using the spectral localizer, a local marker directly defined using the time-reversal
+                                                                   symmetry operator rather than a spin-projection, we show how one can circumvent this limitation, providing a
+                                                                   basis-indifferent theory for calculating Z2 invariants. Our work showcases that not all structural disorders are
+                                                                   equally beneficial to topology, and highlights guiding principles to enhance and detect topological phases in both
+                                                                   solid-state and metamaterial realizations.
+
+
+                                                                            I.   INTRODUCTION                                 alternative are scattering invariants [113], which one can show
+                                                                                                                              are equivalent to counting edge modes.
+                                                       The presence of disorder in condensed matter systems is                   Often overlooked, a possible basis-dependence is especially
+                                                    usually unavoidable, but its effect is not always detrimental. A          important when working with amorphous matter. Ref. [114]
+                                                    remarkable example was the discovery that topological phases              pointed out that such systems can realize local-frame disor-
+                                                    of matter can be induced from a topologically trivial state               der, in addition to connectivity, onsite and hopping disorder.
+                                                    using on-site potential disorder [1–5]. This is not a universal           Frame disorder describes the scrambling of the overall refer-
+                                                    phenomenon since different kinds of disorder may or may not               ence frame for the internal degrees of freedom at each site. For
+                                                    be favourable to stabilize topology [6].                                  example, because amorphous system lack an overall preferred
+                                                       Finding which disorder types destroy topological phases,               direction, it is conceivable that the spin quantization axis can
+                                                    and which favour them, requires calculating topological in-               vary randomly between sites, a disorder we term spin-frame
+                                                    variants in real space. Currently, a variety of such invari-              disorder. This effect is similar to adding Rashba spin-orbit
+                                                    ants exist, with varying regimes of validity, that allow us to            coupling, where the spin-quantization axis ceases to be well
+                                                    characterise when non-trivial topology can be enhanced in                 defined [90, 94].
+                                                    disordered crystals [1–4, 6–13], amorphous solids [14–49],                   In this work we first highlight how considering spin-frame
+                                                    quasicrystals [46, 50–69], fractals [46, 70, 71], or hyperbolic           disorder exposes the limitations of the spin-Bott [11, 30, 36,
+                                                    lattices [72–74].                                                         37, 44, 54, 58, 95], spin-Chern number [4, 90, 92–94] and the
+                                                       There is a wide library of tools for calculating topologi-             spectral localizer [79, 80, 99, 115], all widely used to identify
+                                                    cal invariants, the integers that classify topological phases,            the Z2 quantum-spin Hall topological phases. Specifically, the
+                                                    directly in real space. The Chern number, the integer                     spin-Bott and Chern markers fail because locally scrambling
+                                                    (Z) which classifies quantum Hall phases, has multiple ex-                the spin generically closes the spin gap in all directions. In
+                                                    pressions in real space [4, 75–89]. In turn, real-space lo-               some realistic crystalline scenarios, spin-scrambling terms like
+                                                    cal markers for Z2 invariants are more challenging to de-                 Rashba spin-orbit coupling can be small enough to keep the
+                                                    fine [11, 30, 36, 37, 44, 54, 58, 82, 88, 90–95]. Some of                 gap open [94], but it is unlikely that in amorphous systems spin-
+                                                    them, like the spin-Bott index [54, 95] and the spin-local                frame disorder remains small. Moreover, the spin-gap is always
+                                                    Chern marker [90] require that a spin component is approx-                closed in three-dimensional Z2 topological insulators [116].
+                                                    imately preserved—essentially encoding a sensitivity to the               Because the existence of a global spin gap is required for these
+                                                    basis in which one works. While solutions to this have been pro-          operators to be well-defined, they thus fail to diagnose topology.
+                                                    posed [94], other local markers do not naively suffer from this           Ref. [94] ingeniously circumvented this problem by defining
+                                                    problem. In particular, the spectral localizer index [79, 80, 96–         a local Z2 marker via the time-reversal symmetry operator
+                                                    112] does not rely on defining a direction in spin space, so is           alone. It has the advantage of not relying on the spin-gap at the
+                                                    manifestly basis independent. Lastly, a numerically efficient             expense of introducing additional constraints to find projectors
+                                                                                                                              that are not related by time-reversal symmetry, which requires
+                                                                                                                              an additional optimization step.
+                                                                                                                                 Here we show how the spectral localizer, unlike other local
+                                                    ∗ laura.gomez-paz@neel.cnrs.fr
+                                                                                                                              markers, can be straightforwardly computed in any system re-
+                                                    † grushin@dipc.org
+                                                                                                                              gardless of the state of the spin gap. We find that the localizer
+                                                                                                                                         2
+
+explicitly depends on the time-reversal operator when comput-
+ing Z2 invariants. We derive the exact method for computing
+the localizer for an arbitrary time-reversal operator, and show
+how this ensures that the resulting quantity is basis-invariant.
+This is particularly useful because current formulations of the
+spectral localizer typically assume a basis where time reversal
+is given by iσy coupled with complex conjugation [78, 107].
+The formulation we present here allows the spectral localizer to
+remain well-defined and invariant for each spin-frame disorder
+realization and by extension, any effect that closes the spin       FIG. 1. A comparison between different types of disorder. (a) In a
+                                                                    crystal the spin quantization reference frame and coordination is equal
+gap.
+                                                                    across sites. (b) Spin-frame disorder, scrambles the spin-quantization
+   We use this updated spectral localizer to comprehensively        reference frame between sites. (c) In amorphous systems, spin-frame
+characterise two- and three-dimensional Z2 -topological sys-        disorder can coexist with structural, bond and on-site disorder. We
+tems with onsite, hopping, structural and spin-frame disorder,      study the effect of these disorders and point out limitations that they
+see Fig. 1. We find that structural disorder can abruptly expand    bring to known real-space methods to characterise topology.
+the phase space occupied by the non-trivial topological phase
+with respect to the crystalline limit. This result expands exist-
+ing results in crystals and non-crystalline amorphous systems       crystalline and amorphous point-sets, including the pair repul-
+where it is known that on-site potential disorder can induce        sion that distinguishes different types of structural disorder.
+a transition to the topological Anderson insulator phase [1–        Appendix B and C include benchmarks on the spectral local-
+5, 54, 95], while hopping disorder is typically detrimental to      izer’s free parameter κ and details on how the spectral localizer
+topology [6].                                                       changes under arbitrary unitary rotations. Appendix D reviews
+   Our study reveals that structural disorder involves the in-      the Bott index and Chern marker for class A and derives their
+terplay of two distinct effects. Firstly, as a crystalline sample   equivalence. Lastly, Appendix E includes checks on finite size
+is disordered, the coordination number (i.e. the number of          convergence.
+neighbours) can increase as sites move (on average) closer to
+one another, which can lead to an expanded topological phase
+space. This situation is more relevant to solids where metallic-       II.   MODELS FOR Z2 TOPOLOGICAL INSULATORS
+type bonding allows for a disorder realisations to have a more
+densely packed structure compared to their crystalline coun-           In both the two- and three-dimensional case, we consider
+terparts, and less so to covalently bonded amorphous solids         a Hamiltonian defined on a (potentially amorphous) lattice,
+which typically preserve the number of neighbours [48, 117].        represented this as a set of points at positions rj . Each site hosts
+Secondly, we find that fully random disorder can lead to a          two orbitals and a spin-1/2 degree of freedom—leading to four
+clustering, where the lattice effectively separates into groups     states per real-space site. The Hamiltonian is parametrised as
+of highly connected sites, adjacent groups weakly connected                      X                           X
+to one another.                                                            H=         fjk |rj ⟩⟨rk | ⊗ tjk +      |rj ⟩⟨rj | ⊗ ϵj ,   (1)
+   In order to separate the effect of coordination and cluster-                   ⟨jk⟩                          j
+ing, we consider different mechanisms of structural disorder.
+We observe that introducing a repulsion between sites in the        where fjk is a scalar that controls the strength of the hopping,
+disorder limits this clustering but has no effect on the average    tjk represents a hopping matrix and ϵj is a matrix acting on
+coordination of the material. Thus, we find that while the in-      the internal degrees of freedom at site j. We parametrise tjk
+creased average coordination has the effect of enhancing the        and fjk in terms of the displacement vector δjk = rj − rk . We
+topological regime, the clustering effect is detrimental to it.     choose the hopping strength to depend exponentially on the
+This interplay leads to a phase diagram with a strong depen-        magnitude of the separation, δjk = |δjk |, as [14]
+dence on the type of structural disorder. We study both two-
+and three-dimensional systems, finding that the effect is more                      fjk = e−(δjk −r0 )/r0 Θ(R − δjk ),                 (2)
+pronounced in two dimensions.
+   This work is structured as follows. In Section II we intro-      where we choose a cut-off distance of R √= 1.3r0 in units of r0 ,
+duce the models for Z2 topological insulators that we consider.     the effective average separation r0 = L/ d N , with L the linear
+In Section III we review the spectral localizer, the spin-local     system size, N the number of sites and d the dimensionality of
+Chern marker and the spin-Bott index and compare their use-         the system.
+fulness in the context of a disordered Z2 topological insulators.      In both two and three dimensions, the hopping term may
+In Section IV we study how spin-frame disorder affects the          be written almost identically, in terms of the normalised dis-
+different markers and study how structural disorder changes         placement from one site to its neighbour, tjk = t(δ̂jk ), with
+the topological phase diagram compared to on-site Anderson          δ̂jk = δjk /δjk . The hopping is term is given by
+disorder. Lastly we offer concluding remarks in Section V.
+Technical details are left for the appendices. Appendix A de-                            Ah                           i
+                                                                                 tjk =      τz ⊗ s0 − iτx ⊗ (δ̂jk · s) .               (3)
+scribes how we construct systems that can interpolate between                            2
+                                                                                                                                       3
+
+Here, the Pauli matrices τ = (τx , τy , τz ) and s = (sx , sy , sz )                        A.   Spectral localizer
+act on orbital and spin degrees of freedom respectively. In two
+dimensions, the displacement δ is a two element vector, and               The construction of the spectral localizer operator, intro-
+thus we use only s = (sx , sy ) in the hopping, whereas in three       duced in Ref. [79] and reviewed in Ref. [107], is designed to
+dimensions we use the full three-element s. The identity ma-           provide information about the localization of the Hamiltonian
+trices in these subspaces are τ0 and s0 . The angle dependence         in both energy and position so that its spectral properties en-
+of the Hamiltonian is given by the Slater-Koster parametriza-          code the topological phase. The general form of this operator
+tion between orbitals located at neighbouring sites [118]. The         for an arbitrary number of physical dimensions d reads as
+onsite energy is parametrised as
+                                                                             L(x,E) = κΓ ⊗ (X − x1) + Γd+1 ⊗ (H − E 1),              (5)
+                 ϵj = M τz ⊗ s0 + Wj τ0 ⊗ s0 ,                  (4)
+                                                                       where x = (x1 , x2 , · · · , xd ) and E center the spectrum at a
+                                                                       specific position and energy respectively, and κ ≈ Egap /L is a
+where M is an orbital asymmetry and disorder at each site j is
+                                                                       dimensionful scaling coefficient used to ensure unit consistency.
+drawn from a uniform distribution Wj ∈ [−W/2, W/2].
+                                                                       There are d + 1 Γµ = (Γ, Γd+1 ) matrices that form a Clifford
+   In two dimensions, this Hamiltonian is equivalent to an             representation large enough to satisfy the last expression. The
+analytic continuation of the Bernevig-Hughes-Zhang quantum-            choice of parameter κ is crucial, as it balances the spectral
+spin Hall model (BHZ) [119, 120], which is well-defined on             weight of the Hamiltonian and position operators: a correct
+an amorphous point-set [14], and reduces to the conventional           value of κ would allow the localizer to see changes in both
+model on the square lattice [121]. Thus, the model has an              H − E and X − x. A detailed explanation of the procedure for
+invariant ν2D ∈ Z2 defined as 0 in the trivial phase and 1 in          choosing this coefficient is given in Appendix B, and discussed
+the topological phase.                                                 extensively in Ref. [107].
+   On a crystalline square lattice and with no on-site disorder          In two dimensions, we choose the Pauli matrices
+(Wj = 0 ∀j) this model realizes a topological quantum-spin             {σx , σy , σz } as our representation Γn of the Clifford algebra,
+Hall phase in symmetry class DIII at half filling with ν2D = 1         such that the spectral localizer is
+index when 0 < |M | < 4 and a trivial insulator phase with
+ν2D = 0 when |M | > 4. The topological phase diagram is                       L(x,E) =κ [σx ⊗ (X − x1) + σy ⊗ (Y − y 1)]
+                                                                                                                                     (6)
+symmetric with respect to M = 0 [122], so we will focus our                              + σz ⊗ (H − E 1).
+study on M < 0. Once Wj ̸= 0, particle-hole symmetry is
+lost and the model falls into class AII.                               From now on, the position and energy shifts (x, y, E) will be
+   In three dimensions, our model realizes an analytic continu-        absorbed into the definitions of the corresponding operators,
+ation of the three-dimensional topological insulator [123–126],        X, Y and H.
+which also has a Z2 invariant, ν3D . On a crystalline cubic               In phases with a Z invariant such as the integer quantum Hall
+lattice with no on-site disorder (Wj = 0), this model realizes a       effect, one can prove that the signature of this operator, sig[L],
+three-dimensional Z2 topological insulator phase in symmetry           defined as the half-difference between the number of positive
+class DIII at half filling with ν3D = 1 when 1 < |M | < 3,             and negative eigenvalues, determines whether the Hamiltonian
+and a trivial and weak insulator phases with ν3D = 0 when              can be continuously transformed to commute with the position
+|M | > 3 and 0 < |M | < 1, respectively. The topological               operators without closing the band gap [107]. This is crucial
+phase diagram is symmetric with respect to M = 0 [122], so             for determining the system’s topology because the occupied
+we will focus our study on M > 0. As in the two-dimensional            wavefunctions of strong topological phases in dimensions d >
+case, adding disorder (Wj ̸= 0) destroys particle-hole symme-          1 cannot be exponentially localized [131–133]. When sig[L] =
+try, putting the model into class AII.                                 0, the system can be adiabatically connected to an atomic
+                                                                       insulator where H and Xj commute without closing the gap,
+                                                                       implying the system is in a trivial phase. A closing of the gap
+                                                                       in the spectrum of the localizer along with a change in the
+               III.   REAL-SPACE TOPOLOGY                              signature, signals a transition to a different topological phase,
+                                                                       with an invariant given by the signature of L.
+   The topological invariants governing the spin Hall effect              The Hamiltonian in Eq. (1) is time-reversal symmetric, with
+were initially proposed in a crystalline context [127–129].            T 2 = −1, placing the system in class AII in both two and
+However, the phase itself is highly robust against real-space          three dimensions. We can then determine constructively the
+disorder which destroys our ability to construct a momentum-           symmetry class of the spectral localizer matrix itself, this is
+space invariant. Consequently, a number of different quantities        done in Appendix C. We find that the localizer for the two-
+have been proposed to diagnose Z2 topological insulators in            dimensional spin hall case is in Class D—with particle-hole
+real space. The most commonly used are the spectral localizer          symmetry only—such that eigenvalues come in pairs, and
+[79], the local Chern marker [76] and the associated spin-Bott         sig[L] = 0. Therefore, we need to use a different object to
+index [54, 130]. Our aim here is to compare the usefulness of          diagnose topology. For the two-dimensional case we use the
+these markers in a generically disordered spin-Hall material           Pfaffian [107]. At the closings of the localizer gap (hereafter
+in which neither momentum space, nor any local degree of               denoted as the local gap), the Pfaffian of L might change sign,
+freedom such as spin is a guaranteed good quantum number.              in which case there is a topological phase transition.
+                                                                                                                                    4
+
+    Since the Pfaffian is only well-defined for an antisymmetric    invariant [54, 94]. Thus, let us briefly restate the form of the
+matrix, the localizer L must first be rotated to a basis in which   Bott Index, discussing its efficient numerical implementation,
+it is antisymmetric and pure imaginary                              and then we shall explain the procedure for applying these
+                                                                    quantities to a spinful system.
+                         LC = Q† LQ,                          (7)      The Bott index is defined for a system with periodic bound-
+                                                                    aries, where we construct the matrices U = P e−iδX P and
+where Q ∈ SU (n) is matrix responsible for the rotation. Find-      V = P e−iδY P , where P is the projector onto a gapped subset
+ing the appropriate matrix is not trivial for generic systems,      of the spectrum, generally the occupied states below the Fermi
+since it depends explicitly on the exact formulation of the         level, X and Y are the position operators, and δ = 2π   L . The
+time-reversal operator. In Appendix C we construct an explicit      Bott index is given by
+method for finding the correct rotation for an arbitrary system,
+where we find that Q is obtained by taking a Takagi factorisa-                           L2
+                                                                                            Im Tr log U V U † V † + Q ,
+                                                                                                                    
+                                                                               B(P ) =                                           (11)
+tion [134] of the time-reversal operator. Once this transforma-                          2π
+tion has been found, the Z2 -invariant for a two-dimensional
+                                                                    with Q = 1 − P . Since a matrix logarithm is generally an
+system is ν2D ∈ {0, 1} with
+                                                                    expensive computation, we may expand the expression in δ ≪
+               (−1)ν2D = sign(Pf (iLC )) ∈ Z2 .               (8)   1, a good approximation for large system size, to arrive at the
+                                                                    following expression [135],
+   For the three dimensional case, we choose Γi = {σy ⊗
+                                                                     B(P ) = 2πi Tr (P [X, P ]PB [Y, P ]PB ) + h.c. + O(δ 3 ), (12)
+σx , σy ⊗ σy , σy ⊗ σz , σx ⊗ σ0 } with i = 1, · · · , 4 as our
+representation of the Clifford algebra, such that the spectral      where the periodic commutators, [·, ·]PB , are defined as
+localizer is expressed as                                                                    X
+                  h                                                              [X, P ]PB =    ∆xjk Pjk |rj ⟩⟨rk | ,            (13)
+       L(x,E) =κ Γ1 ⊗ (X − x1) + Γ2 ⊗ (Y − y 1)                                                   jk
+                                                        i   (9)
+                 + Γ3 ⊗ (Z − z 1) + Γ4 ⊗ (H − E 1) .                with a similar expression for Y . Here ∆jk is defined as
+                                                                    the shortest displacement between sites rj and rk in periodic
+This localizer matrix falls into Class BDI—with chiral, time        boundaries. Note that in open boundaries, these are exactly
+reversal and particle hole symmetry. The calculation of the         equal to a conventional commutator. For a full derivation of
+topological invariant in this case can be reduced to the sign       this quantity, see Appendix D.
+of the determinant of the off-diagonal block of the localizer,         In order to apply the spin-Bott index to the spin-Hall case,
+arriving at ν3D ∈ {0, 1} with                                       we consider the projector onto our chosen (Kramers degen-
+                                                                    erate) band P . Our aim is to decompose P into a spin-up
+  (−1)ν3D = sign det σ0 ⊗ H − iκ σ ⊗ X                              and spin-down component, each of which may then be treated
+                                             
+                                                  ∈ Z2 . (10)
+                                                                    separately. Thus, we construct the projected spin operator
+Here σ is a vector of three Pauli matrices and X = (X, Y, Z),       s̃z = P sz P . By diagonalising s̃z , we can construct the two
+and we have absorbed the shifts in position and energy into the     spin-resolved projectors onto the spin-up and down subspaces,
+definitions of H and X.                                             P↑ and P↓ as the projector onto the positive and negative
+                                                                    eigenspaces of s̃z . Finally, the spin-Bott index is calculated
+                                                                    according to
+                 B.   Bott and spin-Bott Index
+                                                                                                  1
+                                                                                   Bspin (P ) =     [B(P↑ ) − B(P↓ )] .          (14)
+                                                                                                  2
+   In two dimensions, one popular route towards a local in-
+variant has been the construction of the Bott index [78], and       Thus, the construction of the spin-Bott index is essentially anal-
+associated spin-Bott index [54, 95]. In the limit of no spin        ogous to the spin Chern number, with the Bott index replacing
+mixing, a Z2 spin-Hall insulator can be viewed as two copies        the momentum space Chern number. As with the spin Bott in-
+of a conventional Chern insulator (class A in two dimensions),      dex, the validity of the spin Chern number depends on the spin
+one populated entirely with spin-up and the other populated         gap—the smallest magnitude eigenvalue of s̃z —remaining
+with spin-down electrons. Here the time-reversal symmetry en-       open [90].
+forces that both species have opposite Chern number—however
+in all other respects the two species may be treated as com-
+pletely separable. This occurs when the Rashba spin-orbit                                  IV.    DISORDER
+coupling term, which mixes spin components, is set to zero,
+and when there is no spin-frame disorder.                              Amorphous materials are expected to disorder the magnitude
+   In this limit, constructing a real-space topological index is    of on-site potentials (which we refer to as Anderson disorder),
+straightforward, since one can effectively use the local markers    the hopping amplitudes (hopping or bond disorder), as well
+that have already been shown to be effective for Chern insu-        as disordering the connectivity of the lattice structure itself
+lators [75, 76]. Furthermore, after adding weak spin-mixing,        (structural disorder) [117, 136]. Historically, the most well-
+this procedure still gives a reasonable local marker for the Z2     understood form is Anderson disorder [137], where a random
+                                                                                                                                        5
+
+                                                                          the orientation of the spin, which is scrambled by this frame
+                                                                          disorder. For example, the spin-Bott index and spin-Chern
+                                                                          marker assume a direction of spin-projection that is conserved,
+                                                                          which is no longer true in the presence of frame disorder. The
+                                                                          Localizer index does not assume such conservation, but it
+                                                                          directly relies on identifying the time-reversal operator, which
+                                                                          is basis dependent, see Appendix C. Frame disorder locally
+                                                                          scrambles the basis of the Hamiltonian, acting as a unitary
+                                                                          rotation on the time-reversal operator, which must be accounted
+                                                                          for when calculating the spectral localizer index.
+                                                                             To analyse how frame disorder affects local markers we start
+                                                                          by defining it precisely through a local unitary transformation
+                                                                          applied to the Hamiltonian. As a simple example of a local
+                                                                          unitary transformation that rotates the spin at each site, we
+                                                                          consider the effect of a Hadamard gate, defined as
+                                                                                                                 
+                                                                                                       1 1 1
+                                                                                                H= √                 .                (15)
+                                                                                                        2 1 −1
+
+FIG. 2. Failure of the spin-Bott index in the presence of spin-frame      We define a random variable per site aj ∈ {0, 1} with uni-
+disorder. (a) As the fraction of sites with spin-frame disorder is in-    form probability η that decides whether that site undergoes a
+creased from η = 0 to η = 1 the spin-Bott index from Eq. (14)             Hadamard transformation. Thus, we may construct a global
+continuously drops to zero. At η = 1 if fails to diagnose the topologi-   random rotation operator U , characterised by this random vari-
+cal transition. The spin-Bott index requires a well defined spin gap,     able, according to
+which is generically closed by spin-frame disorder. (b) The localizer
+index from Eq. (8) (with κ = 1) is independent of η and correctly
+                                                                                                  X
+                                                                                             U=        |rj ⟩⟨rj | ⊗ Haj             (16)
+captures the topological phase transition as a function of disorder
+                                                                                                     j
+strength W .
+                                                                          and transform the system according to H → U HU † . If our
+                                                                          Hamiltonian is time-reversal symmetric in a basis where this
+on-site potential is applied across the system in real space—
+                                                                          symmetry is represented by the operator T = isy K, frame
+parametrised with Wj in Eq. (4). In quantum spin-Hall Hamil-
+                                                                          disorder will modify this operator to
+tonians, Anderson disorder can drive the system from a trivial
+phase into a topological one by inverting the gap [1–4, 6, 7].                                T̂ → T̂ ′ = wK,                        (17)
+This topological Anderson phase can be smoothly connected
+                                                                                                                   T
+to the crystalline phase without closing of the mobility gap and                                with w = U isy U .                   (18)
+is, in this sense, the same quantum-spin Hall phase [4].
+   Because the hopping and the connectivity can be disordered,            In the case of the Hadamard operator, which anti-commutes
+Anderson effects alone are insufficient for describing the in-            with sy , this may be explicitly calculated as
+terplay between topology and disorder in amorphous matter,                                     X
+where disorder can take many different forms. In this work                                w=       |rj ⟩⟨rj | ⊗ (−1)aj isy .   (19)
+we follow up on Ref. [114] and also consider frame disorder,                                    j
+where the local degrees of freedom at each site are scrambled.
+                                                                          This transformation must be accounted for when we construct
+To have a full understanding of how topological phases can
+                                                                          the spectral localizer, since any change to the time-reversal
+emerge in amorphous matter, it is useful to separate each of
+                                                                          operator must be taken into consideration when we rotate the
+these different manifestations of disorder, and understand the
+                                                                          localizer into a pure-imaginary basis, such that the Pfaffian is
+effect of each on the system’s topological phase diagram.
+                                                                          well-defined. An explicit derivation for the Z2 invariant in any
+                                                                          basis—where the time-reversal operator can take any form—
+                                                                          is given in Appendix C. Let us summarise the result here:
+                     A.   Spin-frame disorder
+                                                                          the matrix Q which brings the localizer to an antisymmetric
+                                                                          form—given by Q = 1 + iσ y ⊗ sy for a conventional time-
+   When a material is isotropic in the bulk on average, one can           reversal-symmetric-invariant system with T = isy K— must
+lose any notion of a special direction in both real- and spin-            be modified by the same spatially-dependent rotation operator
+space, leading to a type of disorder called spin-frame disorder.          Eq. (16), according to
+To model this, we randomly rotate the reference frame of
+local degrees of freedom at each site, thereby losing any global                                    Q → U QU T .                     (20)
+notion of spin-alignment, which inhibits our ability to calculate
+topological invariants that depends anisotropically on spin. Our          To study the effects of spin-frame disorder we construct the
+goal is to show how local markers in class AII are sensitive to           two-dimensional BHZ model given in Section II on the square
+                                                                                                                                             6
+
+                                                                              whether structural disorder can drive the transition without
+                                                                              relying on on-site disorder, and if it can enlarge the phase
+                                                                              space occupied by the topological phase. Ref. [37] showed
+                                                                              that hyperuniform structural disorder which kept the number
+                                                                              of neighbours of each atom fixed is detrimental to topology.
+                                                                              Here we show that structural disorder is not always detrimental
+                                                                              when you allow the number of neighbours to fluctuate, and that
+                                                                              this effect depends on dimensionality. This serves to illustrate
+                                                                              that the consequences of structural disorder are not universal;
+                                                                              depending on the form of disorder used we can arrive at a
+                                                                              substantially different phase diagram.
+                                                                                 To this end we define a process for progressively disordering
+                                                                              a square lattice. This is done by introducing a random shift to
+                                                                              each vertex in the system, sampled from a two-dimensional
+FIG. 3. Two examples of progressively disordering a system starting           Gaussian distribution with standard deviation σ. As σ is tuned
+from a square lattice on the unit square. At each point, bonds are            from zero to a value comparable to the lattice spacing, the
+drawn between pairs of sites that are closer than 1.3 times the original      points are smoothly interpolated between a square grid and
+lattice spacing r0 . (a) With the repulsion parameter, ρ, set to zero, each   a completely random set of points. This is shown in Fig. 3
+point is moved to a new position sampled from a Gaussian distribution
+                                                                              (a). Once the disordered point-set has been created, a network
+centred on the original position of the vertex with standard deviation
+σ. As σ is increased, this tunes smoothly between the square lattice          is constructed by adding bonds between all pairs of vertices
+and a set of uniformly distributed vertices. (b) With ρ set to 0.3, the       that are closer than a threshold, which here is chosen to be
+probability of moving a vertex close to any other existing vertices           1.3r0 —where r0 is the lattice spacing of the original square
+is suppressed. Thus, as the system is progressively disordered by             lattice—giving the cut-off in Eq. (2). Close to the crystalliza-
+increasing σ, vertices move to a ‘blue noise’ configuration, in which         tion temperature, σ can be thought of as determined by the
+they are randomly arranged but evenly spaced from one another.                distance that atoms can move thanks to the thermal energy
+                                                                              provided by the quenching protocol that forms the amorphous
+                                                                              solid, such that σ ∝ kB T , [36].
+lattice with parameters A = 1, M = −2, placing us in the                         Note that in the limit of high disorder (σ ≈ r0 ), this proce-
+center of the topological region of the phase diagram. We tune                dure creates highly unphysical arrangements of atomic posi-
+both the strength of Anderson disorder W , and the proportion                 tions, since randomly sampled points have a tendency to form
+of rotated sites η across the full range [0, 1]. Our expectation is           clusters with extremely small spacing between vertices. In
+that as W is increased, the system should eventually be driven                contrast, covalently bonded amorphous materials have strong
+from a topological phase to a trivial phase [1, 2, 4], which                  local correlations due to chemical constraints [24, 117, 136,
+happens around W ∼ 7.5. Spin frame disorder, however,                         138, 139]. Thus, such random disorder, although useful as a
+should have no effect since it acts effectively as a basis rota-              benchmark for the effects of disorder, have limited physical
+tion. Each time, we compute both the Bott index and spectral                  applicability when considering real materials.
+localizer. For each data point we average the invariant over 50                  To address this, we modify the probability distribution that
+realisations of spin-frame and Anderson disorder.                             is sampled each time a vertex is moved, adding an inter-site
+   The results are shown in Fig. 2. Considering Fig. 2 (a), we                repulsion parametrised by ρ. As ρ is increased, the probability
+see that as spin-frame disorder is increased—by increasing                    of placing a site close to another existing site is reduced. This
+the probability of rotating a local basis, η—the Bott index                   effectively sets a length scale with which vertices can ‘see’ one
+decreases and eventually vanishes across the whole phase dia-                 another. This probability distribution is constructed in analogy
+gram. This reflects the fact that in the case of high spin-frame              to statistical mechanics, where we construct an effective energy
+disorder, the spin gap, upon which the index depends, closes,                 associated with a configuration of points, and the probability
+and so the spin Bott index is effectively ill-defined. On the                 distribution is given by the partition function derived from
+other hand, in Fig. 2 (b), we see that the results obtained using             this energy. The Gaussian disorder (σ) is introduced as a
+the spectral localizer are indifferent to spin frame disorder.                quadratic potential well centred on the original position of
+                                                                              each vertex, and the repulsion (ρ) appears as an interaction
+                                                                              energy. The strengths σ and ρ therefore model two competing
+                       B.   Structural disorder                               phenomena: the thermal energy and the tendency to form a well
+                                                                              defined local chemical order. Such possible competition has
+   We now turn our attention to understanding the role of struc-              been previously overlooked in the search for larger topological
+tural disorder. Here, we wish to tune smoothly between the                    phase diagrams and is behind the richness in phenomenology
+square or cubic lattices and an amorphous lattice, tracking how               that we report below.
+the properties of the physical system change. Similar questions                  Using the parameter ρ we are able to tune between uni-
+were discussed e.g. in Ref. [36], where structural disorder com-              formly sampled points and a ‘blue noise’-like distribution
+bined with on-site Anderson disorder resulted in a topological                [140–142] in which points are random but approximately uni-
+phase induced by amorphization. However, it remains unclear                   formly spaced apart, shown in Fig. 3 (b). The procedure used
+                                                                                                                                           7
+
+is described in detail in Appendix A, along with a study of
+the average connectivity, bond lengths and structure factors
+obtained using this method.
+   In addition to modifying the connectivity of the lattice, we
+include a bond disorder implied by the lattice spacing, in which
+the coupling strength depends exponentially on the length of
+a bond, according to Eq. (2). We recall that in the crystalline
+case, bond disorder is typically detrimental to the topological
+Anderson phase [6]. To better distinguish a potential enhance-
+ment of the topological phase due to structural disorder, we
+do not add on-site Anderson disorder (Wj = 0, ∀j), which is
+known to favor topology [1–5].
+   We compare the effect of Anderson disorder against struc-
+tural disorder in both two and three dimensions, where we
+calculate the phase diagram as a function of both the inter-
+nal parameter M (setting A = 1) and the respective disorder
+strength. In the case of Anderson disorder—which serves as
+a benchmark—this is the potential strength W in Eq. (4). In
+the case of structural disorder we tune the standard deviation       FIG. 4. Phase diagram of the localizer index for the two-dimensional
+σ determining the length-scale of the (Gaussian) probability         BHZ model comparing the effect of on-site Anderson and structural
+distribution for the displacement of each vertex in the lattice.     disorder, with a small fraction of spin-frame disordered sites η = 0.15,
+We consider three cases, one where ρ = 0, such that there is         for a system size L = 30. Each point is calculated with A = 1, and
+no inter-site repulsion, one where ρ = 3r0 and the last with         averaged over 100 realisations of disorder. The phase diagram is
+stronger inter-site repulsion ρ = 9r0 —two examples of lattices      calculated in each case as a function of the parameter M in Eq. (4)
+for the two-dimensional case are shown in Fig. 3.                    and the respective type of disorder. The spectral localizer index given
+                                                                     by Eq. (8) is computed for κ = 1 and E, x at the centre of the energy
+                                                                     spectrum and the system, respectively. (a) The localizer index for the
+                                                                     BHZ model as a function of Anderson disorder strength W . (b-d)
+             1.   Two-dimensional quantum-spin Hall
+                                                                     The localizer index as a function of M and the strength of Gaussian
+                                                                     structural disorder, characterized by its standard deviation σ with no
+   In the case of Anderson disorder, shown in Fig. 4 (a), we find    inter-site repulsion ρ. Three cases are shown with ρ = 0, 3r0 and 9r0 .
+a familiar story [1, 2, 4, 5, 54, 95, 115]. Here, provided that      Note that in the thermodynamic limit, the phase boundary in the case
+we start with M approximately ∈ [−5.4, −4], the system can           of no disorder would sit at exactly at M = −4, however it is slightly
+be driven into a topological phase by increasing the Anderson        rescaled in finite size systems.
+disorder coefficient W .
+   In contrast, in the case of structural disorder we find strik-
+ingly different results depending on the type of structural dis-     we find that Gaussian structural disorder is increasingly unable
+order implemented. With pure Gaussian disorder (ρ = 0),              to drive the system into a trivial phase. This is shown in Fig. 4
+shown in Fig. 4 (b) we find that the system initially has an ex-     (c-d). This effect suggests that the transition to a trivial phase
+panded topological regime, indicating a structural analogue of       in Fig. 4 (b) originates from the tendency of truly random
+the topological Anderson insulator transition. This expanded         pointsets to form highly internally-connected clusters, which
+regime may be understood by considering how the connectivity         are then relatively weakly connected to one another, effec-
+of the graph changes with structural disorder. On the square         tively breaking the bulk insulator up into islands. When sites
+lattice all vertices connect to four neighbours. However as we       repel one another in the disordering procedure, this effect is
+start to introduce structural disorder, the connectivity initially   supressed, the material remains uniformly connected, and the
+increases. This can be seen in Fig. 3, where the number of           topological phase survives. This is particularly relevant, since
+edges increases with small amounts of disorder, as well as in        by all measures, the disorder generated for large ρ is closer to
+detail in Appendix A. Increased connectivity has the effect of       that found in covalently bonded amorphous materials [117],
+rescaling the coupling strength, where each site feels a stronger    where atoms are prohibited from getting arbitrarily close to
+coupling on average. Since the topological transition is driven      one another. In turn, metallic glasses and systems close to the
+by the competition between coupling terms (parametrised by           crystallization temperature are expected to be less ordered at
+A) and on-site terms (parametrised by M ), increased connec-         the atomic scale, and hence we expect them to behave more
+tivity can be viewed as effectively diminishing M with respect       similarly to the case ρ ≈ 0.
+to A, enlarging the topological regime in which strong hopping
+dominates.
+   As Gaussian disorder (σ) is further increased, the system at                2.   Three-dimensional Z2 topological insulator
+ρ = 0 is driven into a topologically trivial phase. However,
+when the inter-site repulsion ρ is increased, allowing the ver-        In the three-dimensional case with on-site disorder, the phase
+tices to effectively avoid one another as they are disordered,       diagram obtained from the localizer, shown in Fig. 5 (a), is
+                                                                                                                                         8
+
+in good agreement with previous studies of disordered three-
+dimensional Z2 topological insulators [3, 91, 115, 143]. Sim-
+ilar to the two-dimensional case, we find that within a range
+of values of the mass parameter, 4 ≳ M ≳ 3, the system can
+start in a trivial phase and be driven into a topological phase
+by increasing on-site disorder [3, 91, 115, 143].
+   The effect of structural disorder is strikingly different to
+the two-dimensional BHZ model. First, the phase diagram
+with structural disorder, see Fig. 5(b-d) differs from the phase
+diagram obtained with on-site disorder case, Fig. 5(a). Specif-
+ically, it is no longer possible to drive the system into the
+topological Anderson insulator at 4 ≳ M ≳ 3. Second, we
+observe that the results obtained with purely Gaussian disorder
+(ρ = 0) and with strong inter-site repulsion (ρ = 3r0 and 9r0 )
+in Fig. 5(b-d) are qualitatively very similar. In all cases, in-
+creasing structural disorder eventually drives the system from
+the topological phase into a trivial phase.
+   These results suggest that the effect of ρ is not as efficient
+in reinstating the topological phase in three dimensions as it is   FIG. 5. Phase diagram of the localizer index for the three-dimensional
+in two-dimensions. This happens even thought increasing ρ is        topological insulating model in the presence of Anderson and struc-
+highly effective at ensuring that states remain evenly spaced       tural disorder. Each point is calculated with A = 1, and averaged over
+apart, as we show in Appendix A. Hence, three-dimensional           100 realizations of disorder, for a system size L = 10. The localizer
+topological insulators see amorphicity as truly detrimental,        index, Eq. (10), is computed for κ = 2 and E, x at the bulk of the
+regardless of the ways in which the system is structurally dis-     energy spectrum and the system, respectively. (a) Localizer index for
+ordered. An alternative route towards inducing a topological        the three-dimensional topological insulator model as a function of
+phase in three-dimensions is to increase r0 in a random point-      Anderson disorder strength W . (b-d) Localizer index as a function of
+set, as discussed in Ref. [25]. However, when r0 is increased       M and the strength of Gaussian structural disorder, characterized by
+                                                                    its standard deviation σ with the inter-site repulsion ρ. As in Fig. 4,
+substantially the phase space for the topological phase seems
+                                                                    three cases are shown with ρ = 0, 3r0 and 9r0 . As in Fig. 4, phase
+to be reduced, similar to our findings.                             boundaries are slightly shifted by a combination of finite-size effects
+                                                                    and the rescaling of bond strength by the distance as in Eq. (2).
+
+          V.   DISCUSSION AND CONCLUSIONS
+                                                                    that mixes spin species in the material.
+   We have discussed how different kinds of structural disor-          We have refrained from exhaustively analysing the precise
+der affect the topological phase diagrams of disordered non-        phase diagram boundaries and also the possible differences be-
+crystalline systems, and how local-frame disorder can compro-       tween the transitions driven by Anderson on-site disorder and
+mise the tools we use to diagnose these phases. Specifically,       structural disorder. For Chern insulators in class A early nu-
+we found that in two dimensions increasing the local bond-          merics suggested that critical exponents may differ from those
+connectivity acts to increase the region of phase space dedi-       of the quantum Hall transition [27], although more in-depth
+cated to a topological phase. This effect likely occurs because     studies seem to align with conventional expectation [144]. In
+increasing connectivity boosts the energy scales corresponding      clarifying these questions, it would be informative for future
+to spin-orbit-coupling hopping terms, which then can more           work to develop similar studies for the quantum-spin Hall insu-
+easily win over on-site terms that work to trivialise the sys-      lators in class AII studied here, aided by the spectral localizer.
+tem. We have found that this connectivity effect is absent in          To conclude, we have found that not all structural disorder
+three-dimensional systems.                                          is born equal. Structural disorder that penalises site-clustering
+   In our calculations we have included the scrambling of the       can help to realize non-crystalline two-dimensional quantum
+local spin degree of freedom. We have shown that this novel         spin-Hall insulators in solid-state and synthetic platforms. This
+type of disorder, introduced in Ref. [114] and expected to          type of structural disorder is expected in more covalently
+be realistic in amorphous materials, artificially compromises       bonded materials [117], suggesting a design principle for mate-
+the diagnosis of topological phases based on spin-projection        rial realizations. Thus, our results suggest that disordered topo-
+methods. While this is a known issue, and some workarounds          logical materials with well-defined local order may be much
+exist [94], we showed that the spectral localizer is immune to      more robust compared to completely random structural disor-
+such scrambling. The spectral localizer directly incorporates       der, which could be expected in solids that are metallic glasses
+the time-reversal operator in its definition, rather than relying   or closer to crystallization temperatures. Furthermore, we have
+on a spin-projection [79, 107, 112], and can be computed            found that as a material is disordered, the bond connectivity
+numerically efficiently [112]. This property allowed us to          often increases, useful as a guiding experimental principle in
+derive a consistent definition for a Z2 time-reversal invariant     future attempts to realize non-crystalline topological phases in
+phase at any strength of spin-frame disorder, or any other term     two-dimensions.
+                                                                                                                                             9
+
+   Alongside these results comes a caution, however, that we             Araya Day and A. Akhmerov for assistance on numerical
+find that there is no ‘universal consequence’ of structural dis-         methods. All authors are supported by the European Research
+order. Depending on the implementation of disorder, and the              Council (ERC) Consolidator grant under grant agreement No.
+dimensionality of the system, we have found that it is possible          101042707 (TOPOMORPH).
+to realise a wide variety of physical effects. Some forms of
+structural disorder destroy topology, some do not. Thus, when
+considering a specific material realisation, our results empha-
+sise the importance of tailoring the type of structural disorder
+used in modelling to the microscopic properties of the material
+in question.
+
+
+                 VI.   ACKNOWLEDGMENTS                                      Code availability – The codes and data to reproduce the fig-
+                                                                         ures in this work can be found in Ref. [145]. Numerical calcula-
+  We thank A. Cerjan and P. Wulles for inspiring discussions             tions were performed using the python packages Kwant [146]
+about the applicability of topological markers, as well as I.            and Adaptive [147].
+
+
+
+
+  [1] J. Li, R.-L. Chu, J. K. Jain, and S.-Q. Shen, Physical Review       [24] Q. Marsal, D. Varjas, and A. G. Grushin, Proceedings of the
+      Letters 102, 136806 (2009).                                              National Academy of Sciences 117, 30260 (2020).
+  [2] C. W. Groth, M. Wimmer, A. R. Akhmerov, J. Tworzydło,               [25] P. Mukati, A. Agarwala, and S. Bhattacharjee, Physical Review
+      and C. W. J. Beenakker, Physical Review Letters 103, 196805              B 101, 035142 (2020).
+      (2009).                                                             [26] I. Sahlberg, A. Westström, K. Pöyhönen, and T. Ojanen, Physi-
+  [3] H.-M. Guo, G. Rosenberg, G. Refael, and M. Franz, Phys. Rev.             cal Review Research 2, 013053 (2020).
+      Lett. 105, 216601 (2010).                                           [27] M. N. Ivaki, I. Sahlberg, and T. Ojanen, Physical Review Re-
+  [4] E. Prodan, Phys. Rev. B 83, 195119 (2011).                               search 2, 043301 (2020).
+  [5] A. Yamakage, K. Nomura, K.-I. Imura, and Y. Kuramoto, Jour-         [28] A. Agarwala, V. Juričić, and B. Roy, Physical Review Research
+      nal of Physics: Conference Series 400, 042070 (2012).                    2, 012067 (2020).
+  [6] J. Song, H. Liu, H. Jiang, Q.-f. Sun, and X. C. Xie, Phys. Rev.     [29] A. G. Grushin, in Low-Temperature Thermal and Vibrational
+      B 85, 195125 (2012).                                                     Properties of Disordered Solids, edited by M. A. Ramos (World
+  [7] E. Prodan, J. Phys. A 44, 113001 (2011).                                 Scientific, 2022) Chap. 11.
+  [8] Z. Ringel, Y. E. Kraus, and A. Stern, Phys. Rev. B 86, 045102       [30] H.        Huang          and       F.       Liu,      Research
+      (2012).                                                                  2020,              10.34133/2020/7832610                (2020),
+  [9] S.-H. Lv, J. Song, and Y.-X. Li, Journal of Applied Physics              https://spj.science.org/doi/pdf/10.34133/2020/7832610.
+      114, 183710 (2013).                                                 [31] J.-H. Wang, Y.-B. Yang, N. Dai, and Y. Xu, Physical Review
+ [10] I. C. Fulga, B. van Heck, J. M. Edge, and A. R. Akhmerov,                Letters 126, 206404 (2021).
+      Physical Review B 89, 155424 (2014).                                [32] B. Focassio, G. R. Schleder, M. Costa, A. Fazzio, and
+ [11] X. Ni, H. Huang, and F. Liu, Phys. Rev. B 101, 125114 (2020).            C. Lewenkopf, 2D Materials 8, 025032 (2021).
+ [12] J. a. S. Silva, E. V. Castro, R. Mondaini, M. A. H. Vozmediano,     [33] B. Focassio, G. R. Schleder, F. C. d. Lima, C. Lewenkopf, and
+      and M. P. López-Sancho, Phys. Rev. B 109, 125145 (2024).                A. Fazzio, Physical Review B 104, 214206 (2021).
+ [13] A. Y. Chaou, M. Moreno-Gonzalez, A. Altland, and P. W.              [34] N. P. Mitchell, A. M. Turner, and W. T. M. Irvine, Physical
+      Brouwer, Phys. Rev. B 112, 035167 (2025).                                Review E 104, 025007 (2021).
+ [14] A. Agarwala and V. B. Shenoy, Physical Review Letters 118,          [35] H. Spring, A. Akhmerov, and D. Varjas, SciPost Physics 11,
+      236402 (2017).                                                           022 (2021).
+ [15] S. Mansha and Y. D. Chong, Physical Review B 96, 121405             [36] C. Wang, T. Cheng, Z. Liu, F. Liu, and H. Huang, Physical
+      (2017).                                                                  Review Letters 128, 056401 (2022).
+ [16] M. Xiao and S. Fan, Physical Review B 96, 100202 (2017).            [37] J. Ma and H. Huang, Physical Review B 106, 195150 (2022).
+ [17] N. P. Mitchell, L. M. Nash, D. Hexner, A. M. Turner, and            [38] T. Peng, C.-B. Hua, R. Chen, Z.-R. Liu, H.-M. Huang, and
+      W. T. M. Irvine, Nature Physics 14, 380 (2018).                          B. Zhou, Phys. Rev. B 106, 125310 (2022).
+ [18] C. Bourne and E. Prodan, Journal of Physics A: Mathematical         [39] A. J. Urı́a-Álvarez, D. Molpeceres-Mingo, and J. J. Palacios,
+      and Theoretical 51, 235202 (2018).                                       Phys. Rev. B 105, 155128 (2022).
+ [19] K. Pöyhönen, I. Sahlberg, A. Westström, and T. Ojanen, Nature    [40] M. Guzmán, D. Bartolo, and D. Carpentier, SciPost Physics 12,
+      Communications 9, 2103 (2018).                                           038 (2022).
+ [20] E. L. Minarelli, K. Pöyhönen, G. A. R. van Dalum, T. Ojanen,      [41] D. Muñoz Segovia, P. Corbae, D. Varjas, F. Hellman, S. M.
+      and L. Fritz, Physical Review B 99, 165413 (2019).                       Griffin, and A. G. Grushin, Phys. Rev. Res. 5, L042011 (2023).
+ [21] G.-W. Chern, Europhysics Letters 126, 37002 (2019).                 [42] G. Cassella, P. d’Ornellas, T. Hodson, W. M. H. Natori, and
+ [22] T. Mano and T. Ohtsuki, Journal of the Physical Society of               J. Knolle, Nature Communications 14, 10.1038/s41467-023-
+      Japan 88, 123704 (2019).                                                 42105-9 (2023).
+ [23] M. Costa, G. R. Schleder, M. Buongiorno Nardelli,                   [43] A. G. Grushin and C. Repellin, Phys. Rev. Lett. 130, 186702
+      C. Lewenkopf, and A. Fazzio, Nano Letters 19, 8941 (2019).               (2023).
+                                                                                                                                              10
+
+[44] X. Cheng, T. Qu, L. Xiao, S. Jia, J. Chen, and L. Zhang, Phys.        [78] T. A. Loring and M. B. Hastings, EPL 92, 67004 (2010).
+     Rev. B 108, L081110 (2023).                                           [79] T. A. Loring, Annals of Physics 356, 383 (2015).
+[45] Z. Zhang, P. Delplace, and R. Fleury, Science Advances 9,             [80] T. A. Loring, Preprint at https://arxiv.org/abs/1907.11791
+     10.1126/sciadv.adg3186 (2023).                                             (2019).
+[46] S. Manna, S. K. Das, and B. Roy, Phys. Rev. B 109, 174512             [81] P. d’Ornellas, R. Barnett, and D. K. K. Lee, Phys. Rev. B 106,
+     (2024).                                                                    155124 (2022).
+[47] D. Li, C. Wang, and H. Huang, SciPost Phys. 17, 086 (2024).           [82] J. D. Hannukainen, M. F. Martı́nez, J. H. Bardarson, and T. K.
+[48] Q. Marsal, D. Varjas, and A. G. Grushin, Phys. Rev. B 107,                 Kvorning, Phys. Rev. Lett. 129, 277601 (2022).
+     045119 (2023).                                                        [83] E. Prodan, New J. Phys. 12, 065003 (2010).
+[49] A. J. Urı́a-Álvarez and J. J. Palacios, Phys. Rev. Res. 7, 043263    [84] L. Jezequel, C. Tauber, and P. Delplace, Journal of Mathemati-
+     (2025).                                                                    cal Physics 63, 10.1063/5.0096720 (2022).
+[50] Y. E. Kraus, Y. Lahini, Z. Ringel, M. Verbin, and O. Zilberberg,      [85] L. Jezequel and P. Delplace, SciPost Phys. 17, 060 (2024).
+     Phys. Rev. Lett. 109, 106402 (2012).                                  [86] L. Jezequel and P. Delplace, SciPost Physics 18, 10.21468/sci-
+[51] D. T. Tran, A. Dauphin, N. Goldman, and P. Gaspard, Phys.                  postphys.18.6.193 (2025).
+     Rev. B 91, 085125 (2015).                                             [87] J. D. Hannukainen, M. F. Martı́nez, J. H. Bardarson, and T. K.
+[52] M. A. Bandres, M. C. Rechtsman, and M. Segev, Phys. Rev. X                 Kvorning, Phys. Rev. Res. 6, L032045 (2024).
+     6, 011016 (2016).                                                     [88] N. Baù and A. Marrazzo, Phys. Rev. B 109, 014206 (2024).
+[53] J.-N. Fuchs and J. Vidal, Phys. Rev. B 94, 205437 (2016).             [89] R. Favata, N. Baù, and A. Marrazzo, Phys. Rev. Lett. 135,
+[54] H. Huang and F. Liu, Phys. Rev. B 98, 125130 (2018).                       026603 (2025).
+[55] J.-N. Fuchs, R. Mosseri, and J. Vidal, Phys. Rev. B 98, 145           [90] E. Prodan, Phys. Rev. B 80, 125327 (2009).
+     (2018).                                                               [91] Y. Akagi, H. Katsura, and T. Koma, Journal of the Physical
+[56] T. A. Loring, Journal of Mathematical Physics 60, 081903                   Society of Japan 86, 123710 (2017), 1709.05853.
+     (2019).                                                               [92] I. Gilardoni, F. Becca, A. Marrazzo, and A. Parola, Phys. Rev.
+[57] D. Varjas, A. Lau, K. Pöyhönen, A. R. Akhmerov, D. I. Pikulin,           B 106, L161106 (2022).
+     and I. C. Fulga, Phys. Rev. Lett. 123, 196401 (2019).                 [93] R. Favata and A. Marrazzo, Electronic Structure 5, 014005
+[58] H. Huang and F. Liu, Phys. Rev. B 100, 085119 (2019).                      (2023).
+[59] R. Chen, D.-H. Xu, and B. Zhou, Phys. Rev. B 100, 115311              [94] N. Baù and A. Marrazzo, Phys. Rev. B 110, 054203 (2024).
+     (2019).                                                               [95] H. Huang and F. Liu, Phys. Rev. Lett. 121, 126401 (2018).
+[60] A.-L. He, L.-R. Ding, Y. Zhou, Y.-F. Wang, and C.-D. Gong,            [96] T. A. Loring and H. Schulz-Baldes, Canadian Mathematical
+     Phys. Rev. B 100, 214109 (2019).                                           Bulletin 62, 373 (2019).
+[61] C. W. Duncan, S. Manna, and A. E. B. Nielsen, Phys. Rev. B            [97] T. A. Loring and H. Schulz-Baldes, Journal of Noncommutative
+     101, 115413 (2020).                                                        Geometry 14, 1 (2020).
+[62] J. Fan and H. Huang, Frontiers of Physics 17, 13203 (2021).           [98] H. Schulz-Baldes and T. Stoiber, Proceedings of the American
+[63] O. Zilberberg, Opt. Mater. Express 11, 1143 (2021).                        Mathematical Society 149, 121–134 (2020).
+[64] D. V. Else, S.-J. Huang, A. Prem, and A. Gromov, Phys. Rev.           [99] N. Doll and H. Schulz-Baldes, Advances in Mathematics 392,
+     X 11, 041051 (2021).                                                       108038 (2021).
+[65] C.-B. Hua, Z.-R. Liu, T. Peng, R. Chen, D.-H. Xu, and B. Zhou,       [100] H. Schulz-Baldes and T. Stoiber, Europhysics Letters 136,
+     Phys. Rev. B 104, 155304 (2021).                                           27001 (2021).
+[66] J. Jeon, M. J. Park, and S. Lee, Phys. Rev. B 105, 045146            [101] A. Cerjan and T. A. Loring, Nanophotonics 11, 4765 (2022).
+     (2022).                                                              [102] A. Cerjan and T. A. Loring, Physical Review B 106, 064109
+[67] J. Schirmann, S. Franca, F. Flicker, and A. G. Grushin, Phys.              (2022).
+     Rev. Lett. 132, 086402 (2024).                                       [103] H. Schulz-Baldes and T. Stoiber, Journal of Mathematical
+[68] H. Roche Carrasco, J. Schirmann, A. Mordret, and A. G.                     Physics 64, https://doi.org/10.1063/5.0093983 (2023).
+     Grushin, Phys. Rev. Lett. 135, 236603 (2025).                        [104] A. Cerjan, L. Koekenbier, and H. Schulz-Baldes, Journal of
+[69] W. Caiger, F. Flicker, and M. Ángel Sánchez-Martı́nez, Fractal           Mathematical Physics 64, 10.1063/5.0150995 (2023).
+     topology of majorana bound states in superconducting qua-            [105] S. Franca and A. G. Grushin, Phys. Rev. B 109, 195107 (2024).
+     sicrystals (2026), arXiv:2602.02796 [cond-mat.mes-hall].             [106] A. Cerjan, T. A. Loring, and H. Schulz-Baldes, Phys. Rev. Lett.
+[70] M. Brzezińska, A. M. Cook, and T. Neupert, Phys. Rev. B 98,               132, 073803 (2024).
+     205116 (2018).                                                       [107] A. Cerjan and T. A. Loring, APL Photonics 9 (2024).
+[71] S. Manna and B. Roy, Communications Physics 6,                       [108] N. Doll, T. Loring, and H. Schulz-Baldes, Mathematical
+     10.1038/s42005-023-01130-2 (2023).                                         Physics, Analysis and Geometry 28, 13 (2025).
+[72] D. M. Urwyler, P. M. Lenggenhager, I. Boettcher, R. Thomale,         [109] H. Schulz-Baldes, arXiv preprint arXiv:2403.18948
+     T. Neupert, and T. c. v. Bzdušek, Phys. Rev. Lett. 129, 246402            https://doi.org/10.48550/arXiv.2403.18948 (2024).
+     (2022).                                                              [110] T. Stoiber, A spectral localizer approach to strong topological
+[73] Z.-R. Liu, C.-B. Hua, T. Peng, and B. Zhou, Phys. Rev. B 105,              invariants in the mobility gap regime (2024), arXiv:2410.22214
+     245301 (2022).                                                             [math-ph].
+[74] P. M. Lenggenhager, A. Stegmaier, L. K. Upreti, T. Hofmann,          [111] K. Y. Lee, S. Wong, S. Vaidya, T. A. Loring, and A. Cerjan,
+     T. Helbig, A. Vollhardt, M. Greiter, C. H. Lee, S. Imhof,                  Preprint at https://arxiv.org/abs/2503.03948 (2025).
+     H. Brand, T. Kießling, I. Boettcher, T. Neupert, R. Thomale,         [112] S. Wong, I. Yamazaki, C. Siefert, I. Duff, T. A. Loring, and
+     and T. Bzdušek, Nature Communications 13, 4373 (2022).                    A. Cerjan, Efficient local classification of parity-based material
+[75] A. Kitaev, Ann. Phys. 321, 2 (2006), january Special Issue.                topology (2026), arXiv:2601.13598 [physics.comp-ph].
+[76] R. Bianco and R. Resta, Phys. Rev. B 84, 241106 (2011).              [113] I. C. Fulga, F. Hassler, and A. R. Akhmerov, Physical Review
+[77] A. Marrazzo and R. Resta, Phys. Rev. B 95, 121114 (2017),                  B 85, 165409 (2012).
+     publisher: American Physical Society.                                [114] J. Schirmann, A. G. Grushin, and B. J. Wieder, arXiv e-prints ,
+                                                                                                                                        11
+
+      arXiv:2512.19791 (2025), arXiv:2512.19791 [cond-mat.mes-          [145] L. Gómez Paz, P. d’Ornellas, and A. G. Grushin, Leveraging
+      hall].                                                                  structural disorder to enhance topological phases (2026).
+[115] C. S. Setescak, C. Lewenkopf, and M. Ludewig, Phys. Rev. B        [146] C. W. Groth, M. Wimmer, A. R. Akhmerov, and X. Waintal,
+      111, 104207 (2025).                                                     New Journal of Physics 16, 063065 (2014).
+[116] K.-S. Lin, G. Palumbo, Z. Guo, Y. Hwang, J. Blackburn, D. P.      [147] B. Nijholt, J. Weston, J. Hoofwijk, and A. Akhmerov, Adaptive:
+      Shoemaker, F. Mahmood, Z. Wang, G. A. Fiete, B. J. Wieder,              parallel active learning of mathematical functions (2019).
+      and B. Bradlyn, Nature Communications 15, 550 (2024).             [148] K. D. Ikramov, Computational Mathematics and Mathematical
+[117] R.       Zallen,      The       Physics      of      Amorphous          Physics 52, 1–3 (2012).
+      Solids      (John     Wiley      &     Sons,       Ltd,   1998)   [149] J. K. Asbóth, L. Oroszlány, and A. Pályi, A Short Course
+      https://onlinelibrary.wiley.com/doi/pdf/10.1002/9783527617968.          on Topological Insulators (Springer International Publishing,
+[118] J. C. Slater and G. F. Koster, Physical Review 94, 1498 (1954).         2016).
+[119] R. Roy and Y.-M. Lu, Phase diagram of amorphous quantum
+      spin hall insulators (2025), arXiv:2510.21955 [cond-mat.dis-
+      nn].
+[120] B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, Science 314,
+      1757 (2006).
+[121] Strictly, the Hamiltonian written here is a basis rotation away
+      from the canonical form that the BHZ model is usually written
+      in.
+[122] A. Yamakage, K. Nomura, K.-I. Imura, and Y. Kuramoto, Phys.
+      Rev. B 87, 205141 (2013).
+[123] M. Z. Hasan and C. L. Kane, Reviews of Modern Physics 82,
+      3045 (2010).
+[124] X.-L. Qi and S.-C. Zhang, Rev. Mod. Phys. 83, 1057 (2011).
+[125] L. Fu, C. L. Kane, and E. J. Mele, Phys. Rev. Lett. 98, 106803
+      (2007).
+[126] R. Roy, Phys. Rev. B 79, 195322 (2009).
+[127] C. L. Kane and E. J. Mele, Phys. Rev. Lett. 95, 146802 (2005).
+[128] D. N. Sheng, Z. Y. Weng, L. Sheng, and F. D. M. Haldane,
+      Phys. Rev. Lett. 97, 036808 (2006).
+[129] L. Fu and C. L. Kane, Phys. Rev. B 74, 195312 (2006).
+[130] H. Huang and F. Liu, Physical Review B 98, 125130 (2018).
+[131] D. J. Thouless, Journal of Physics C: Solid State Physics 17,
+      L325 (1984).
+[132] A. A. Soluyanov and D. Vanderbilt, Phys. Rev. B 83, 035108
+      (2011).
+[133] A. Altland, P. W. Brouwer, J. Dieplinger, M. S. Foster,
+      M. Moreno-Gonzalez, and L. Trifunovic, Phys. Rev. X 14,
+      011057 (2024).
+[134] T. Takagi, Japanese journal of mathematics: transactions and
+      abstracts 1, 83–93 (1924).
+[135] This expression is similar to the Chern marker [76], however is
+      well-posed even in periodic boundaries, since the commutator
+      [X, P ] is well-defined even if X itself is not. See Appendix D
+      for elaboration on this subtlety.
+[136] D. Weaire and M. F. Thorpe, Phys. Rev. B 4, 2508 (1971).
+[137] P. W. Anderson, Phys. Rev. 109, 1492 (1958).
+[138] P. Corbae, S. Ciocys, D. Varjas, E. Kennedy, S. Zeltmann,
+      M. Molina-Ruiz, S. M. Griffin, C. Jozwiak, Z. Chen, L.-W.
+      Wang, A. M. Minor, M. Scott, A. G. Grushin, A. Lanzara, and
+      F. Hellman, Nature Materials 22, 200 (2023).
+[139] S. T. Ciocys, Q. Marsal, P. Corbae, D. Varjas, E. Kennedy,
+      M. Scott, F. Hellman, A. G. Grushin, and A. Lanzara, Nature
+      Communications 15, 8141 (2024).
+[140] D. P. Mitchell, SIGGRAPH Comput. Graph. 21, 65–72 (1987).
+[141] D. P. Mitchell, in Proceedings of the 18th Annual Conference on
+      Computer Graphics and Interactive Techniques, SIGGRAPH
+      ’91 (Association for Computing Machinery, New York, NY,
+      USA, 1991) p. 157–164.
+[142] R. Fattal, ACM SIGGRAPH 2011 papers 28, 1 (2011).
+[143] K. Kobayashi, T. Ohtsuki, and K.-I. Imura, Phys. Rev. Lett.
+      110, 236803 (2013).
+[144] S. Bera, J. Dieplinger, and N. P. Nayak, Phys. Rev. B 109,
+      174213 (2024).
+                                                                                                                                             12
+
+
+
+
+FIG. S1. Disordering a square lattice. (a) The initial square lattice.    FIG. S2. The probability distribution generated for moving a single
+(b) Vertices are moved to a new set of positions, chosen randomly. (c)    site (marked red) to a new position on the unit square, xnew . In all
+New bonds are created, where every pair of vertices closer than 1.3r0 ,   three cases, σ = 0.3. (a) With ρ = 0, the probability distribution is a
+with r0 the original lattice spacing, are connected with a bond. The      Gaussian around the original position of the site. (b) With ρ = 0.1,
+distance cut-off is indicated with the dashed circle.                     the probability is highly suppressed around a distance approximately
+                                                                          ∼ 0.1 around each vertex. (c) For large ρ = 0.3, the probability dis-
+                                                                          tribution is strongly shaped by the potential produced by the vertices
+          Appendix A: Generating Amorphous systems                        in the system.
+
+   To transform an ordered square or cubic lattice gradually
+into a disordered one, we perform an operation in three steps.            Now let us modify this potential to prohibit xnew from being too
+First, we discard the edges, and only consider the positions of           close to the other vertices in the system, which sit at positions
+the vertices. Next we introduce a random shift to the positions           xj , with j ∈ 1...N . Thus, we introduce a second term to the
+of each vertex in the system, producing a disordered array                Hamiltonian, which adds an energy penalty in the regions close
+of points. Finally, we construct edges between every pair of              to each xj . We consider an inter-site repulsive interaction,
+vertices that is closer than a threshold value—in practice we                                     H → HHO + HInt ,                         (A4)
+use 1.3 r0 , where r0 is the lattice spacing of the original square
+lattice. This is depicted in Fig. S1.                                     with
+   The only non-trivial part of this procedure is the random
+                                                                                                    Sd X        ρ
+shift applied to each vertex, which is performed vertex-by-                                HInt =                        ,                 (A5)
+vertex, iterating over every site in the point-set. A full iteration                                2π j |xnew − xj |d−1
+involves applying a random shift to every vertex in a random
+order. The probability distribution used is a Gaussian distri-            where ρ is a parameter that controls the strength of this repul-
+bution centered on the original position, however we include              sion, d is the dimensionality of space (d ∈ {2, 3} in this work),
+a modification that disfavours placing a vertex too close to              and Sd is the surface area of a sphere in d dimensions. Thus,
+any other vertices. Additionally, this is done by applying a              we arrive at a new probability distribution of the form
+small shift several times, ensuring that the system is able to                                             1 −HHO −HInt
+find a random configuration independent of the order in which                                 p(xnew ) =     e          .                  (A6)
+                                                                                                           N
+vertices were shifted.
+   Thus, let us explain the procedure for generating the prob-            The resulting probability distribution for three values of ρ is
+ability distribution that is used to sample the new position of           shown in Fig. S2.
+each vertex in the algorithm.                                                This shift is applied nit times, where at each point we find a
+   In order to tune between the square lattice and a uniform              new set of vertices xnew , and then repeat the same process. De-
+distribution of positions we use a Gaussian distribution. Here,           pending on the value of nit , we must also rescale the standard
+starting with a vertex at position x0 , we draw a probability             deviation of the shift, to ensure that repeated translations corre-
+distribution given by,                                                    spond roughly to a single step with standard deviation σ, thus
+                                                                                               √
+                                                                          we use a σeff = σ/ nit , and similarly rescale ρeff = ρ/nit .
+                              1 −|xnew −x0 |2 /2σ2                           The effect of increasing ρ is illustrated in Fig. S3, where we
+                 p(xnew ) =     e                  ,             (A1)
+                              N                                           plot the distribution of connectivity and bond lengths in two
+                                                                          and three dimensions respectively. We see that the effect on
+where σ parametrises the standard deviation of the Gaussian,
+                                                                          the average connectivity is relatively similar with and with-
+and N is a normalisation factor. In analogy with statistical
+                                                                          out repulsion ρ, where at small disorder the average quickly
+mechanics, we may rewrite this in the form of a partition
+                                                                          moves up from 4 (6 in three dimensions) to around 5.5 (8 in
+function (with β = 1) of a classical harmonic oscillator (HO),
+                                                                          three dimensions). The most drastic effect is seen in the bond
+                                    1 −HHO                                distances, where we find that in the case of ρ = 0, where we
+                       p(xnew ) =     e    ,                     (A2)     find that around σ ∼ 0.25r0 , the bond distances can reach
+                                    N
+                                                                          arbitrarily small values. However when repulsion is included
+with a ‘Hamiltonian’ given by                                             we find that at large disorder, there is a minimum distance
+                                              2                           between vertices that is not crossed.
+                                  xnew − x0                                  The effect on the structure factor is shown in Fig. S4, where
+                     HHO = −                .                    (A3)
+                                     2σ 2                                 we plot the structure factor for a set of point-sets generated
+                                                                                                                                          13
+
+                                                                                   Appendix B: Choosing κ for disordered systems
+
+                                                                              Constructing the spectral localizer requires choosing an ap-
+                                                                           propriate value of the parameter κ. As mentioned in the main
+                                                                           text, this coefficient is responsible for weighting the Hamilto-
+                                                                           nian and position operator in the spectral localizer’s spectrum.
+                                                                           From Eq. (5), we can see that for κ → 0, the spectrum of L
+                                                                           simply reduces to that of the Hamiltonian. Instead, if κ is too
+                                                                           large, the spectral localizer only contains information of the
+                                                                           system’s sites. Hence, the size of κ must reflect a balance of
+                                                                           the typical energy and length scales of the system.
+                                                                              Refs. [97, 107, 109, 115] derived bounds for κ. Combined
+                                                                           with numerical benchmarks [107] these point out that the ex-
+                                                                           pression
+FIG. S3. The probability distribution of connectivity (in blue) and
+bond distance (in green) as a function of σ. For bond distances we                                         Egap
+plot the logarithm of the probability. For each case we average over                                  κ≈        ,                       (B1)
+                                                                                                            L
+10 example graphs. In two dimensions (a-d) we start with a 20 × 20
+grid of points. In the three-dimensional case (e-h) we start with a        is typically an optimal choice, where Egap and L corresponds
+10 × 10 × 10 grid. Two cases are shown for each dimensionality, that       to the band gap of the Hamiltonian and the system’s size re-
+of no inter-vertex repulsion (top row) and the case with the repulsion     spectively. A relatively large window of κ values around the
+set to ρ = 3r0 (bottom row).                                               condition in Eq. (B1) typically reproduces well the crystalline
+                                                                           topological phase diagram.
+                                                                              The κ range of suitable values can be visualized through
+                                                                           the computation of the local gap, the smallest eigenvalue of
+                                                                           the spectral localizer in Eq. (6). The local gap serves as a
+                                                                           quantitative measure of the robustness of the topological phase
+                                                                           identified by the spectral localizer [107]. Intuitively, the larger
+                                                                           the local gap, the more resistant the spectral localizer is to a
+                                                                           gap closing—a prerequisite for a phase transition.
+                                                                              Here, we find the optimal choice of κ by approximately
+                                                                           matching the localizer gap closings with the known phase
+                                                                           transitions of the crystalline models we study. We note that a
+                                                                           single choice of κ necessarily introduces an ambiguity in the
+                                                                           position of the phase boundaries. This ambiguity is inherent
+                                                                           to real-space methods to calculate invariants in finite systems.
+FIG. S4. Structure factor for an ensemble of point-sets that are pro-      For example, the local Chern marker [76] requires summing
+gressively disordered starting from a uniform square lattice. With no      over a chosen bulk real-space area. As we approach the phase
+inter-site repulsion, ρ = 0, the distribution is initially hyperuniform,   transition the edge states delocalize into the bulk, and the
+indicated by the region around the origin where the structure factor       chosen area becomes polluted with edge state weight; different
+tends towards zero. As disorder is increased this hyper uniformity
+                                                                           area choices result in different phase boundaries. Similarly,
+disappears as the system becomes closer to a set of uniformly sampled
+points. When sites repel one another, ρ = 3r0 , we find that the system    we now show how different κ result in slightly different phase
+remains hyperuniform up to arbitrarily large disorder.                     boundaries.
+                                                                              In Fig. S5a, we plot the local gap as a function of κ and
+                                                                           energy E for the Bernevig-Hughes-Zhang (BHZ) model in a
+                                                                           topological phase. A distinct bubble structure emerges, sepa-
+starting from a uniform grid of size 20 × 20 and progressively             rating the topological region from the trivial one. Any value of
+disordering the positions of the vertices—the real-space exam-             κ within this bubble correctly diagnoses the topological phase
+ple is shown in Fig. 3. In the case of ρ = 0, we see that the              and yields a large local gap, making it a valid choice for com-
+initial square lattice distribution is initially broken to a distri-       puting the spectral localizer. To identify the most appropriate
+bution whose structure factor falls to zero around the origin,             value, we further evaluate the local gap as a function of the
+indicating a hyperuniform distribution. Here, the fluctuations             onsite disorder W and mass M for two representative values,
+in point density vanish at large length scales. However, as we             κ = 1 and κ = 10, as shown in Fig. S5b-c. By comparing
+increase the standard deviation of the disordering translations,           these results with the phase diagram in [5], we find that κ = 1
+σ, this hyperuniformity shrinks, indicating that the distribution          provides the best agreement, so that we choose this value for
+becomes closer and closer to a true uniform distribution. On               our calculations.
+the other hand, when we disorder the square lattice with a                    The choice of κ remains valid even in the presence of dis-
+strong inter-site repulsion ρ = 3r0 , we form a hyperuniform               order, where Egap is renormalized, since it is effectively con-
+distribution that remains for arbitrarily large σ.                         strained by the local gap, which stays finite up to the topo-
+                                                                                                                                         14
+
+
+
+
+                                                                        FIG. S6. (a) Gap of the localizer from Eq. (9) as a function of κ
+FIG. S5. (a) Gap of the localizer from Eq. (6) as a function of κ and   and energy shift E for the crystalline three-dimensional topological
+energy shift E for the crystalline BHZ model, with A = M = 1, in        insulator, with A = 1, M = 1.5, in logarithmic scale. (b) Local
+logarithmic scale. (b) Local gap as a function of the onsite disorder   gap as a function of the onsite disorder strength W and mass M for
+strength W and mass M for κ = 1. (c) Local gap as a function            κ = 2. (c) Local gap as a function of the onsite disorder strength W
+of the onsite disorder strength W and mass M for κ = 10. The            and mass M for κ = 7. The spectral localizer gap is computed for x
+spectral localizer gap is computed for x at the center of the system    at the center of the system and averaged over 100 realizations.
+and averaged over 100 realizations.
+
+                                                                              1.   A Recap of the Spectral Localizer for Class AII
+
+
+logical transition. At the boundaries of the topological phase,            We start by restating the expression for the spectral localizer
+however, this choice becomes more important, as the mobil-              in two dimensions [79, 104], Eq. (6) in the main text,
+ity gap closes and the spectral localizer approaches a singular                                                
+configuration. As with finite-size effects, discussed above, dis-                                H      X − iY
+                                                                                      L=                           ,                 (C1)
+order will also decrease the ability of local markers to correctly                            X + iY      −H
+diagnose the phase close to phase boundaries.                                            = σx ⊗ X + σy ⊗ Y + σz ⊗ H                    (C2)
+
+  The same procedure is applied to the three-dimensional                where we have absorbed the energy shift E and x and y shifts
+model in Fig. S6, where we find that κ = 2 yields the phase             into the matrices H, X and Y . The index is given by the sign
+diagram most consistent with the known topological phase                of the Pfaffian of L. However, before computing the Pfaffian,
+boundaries in the absence of disorder.                                  we must first rotate L into an antisymmetric form, such that
+                                                                        the Pfaffian is well-defined [79].
+                                                                           Let us consider the symmetries of our system. Firstly, H has
+                                                                        spinful time-reversal symmetry, T̂ = wK, where K is complex
+                                                                        conjugation, and w is a unitary matrix, conventionally w = isy .
+                                                                        For the system to be in class AII, the time reversal operator
+                                                                        must satisfy,
+ Appendix C: The Spectral Localizer Under Arbitrary Unitary
+                         Rotations                                                        T̂ 2 = −1 ⇐⇒ wT = −w.                        (C3)
+
+                                                                        Thus, the Hamiltonian must satisfy,
+   A subtlety emerges when calculating the spectral localizer
+for a system in class AII with added local on-site rotations.                          [T̂ , H] = 0 ⇐⇒ w† Hw = H ∗ ,                   (C4)
+In order to understand this subtlety, we must first consider in
+detail the motivation behind Eq. (7). Once the background is            where ∗ denotes complex conjugation without transposition.
+established, we shall derive the formalism for calculating the            This symmetry is directly inherited by the spectral localizer
+spectral localiser in a rotated basis.                                  L, where the time-reversal symmetry of the Hamiltonian leads
+                                                                                                                                     15
+
+to a particle-hole symmetry (PHS) in the localizer. To construct        a.    Explicitly Calculating the Takagi Factorisation of v
+the operator for PHS, consider
+                                                                      The matrix v satisfies two properties, unitarity (vv † = 1)
+                            Cˆ = vK,                       (C5)    and symmetry (v = v T =⇒ v ∗ = v † ). Thus, we start by
+                       with v = σy ⊗ w,                    (C6)    showing that v admits a real eigenbasis. Consider a general
+                                                                   eigenvector of v, with
+which satisfies                                                                             v |α⟩ = eiα |α⟩ .                    (C15)
+                         {L, C}ˆ = 0,                      (C7)    Taking the conjugate and applying our two conditions we find
+                                                                   that,
+                         with Cˆ2 = +1.                    (C8)
+                                                                                                      ∗              ∗
+                                                                                             v ∗ |α⟩ = e−iα |α⟩ ,                (C16)
+Furthermore, the localizer has neither chiral symmetry Ŝ, nor                                iα      ∗          .
+                                                                                      =⇒ e         |α⟩ = v |α⟩                   (C17)
+time reversal symmetry. To see why, note that they have to
+come together since Ŝ = CˆT̂ , the localizer construction spans   Thus, we find the conjugated eigenstate also has eigenvalue
+all three Pauli matrices, so cannot have sub-lattice symmetry      eiα . We have two possibilities: Either |α⟩ ∈ R, or |α⟩ ∈ C. In
+(unless H started with it). Thus, we see that the system being     the case that |α⟩ is complex, then its conjugate is a degenerate
+in class AII means that the localizer is in class D, with PHS      eigenstate, and so we can construct a new pair of eigenstates,
+that squares to +1.                                                                            1          ∗
+                                                                                        |β⟩ = √ (|α⟩ + |α⟩ ),                    (C18)
+   A useful property of a matrix in class D is that it can al-                                  2
+ways be rotated to a basis in which it is pure imaginary and                                  −i          ∗
+antisymmetric—a necessary condition to compute a Pfaffian.                              |γ⟩ = √ (|α⟩ − |α⟩ ).                    (C19)
+                                                                                                2
+In this basis, the rotated localizer will anti-commute with the
+complex conjugation operator K. Thus, let us propose that          Either way, we find that it is always possible to diagonalise
+there exists a special unitary matrix Q, which rotates us to a     v in a real basis. Therefore, we can construct a real matrix
+‘canonical basis’ in which the localizer is pure imaginary and     S ∈ SO(n), which diagonalises v,
+antisymmetric,                                                                                v = Reiθ RT ,                      (C20)
+                                          †                        Next, we take the unitary square root of v, arriving at the
+                                  LC = Q LQ,               (C9)
+                   such that {LC , K} = 0.                (C10)    correct transformation,
+                                                                                                          θ
+                                                                                             Q = Rei 2 RT ,                      (C21)
+Note that we require Q to have determinant 1, since the sign
+of the Pfaffian can be arbitrarily changed                         which satisfies Eq. (C13), and so must satisfy our conditions
+                                          by rotation with
+a unitary matrix according to Pf QXQ† = det(Q)Pf (X).              Eqs. (C9) and (C10).
+Inserting Eq. (C9) into Eq. (C10), we arrive at the following
+condition for Q,
+                                                                         b.   The Case of Conventional Time Reversal Symmetry
+                             †
+                          {Q LQ, K} = 0                   (C11)
+                                    †                                As a check, let us compare the results of this section with the
+                      =⇒ {L, QKQ } = 0.                   (C12)
+                                                                   pre-existing methods proposed in [79]. For most time-reversal-
+                                                                   symmetric-invariant systems, the form of w is known,
+Thus, comparing to Eq. (C7), for LC to satisfy Eq. (C10) we
+must have QKQ† equal to our original Cˆ operator. Thus the                                         w = isy .                     (C22)
+condition on our rotation Q is that it must satisfy                This means that the PHS operator obeyed by the spectral local-
+                                                                   izer is given by
+                          QQT = v.                        (C13)
+                                                                                             v = iσy ⊗ sy .                      (C23)
+                             T
+To progress, note that v = v , since v = σy ⊗ w, and both σy       This can be easily diagonalised in terms of the eigenvalues
+and w are antisymmetric, see Eq. (C3). Thus, our desired Q         and eigenvectors of σy , which has λ = ±1, with eigenvectors
+corresponds to a Takagi factorisation of the unitary symmetric                                                              
+                                                                   |±y ⟩. Given this, the eigenvalues of v are i i −i −i , and
+v, which is always possible [134, 148]. We provide an explicit     the rotation matrix R is given by the eigenvalues formed by
+algorithm for constructing Q in the next section.                  the four possible outer products of two copies of |±y ⟩, where
+   Thus, we have the guarantee that LC = Q† LQ is pure             we may take advantage of the degeneracy to find a real matrix,
+imaginary and anti-symmetric, allowing us to calculate the
+                                                                                               1     1
+                                                                                                           
+spectral localizer index as,
+                                                                                              1          1
+                                                                                        R=                                 (C24)
+                                                                                               1    −1      
+                  (−1)ν = sign Pf (iLC ) ∈ ±1
+                                        
+                                                          (C14)                                  1       −1
+                                                                                                                                 16
+
+Now, it is straightforward to calculate Q, which is given by       where r denotes site location. This ensures that [U, X] =
+                       π     π      π      π
+                                                                   [U, Y ] = 0. Thus, the localizer is also transformed under this
+       Q = R diag ei 4 ei 4 e−i 4 e−i 4 RT ,             (C25)     change of basis,
+
+which is evaluated as                                                            L → L′ = (σ0 ⊗ U )L(σ0 ⊗ U † ).             (C34)
+                                                                   Let us follow the effect of this transformation step-by-step
+                                 1         −i
+                                                  
+                                                                   through the derivation presented in Section C 1. As before, we
+                                     1 i
+                    Q=
+                                                  
+                                                          (C26)    find that the time reversal operator w is transformed to
+                                     i 1           
+                             −i                1                                            w → w′ = U wU T ,                (C35)
+
+This recovers the exact form of Q given in [79]. This operator     and so the particle-hole operator obeyed by the full spectral
+acts on the combined localiser and spin basis, and so can          localizer is also modified to
+equivalently be expressed in the form,                                            v → v ′ = σy ⊗ U wU T ,                    (C36)
+                                                                                                                     T
+                     Q = 1 + iσ y ⊗ sy .                  (C27)                              = (σ0 ⊗ U )v(σ0 ⊗ U ).          (C37)
+                                                                   Thus, we can calculate the change to the diagonalisation of v,
+                                                                   where the rotation matrix R becomes,
+           2.   Time Reversal Under a Basis Change
+                                                                                              R → R′ = U R,                  (C38)
+  In general, the definition of the time reversal symmetry         and so the final Q operator is modified to
+operator is chosen to be                                                                                   θ
+                                                                                       Q → Q′ = U Rei 2 RT U T .             (C39)
+                           T̂ = iσy K,                    (C28)    As before, this operator is guaranteed to bring the spectral
+                                                                   localizer to canonical form,
+acting on the spin basis. However, this is a basis-dependent
+construction, so it is worth considering what happens when we                                    Q′† L′ Q′ = L′C ,           (C40)
+subject the Hamiltonian to an arbitrary unitary transformation,                             with {L′C , K} = 0.              (C41)
+
+                     H → H ′ = U HU † .                   (C29)
+                                                                                  a.    A Note on the Hadamard Gate
+Considering the effect of the time-reversal operator, we find
+that                                                                 In the paper, we primarily consider the effect of a Hadamard
+                                      †    ′                       gate, as a simple example of a local unitary transformation,
+                  [T̂ , H] = [T̂ , U H U ] = 0
+                                                          (C30)                                  
+                                                                                              1 1 1
+                                                                                                          
+                        =⇒ [U T̂ U † , H ′ ] = 0                                        H= √                .               (C42)
+                                                                                                2 1 −1
+Therefore, we see that the time-reversal operator is modified in   The first thing we need to calculate is the effect of H on the
+this new basis to                                                  time-reversal symmetry operator, given by
+
+                   T̂ → T̂ ′ = U iσy U T K.               (C31)                               Hisy H = −isy .                (C43)
+                                                                   Thus, we see that if the Hadamard gate is applied to all sites in
+Therefore, we find that the form of the time-reversal operator     the system, the form of the time-reversal symmetry operator
+remains unchanged only if the chosen unitary satisfies             changes only by a global sign, and we may continue to use
+                                                                   the conventional form of Q given in Eq. (C26), since global
+                         U σy U T = σy .                  (C32)
+                                                                   phases have no effect here. However, let us consider applying
+                                                                   a Hadamard to a subset of sites in the system,
+
+                                                                                          |r⟩⟨r| ⊗ [ar H + (1 − ar )1] ,
+                                                                                     X
+           3.   The Localizer Under a Basis Change                             U=                                            (C44)
+                                                                                        r
+   Let us now consider the general case, of a system with some     where ar is a random variable ∈ {0, 1} that decides which
+arbitrary choice of time-reversal symmetry operator, T̂ =          sites undergo a Hadamard transformation. If we start with the
+wK, which undergoes some arbitrary unitary transformation          canonical time-reversal symmetry operator, iσy , we find that
+U . Furthermore, we will make the assumption that U acts only      the modified time-reversal symmetry operator will be
+onsite,                                                                                 X
+                          X                                                        w=       |r⟩⟨r| ⊗ (−1)ar iσy ,         (C45)
+                    U=        |r⟩⟨r| ⊗ Ur ,              (C33)                                r
+
+                             r                                     and so Q must be transformed according to Eq. (C39).
+                                                                                                                                   17
+
+Appendix D: The Chern Number, Bott Index and Chern marker            Let us now consider the full projector onto our band
+                       for Class A
+                                                                                                X
+                                                                                          P =       |k⟩⟨k| ⊗ uk ,              (D9)
+  In this Appendix we provide a short background on the Bott                                    k
+index and local Chern marker [75, 76, 80], showing how they
+may be derived from the Chern number and providing a useful        where we have defined uk = |uk ⟩⟨uk | in order to simplify the
+numerical trick for simplifying the calculation of the Chern       following notation. By considering the effect of our momentum
+marker in periodic boundaries.                                     space translation operators, we can show the following identity,
+                                                                                                    X
+                                                                                e−iδX P eiδX =           |k⟩⟨k| ⊗ uk+δx ,     (D10)
+       1.   The Bott Index Calculates the Chern Number                                               k
+
+
+   We start by stating the conventional formalism for the Chern    with a similar result for eiδY .
+number of a single band in a two-dimensional translationally         Now we may construct the Bott index by considering an
+symmetric topological insulator (Class A). Let us make the         operator of the form
+assumption that we are working in a system with L × L unit
+cells, and periodic boundaries—the extension to non-square              U V U † V † = P e−iδX P e−iδY P eiδX P eiδY P.        (D11)
+geometry is straightforward. Translational symmetry allows us
+to decompose the eigenstates forming our chosen band into a        Using Eq. (D10), we show that this operator takes the following
+combination of a plane wave and unit cell part,                    form in momentum space,
+                     |ψk ⟩ = |k⟩ ⊗ |uk ⟩ ,                (D1)                       X
+                                                                      U V U †V † =        |k⟩⟨k| ⊗ uk uk+δx uk+δx +δy uk+δy uk .
+where the unit cell component |uk ⟩ contains all topological                          k
+information, and the plane wave component is defined as                                                                       (D12)
+                          1 X −im·k                                Next, recalling the definition of the Berry phase, Eq. (D5), we
+                  |k⟩ =       e      |m⟩ .              (D2)
+                          L m                                      find that this operator may be written as
+                     
+Here, m = mx , my ∈ Z2 indexes the unit cell, and allowed                                       X                       B
+                                                                               U V U †V † =         |k⟩⟨k| ⊗ uk · rk eiγk .   (D13)
+k values are quantised to
+                                                                                                k
+                          2π           
+                      k=        nx , ny .             (D3)         Thus, we see that each diagonal element of the operator on
+                           L
+                                                                   the right hand side contains exactly the Berry curvature for the
+  The Chern number of this band is given by the sum of the         corresponding point in momentum space. All that remains is to
+Berry curvature across the full Brillouin zone [149],              extract only the sum of Berry curvatures, which is done in two
+                             1 X B                                 steps. First we take the logarithm in order to extract only the
+                      C=             γk ,             (D4)         Berry phase component. The left hand side of Eq. (D13) has
+                            2π
+                                   k                               zeros on the support of all unoccupied states, so a logarithm of
+with the berry phase γB defined according to                       this matrix will diverge. Thus, we add the projector Q = 1 −P
+            B
+                                                                   before taking the logarithm, ensuring the Q component does
+      rk eiγk = ⟨uk |uk+δx ⟩ uk+δx uk+δx +δy                       not contribute,
+                                                          (D5)
+                 · uk+δx +δy uk+δy        uk+δy uk ,                                          X
+                                                                       log U V U † V † + Q =        |ψk ⟩⟨ψk | log rk + iγkB .
+                                                                                                                              
+where r is some real component and the vector δµ is the short-                                      k
+est possible displacement in momentum space in either the kx                                                                  (D14)
+or ky directions,
+                                                                   Finally, we take the imaginary part of the trace, extracting only
+                           δµ = δêµ ,                    (D6)
+                                                                   the sum of the Berry phase over the full Brillouin zone,
+with δ = 2πL and êµ being a unit vector in the x or y direc-
+tion. To construct the Bott index, we must find a real-space                     L2
+                                                                                    Im Tr log U V U † V † + Q ,
+                                                                                                            
+                                                                                B=                                            (D15)
+expression for Eq. (D4). Thus, let us consider the effect of the                 2π
+two operators, eiδX and eiδY , which one can show take the                        1 X B
+                                                                          =⇒ B =        γk = Cloo                             (D16)
+following form in momentum space,                                                2π
+                                                                                           k
+                          X
+                  eiδX =      |k + δx ⟩⟨k| ,               (D7)
+                                                                   Thus, we have shown that in the case of a translationally sym-
+                             k
+                            X                                      metric system with periodic boundaries, the Bott index evalu-
+                   eiδY =        |k + δy ⟩⟨k| .           (D8)     ated at any point in our material always exactly calculates the
+                             k                                     Chern number.
+                                                                                                                                          18
+
+    2.    Equivalence of the Bott Index to the Chern Marker
+
+   The Bott index is numerically extremely expensive to com-
+pute for large matrices as a consequence of the matrix loga-
+rithm. Thus, a useful approximation can be made in the limit of
+L ≫ 1 =⇒ δ ≪ 1 . Consider the following three matrices,
+
+                   Px = e−iδX P eiδX ,                      (D17)
+                          −iδ(X+Y )      iδ(X+Y )
+                  Pxy = e             Pe            ,       (D18)
+                   Py = e−iδY P eiδY .                      (D19)
+
+The Bott index can be conveniently rewritten in terms of these
+three operators as
+
+                   L2
+              B=      Im Tr log [P Px Pxy Py P + Q] .       (D20)
+                   2π
+Next, we can Taylor expand the operator inside the logarithm
+in δ, using the identities
+                                                                     FIG. S7. Finite size scaling of the spectral localizer invariant for the
+                Px = P − iδ[X, P ] + O(δ ),   2
+                                                            (D21)    BHZ model, with M = −2, as a function of the strength of Gaussian
+                                                                     structural disorder, characterized by its standard deviation σ with (a)
+                                                    2
+               Pxy = P − iδ[X + Y, P ] + O(δ ),             (D22)    no inter-vertex repulsion ρ = 0 and b) strong inter-vertex repulsion
+                                              2                      ρ = 3r0 . Finite size scaling of the spectral localizer invariant for the
+                Py = P − iδ[Y, P ] + O(δ ).                 (D23)
+                                                                     three-dimensional model, with M = 2, as a function of the Gaussian
+                                                                     structural disorder strength σ with (a) no inter-vertex repulsion ρ = 0
+Thus, we can expand the term inside the logarithm in Eq. (D20)
+                                                                     and b) strong inter-vertex repulsion ρ = 3r0 . The spectral localizer
+up to second order as,                                               is computed for E, x at the centre of the energy spectrum and the
+                                                                     system, respectively. The scaling parameter κ takes the value 1 for
+ P Px Pxy Py P + Q = 1 − 2δ 2 P [X, P ][Y, P ]P                      the BHZ model while for the three-dimensional topological insulator
+                                                            (D24)
+                            + O(δ 3 ) + (Hermitian terms)            is 2.
+
+where we have used the identity P [O, P ]P = 0 for any op-
+                                                                     this, we may define the periodic ∆jk , defined as the shortest
+erator O, and neglected to write the Hermitian terms which
+                                                                     displacement from rj to rk , taking into account the periodic
+vanish when the imaginary part is taken. Finally, inserting this
+                                                                     boundaries. Assuming the periodic boundaries are defined on
+into Eq. (D20) and using the identity log(1 + x) ≈ x, we may
+                                                                     [0, L) in each axis, we can define ∆jk by simply folding all
+express the Bott index in the form,
+                                                                     displacements back into the interval [−L/2, L/2)
+         B ≈ C = 2πi Tr [P [X, P ][Y, P ]P − h.c.] ,        (D25)                          L                 L
+                                                                                   ∆xjk +    = xj − xk +          mod L,      (D27)
+                                                                                           2                 2
+the exact form of the Chern marker [76].
+                                                                     with a similar definition for ∆yjk . The Chern marker must then
+                                                                     be restated using the following periodic commutators,
+                                                                                                 X
+                        Periodic Boundaries
+                                                                                    [X, P ]PB =      ∆xjk Pjk |rj ⟩⟨rk | ,    (D28)
+                                                                                                    jk
+                                                                                                    X
+   The above quantity is valid in an infinite system, where                           [Y, P ]PB =        ∆yjk Pjk |rj ⟩⟨rk | .        (D29)
+X and Y are well-defined, however a subtlety emerges when                                           jk
+working in periodic boundaries, since both position operators        Thus, we arrive at a restatement of the Chern marker which is
+are discontinuous across the boundary where they jump from           valid in periodic boundaries,
+L back to 0. In order to address this, we can make a small
+modification to our expression. Noticing that the commutators
+are effectively ‘dressing’ the projector with a displacement,                CPB = 2πi Tr (P [X, P ]PB [Y, P ]PB ) + h.c.             (D30)
+                        X
+             [X, P ] =      (xj − xk )Pjk |rj ⟩⟨rk | .   (D26)
+                                                                       Appendix E: Finite-size scaling in the presence of structural
+                         jk
+                                                                                                disorder
+If xj and xk are on opposite sides of the discontinuity where
+real space was ‘stitched’ in periodic boundaries, then the dis-         To ensure that the phase diagrams presented in the main
+placement (xj − xk ) is effectively incorrect. In order to rectify   text are not influenced by finite-size effects, we perform a
+                                                                                                                                   19
+
+finite-size scaling analysis of the spectral localizer invariant for   system sizes (L ≈ 3). This robustness is expected to be weaker
+both the two- and three-dimensional models in Fig. S7. The             at the boundaries of the phase, where the edge states are less
+scaling is evaluated as a function of structural disorder along a      localized and the system’s gap is smaller than at the midpoint.
+one-dimensional cut of the phase diagrams shown in Fig. 4 and
+Fig. 5, with the mass parameter held fixed at the midpoints of            In addition, κ is kept fixed for all system sizes considered.
+the phase boundaries. We do not consider onsite disorder here,         The observed consistency across system sizes demonstrates
+as its effects have already been studied in detail [1–5, 54, 95].      that this choice is robust and well-controlled, in agreement
+   For both models, we find that the invariant converges rapidly       with the discussion in Appendix B, further validating its use
+with L, with finite-size effects only observed for very small          throughout the main text.
+

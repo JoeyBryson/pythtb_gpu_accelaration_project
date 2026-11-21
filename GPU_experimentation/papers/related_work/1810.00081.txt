@@ -1,0 +1,761 @@
+                                                         Theory of spin Bott index for quantum spin Hall states in non-periodic systems
+
+                                                                                                Huaqing Huang1 and Feng Liu1, 2
+                                                                                         1
+                                                                                           Department of Materials Science and Engineering,
+                                                                                       University of Utah, Salt Lake City, Utah 84112, USA
+                                                                           2
+                                                                             Collaborative Innovation Center of Quantum Matter, Beijing 100084, China
+                                                                                                      (Dated: October 2, 2018)
+                                                                   This is a joint publication with the Letter by H. Huang and F. Liu [Phys. Rev. Lett. 121,
+                                                                 126401 (2018)]. In this work, we propose the spin Bott index to identify the quantum spin Hall
+                                                                 (QSH) state in both crystalline and non-periodic systems. The applicability of the spin Bott index is
+arXiv:1810.00081v1 [cond-mat.mes-hall] 28 Sep 2018
+
+
+
+
+                                                                 confirmed by analyzing the periodic and disorder Kane-Mele models. As an example of non-periodic
+                                                                 systems, we systematically investigate the QSH effect in a Penrose-type quasicrystal lattice (QL).
+                                                                 We characterized the nontrivial electronic topology of the QL by directly calculating the spin Bott
+                                                                 index. In addition, the topological edge states, the localization of wavefunctions and quantized
+                                                                 transport signatures are also studied in detail.
+
+
+                                                                     I.   INTRODUCTION                               based on previous works on Bott index27–29 and spin
+                                                                                                                     Chern number8–10,25,26 . The equivalence of the spin Bott
+                                                                                                                     index and the Z2 invariant is checked using the Kane-
+                                                        Since the discovery of Z2 topological insulators by          Mele model. To test the applicability and effectiveness
+                                                     Kane and Mele,1,2 several methods have been proposed            of our numerical algorithm, we further study the topolog-
+                                                     to calculate the Z2 index. In particular, for systems with      ical Anderson insulator state in the disorder Kane-Mele
+                                                     inversion symmetry, Fu and Kane simplify the calcula-           model. As an example, we systematically investigate the
+                                                     tion of Z2 by considering the parity of occupied states at      QSH effect in a Penrose-type QL. The QSH state is di-
+                                                     time-reversal invariant points in the Brillouin zone.3 For      rectly determined by calculating the spin Bott index. In
+                                                     general time-reversal-invariant systems, they also derive       addition, we study the topological edge states, the local-
+                                                     an efficient formula for the Z2 index which is expressed        ization of wavefunctions and transport properties which
+                                                     as an integral involving the Berry connection and Berry         further confirm the nontrivial topological character of the
+                                                     curvature.4,5 Soluyanov et al. and Yu et al. develop an         QL.
+                                                     effective method to determine Z2 index based on the evo-
+                                                                                                                        This paper is organized as follows. In Sec. II, we derive
+                                                     lution of hybrid Wannier charge centers.6,7 In addition,
+                                                                                                                     the general properties of spin Bott index. In Sec. III, we
+                                                     a spin Chern number was also suggested to characterize
+                                                                                                                     introduce the details of the model that will be used for
+                                                     the Z2 topological order.8–10 However, all these methods
+                                                                                                                     illustrative calculations of QLs. The numerical results
+                                                     are only applicable for periodic systems. For non-periodic
+                                                                                                                     and discussion of QSH effect in QLs are presented in
+                                                     systems, an effective numerical determination of Z2 index
+                                                                                                                     Sec. IV, and we end with a summary in Sec. V.
+                                                     is more challenging. So far, several numerical methods
+                                                     have been proposed for non-periodic systems. For exam-
+                                                     ple, Kane and Mele propose to determine the Z2 index by
+                                                     a certain Pfaffian with twisted boundary condition.1,11–13         II.   BOTT INDEX AND SPIN BOTT INDEX
+                                                     Another method is based on scattering matrix theory,
+                                                     in which the Z2 index is defined by the scattering ma-
+                                                                                                                        In this section, we first present the calculation details
+                                                     trices at the Fermi level without the knowledge of the
+                                                                                                                     about the Bott index and the spin Bott index we pro-
+                                                     full spectrum.14–16 Ringel and Kraus provided an algo-
+                                                                                                                     posed (Sec. II A). Then we use the Haldane model as an
+                                                     rithm for determining the Z2 index, which can be ex-
+                                                                                                                     example to illustrate the relationship between the Bott
+                                                     tracted from a local equal time ground-state correlation
+                                                                                                                     index and the Chern number in Sec. II B. Next, we use
+                                                     function.17 Loring and Hastings extended the definition
+                                                                                                                     the Kane-Mele model to illustrate the equivalence of the
+                                                     of Z2 index as the Kitaev’s Z/2 index based on the the-
+                                                                                                                     spin Bott index and the Z2 invariant in Sec. II C. Finally,
+                                                     ory of almost commuting matrices.18–20 Loring further
+                                                                                                                     we calculate the spin Bott index of our model in a disor-
+                                                     derives formulas and algorithms for Kitaev’s invariants
+                                                                                                                     dered lattice in Sec. II D, demonstrating the applicability
+                                                     of different classes in the periodic table for topological
+                                                                                                                     of spin Bott index to non-periodic systems.
+                                                     insulators and superconductors21–23 for finite disordered
+                                                     systems on lattices with boundaries.24 Meanwhile, the
+                                                     concept of spin Chern number is also extended to dis-
+                                                     ordered system based on the non-commutative theory of                           A.   Method of calculation
+                                                     Chern number.25,26
+                                                       In this work, we define an alternative topological in-          The method of calculating the Bott index has already
+                                                     variant, i.e., the spin Bott index, to determine the QSH        been explained in the literature.18,19,24,30,31 Firstly, one
+                                                     state in both periodic and non-periodic systems. It is          constructs the projector operator of the occupied states
+                                                                                                                            2
+
+
+
+
+FIG. 1.     (a) Topological phase transition in the Haldane model. The parameters are t = −1 and t2 = 0.15e−iπ/3 . (b)
+Topological phase transition in the Kane-Mele model. The parameters are t = 1, λSO = 0.3 and λR = 0.25. The Bott B (spin
+Bott Bs ) index is consistent with the Chern number (Z2 invariant) except around the phase transition point. This is because
+we use a relatively small supercell to calculate the Bott index. The small divergence would disappear if a larger supercell is
+used in the calculation of (spin) Bott index. The calculated (spin) Bott index with SVD shows a better performance than the
+one without SVD.
+
+
+below a given gap                                                nonzero values ± ~2 . For systems without spin conserva-
+                                                                 tion (for example, the Kane-Mele model with nonzero
+                           N
+                           X occ
+                                                                 Rashba terms which will be discussed later), the ŝz and
+                     P =           |ψi ihψi |,           (1)     H no longer commute. The spectrum of Pz spreads to-
+                             i                                   ward zero. However, as long as the spin mixing term is
+where |ψi i is the wavefunction of the i-th state with           not too strong, the eigenvalues of Pz remain two isolated
+eigenvalue i . Next, one calculates the projected posi-         groups which are separated by zero. Since the rank of Pz
+tion operators,                                                  is Nocc , the number of positive eigenvalues equals to the
+                                                                 number of negative eigenvalues, which is one half of Nocc .
+                      U = P ei2πX P,                     (2)     The corresponding eigenvalue problem can be denoted as
+                      V = P ei2πY P,                     (3)
+                                                                                   Pz | ± φi i = S± | ± φi i.             (6)
+where X and Y are the rescaled coordinates which are
+defined in the interval [0, 1). The Bott index, which            In this way one can construct new projector operators,
+measures the commutativity of the projected position
+                                                                                         Nocc /2
+operators,27–29,32 is given by,                                                           X
+                                                                                  P± =             | ± φi ih±φi |,        (7)
+                 1                                                                          i
+             B=    Im{tr[log(V U V † U † )]}.            (4)
+                2π
+                                                                 which satisfy P = P+ ⊕ P− , and projected position op-
+The Bott index is proved to be equivalent to Chen                erators
+number.33 Therefore it serves as a topological invariant
+to distinguish topological nontrivial from trivial states.                     U± = P± ei2πX P± + (I − P± ),              (8)
+  Given the method of calculating the Bott index, now                          V± = P± ei2πY P± + (I − P± ),              (9)
+we give a general construction of the spin Bott index.
+One begins by introducing a projected spin operator              for two spin sectors, respectively.
+                                                                    It is noted that the complementary projectors Q± =
+                        Pz = P ŝz P,                    (5)     1 − P± are added into the definition of projected po-
+                                                                 sition operators,34 which does not change the final re-
+where ŝz = ~2 σz is the spin operator (σz is the Pauli ma-      sults but makes the numerical algorithm more stable.
+trix). For a spin conserving model, ŝz commutes with            The Bott index measures the commutativity of a pair of
+the Hamiltonian H and Pz , the Hamiltonian as well as            almost commuting and almost unitary matrices, which
+eigenvectors can be divided into spin-up and spin-down           can distinguish the pairs of commuting matrices close
+sectors. Thus, the eigenvalues of Pz consist of just two         to commuting pairs from those are far from commuting
+                                                                                                                          3
+
+pairs.18,20,29 Adding the complementary projectors Q±          hopping term, which carries a phase factor. The last term
+into Eq. (8) and Eq. (9) makes the position operator           is a staggered sublattice potential (where ξi = ±1). The
+close to a unitary matrix, which is useful in numerical        system undergoes a transition from the Chern-insulator
+calculations. For a better convergency of the numerical        to the normal-insulator phase when tuning the staggered
+                                  † †
+algorithm, the product U± V± U±     V± should be unitary.      potential (∆) in the last term.
+                          † †
+Therefore, det(U± V± U± V± ) = 1 and the spectrum of              As shown in Fig. 1(a), with the increasing ∆, the Chern
+              † †                                              insulator phase with C = 1 becomes a normal insulator
+log(U± V± U±   V± ) is purely imaginary, then the Bott in-
+                                                               with C = 0. The calculated Bott index shows similar be-
+dex is a real integer.33 To further increasing the stability
+                                                               havior, except for a small discrepancy around the phase
+of the numerical algorithm, one performs a singular value
+                                                               transition point. According to Ref. 33, the difference
+decomposition (SVD) M = ZΣW † for the projected po-
+                                                               between the Chern number and Bott index is within a
+sition operators U± and V± , where Z and W are unitary
+                                                               correction of the order O(1/L), where L is the system
+and Σ is real and diagonal. Then one can identify the
+                                                               size. Because the energy gap reduces to zero and the
+“unitary part” M̃ = ZW † as the new projected position
+                                                               correlation length increases dramatically near the phase
+operators which are unitary now. Mathematically, the
+                                                               transition point, it requires a larger sample size to reach
+SVD process is equivalent to a scaling transformation
+                                                               a high accuracy of the Bott-index calculation. There-
+which does not change the commutativity of two pro-
+                                                               fore, finite size effect induces a small divergence between
+jected position operators. Therefore, applying SVD does
+                                                               the Chern number and Bott index. However, one can
+not obscure an actual breakdown of the original formal-
+                                                               still easily distinguish topological nontrivial from trivial
+ism, but effectively improves the convergence and stabil-
+                                                               states as the divergence is quite small. Furthermore, by
+ity of the numerical algorithm, as shown later (see Fig. 1).
+                                                               increasing the sample size, one can get a more accurate
+   The Bott indices for two spin sectors are now given
+                                                               Bott index even around the phase transition point. Com-
+by27–29,32
+                                                               paring the Bott index calculated with and without SVD,
+                   1                                           it is clear that the Bott index calculated without SVD
+           B± =      Im{tr[log(Ṽ± Ũ± Ṽ±† Ũ±
+                                              †
+                                                )]}.   (10)    departs from the exact value of the topological invariant,
+                  2π
+                                                               even when the system is away from the phase transition.
+Finally, we define the spin Bott index as the half differ-     Moreover, with the increasing sample size, the method
+ence between the Bott indices for the two spin sectors         with SVD converges faster than the one without SVD,
+                          1                                    to the exact value of the topological invariant. This indi-
+                   Bs =     (B+ − B− ).                (11)    cates that applying the SVD does not destroy the original
+                          2
+                                                               formalism, but indeed improves the convergence and sta-
+Similar to the spin Chern number,8–10,25,26 the spin Bott      bility of the numerical algorithm.
+index is a well-defined topological invariant. The spin
+Bott index is also directly related to the Z2 topological
+invariant. Its robustness is due to the existence of two        C.    Relationship between spin Bott index and Z2
+spectral gaps: the insulating gap of the Hamiltonian and                             invariant
+the spectral gap of the projected spin operator Pz . As
+long as the two gaps persist, the computational formal-           To check the relationship between the spin Bott index
+ism of the spin Bott index can be applied. The spin Bott       and Z2 index, we adopt the Kane-Mele model1,2 as an
+index is applicable to quasiperiodic and non-periodic sys-     example. The Kane-Mele Hamiltonian on a graphene
+tems, which provides especially a useful tool to determine     lattice is given by
+the electronic topology of those systems without period-                        X †
+                                                                                                   νij c†i sz cj
+                                                                                                X
+icity.                                                                HKM = t      ci cj + iλSO
+                                                                               hiji             hhijii
+                                                                                 X †                      X †
+  B.   Relationship between Bott index and Chern                           + iλR  ci (s × d̂ij )z cj + λv  ξi ci ci . (13)
+                      number                                                      hiji                      i
+
+                                                               The first term is a NN hopping term on the honey-
+   To illustrate the equivalency of the Bott index and the     comb lattice, where we have suppressed the spin index
+Chern number, we use the Haldane model35,36 as an ex-          on the electron operators. The second term is the mir-
+ample. The Haldane model exhibits a nonzero quantiza-          ror symmetric spin-orbit coupling (SOC) term which in-
+tion of the Hall conductance in the absence of an external     volves spin dependent second NN hopping. Here νij =
+magnetic field. The Hamiltonian is written as                  √2 (d̂1 × d̂2 ), where d̂1 and d̂2 are unit vectors along the
+           X †                                                   3
+                             νij c†i cj + ∆
+                          X                 X †
+    H=t        ci cj + t2                    ξi ci ci . (12)   two bonds that the electron traverses going from site j
+          hiji          hhijii               i                 to i. sz is a Pauli matrix describing the electron spin.
+                                                               The third term is a NN Rashba term, which explicitly
+The first term is a nearest-neighbor (NN) hopping term         violates the Mz mirror symmetry. This term will arise
+on the honeycomb lattice. The second term is a next-NN         from a perpendicular electric field or interaction with
+                                                                                                                               4
+
+
+
+
+FIG. 2. Calculation of Kane-Mele model. The left panel (I) Kane-Mele model with a nontrivial QSH phase. The parameters
+are t = 1, λSO = 0.3, λR = 0.25 and λv = 1.0. The right panel (II) Kane-Mele model with a nontrivial QSH phase. The
+parameters are t = 1, λSO = 0.3, λR = 0.25 and λv = 2.5. In each panel we show (a,e) the band structure of unit cell; (b,f)
+energy eigenvalues versus state index of supercell sample with periodic boundary condition or open boundary condition; (c,g)
+evolution of the Wannier charge center X(ky ) along 0 ⩽ ky ⩽ π (Red points mark the midpoint of the largest gap); (d,h)
+eigenvalues of P sz P (in units of ~) versus state index.
+
+
+a substrate. The fourth term is a staggered sublattice          Pz = P ŝz P are separated into three groups for both triv-
+potential (ξi = ±1), which can be included to describe          ial and nontrivial cases as shown in Fig. 2(d) and 2(h).
+the transition between a QSH phase and a normal insu-           In the spectrum of Pz , Nocc /2 eigenvalues are positive,
+lator. This term violates the symmetry under twofold            Nocc /2 eigenvalues are negative and the rest are zero. It is
+rotations in the plane. By tuning the staggered sublat-         noted that the negative (positive) branch of the spectrum
+tice potential (λv ) in the last term, one can realize the      is not a straight line at − 21 ( 12 ) but slightly increases with
+transition between a topologically nontrivial QSH phase         the state index. This is because the nonzero Rashba term
+and a trivial insulator, as shown in Fig. 1(b). We cal-         in the Kane-Mele model mix the spin up and spin down
+culate the Z2 invariant by directly tracing the evolution       states breaking down the ŝz conservation. The calculated
+of one-dimensional (1D) hybrid Wannier charge centers           spin Bott index are 0.9957 ≈ 1 and 2.1581 × 10−5 ≈ 0
+(WCCs)37 during a “time-reversal pumping” process.6             for the QSH phase and the trivial insulator, respectively.
+By increasing λv , the QSH insulator with Z2 = 1 is driven      These results indicate that our proposed method is in
+to a trivial insulator with Z2 = 0. The calculated spin         good agreement with the Z2 topological invariant.
+Bott index Bs is consistent with the Z2 invariant. The
+                                                                  It is known that the presence of nontrivial Z2 invari-
+small divergence between the Z2 invariant and Bs around
+                                                                ant corresponds to the existence of topological protected
+the phase transition point is induced by the finite size of
+                                                                boundary states in a system with open boundary con-
+the sample, which is similar to that between the Chern
+                                                                dition (OBC).
+                                                                        √       The finite sample is simulated using a
+number and the Bott index. Also, the spin Bott index
+calculated with SVD shows a better performance than             10 × 10 3 supercell with both PBC and OBC. The sam-
+the one without SVD, similar to the case of the Bott            ple contains 400 atoms, which is large enough to show the
+index.                                                          existence of topological edge state. As shown in Fig. 2(b),
+                                                                the edge states are in the gapped region of the PBC cal-
+   In Fig. 2, we give two specific examples of the Kane-        culation which corresponds to the bulk gap.
+Mele model in different phases. The calculated Z2 invari-          To check the robust applicability of the spin Bott in-
+ant are 1 and 0 for the QSH phase (λv = 1.0) and the            dex, we also studied the evolution of both the Z2 invari-
+trivial insulator (λv = 2.5), respectively.
+                                      √     We calculated       ant and the spin Bott index with the increasing Rashba
+the spin Bott index using a 10 × 10 3 lattice with the          term in Eq. (13) which violates the spin conservation. It
+same Hamiltonian and under periodic boundary condi-             is known that the spin up and down channels are mixed
+tion (PBC). The spectra of the projected spin operator          and a phase transition from a QSH to a normal insula-
+                                                                                                                           5
+
+
+
+
+                                                                FIG. 4.      The spin Bott index as a function of disorder
+FIG. 3.      Topological phase transition in the Kane-Mele      strength W in the disorder Kane-Mele model. The param-
+model. The parameters are t = 1, λv = 0.1t, λSO = 0.06t.1       eters are t = 1, λv = 1.65t, λSO = 0.3t and λR = 0.38 For
+(a) The Z2 invariant and spin Bott index Bs versus λR /λSO .    each W , 10 samples with 1600 atoms are used to calculate the
+The inset shows the (b) band structure and (c) eigenvalues of   spin Bott index. A disorder-induced topological phase tran-
+Pz (in units of ~) upon phase transition with λR /λSO = 2.86,   sition occurs around W = 1.0t. This is consistent with the
+where both the band gap of the Hamiltonian and the spectral     conductance calculation in previous work.38
+gap of Pz almost vanish.
+
+                                                                where W is the disorder strength and i is a uniformly
+                                                        1       distributed random variables in [−1, 1).38 This model
+tor can be induced by increasing the Rashba term. As
+                                                                is used to study the topological Anderson insulator
+shown in Fig. 3, the spin Bott index is consistent with the
+                                                                phenomena,39–41 in which a disorder-induced transition
+Z2 invariant with a tiny error in most cases. The negligi-
+                                                                into a phase of quantized conductance occurs.
+ble discrepancy occurs only around the phase transition
+                                                                   As shown in Fig. 4, a disorder-induced topological
+point where λR /λSO ≈ 3. This is because both the en-
+                                                                phase transition occurs around W = 1.0t, which is con-
+ergy gap of the Hamiltonian and the spectral gap of Pz
+                                                                sistent with the conductance calculations in previous
+almost vanish around the phase boundary (see insets of
+                                                                works.38 The calculation of spin Bott index is performed
+Fig 3), then the computational formalism of spin Bott
+                                                                in samples with 1600 atoms, and 10 samples are simu-
+index is no longer applicable. It is also worth noting
+                                                                lated for every W . A higher accuracy can be achieved
+that the spin Bott index agree well with the Z2 invariant
+                                                                by adopting samples with larger size and doing the sta-
+even around the phase transition induced by λv as shown
+                                                                tistical average for more samples. Our results confirm
+in Fig. 1(b). Because only the energy gap vanishes, the
+                                                                the topological Anderson insulator phase in the disorder
+spectral gap of Pz persists around the phase transition
+                                                                Kane-Mele model, indicating that the spin Bott index is
+point induced by λv . Therefore, the applicability of the
+                                                                applicable to disordered systems.
+spin Bott index is robust against spin-mixing perturba-
+tions (sz -nonconserving terms), which is guaranteed by
+the coexistence of the energy gap and the Pz spectral
+                                                                     III.   THE MODEL OF QUASICRYSTAL
+gap.                                                                              LATTICES
+
+                                                                   Next, we study the QSH state in QLs.42 Although
+  D.   Application of spin Bott index in disordered             a few models of Chern insulators have been studied in
+                       lattices                                 QLs,31,43,44 the QSH state in QLs is rarely investigated.
+                                                                To construct the QL, we arrange the lattice sites ac-
+   To further investigate the applicability and effec-          cording to the Penrose tiling consisting of two types of
+tiveness of our formulation of the spin Bott index in           rhombuses (thin and fat).45 Because in the Penrose tiling
+non-periodic systems, we study the disorder Kane-Mele           the thin and fat rhombuses tile the 2D plane completely
+model, namely, the Eq. (13) with an additional on-site          in an aperiodic way, the QL possesses long-range posi-
+Anderson disorder term:                                         tional order but lacks the periodicity. Therefore, one
+                                 X †                            cannot use the unit-cell simulation, Brillouin zone, and
+            Hdisorder = HKM + W     i ci ci ,   (14)           Bloch theorem as for the crystal calculations. However,
+                                      i                         it is still possible to generate a series of periodic lattice
+                                                                                                                                6
+
+                                                                     model is written as
+
+                                                                                     tss = Vssσ ,                            (17)
+                                                                                    tspx = lVspσ ,                           (18)
+                                                                                    tspy = mVspσ ,                           (19)
+                                                                                 tpx px = l2 Vppσ + (1 − l2 )Vppπ ,          (20)
+                                                                                            2                2
+                                                                                 tpy py = m Vppσ + (1 − m )Vppπ ,            (21)
+                                                                                 tpx py = lm(Vppσ − Vppπ ),                  (22)
+
+                                                                     where Vαβγ = Vαβγ (dij ) is the γ(= σ, π) bonding param-
+                                                                     eter between α(= s, px , py ) orbital at the i -th site and
+                                                                     β(= s, px , py ) at j -th site. The distance dependence of
+                                                                     the bonding parameters Vαβγ is captured approximately
+                                                                     by the Harrison relation:49
+
+                                                                                                           d2
+FIG. 5.    Penrose tiling containing 521 vertices. The red                             Vαβγ (dij ) = Vαβγ,0 20 .             (23)
+                                                                                                           dij
+dashed line defines a unit cell under periodic approximation.
+The inset shows the atomic orbitals placed on vertices of
+rhombuses and the first three NN hopping between them.               where d0 is a scaling factor to uniformly tune the bonding
+                                                                     strengths. Since only the band inversion between s and p
+                                                                     states of different parities is important for the realization
+with growing number of atoms that approximate the in-                of topological states, we focus mainly on 2/3 filling of
+finite quasicrystalline lattice in a systematic way, which           electron states hereafter, unless otherwise specified.
+is called the quasicrystal tiling approximants.31,46–48 In
+our model, atomic orbitals are located in the vertices of
+                                                                              IV.     RESULTS AND DISCUSSION
+the Penrose tiling to form a QL, as shown in Fig. 5. We
+only consider the first three NN hoppings which are the
+short diagonal of a thin rhombus, the edge of a rhom-                   In this section, we present the QSH state in QLs. We
+bus and the short diagonal of a fat rhombus [see inset of            firstly calculate the spin Bott index to identify the non-
+Fig. 5]. If we take the edge length of rhombuses as the              trivial topological nature of the QSH state in Sec. IV A.
+unit of length, then the proportion of the three distances           Then we show the electronic properties of QSH state
+are: r0 : r1 : r2 = 2 cos 2π              π
+                            5 : 1 : 2 sin 5 , respectively.
+                                                                     in QLs including the topological edge states and typ-
+   We consider a general atomic-basis model for QLs with             ical bulk wavefunction distributions in Sec. IV B and
+three orbitals (s, px , py ) per site. The Hamiltonian is            Sec. IV C. Next, we study the phase transition of the
+given by                                                             QL and the size effect of quasicrystal approximants in
+                                                                     Sec. IV D. The localization of the wavefunction is il-
+                     α c†iα ciα +           tiα,jβ c†iα cjβ         lustrated by the participation ratio in Sec. IV E. Fi-
+                  X                   X
+         HQL =
+                 iα                  <iα,jβ>
+                                                                     nally, we perform transport simulation of the QL based
+                                                                     on non-equilibrium Green’s function (NEGF) method in
+                          (c†ipy σz cipx − c†ipx σz cipy ),
+                     X
+              + iλ                                            (15)   Sec. IV F.
+                      i
+
+
+where c†iα = (c†iα↑ , c†iα↓ ) and ciα = (ciα↑ , ciα↓ )T are                      A.    Spin Bott index of the QL
+electron creation and annihilation operators on the α(=
+s, px , py ) orbital at the i-th site. α is the on-site energy         Figure 6(a) shows the energy eigenvalues of the QL
+of the α orbital. The second term is the hopping term                with PBC and OBC, respectively. In the presence of
+where tiα,jβ = tα,β (dij ) is the hopping integral which             PBC, the system clearly shows an energy gap; i.e, it is
+depends on the orbital type (α, β = s, px , py) and the              an insulator. For the OBC system, there is a set of energy
+vector dij between sites i and j. λ is the SOC strength              eigenvalues in the mid-gap region, implying the nontriv-
+and σz is the Pauli matrix. In our model, the hopping                ial electronic topology of the system. To determine the
+integral tiα,jβ = tαβ (dij ) is given by the Slater-Koster           topological nature, we calculated the spin Bott index of
+parametrization                                                      the QL with 1364 atoms. The spectrum of the projected
+                                                                     spin operator Pz is displayed in Fig. 6(b). The eigen-
+               tα,β (dij ) = SK[Vαβ (dij ), d̂ij ],           (16)   values are − ~2 , 0, and ~2 , respectively. The calculated
+                                                                     spin Bott index is Bs = 0.9974 ≈ 1, confirming that
+where d̂ij = (l, m) is the unit direction vector. In partic-         the system is a QSH insulator. The nontrivial electronic
+ular, the formula of SK[·] for the s, px , py orbitals in our        topology of the bulk spectrum of the QL also indicates
+                                                                                                                             7
+
+
+
+
+FIG. 6.    Calculation of a QL with 1364 atoms. The pa-
+rameters used here are s = 1.8, p = −6.5, λ = 0.8, Vssσ =
+−0.4, Vspσ = 0.9, Vppσ = 1.8 and Vppπ = 0.05 eV. (a) Energy
+eigenvalues En versus the state index n. The inset shows the
+spectrum around the Fermi level. The system with periodic      FIG. 7. Topological edge states on (a) decagon-shape and
+boundary condition (PBC) shows a gap of Eg = 0.45 eV,          (b) pentagram-shape QLs with 1211 and 1961 atoms, respec-
+while that with open boundary condition (OBC) shows mid-       tively. The computational parameters are the same as those
+gap states. (b) Eigenvalues of P sz P (in units of ~) versus   in Fig. 6. The size and the color of the blob indicate the norm
+state index for the QL.                                        |ρ(r)|2 and phase φ(r) of the wavefunction |ψ(r)i = ρ(r)eiφ(r) ,
+                                                               respectively.
+
+the existence of topological edge states on the boundary
+of finite QL samples.42                                        shapes, respectively. As shown in Fig. 7, the topological
+                                                               edge states are localized at the boundary of these systems
+                                                               regardless of the detailed shapes of the QL samples, in-
+B.    Topological edge states at different boundaries          dicating that the topological edge states are robust.
+
+  Due to the bulk-edge correspondence, topological edge
+states are expected to appear on the boundary of QSH                    C.    Typical wavefunctions of the QL
+insulators. Indeed, it is found that the mid-gap states
+are topological edge states which are localized on the           Contrary to the extended topological edge state, the
+perimeter of finite QLs with OBC.42 To verify the ro-          typical bulk states of QLs show localized or critical char-
+bustness of the topological edge states in QLs, we studied     acteristics of quasicrystals. To verify these particular
+the real-space distributions of wavefunctions for the mid-     bulk behaviors of QLs, we calculated typical electronic
+gap states in QL samples with decagon and pentagram            states of quasicrystal approximants with PBC. Figure 8
+                                                                                                                         8
+
+
+
+
+FIG. 8. The wavefunction distribution of the occupied state maximum (OSM), unoccupied state minimum (USM) and states
+above USM of the QSH insulator phase of the QL with periodic boundary condition. The computational parameters are the
+same as those in Fig. 6.
+
+
+shows the wavefunctions around the energy gap of the            such as self-similarity, power-law decay and gap label-
+QL in the QSH phase.                                            ing, have been studied in great detail in the past.48,56–63
+   In the QL we studied, the basic building blocks of           These singular electronic properties of critical wavefunc-
+wavefunctions are dimer or trimer states located on sites       tions that originate from the QL structure suggest a poor
+with the shortest distance (r0 , the shortest diagonal of       conductive behavior in the electronic transport proper-
+a thin rhombus in the Penrose tiling)50 . Some build-           ties of quasicrystals.64
+ing blocks form confined states or strictly localized states
+which are referred to as Kohmoto-Sutherland ring state51
+or Ruby state52 [see Fig. 8(a)]. Besides, several other             D.    Size effect of quasicrystal approximants
+states called string states, which are self-similar and frac-
+tal, can also be formed in Penrose QLs.53–55 Due to the            In general, the spectrum and localization of electronic
+Conway’s theorem of Penrose tiling,45 i.e., a finite-size       states of QLs can be strongly affected by the interac-
+pattern of diameter d is never more than 2d away from           tion strength between atomic sites. We found that a
+an exactly identical pattern, these states repeat regu-         phase transition among normal insulator (NI), QSH in-
+larly in the whole QL, which eventually compose the             sulator and weak metal (WM) can be realized by increas-
+critical wavefunction that is neither extended nor local-       ing the bonding strength uniformly.42 We further checked
+ized. Many unique properties of these critical states,          the size effect of periodic approximation by calculating
+                                                                                                                         9
+
+
+
+
+FIG. 9. Energy gap Eg as a function of interaction strength scale d0 calculated in quasicrystal approximant containing (a)
+199, (b) 512, (c) 1364, and (d) 3571 atoms. The phase transitions among NI, QSH state and metal occurs in all approximants
+with different sizes. The dark blue line in the QSH region represents the defect mode in the energy gap.
+
+
+the phase diagram of a sequence of quasicrystal approx-        ratio takes the value 1/N if the wavefunction is localized
+imants with increasing cell size.46–48 As shown in Fig. 9,     in a single orbital and unity if the wavefunction is ex-
+similar phase transition among NI, QSH state and WM            tended uniformly over the whole system. It is verified
+phase occurs in all quasicrystal approximants. This im-        that this measure is correlated with the energy transport
+plies that the topological phase transition as well as the     in the system.65 We calculated the participation ratio γn
+QSH effect should appear in QLs in the thermodynamic           for all three phases of the QL. As shown in Fig. 10(a)-
+limit of infinite lattice size.                                10(c), wavefunctions of different phases show relatively
+                                                               small values (less than 0.25 mostly). These are much
+                                                               smaller than those of extended states in periodic crystals
+                E.   Participation ratio                       [Fig. 10(d)], indicating that the wavefunctions of QLs are
+                                                               relatively localized. This is consistent with the fact that
+   The conductive behaviors of QLs depend on the local-        there are many critical states with power-law decay. The
+ization of wavefunction around the Fermi level. In order       low participation ratio γn of the gapless phase also sug-
+to quantify the degree of localization of wavefunctions,       gests a weak metallic behavior in electronic transport, as
+we calculate the participation ratio defined by:               discussed later.
+                          PN                                     Although most wavefunctions in QLs are not extended,
+                         ( i |ψni |2 )2                        the localization of states in QLs is different from the sit-
+                  γn =      PN          ,           (24)
+                         N i |ψni |4                           uation of Anderson localization induced by disorder. In
+                                                               the Anderson model, the strongest localized states ap-
+where the wavefunction |ψn i is expended as |ψn i =            pear at the edges of the mobility gap, while the least
+PN i
+  i ψn |ii on atomic orbital basis {|ii}. The participation    localized states with relatively high γn occur near the
+                                                                                                                        10
+
+
+
+
+FIG. 10. Participation ratio γn of QLs at (a) normal insulator (d0 = 0.86),(b) QSH insulator (d0 = 0.95) and (c) weak metal
+phases (d0 = 1.34). (d) Participation ratio γn of a periodic trigonal lattice.
+
+
+                                                                     F.   Transport simulation based on NEGF
+
+                                                                   Although the above analysis of electronic properties
+                                                                already confirmed the QSH state in the QL, to obtain
+                                                                more details of experimentally measurable quantities, we
+                                                                investigate the transport properties of the QL in different
+                                                                phases. TO do so, we adopt the NEGF method which
+                                                                will be described in Sec. IV F 1. The simulation results
+                                                                are presented in Sec. IV F 2.
+
+
+FIG. 11. Schematic illustration of transport simulation setup                     1.   NEGF formulation
+using the NEGF method. The central part is a finite QL, the
+left and right parts are two semi-infinite electric leads.
+                                                                   To investigate the transport properties of the QSH
+                                                                state in QLs, thus demonstrating the metallic edge states,
+                                                                we calculate the two-terminal conductance of the sample
+                                                                using the NEGF method. In the limit of low temper-
+                                                                ature one may ignore the inelastic backscattering pro-
+gap in the spectrum of QLs [Fig. 10(a)].66–68 This sug-         cesses, and describe the ballistic transport of the edge
+gests that the localization behavior of the cases we study      states within the Landauer-Büttiker70 framework. This
+here is different from the Anderson localization, and it        method is widely used in modeling electron transport
+is probably an effect of the local topology of the Penrose      through nano-scale devices. In the framework of NEGF,
+QL.55,69                                                        electron transport is treated as a 1D coherent scattering
+                                                                                                                            11
+
+
+
+
+FIG. 12. (a) Two-terminal conductance G as a function of the Fermi energy E of quasicrystal in the QSH insulator phase.
+The conductance G shows a quantized plateau in the energy gap of QSH insulator shown in Fig.2(a) of the main text. (b) Local
+density of state Dn (E) at E = −0.5, −0.25 and 0.25 eV [marked as stars in (a)] for the central quasicrystal in the transport
+simulation. The size of blue dot represents the relative value of local density of state. For a better visualization, the local
+density of states in (d) is rescaled as 10 × Dn (0.25).
+
+
+process in the “scattering region” for electrons coming in       Green’s function of the Hamiltonian can be obtained by
+from the electrodes.                                             solving the following equation:
+   In the following, we briefly review the method that we
+                                                                                      (E − H)G(E) = I,                    (27)
+use to simulate the transport process of a finite quasicrys-
+tal sample coupled to two semi-infinite periodic leads. In       where I is the identity matrix. However, due to the infi-
+the transport process, the electric current is obtained us-      nite dimension of the Hamiltonian, it is hard to calculate
+ing the Landauer-Büttiker formula,70                            G(E) directly. As we are only interested in the central
+                   Z                                             part of the transport system, it is more convenient to
+                2e                                               calculate the Green’s function only for the central part
+            I=        dET (E)[fL (E) − fR (E)],         (25)                                                           P
+                 h                                               and Pinclude the effect of leads through self energies L
+                                                                 and R . Thus, the Green’s function of the central part
+where fL,R (E) is the Fermi-Dirac distribution for the left      becomes
+or right electrodes. T (E) is the transmission coefficient                                                      −1
+at energy E. It can be calculated from Green’s function                      GC (E) = [E − HC − ΣL − ΣR ]            ,    (28)
+G(E) of the system. For the transport system with two            where the self energies are
+semi-infinite leads, the Hamiltonian is given by,
+                                                                               Σα = VCα gαα VαC      (α = L, R).          (29)
+                     ..
+                                             
+                 . VL                                            If the lead can be broken down into a semi-infinite stack
+              †
+              VL HL VLC
+                                                                of principal layers, namely, the lead is within the prin-
+                                                                 cipal layer approximation, the surface Green’s function
+                                    
+                    †
+                                   
+           H=
+                  VLC HC VCR       .
+                                                       (26)     gαα can be written as71
+                        †
+                      VCR HR VR 
+             
+                               ..
+                                                                                 gαα = ( − Hα − Vα T )−1 ,              (30)
+                             †
+                           V      .   R                          where  = E + iη with η being arbitrarily small, and the
+                                                                 transfer matrix T is given by
+The Hamiltonian is composed of left and right semi-
+infinite leads and the central part. In principle, the                           T = ( − Hα − Vα T )−1 Vα† ,             (31)
+                                                                                                                                12
+
+
+
+
+FIG. 13. (a) Two-terminal conductance G as a function of the Fermi energy E of quasicrystal in the normal insulator phase.
+The zero-conductance region of G is consistent with the energy gap of normal insulator shown in Fig.3(c) of the main text.
+(b) Local density of state Dn (E) at E = −0.9, −0.41 and −0.15 eV [marked as stars in (a)] for the central quasicrystal in the
+transport simulation. The size of blue dot represents the relative value of local density of state. For a better visualization, the
+local density of states in (c) is rescaled as 10 × Dn (−0.41).
+
+
+which can be computed self-consistently via an efficient           energy lies inside the energy gap of the QSH state in the
+iterative scheme proposed by López Sancho et al.72,73 .           QL, which resembles that of the QSH state in graphene
+   Having the Green’s function GC (E), we now can cal-             lattice as predicted by Kane and Mele.2 The mid-gap
+culate the transmission function                                   transport channels are formed by topological edge states
+                                                                   which are localized at two edges of the central qua-
+         T (E) = Tr[GC (E)ΓR (E)GC (E)ΓL (E)],            (32)
+                                                                   sicrystal part in the transport simulation [see Fig.2(d)
+where ΓL and ΓR are the so-called coupling matrices                in Ref.42 ]. However, the transport channels in the bulk
+which are related to the self-energies,                            state continuum regions are mainly formed by critical
+                                                                   states. The local density of states shows a pattern mainly
+              Γα = i(Σα − Σ†α )     (α = L, R).           (33)
+                                                                   composed of critical wavefunctions with peculiar distri-
+Once the Transmission function T (E) is known, the                 butions.
+electric current can be easily obtained through Eq.(25).
+Moreover, the local density of states of the central part            For the normal insulator phase, the electric transport
+is given straightforwardly with the expression                     channel in the valence state continuum (e.g. E = −0.9
+                         1                                         eV) is also formed by the critical states which exhibit self-
+             Dn (E) = − Im[TrGnC (E + iη)],           (34)
+                         π                                         similarity and critical behaviors, as shown in Fig. 13(b).
+where n is the index of local atomic sites. The local den-
+sity of states provide detailed information of the trans-             For the gapless phase, the system shows a metallic be-
+port process, such as the distribution of transport chan-          havior in electronic transport (see Fig. 14). However,
+nels in real space.                                                the calculated conductance is about an order of magni-
+                                                                   tude smaller than that of periodic crystals with the same
+                                                                   structure of the left and right leads (not shown there).
+              2.   Transport properties of QLs                     This indicates that the gapless phase is a weak metal [see
+                                                                   Fig. 3(b) of the main text]. The weak metallic behavior
+  As shown in Fig. 12(a), the two-terminal conductance             in the transport also agrees with the low participation
+shows a quantized plateau at G = 2e2 /h when the Fermi             ratio γn shown in Fig. 10(c).
+                                                                                                                            13
+
+
+
+
+FIG. 14. (a) Two-terminal conductance G as a function of the Fermi energy E of quasicrystal in the weak metal phase. The
+conductance G is much smaller than that of periodic crystal with the same structure of the leads. (b) Local density of state
+Dn (E) at E = 2.3, 2.55 and 2.79 eV [marked as stars in (a)] for the central quasicrystal in the transport simulation. The size
+of blue dot represents the relative value of local density of state.
+
+
+                    V.    SUMMARY                                have demonstrated the topological Anderson insulator
+                                                                 phase in the disorder Kane-Mele model. Furthermore,
+                                                                 we investigated the QSH state in a Penrose-type QL and
+  In summary, we have presented the theory of spin Bott          identified its nontrivial topology by obtaining the spin
+index which is a useful tool to determine the QSH state.         Bott index, and the associated topological edge state and
+The method is stable, has good convergence and can be            quantized conductance.
+applicable to both periodic and non-periodic systems,
+which enable highly efficient numerical calculations. Tak-
+ing the Kane-Mele model as an example, we show that                              ACKNOWLEDGMENTS
+the spin Bott index is robust against spin-mixing pertur-
+bations, which is guaranteed by the coexistence of en-             This work was supported by DOE-BES (Grant No.
+ergy gap and the spectral gap of Pz . In order to check          DE-FG02-04ER46148). The calculations were done on
+the applicability and effectiveness of our algorithm, we         the CHPC at the University of Utah and DOE-NERSC.
+
+
+
+
+1                                                                 7
+  C. L. Kane and E. J. Mele, Phys. Rev. Lett. 95, 146802            R. Yu, X. L. Qi, A. Bernevig, Z. Fang, and X. Dai, Phys.
+  (2005).                                                           Rev. B 84, 075119 (2011).
+2                                                                 8
+  C. L. Kane and E. J. Mele, Phys. Rev. Lett. 95, 226801            D. N. Sheng, Z. Y. Weng, L. Sheng, and F. D. M. Haldane,
+  (2005).                                                           Phys. Rev. Lett. 97, 036808 (2006).
+3                                                                 9
+  L. Fu and C. L. Kane, Phys. Rev. B 76, 045302 (2007).             T. Fukui and Y. Hatsugai, Phys. Rev. B 75, 121403 (2007).
+4                                                                10
+  L. Fu and C. L. Kane, Phys. Rev. B 74, 195312 (2006).             E. Prodan, Phys. Rev. B 80, 125327 (2009).
+5                                                                11
+  T. Fukui and Y. Hatsugai, Journal of the Physical Society         A. M. Essin and J. E. Moore, Phys. Rev. B 76, 165307
+  of Japan 76, 053702 (2007).                                       (2007).
+6                                                                12
+  A. A. Soluyanov and D. Vanderbilt, Phys. Rev. B 83,               B. Leung and E. Prodan, Phys. Rev. B 85, 205136 (2012).
+                                                                 13
+  235401 (2011), http://z2pack.ethz.ch/.                            E. Prodan, Phys. Rev. B 83, 235115 (2011).
+                                                                                                                           14
+
+14                                                              43
+   I. C. Fulga, F. Hassler, A. R. Akhmerov, and C. W. J.           D.-T. Tran, A. Dauphin, N. Goldman, and P. Gaspard,
+   Beenakker, Phys. Rev. B 83, 155429 (2011).                      Phys. Rev. B 91, 085125 (2015).
+15                                                              44
+   I. C. Fulga, F. Hassler, and A. R. Akhmerov, Phys. Rev.         I. C. Fulga, D. I. Pikulin, and T. A. Loring, Phys. Rev.
+   B 85, 165409 (2012).                                            Lett. 116, 257002 (2016).
+16                                                              45
+   B. Sbierski and P. W. Brouwer, Phys. Rev. B 89, 155311          R. Penrose, Bull. Inst. Math. Appl. 10, 266 (1974).
+                                                                46
+   (2014).                                                         H. Tsunetsugu, T. Fujiwara, K. Ueda, and T. Tokihiro, J.
+17
+   Z. Ringel and Y. E. Kraus, Phys. Rev. B 83, 245115 (2011).      Phys. Soc. Jpn. 55, 1420 (1986).
+18                                                              47
+   T. A. Loring and M. B. Hastings, EPL (Europhysics Let-          O. Entin-Wohlman, M. Kléman, and A. Pavlovitch, Jour-
+   ters) 92, 67004 (2011).                                         nal de Physique 49, 587 (1988).
+19                                                              48
+   M. B. Hastings and T. A. Loring, Ann. Phys. 326, 1699           H. Tsunetsugu, T. Fujiwara, K. Ueda, and T. Tokihiro,
+   (2011).                                                         Phys. Rev. B 43, 8879 (1991).
+20                                                              49
+   T. A. Loring et al., SIGMA. Symmetry, Integrability and         W. A. Harrison, Electronic structure and the properties of
+   Geometry: Methods and Applications 10, 077 (2014).              solids: the physics of the chemical bond (Courier Corpora-
+21
+   A. P. Schnyder, S. Ryu, A. Furusaki, and A. W. W. Lud-          tion, 2012).
+                                                                50
+   wig, Phys. Rev. B 78, 195125 (2008).                            Y. Liu and P. Ma, Phys. Rev. B 43, 1378 (1991).
+22                                                              51
+   A. Kitaev, AIP Conference Proceedings 1134, 22 (2009).          M. Kohmoto and B. Sutherland, Phys. Rev. B 34, 3849
+23
+   S. Ryu, A. P. Schnyder, A. Furusaki, and A. W. W. Lud-          (1986).
+                                                                52
+   wig, New J. Phys. 12, 065010 (2010).                            P. Ma and Y. Liu, Phys. Rev. B 39, 9904 (1989).
+24                                                              53
+   T. A. Loring, Ann. Phys. 356, 383 (2015).                       T. Fujiwara, M. Arai, T. Tokihiro, and M. Kohmoto, Phys.
+25
+   E. Prodan, New J. Phys. 12, 065003 (2010).                      Rev. B 37, 2797 (1988).
+26                                                              54
+   E. Prodan, J. Phys A: Math. Theor. 44, 113001 (2011).           M. Arai, T. Tokihiro, T. Fujiwara, and M. Kohmoto, Phys.
+27
+   J. Bellissard, A. van Elst, and H. Schulz-Baldes, J. Math.      Rev. B 38, 1621 (1988).
+                                                                55
+   Phys. 35, 5373 (1994).                                          T. Rieth and M. Schreiber, Phys. Rev. B 51, 15827 (1995).
+28                                                              56
+   M. B. Hastings and T. A. Loring, J. Math. Phys. 51,             B. Sutherland, Phys. Rev. B 34, 3904 (1986).
+                                                                57
+   015214 (2010).                                                  M. Kohmoto and B. Sutherland, Phys. Rev. Lett. 56, 2740
+29
+   R. Exel and T. A. Loring, J. Funct. Anal. 95, 364 (1991).       (1986).
+30                                                              58
+   A. Agarwala and V. B. Shenoy, Phys. Rev. Lett. 118,             T. C. Choy, Phys. Rev. Lett. 55, 2915 (1985).
+                                                                59
+   236402 (2017).                                                  J. B. Sokoloff, Phys. Rev. B 36, 6361 (1987).
+31                                                              60
+   M. A. Bandres, M. C. Rechtsman, and M. Segev, Phys.             F. Aguilera-Granja, F. Meǰa-Lira, J. L. Morán-López, and
+   Rev. X 6, 011016 (2016).                                        R. G. Barrera, Phys. Rev. B 36, 7342 (1987).
+32                                                              61
+   H. Katsura and T. Koma, J. Math. Phys. 57, 021903               T. Tokihiro, T. Fujiwara, and M. Arai, Phys. Rev. B 38,
+   (2016); 59, 031903 (2018).                                      5981 (1988).
+33                                                              62
+   D. Toniolo, arXiv:1708.05912 (2017).                            E. de Prunelé, Phys. Rev. B 66, 094202 (2002).
+34                                                              63
+   D. Toniolo, arXiv:1708.05916 (2017).                            Y. Lai, Z. Q. Zhang, C. H. Chan, and L. Tsang, Phys.
+35
+   F. D. M. Haldane, Phys. Rev. Lett. 61, 2015 (1988).             Rev. B 74, 054305 (2006).
+36                                                              64
+   T. Thonhauser and D. Vanderbilt, Phys. Rev. B 74, 235111        T. C. Choy, Phys. Rev. B 35, 1456 (1987).
+                                                                65
+   (2006).                                                         N. P. Mitchell, L. M. Nash, D. Hexner, A. M. Turner, and
+37
+   N. Marzari and D. Vanderbilt, Phys. Rev. B 56, 12847            W. T. Irvine, Nat. Phys. , 1 (2018).
+                                                                66
+   (1997).                                                         G. T. de Laissardière, A. Szallas, and D. Mayou, Acta
+38
+   C. P. Orth, T. Sekera, C. Bruder, and T. L. Schmidt, Sci.       Phys. Pol. A 126, 617 (2014).
+                                                                67
+   Rep. 6, 24007 (2016).                                           T. Odagaki, Solid State Commun. 60, 693 (1986).
+39                                                              68
+   J. Li, R.-L. Chu, J. K. Jain, and S.-Q. Shen, Phys. Rev.        M. Schreiber, Journal of Physics C: Solid State Physics 18,
+   Lett. 102, 136806 (2009).                                       2493 (1985).
+40                                                              69
+   C. W. Groth, M. Wimmer, A. R. Akhmerov, J. Tworzydlo,           B. Sutherland, Phys. Rev. B 34, 5208 (1986).
+                                                                70
+   and C. W. J. Beenakker, Phys. Rev. Lett. 103, 196805            M. Büttiker, Phys. Rev. B 38, 9375 (1988).
+                                                                71
+   (2009).                                                         H. Huang, Z. Wang, N. Luo, Z. Liu, R. Lü, J. Wu, and
+41
+   Y. Xing, L. Zhang, and J. Wang, Phys. Rev. B 84, 035110         W. Duan, Phys. Rev. B 92, 075138 (2015).
+                                                                72
+   (2011).                                                         M. P. López Sancho, J. M. López Sancho, and J. Rubio,
+42
+   See the joint publication: Huaqing Huang and Feng Liu,          J. Phys. F 14, 1205 (1984).
+                                                                73
+   Phys. Rev. Lett. 121, 126401 (2018).                            M. P. López Sancho, J. M. López Sancho, and J. Rubio,
+                                                                   J. Phys. F 15, 851 (1985).
+

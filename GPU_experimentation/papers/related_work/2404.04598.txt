@@ -1,0 +1,1029 @@
+                                                    Theory of local Z2 topological markers for finite and periodic two-dimensional systems
+
+                                                                                                  Nicolas Baù1 and Antimo Marrazzo1, 2
+                                                                                    1
+                                                                                      Dipartimento di Fisica, Università di Trieste, I-34151 Trieste, Italy∗
+                                                                           2
+                                                                               Scuola Internazionale Superiore di Studi Avanzati (SISSA), I-34136 Trieste, Italy†
+                                                                                                          (Dated: September 6, 2024)
+                                                                     The topological phases of two-dimensional time-reversal symmetric insulators are classified by
+                                                                  a Z2 topological invariant. Usually, the invariant is introduced and calculated by exploiting the
+                                                                  way time-reversal symmetry acts in reciprocal space, hence implicitly assuming periodicity and
+                                                                  homogeneity. Here, we introduce two space-resolved Z2 topological markers that are able to probe
+                                                                  the local topology of the ground-state electronic structure also in the case of inhomogeneous and
+arXiv:2404.04598v2 [cond-mat.mes-hall] 5 Sep 2024
+
+
+
+
+                                                                  finite systems. The first approach leads to a generalized local spin-Chern marker, that usually
+                                                                  remains well-defined also when the perpendicular component of the spin, Sz , is not conserved. The
+                                                                  second marker is solely based on time-reversal symmetry, hence being more general. We validate our
+                                                                  markers on the Kane-Mele model both in periodic and open boundary conditions, also in presence
+                                                                  of disorder and including topological/trivial heterojunctions.
+
+
+                                                                      I.       INTRODUCTION                              get homogeneous and periodic systems. In the case of
+                                                                                                                         periodic and disordered systems a number of strategies
+                                                       The topological phases of insulators are characterized            have been developed to compute the global topological
+                                                    by a bulk topological invariant, whose non-trivial char-             invariant, such as the single-point sampling of the BZ
+                                                    acter is manifested by gapless boundary modes. In the                in the large supercell framework [11, 12], the Bott in-
+                                                    framework of two-dimensional systems, two main classes               dex [13, 14], the structural spillage [15], and methods
+                                                    of topological insulators (TI) can be identified: The                based on the scattering matrix [16, 17] or on the non-
+                                                    quantum anomalous Hall (also known as Chern) insu-                   commutative index theorem [18–20].
+                                                    lators (QAHI) [1] and the time-reversal (TR) symmet-                    When dealing with finite or inhomogeneous systems,
+                                                    ric TIs, also known as quantum spin Hall insulators                  global invariants are of no avail, and one must adopt
+                                                    (QSHI) [2–4]. The topological phases of QAHIs are clas-              a space-resolved approach, as done for instance in
+                                                    sified according to the Chern number C ∈ Z, which sig-               Refs. [21–26]. The ability to sample these quantities lo-
+                                                    nals the presence of chiral edge states protected by the             cally in real space can be particularly useful when deal-
+                                                    non-trivial topology. As for QSHIs, TR symmetry is re-               ing, for instance, with amorphous systems [27]. The long-
+                                                    quired and the symmetry-protected topological phase [2]              range order—that usually allows calculating the topolog-
+                                                    is classified by an index ν ∈ Z2 . QSHIs display an odd              ical invariant via reciprocal space formulations—is lost,
+                                                    number of helical edge states and edge currents that are             and only on the local scale the system appears to re-
+                                                    spin-momentum locked.                                                tain an ordered arrangement. Since the topological in-
+                                                       Within periodic boundary conditions (PBC), the pres-              variant is related to the organization of electrons in the
+                                                    ence of a non-zero topological invariant is related to the           ground state, in principle it does not require the existence
+                                                    impossibility of constructing a smooth gauge in the whole            of long-range order or translational invariance. As the
+                                                    Brillouin zone (BZ) [5, 6] and represents a topological              ground-state electronic structure is “nearsighted” [28], it
+                                                    obstruction. Topological invariants are usually defined              should be possible to probe the local topology of a re-
+                                                    as global quantities of the system, and in general they              gion just with the knowledge of its neighborhood in real
+                                                    cannot be evaluated as the expectation value of some                 space. A simple and relevant scenario is a heterostructure
+                                                    operator. The task further complicates when consider-                composed of two regions with different topology, such as
+                                                    ing symmetry-protected topological phases, as it becomes             an insulator in a topological phase at the interface with
+                                                    necessary to include the protecting symmetries in the                a trivial insulator (or vacuum). There, the meaning of
+                                                    definition of the topological invariant. Examples for TR-            a global invariant is ambiguous, since a single invariant
+                                                    symmetric insulators include the concept of TR polariza-             cannot capture the individual bulk topology of the two
+                                                    tion [7], the parity of TR invariant momenta [8], or the             regions and the presence of metallic edge states at the
+                                                    flow of hybrid Wannier functions centers [6, 9, 10]. For             interface between them.
+                                                    electronic structure simulations of solids PBCs are usu-                In this work, we develop space-resolved formulas for
+                                                    ally chosen, and symmetries are typically directly incor-            the Z2 topological invariant that can be used to probe
+                                                    porated in reciprocal space [7, 8], rather than real space.          the local topology of inhomogeneous and non-crystalline
+                                                    However, by construction, these global formulations tar-             two-dimensional systems. Over the past years, a num-
+                                                                                                                         ber of local markers have been developed to investigate
+                                                                                                                         the presence of topological phases in different systems.
+                                                                                                                         Examples include the local Chern marker [21], that has
+                                                    ∗ nicolas.bau@phd.units.it
+                                                                                                                         been used to study also QSHIs [29], the mirror-Chern
+                                                    † amarrazz@sissa.it
+                                                                                                                         marker [22], a spin-Chern marker based on the spin-
+                                                                                                                          2
+
+Berry curvature [30], a definition of the local Z2 invariant    an exponentially localized projector commuting with lat-
+based on a flux-insertion-induced spectral flow [31], a lo-     tice translations is a sufficient condition to yield integer
+cal marker to identify crystalline topological phases [32]      individual Chern numbers that are invariant with respect
+and a layer-resolved spin-Chern marker for 3D TIs [33].         to small perturbations of the system.
+Recently, a marker to investigate higher-order topolog-            Here, we propose two formulations for local Z2 invari-
+ical phases has also been proposed [34]. In particular,         ants: The first leverages the spin-Chern number intro-
+the archetypal case of a local Chern marker for two-            duced by Prodan [42], while the second is based solely
+dimensional QAHIs has been investigated in Ref. [21]            on TR symmetry, in the spirit of the work by Soluyanov
+within open boundary conditions (OBCs) and in Ref. [35]         and Vanderbilt [44, 47]. These two strategies are used
+within PBCs. The local Chern marker [21] can also be ac-        to define markers for finite samples in OBCs as well as
+cessed experimentally by measuring local circular dichro-       for large supercells in PBCs (where the BZ can be ef-
+ism [36–38]. Moreover, a generalization of the concept of       fectively sampled by a single point, typically Γ). Our
+local marker in odd dimensions D has been introduced            approach is particularly useful when dealing with non-
+in Ref. [39] for both Z-phases (local Chiral marker) and        homogeneous systems, such as disordered samples and
+Z2 -phases (local Chern-Simons marker). That is done by         heterostructures, giving the possibility of inspecting the
+introducing a (D + 1)-dimensional local Chern marker,           topology locally in real space.
+extending the one by Bianco-Resta [21] to higher dimen-            The paper is organized as follows. In Sec. II, we re-
+sions, together with a family of parametrized projectors        cap on some relevant results from the literature, namely
+(where the parameter acts as the additional dimension)          the OBC and PBC local Chern markers developed for
+that have to be integrated in order to get a local marker       QAHIs. In Sec. III, we first discuss the local spin-Chern
+when D is odd. In particular, the invariant is Z-valued         marker and then introduce the local Z2 marker based
+if the single-particle density matrix obeys a chiral con-       on TR symmetry within OBCs, that we further general-
+straint, and Z2 otherwise [40]. Recently, a universal topo-     ize to PBCs in Sec. IV. Then, in Sec. V we discuss the
+logical marker, valid in any dimension and symmetry             tight-binding models used to benchmark our markers and
+class, has been proposed in Ref. [41]. This marker has          introduce a generalized smearing, which is particularly
+been successfully tested on various systems belonging to        useful when dealing with heterostructures. In Sec. VI,
+different symmetry classes, but in the most general case        we present numerical results and compare the different
+(of interest for this work) of two-dimensional class AII        methods introduced. Finally, we summarize our results
+systems with Rashba spin-orbit coupling (SOC), such as          and conclusions in Sec. VII.
+the Kane-Mele model [3], a general and practical formu-
+lation of the local Z2 marker that can always be applied is
+still missing. Indeed, Rashba SOC (that can be intrinsic                  II.   LOCAL CHERN MARKERS
+or induced, for instance, by an electric field perpendic-
+ular to the system) violates Sz conservation, so one can           In this section we review the OBC and PBC formu-
+no longer consider spins to be “up” or “down”, and must         lations of the LCM introduced in Refs. [21, 35]. Let
+resort to a different strategy to calculate the Z2 invariant.   us consider a QAHI with Nocc occupied bands, and let
+   There are many available methods to compute the              |unk ⟩ = e−ik·r |ψnk ⟩ be the periodic part of Bloch func-
+global topological invariant of QSHIs by making explicit        tions. The Hamiltonian of a QAHI breaks TR symmetry,
+use of TR symmetry [7, 8]. For our purposes, two par-           and its topological invariant is the Chern number:
+ticularly noteworthy approaches are the spin-Chern num-                         occN   Z
+ber [42] and the calculation of hybrid Wannier charge cen-                 1   X
+                                                                      C = − Im                dk ⟨∂kx unk |∂ky unk ⟩ .   (1)
+ters [10, 43]. The underlying common strategy between                      π   n=1       BZ
+these two methods is to split the Hilbert space spanned
+by the occupied states as a sum of subspaces such that the      Since the Chern number is defined in the primitive cell,
+individual Chern number associated to each subspace is          it represents a global quantity meaningful only for pris-
+an integer [10, 43]. That can be done in an arbitrary way,      tine and homogeneous systems within PBCs. Bianco and
+but the individual Chern numbers are meaningful only            Resta [21] showed that, starting from Eq. 1, it is possible
+when such splitting is realized according to the symme-         to derive a local Chern marker (LCM):
+tries protecting the topological phase. In QSHIs, for in-
+stance, one can use the projected spin operator [42] or the                  C(r) = −4πIm ⟨r|Px(I − P)y|r⟩               (2)
+TR symmetry [44]: The two subspaces obtained individ-                             = 4πIm ⟨r|P[x, P][y, P]|r⟩             (3)
+ually break TR symmetry and can host a non-zero Chern
+number. Hence, calculating the Z2 topological invariant         such that its macroscopic average over a small region in
+translates to the problem of identifying a suitable parti-      real space describes the local topology. In a pristine sys-
+tioning of the occupied Hilbert space where it is possible      tem, that reduces to the trace per unit area TrA in the
+to compute integer individual Chern numbers. However,           region of interest, and results in the local Chern number
+performing such partitioning might be rather non-trivial        of the system. In Equations 2 and 3, x and y are the
+in practice. Indeed, it has been discussed [42, 45, 46] that    Cartesian components of the position operator r, and
+                                                                                                                                    3
+      PNocc
+P = n=1      |un ⟩ ⟨un | is the ground-state projector. The          and
+key feature of this formulation is that, by being expressed
+as a trace, the Chern number can be evaluated locally                                     1       
+                                                                       C (sym) (r) = −      Im ⟨r| [Pb1 , Pb2 ] + [P−b1 , P−b2 ]−
+in real space, that makes it particularly suited to study                                8π                    
+disordered and inhomogeneous systems. The LCM de-                                 − [P−b1 , Pb2 ] − [Pb1 , P−b2 ] PΓ |r⟩        (8)
+fined in Eq. 3 is also related to the geometrical intrinsic
+contribution to the local anomalous Hall conductivity in                                    PNocc
+metals [48, 49]. So defined, the LCM of Eq. 3 could,                 where Pbj        =       n=1 |ũnbj ⟩ ⟨ũnbj | and PΓ   =
+                                                                     PNocc
+in principle, be applied in both PBCs and OBCs, since                   n=1 |unΓ ⟩ ⟨unΓ | are ground-state projectors. In par-
+the operators [rα , P] are well-defined in both cases, de-           ticular, Eq. 7 derives from the asymmetric single-point
+spite r being an illegitimate operator within PBCs [50].             formulation [Eq. 4], while Eq. 8 derives from the symmet-
+However, when dealing with numerical simulations, the                ric one [Eq. 6]. As discussed for the OBC case, also in
+operators [rα , P] are not directly accessible and the usual         PBCs the local topology is described by the macroscopic
+way to construct them is to multiply the “standard” po-              average of the LCM over a small region in real space.
+sition operator r with P, thus limiting this method to               A key feature of this formulation is that the position
+the OBC case only [35]. Equation 3 shows very clearly                operator appears only through the exponential e−ibj ·r ,
+that a finite system is always globally trivial in a certain         thus resulting in a legitimate operator also within PBCs.
+sense, as its Chern number is always zero [21] being the             The PBC LCM offers a simple picture of the topologi-
+trace over the whole sample of commutators of matrices               cal obstruction in non-crystalline systems: In the trivial
+with finite dimensions.                                              (C = 0) case, one can always have [Pb1 , Pb2 ] = 0 due
+   We can recover the local topology also within PBCs                to the existence of a smooth gauge in the whole BZ. In
+[35], by leveraging the single-point formulation of the              the topological case, however, this construction is impos-
+Chern number in the large supercell limit [11]:                      sible, and a non-zero (local) Chern number arises from
+                                                                     the fact that Pb1 and Pb2 (locally) do not commute, also
+                          1
+                              N
+                              X occ                                  in inhomogeneous systems. If one considers the case of a
+              (asym)
+          C            = − Im       ⟨ũnb1 |ũnb2 ⟩ ,          (4)   finite sample inside a much larger supercell with PBCs,
+                          π   n=1                                    the LCM of Eq. 7 can be expanded in powers of the linear
+                                                                     dimension of the supercell L: In the limit of L → ∞, the
+where b1,2 are the reciprocal lattice vectors and |ũnbj ⟩           expansion converges to the LCM of Eq. 3. In addition,
+are the “dual” vectors of |unΓ ⟩, the latter are the periodic        while the OBC LCM [Eq. 3] vanishes upon tracing over
+part of the Hamiltonian eigenstates at Γ. The dual states            the entire system, the PBC LCM [Eqs. 7,8] results in the
+are defined as:                                                      single-point Chern number [11], even in the disordered
+                                                                     case. Both the OBC and PBC formulations of the LCM
+                       Nocc
+                       X
+                               −1                                    can be applied to study the local topology of disordered
+         |ũnbj ⟩ =           Smn (bj )e−ibj ·r |umΓ ⟩ ,       (5)   and amorphous materials, as well as inhomogeneous sys-
+                       m=1
+                                                                     tems such as trivial/topological heterojunctions and su-
+                                                                     perlattices.
+where Smn (bj ) = ⟨umΓ |e−ibj ·r |unΓ ⟩ is the overlap ma-
+trix between the states at Γ and the ones at bj once
+the periodic gauge is imposed. The dual vectors satisfy
+⟨ũnbj |umΓ ⟩ = δnm and represent, in the limit of a large                 III.    LOCAL Z2 MARKERS FOR FINITE
+supercell, the vectors obtained from a parallel-transport                                  SYSTEMS
+procedure from Γ to bj [12, 51]. The single-point formu-
+lation is based on a discretization of the covariant deriva-            As mentioned in Sec. I, there are many equivalent
+tive, and depending on whether this is approximated by               methods available to compute the global topological Z2
+forward or symmetric finite differences, the asymmetric              invariant of a QSHI. However, in general, it is not a triv-
+formula [Eq. 4] or the symmetric one [Eq. 6] can be ob-              ial task to remove the notion of reciprocal space in their
+tained, respectively:                                                definition, as they often rely on some symmetries of the
+                                                                     BZ under the TR operator Θ. Moreover, Θ is antiunitary,
+                         Nocc                                        so unlike other unitary symmetries protecting topological
+                    1    X
+    C (sym) = −
+                                                  
+                      Im      ⟨ũnb1 | − ⟨ũn−b1 | ·                 phases (like the mirror operator [52]), it cannot be diag-
+                   4π    n=1
+                                                                    onalized to get two Chern subspaces with well-defined
+                                    · |ũnb2 ⟩ − |ũn−b2 ⟩ .   (6)   symmetry labels, and other strategies have to be devel-
+                                                                     oped.
+As shown in Ref. [35], from Eqs. 4 and 6 the correspond-                Because of Kramers’ theorem, each eigenvalue of a TR
+ing PBC LCMs can be defined as:                                      symmetric Hamiltonian is at least doubly degenerate.
+                                                                     Hence, only half of the occupied states is really needed
+                                1                                    to compute the topological invariant, since the other half
+         C (asym) (r) = −         Im ⟨r|[Pb1 , Pb2 ]PΓ |r⟩     (7)
+                               2π                                    can be obtained by symmetry. One can then split the
+                                                                                                                           4
+
+occupied Hilbert space into two Chern subspaces and ob-        where |ϕλk ⟩ are the eigenstates of P(k)Sz P(k) with
+tain two set of states (built in general as linear combina-    eigenvalue sλ . The existence of a spectral gap in the pro-
+tion of the occupied eigenstates of the Hamiltonian) that      jected spin operator allows retaining exponentially local-
+are mapped onto each other by TR symmetry. For in-             ized projectors Pσ (k), so that an integer individual Chern
+stance, one can split the Kramers-degenerate eigenstates       number can still be defined. Moreover, the splitting of
+of the Hamiltonian such that, for each vector assigned to      the eigenstates according to the projected spin operator
+a subspace, its TR partner is assigned to the other. By        satisfy:
+doing so, in each subspace TR symmetry is broken by
+construction, so it is possible and meaningful to compute        P(k) = Pσ (k) + P−σ (k) = Pσ (k) + ΘPσ (−k)Θ−1 (11)
+its individual Chern number [10, 43]. Moreover, since TR
+symmetry forces C = 0, the two subspaces must be char-         so, due to TR symmetry, it must hold that C+ = −C− ,
+acterized by opposite individual Chern numbers. Here we        and the Z2 invariant can be computed as a spin-Chern
+promote the individual Chern number to a local individ-        number, as in Eq. 9, by substituting C↑ → C+ and
+ual Chern marker, and use Eq. 3 on the states belonging        C↓ → C− . It should be noted that other definitions of the
+to just one of the two subspaces. Obtaining a decom-           spin-Chern number exists, for instance as the integral of
+position of the occupied Hilbert space that leads to an        the spin-Berry curvature [30]. However, while Prodan’s
+integer individual Chern number, however, is not a triv-       spin-Chern number [42] is quantized, the integral of the
+ial task. In fact, for the individual Chern numbers to be      spin-Berry curvature is only an approximate indicator
+well-defined, we need exponentially localized projectors       of the topology of the system, although experimentally
+onto their corresponding subspaces [42, 45, 46]. Here,         relevant since related to the spin-resolved local circular
+we propose two different methods to realize the splitting      dichroism [30].
+of the occupied states into two Chern subspaces char-             Within OBCs the BZ does not exist: A local spin-
+acterized by exponentially localized projectors, first via     Chern marker (LSCM) can then be obtained by applying
+the projected spin operator PSz P and then by using the        the LCM formula [Eq. 3] to each of the individual Chern
+TR symmetry operator Θ, leading to two distinct local          numbers appearing in Eq. 9. By doing so, two individual
+markers of the Z2 topology.                                    local Chern markers can be computed:
+
+                                                                         Cσ (r) = 4πIm ⟨r|Pσ [x, Pσ ][y, Pσ ]|r⟩        (12)
+         A.   Local OBC spin-Chern marker
+                                                               which, substituted into Eq. 9, results in a LSCM defined
+                                                               as
+  We start by considering a Hamiltonian H for which
+[H, Sz ] = 0, where Sz is the spin operator along the z-                            C+ (r) − C− (r)
+                                                                           ν(r) =                     mod 2,            (13)
+direction. Since H commutes with Sz , it can be decou-                                     2
+pled into spin sectors that are mapped onto each other
+by TR symmetry. Such splitting allows the definition of        whose macroscopic average is a local Z2 invariant. Be-
+two individual Chern numbers C↑,↓ , physically related to      ing expressed as a trace, the LSCM can be evaluated in
+the quantized spin Hall conductivity [53], from which the      real space as for the OBC LCM. A similar strategy can
+Z2 invariant of the system can be computed as:                 also be used to define a layer-resolved spin-Chern marker
+                                                               in 3D systems [33]. We stress again that such formula-
+                      C↑ − C↓                                  tion is useful mostly within OBCs, as the general way to
+                ν=                    mod 2,             (9)   calculate the operators [rα , Pσ ] requires the explicit eval-
+                         2
+                                                               uation of the terms rα Pσ and Pσ rα , which are ill-defined
+where the two individual Chern numbers can be ob-              within PBCs. We will discuss how to generalize these lo-
+tained by integrating the Berry curvature of the rela-         cal markers to the PBC framework in Sec. IV. As stated
+tive spin-up or spin-down subspace. The states com-            before, the LSCM remains well-defined whenever the pro-
+posing the two spin sectors can be selected by comput-         jected spin operator displays a spectral gap, possibly also
+ing the ground-state projector P(k) and diagonalizing          for systems breaking TR symmetry. However, in general,
+P(k)Sz P(k), whose spectrum has eigenvalues ± 12 . Re-         the existence of a gap in PSz P is not guaranteed, as it is
+markably, Prodan [42] proved that this strategy holds          not a fundamental property of QSHIs. Hence, the LSCM
+even if [H, Sz ] ̸= 0 as long as the operator P(k)Sz P(k)      is a valid approach but not, in principle, a truly general
+displays a gap in its spectrum. In this case, if one           formulation of the Z2 invariant.
+diagonalize P(k)Sz P(k), its eigenvalues sλ will spread
+symmetrically around zero in the interval [− 12 , 12 ], and
+the projectors onto the positive (σ = +) and negative           B.    Local OBC Z2 marker based on time-reversal
+(σ = −) eigenvalues can be defined:                                                symmetry
+                          X
+           Pσ (k) =                   |ϕλk ⟩ ⟨ϕλk | ,   (10)     QSHIs are characterized by the TR symmetry Θ, which
+                      λ:sign(sλ )=σ                            forces the Chern number of the system to vanish, and
+                                                                                                                          5
+
+the classification of topological phases to be Z2 , result-    Then, these are used to project the J occupied orbitals:
+ing in a symmetry-protected topological phase. Hence, it
+                                                                                        J
+seems reasonable that a general definition of the Z2 topo-                              X
+logical invariant should exploit TR symmetry explicitly,                      |ϕn ⟩ =         |ψm ⟩ ⟨ψm |gn ⟩ .        (14)
+                                                                                        m=1
+similarly to what has been done, for instance, for the
+mirror-Chern number [52, 54]. However, the TR oper-            The trial orbitals |ϕn ⟩ are then rotated by using the over-
+ator Θ is antiunitary and it cannot be diagonalized to         lap matrix Smn = ⟨ϕm |ϕn ⟩, obtaining “projected” WFs:
+define a topological invariant. Nonetheless, we can still
+split the occupied states into two Chern subspaces us-                                      J
+                                                                                            X
+                                                                                                         −1
+ing Θ thanks to Kramers’ theorem. A similar strategy                             |w̃n ⟩ =         |ϕm ⟩ Smn .          (15)
+was proven to be successful in computing the global in-                                     m=1
+variant of a homogeneous and periodic QSHI with only           If MLWFs are sought, onePneeds to find the unitary rota-
+two occupied bands [44]. The calculation of the topo-          tion U such that |wm ⟩ = n Unm |w̃n ⟩ are the WFs that
+logical invariant, in this case, is achieved by enforcing      minimize the quadratic spread
+the parallel-transport gauge in almost all the BZ: If one
+                                                                            Xh                                  i
+insists in having a periodic and TR-symmetric gauge,                   Ω=
+                                                                                                              2
+                                                                                 ⟨wn |r2 |wn ⟩ − |⟨wn |r|wn ⟩| .   (16)
+this cannot be smooth due to the topological obstruc-                        n
+tion arising in the topological phase. To evaluate the Z2
+invariant one can impose a TR symmetric gauge that is          MLWFs can then be split in two sets by using TR sym-
+smooth on the BZ cylinder (but not on the BZ torus, i.e.,      metry as explained above. This procedure allows us to
+a non-periodic gauge), disentangling the occupied bands        define a local Z2 marker (LZ2M) that is uniquely based
+into two Chern manifolds, each characterized by its own        on TR symmetry as
+integer individual Chern number [44].
+                                                                                     C1 (r) − C2 (r)
+                                                                           ∆(r) =                         mod 2,       (17)
+   Within OBCs, the parallel transport procedure be-                                        2
+comes irrelevant, and the only meaningful step is the          where C1 (r) and C2 (r) are computed via Eq. 3 with the
+TR constraint. Numerical diagonalizations carry ran-           projectors P1 and P2 respectively. It is worth noting
+dom global phases for each eigenvector, so to impose a         that, as the LZ2M is based entirely on TR symmetry, its
+TR symmetric gauge we need to select an initial state in       formulation does not rely on the existence of a spectral
+the degenerate subspace and explicitly evaluate its TR         gap in any operator (but the Hamiltonian), thus being
+partner. If the dimension of the degenerate subspace is        more general with respect to the LSCM. However, the
+greater than two, then an orthonormalization procedure         validity of the LZ2M strongly depends on the choice of
+is needed. This procedure can be repeated until the num-       the trial functions |gn ⟩ introduced in Eq. 14. Specifically,
+ber of vectors is equal to the dimension of the degenerate     as explained in Sec. VI A, in order to avoid the topological
+subspace. By doing so, the eigenstates of the Hamilto-         obstruction, the trial functions |gn ⟩ should not be related
+nian are split in two orthogonal subsets (identified by the    by TR symmetry. This condition, in turn, implies that
+projectors P1 and P2 ) that individually break TR, and         P ̸= P1 + ΘP1 Θ−1 . However, since we want to split the
+that can be mapped onto each other by symmetry. That           occupied Hilbert space into two subsets that represents
+allows us to evaluate the individual local Chern num-          the whole space and are related by TR symmetry (to
+bers of the two subsets, and obtain a local Z2 marker.         compute the Z2 invariant from Chern numbers), we need
+However, this construction in general does not result in       the two projectors P and PΘ = P1 + ΘP1 Θ−1 to be as
+exponentially localized projectors P1,2 , and their decay      close as possible [10]. For this reason, we require that
+properties in the bulk depend on the choice of the eigen-      the choice of the trial projection, discussed in Sec. VI A,
+states assigned to each subspace.                              should also minimize the spillage between the projectors
+   One way to obtain exponentially localized projectors        P and PΘ , defined as [59]:
+is to build the maximally localized Wannier functions                                1
+                                                                                         Tr (P − PΘ )2 .
+                                                                                                     
+(MLWF) of the system [55, 56] (also known as Boys or-                        γ=                                        (18)
+                                                                                   2Nocc
+bitals in OBCs [57]). TR symmetric systems are char-
+acterized by a vanishing Chern number, which in princi-        That allows approximating the manifold of occupied
+ple should allow computing exponentially localized Wan-        states as the sum of two “Chern subspaces” in which we
+nier functions (WF). In practice, however, the simplest        can evaluate individual Chern numbers. Note that we
+method to compute them is via a projection proce-              can exchange the states from one subspace to the other
+dure [56], which is ensured to fail in the topological phase   without changing the Z2 topological invariant. In fact,
+if the trial states are TR symmetric [58]. This is a con-      as long as the states are mapped onto each other by TR
+sequence of the topological obstruction, that forbids the      symmetry, they carry opposite contributions and the Z2
+existence of a smooth and TR-symmetric gauge in the            invariant does not change [10].
+topological phase [44]. Within OBCs, a set of trial func-        We also observe that the steepest descent procedure to
+tions gn (r) can be chosen based on chemical intuition.        compute MLWFs does not particularly improve the value
+                                                                                                                                 6
+
+                                                                   where PΓ± =
+                                                                                  P
+of the topological marker, and projections-only WFs are                            λ:sign(sλ )=± |ϕλΓ ⟩ ⟨ϕλΓ |, so that PΓ =
+sufficient to obtain an accurate map of the local topology.          +      −
+                                                                   PΓ + PΓ . In particular, the covariant derivative is ap-
+To be more precise, in this case one should not refer to the       proximated by the forward finite difference formula in
+states obtained after the projection procedure as WFs,             Eq. 21 and by the symmetric finite difference in Eq. 22.
+since the minimization of the spillage (which translates to        Finally, the PBC LSCM can be defined as:
+a requirement of minimal TR symmetry breaking in the
+gauge) does not allow obtaining truly exponentially lo-                                     C+ (r) − C− (r)
+                                                                                  ν(r) =                      mod 2.          (23)
+calized WFs, as it will be shown through numerical simu-                                           2
+lations in Sec. VI B. These orbitals are somehow localized
+in real space but also characterized by a seemingly diver-
+                                                                    B.    Local PBC Z2 marker based on time-reversal
+gent spread in the thermodynamic limit: In the following
+                                                                                       symmetry
+we will refer to them as quasi -WFs (qWF). Notably, a
+certain degree of localization in real space—not neces-
+sarily asympotically exponential—appears to be a suffi-              Within PBCs, given a set of J composite bands |ψnk ⟩,
+cient condition to define bona fide local markers. Indeed,         the m-th WF in the unit cell labelled by the lattice vector
+qWFs yield projectors P1,2 that might be exponentially             R can be defined as:
+localized only at short distances in the topological phase.                             Z                 J
+                                                                                    A              −ik·R
+                                                                                                         X
+                                                                                                              (k)
+Still, short-range exponential localization seems to be a             |wm (R)⟩ =            dk   e           Unm  |ψnk ⟩ (24)
+sufficient condition to calculate integer local individual                        (2π)2 BZ               n=1
+Chern numbers C1,2 through Eq. 3.                                           (k)
+                                                                   where Unm is a unitary rotation that is optimized to en-
+                                                                   sure the smoothness of the gauge. If such smooth and pe-
+   IV.   LOCAL Z2 MARKERS FOR PERIODIC                             riodic gauge exists (that is, if the Chern number C = 0)
+                  SYSTEMS                                          then the WFs are exponentially localized functions in
+                                                                   real space [60]. As discussed in Sec. III B, we compute the
+          A.    Local PBC spin-Chern marker                        WFs of the system via projection onto trial states |gn ⟩. In
+                                                                   particular, the trial projections should break TR symme-
+   Within PBCs, following the same strategy developed in           try (to avoid the topological obstruction in the topologi-
+Sec. III A, the individual Chern numbers C± introduced             cal phase) and minimize the spillage between the projec-
+in Eq. 9 can be promoted to local individual Chern mark-           tors P and PΘ , as defined in Eq. 18. Hence, we compute
+ers using the PBC LCM [Eq. 7]. A complementary, and                qWFs and split them in two subspaces mapped onto each
+equivalent, way to look at this strategy is that we de-            other by TR symmetry, which allows computing the PBC
+rive from single-point spin-Chern numbers introduced in            individual local Chern markers C1,2 (r) through Eq. 22.
+Ref. [12] the corresponding local markers. In the limit            Since the Hilbert space spanned by qWFs will be com-
+of a very large supercell, the BZ shrinks to the Γ-point           posed by pairs of states that are quasi-TR symmetric,
+only, so just one diagonalization of the Hamiltonian is            we need to consider only one of these states when build-
+                            PNocc                                  ing the projectors P1,2 . Finally, the PBC LZ2M can be
+required. Defining PΓ = n=1        |unΓ ⟩ ⟨unΓ | the ground-
+                                                                   defined as:
+state projector, we can diagonalize the projected spin
+operator (PΓ Sz PΓ ) |ϕλΓ ⟩ = sλ |ϕλΓ ⟩, and construct the                                  C1 (r) − C2 (r)
+                                                                                  ∆(r) =                      mod 2.          (25)
+dual states for each spin sector:                                                                  2
+                     X
+                             −1
+       |ϕ̃λbj ⟩ =           Sµλ (bj )e−ibj ·r |ϕµΓ ⟩    (19)
+                 µ:sign(sµ )=σ                                                              V.   METHODS
+
+where σ = ± identifies the spin sector with overlap ma-                               A.      Kane-Mele model
+trix Sµλ (bj ) = ⟨ϕµΓ |e−ibj ·r |ϕλΓ ⟩. Then, we define the
+projectors
+                       X                                              We validate our approach through numerical simula-
+           Pb±j =                |ϕ̃λbj ⟩ ⟨ϕ̃λbj | ,   (20)        tions on the Kane-Mele model [2, 3], a tight-binding
+                      λ:sign(sλ )=±                                model of spinful electrons hopping on a honeycomb lat-
+                                                                   tice, described by the Hamiltonian:
+that can be used to introduce two individual LCMs for
+                                                                                (−1)τi c†i ci + t
+                                                                                                  X †
+                                                                                                                  νij c†i σz cj
+                                                                            X                                   X
+positive and negative eigenvalues of PΓ Sz PΓ :                     H=∆                            ci cj + iλSO
+                  1                                                           i                    ⟨ij⟩            ⟨⟨ij⟩⟩
+   (asym)
+  C±        (r) = − Im ⟨r|[Pb±1 , Pb±2 ]PΓ± |r⟩ ,           (21)                  X †
+                 2π                                                         + iλR  ci (e⟨ij⟩ · σ)cj + h.c.                    (26)
+   (sym)         1       
+  C±     (r) = − Im ⟨r| [Pb±1 , Pb±2 ] + [P−b  ±       ±
+                                                    , P−b  ]−                        ⟨ij⟩
+                8π                                1      2
+
+                                                                   where c†i = (c†i↑ , c†i↓ ) and sums on spin indices are implied,
+                                         
+              ±
+          − [P−b  , Pb±2 ] − [Pb±1 , P−b
+                                      ±
+                                          ] PΓ± |r⟩ ,      (22)
+                1                       2                          with the convention that if no spin matrices appear, they
+                                                                                                                               7
+
+are contracted over the identity. In Equation 26, t is the         As discussed in Sec. III B, in order to have well-defined
+nearest-neighbor hopping amplitude, and ∆ is a stag-               local Z2 topological invariants based on TR symmetry,
+gered on-site potential, depending on the sublattice iden-         we split the occupied manifold in two TR-conjugate sub-
+tified by τi ∈ {0, 1}. In the following, we will set t = 1.        manifolds and select trial projection orbitals |gn ⟩ that
+The parameter λSO is the intensity of the diagonal spin-           break TR symmetry and minimize the spillage γ between
+orbit coupling, introduced as a complex hopping between            PΘ = P1 + ΘP1 Θ−1 and the ground-state projector P. If
+second nearest-neighbors, where νij = sign(d1 × d2 )z              we were to choose trial projections localized on just one
+accounts for the direction of the hopping and d1,2 are             site of the cell, the information on the other basis site
+unit vectors connecting the site i to its second nearest-          would be missing since TR symmetry acts only on spin
+neighbor j. Finally, λR is the amplitude of the Rashba             in real space, resulting in a large value of γ. Nonethe-
+term, which couples the two spin sectors and breaks Sz             less, the resulting WFs can still have contributions from
+symmetry. Here σ = (σx , σy , σz ) is the vector of Pauli          all the lattice sites, even though the trial projections are
+matrices, and e⟨ij⟩ = d⟨ij⟩ × ẑ where d⟨ij⟩ is the unit           localized on different sites [58]. To minimize the spillage,
+vector along the direction connecting site i to site j.            we observe that it is convenient to choose initial projec-
+                                                                   tions with contributions from all sites. In the Kane-Mele
+                                                                   model, this can be obtained, for instance, with these two
+                        B.   Smearing                              choices:
+                                                                             (
+                                                                               |g1 (R)⟩ = √12 (|R, A, +⟩ + |R, B, +⟩)
+   When dealing with non-homogeneous systems, such as                  (Pr1)                                               (29)
+superlattices, the presence of metallic interfaces may af-                     |g2 (R)⟩ = √12 (|R, A, −⟩ − |R, B, −⟩)
+fect the convergence of the topological marker. Hence,                       (
+                                                                               |g1 (R)⟩ = √12 (|R, A, +⟩ + |R, B, −⟩)
+we introduce smearing similarly to what has been done                  (Pr2)                                               (30)
+in Ref. [48] to study the intrinsic geometrical part of the                    |g2 (R)⟩ = √12 (|R, A, −⟩ + |R, B, +⟩)
+local anomalous Hall conductivity in metals. However,
+                                                                   where |R, A, σ⟩ is a normalized δ-like orbital with spin σ
+since the states appearing in the projectors Pbσj are lin-
+                                                                   centered on site A in the primitive cell defined by R. Here
+ear combinations of the eigenstates of the Hamiltonian,            we use the lattice vectors R of the pristine system defined
+we cannot simply use a Fermi-Dirac distribution as pre-            in the primitive cell, as opposed to the lattice vectors
+viously done for QAHIs in Refs. [35, 48]. Hence, we                of the supercell R̃. Indeed, the supercell on which the
+introduce a weight cσnbj for each state |ṽnb   σ
+                                                   j
+                                                     ⟩ (the par-   boundary conditions are imposed is constructed through
+allel transported vectors of each subspace, so σ = ± or            repetitions of its pristine primitive cell. Then, we can
+σ = 1, 2) that measures its spillage with the ground-state         choose the trial projections just in the primitive cell and
+projector PΓ :                                                     replicate the choice across the whole supercell, even in
+                                                                   the disordered case. The spillage between the projectors
+           cσnbj = Tr PΓ |ṽnb
+                            σ        σ
+                     
+                                 ⟩⟨ṽnb  |
+                   X
+                               j       j                           P and PΘ can then be measured as a function of the
+                                              σ
+                 =    f (ϵm , Ts , µ)|⟨umΓ |ṽnbj
+                                                  ⟩|2 ,     (27)   linear size of the system L. The results we obtain are
+                    m                                              reported in Fig. 1, where we compare the spillage [59] of
+                                                                   the projections defined in Eqs. 29 and 30 with the choice
+where f (ϵm , Ts , µ) is the Fermi-Dirac distribution at           made in Ref. [6], that is
+smearing temperature Ts and with chemical potential                          (
+µ, evaluated for the m-th eigenstate of the Hamiltonian                       |g1 (R)⟩ = √12 (|R, A, +⟩ + |R, A, −⟩)
+HΓ |umΓ ⟩ = ϵm |umΓ ⟩. We further improve the conver-                 (Pr3)                                             . (31)
+                                                                              |g2 (R)⟩ = √12 (|R, B, +⟩ − |R, B, −⟩)
+gence by imposing a cutoff fc on the Fermi-Dirac distri-
+bution to discard the empty states with very small occu-            The spillage between the projections (Pr3) defined in
+pations f (ϵm , Ts , µ) < fc , where we set fc = 0.1. Finally,     Eq. 31 is small compared to other choices, we but since
+the projectors with smearing can be written as                     the trial functions are localized on a single site, the
+                        X                                          marker we can compute with those functions will not
+               Pbσj =      cσnbj |ṽnb
+                                    σ
+                                      j
+                                            σ
+                                        ⟩⟨ṽnbj
+                                                |.       (28)      work. The projections (Pr2) [Eq. 30] are localized on
+                        n                                          both sites but are characterized by a large spillage, so
+                                                                   we can expect a poor convergence of the marker with
+                                                                   this choice. Overall, the best choice is (Pr1) [Eq. 29]
+VI.    NUMERICAL RESULTS AND DISCUSSION                            and it will be used from now on when referring to the
+                                                                   LZ2Ms: These orbitals mix all sites resulting in the small-
+  A.   Choosing the trial projections for the LZ2M                 est spillage. In general, to identify suitable initial projec-
+                                                                   tions, one could first compute the MLWFs and then mix
+   The topological obstruction arising when C ̸= 0 mani-           them to minimize the spillage. When smearing is intro-
+fests in the overlap matrix between projected states (the          duced in the calculation of the LZ2Ms, additional trial
+S matrix of Eq. 15), that becomes singular somewhere               projections must be chosen to account for the partly oc-
+in the BZ [5], prohibiting the construction of MLWFs.              cupied states. This case is analogous to that of a metal,
+                                                                                                                                                 8
+
+                                                                                      and then taking half of them. This can be clearly seen
+                                                                                      in Fig. 4, that shows, for the topological phase, the de-
+                       0.4                                                            cay of the matrix elements of the projectors used in the
+  γ = 2N1occ Tr[(P − PΘ)2 ]
+
+
+                                                                                      OBC LSCM and OBC LZ2M in the bulk of a 100 × 30
+                       0.3                                                            crystallite with 6000 sites. We could not determine un-
+                                       (Pr1) PBC                 (Pr1) OBC
+                                       (Pr2) PBC                 (Pr2) OBC
+                                                                                      ambiguously whether this long tail is exponential or poly-
+                       0.2             (Pr3) PBC Ref. [6]        (Pr3) OBC Ref. [6]   nomial, that would require studying much larger systems.
+                                                                                      In the trivial phase, the projectors are always exponen-
+                       0.1                                                            tially localized, resulting in an exponential convergence
+                                                                                      of the markers. We note that the LZ2M converges to
+                       0.0                                                            the expected value despite its projectors not being fully
+                              0   5    10        15         20    25       30         exponentially localized. Indeed, since the invariant is a
+                                            Lattice size L × L                        topological and a ground-state quantity, we only need
+                                                                                      the information about the local electronic structure to
+                                                                                      retrieve its local value in real space. For this reason, we
+FIG. 1. Spillage between the ground-state projector P and                             argue that the projectors need to be exponentially lo-
+PΘ = P1 + ΘP1 Θ−1 , where P1 is constructed with half of the
+                                                                                      calized only at short distances, while the tail behavior
+quasi Wannier functions, as a function of the supercell size for
+both open (OBC) and periodic (PBC) boundary conditions,
+                                                                                      determines other aspects such as the convergence of the
+and for different choices of trial functions as discussed in the                      formula with the system size. We attribute the slower
+text.                                                                                 decay of the tails of P1 to be a side effect of minimiz-
+                                                                                      ing the spillage γ [Eq. 18] between the projectors P and
+                                                                                      PΘ . Because of the topological obstruction, we cannot
+where WFs can be computed via a “disentanglement”                                     obtain TR symmetric and exponentially localized WFs.
+procedure [61]. However, it looks unclear how the ad-                                 In our procedure, we require that the sum of the projec-
+ditional projections should be chosen, and how the pro-                               tor computed with half qWFs and their TR partners is
+cedure should be carried out to ensure the requirements                               as close as possible to the initial projector, still perform-
+described before. Indeed, one would have to localize the                              ing a minimal breaking of TR symmetry. That, in turn,
+trial functions in an arbitrary unit cell in such a way as                            results in an almost TR symmetric gauge that leads to
+to preserve the exponential localization of the projectors                            qWFs that cannot be truly exponentially localized be-
+and to make the marker independent with respect to the                                cause of the topological obstruction. In other words, we
+specific cell the trial functions are localized in. Hence, the                        are looking for a compromise between the breaking of TR
+construction of a LZ2M with smearing is left to further                               symmetry and the exponential localization of WFs that
+investigation.                                                                        allows us to probe the local Z2 topology in real space.
+                                                                                      As a result, the spread [Eq. 16] of qWFs displays a very
+                                                                                      slow divergence with the system size, and the long-tail
+                                      B.    Convergence                               behavior of P1 could be attributed to the fact that the
+                                                                                      qWFs we obtain are not truly exponentially localized.
+   In Figure 2, we show the convergence of the LSCMs
+and LZ2Ms, evaluated on a unit cell (two sites) in the cen-
+ter of the supercell, as a function of the supercell linear                                           C.   Disordered systems
+size L in both OBCs and PBCs. For the PBC markers, we
+report in Fig. 2 the convergence of the symmetric formu-                                 In Figure 5, we show that both the LSCM and LZ2M
+lations only, as they converge faster than the asymmet-                               are capable of charting the local topology also in pres-
+ric ones. The comparison between the PBC asymmetric                                   ence disorder. In particular, we consider Anderson dis-
+and symmetric formulas is reported in Fig. 3, that shows                              order through a random on-site potential uniformly dis-
+clearly the faster convergence of the symmetric formula-                              tributed in the interval [−W/2, W/2], where W is the
+tions. The convergence of the PBC markers is polynomial                               disorder amplitude [62]. For weak disorder the topology
+in both the trivial and the topological phases since the                              of the system is expected to survive, hence we consider a
+error is dominated by the approximation of the deriva-                                Kane-Mele model in its topological phase (∆/λSO = 0.5,
+tive with finite differences in the single-point limit [35].                          λR /λSO = 1) with W = 2, for which the single-point
+Within OBCs, we can see that the convergence of the                                   spin-Chern number [12] predicts a topological phase. As
+LSCM is always exponential (due to the exponential lo-                                shown in Fig. 5, the PBC markers display the expected
+calization of the projectors P± [42]), while the LZ2M                                 local topology aside from small fluctuations due to the
+converges exponentially in the trivial phase but polyno-                              disordered environment. To account for the lack of peri-
+mially in the topological one. This different behavior is                             odicity, a macroscopic average on a radius R = 3 (in units
+due to the fact that, in the topological phase, the pro-                              of the lattice parameter) has been employed. Specifically,
+jector is exponentially localized only at short distances:                            the absence of boundaries of the supercell is evident when
+Here, the projector is computed by first obtaining qWFs                               comparing the PBC markers with the OBC ones. In fact,
+                                                                                                                                                            9
+
+
+
+        1.00                                                                            1.00
+
+
+        0.98
+                                                                                        0.98
+
+        0.96                                      Infinite bulk limit                                                        Infinite bulk limit
+                                                  PBC LSCM (symmetric)                                                       PBC LSCM (symmetric)
+                                                  PBC LZ2M (symmetric)                                                       PBC LZ2M (symmetric)
+    ν
+
+
+
+
+                                                                                    ν
+                                                                                        0.96
+        0.94                                      OBC LSCM                                                                   PBC LSCM (asymmetric)
+                                                  OBC LZ2M                                                                   PBC LZ2M (asymmetric)
+                                                                                                                            10−1
+
+                                             10−4                                                                           10−2
+        0.92                                                                            0.94
+                                     |ν − ν∞ |
+
+
+
+
+                                                                                                                     |ν − ν∞ |
+                                                                                                                            10−3
+                                                  −8
+                                             10
+                                                                                                                            10−4
+                                            10−12                                                                           10−5
+        0.90
+                                                       10       20   30 40 50           0.92                                       10       20   30 40 50
+                                                       Lattice size L × L                                                          Lattice size L × L
+
+               10       20          30                 40            50                         10      20          30             40            50
+                             Lattice size L × L                                                              Lattice size L × L
+      0.006                                                                           0.006
+                                                                                                                            10−3
+                                             10−4
+                                     |ν − ν∞ |
+
+
+
+
+                                                                                                                     |ν − ν∞ |
+                                             10−7                                                                           10−4
+
+                                            10−10
+                                                                                                                            10−5
+                                            10−13
+      0.004                                                                           0.004                                 10−6
+
+                                                       10       20   30 40 50                                                      10       20   30 40 50
+                                                       Lattice size L × L                                                          Lattice size L × L
+                                                  Infinite bulk limit                                                        Infinite bulk limit
+                                                  PBC LSCM (symmetric)                                                       PBC LSCM (symmetric)
+      0.002                                       PBC LZ2M (symmetric)                0.002                                  PBC LZ2M (symmetric)
+  ν
+
+
+
+
+                                                                                  ν
+
+                                                  OBC LSCM                                                                   PBC LSCM (asymmetric)
+                                                  OBC LZ2M                                                                   PBC LZ2M (asymmetric)
+
+
+      0.000                                                                           0.000
+
+
+
+
+      -0.002                                                                          -0.002
+               10       20          30                 40            50                         10      20          30             40            50
+                             Lattice size L × L                                                              Lattice size L × L
+
+
+FIG. 2. Convergence of the local topological markers in pe-                     FIG. 3. Convergence of the symmetric and asymmetric local
+riodic (PBC) and open boundary conditions (OBC) for the                         spin-Chern markers (LSCM) and local Z2 markers (LZ2M) in
+topological (top) and trivial (bottom) phases. The conver-                      periodic boundary conditions (PBC) for the topological (top)
+gence of the local spin-Chern marker (LSCM) is exponential                      and trivial (bottom) phases. The symmetric formulas con-
+in OBCs, and polynomial in PBCs. The local Z2 marker                            verge faster than the asymmetric ones, and the convergence
+(LZ2M) convergence is always polynomial except for the triv-                    of all markers is polynomial.
+ial phase in OBCs where it is exponential.
+
+                                                                                         D.    Heterojunctions and superlattices
+
+
+                                                                                  Last, we validate and compare the performance of the
+                                                                                local markers on trivial/topological heterojunctions and
+despite showing the same behavior inside the bulk of the                        superlattices. We compute the LSCM in both OBCs
+system, near the boundary the PBC markers are contin-                           [Fig. 6] and PBCs [Fig. 7] for a 6000-site supercell made
+uous while the OBC ones are not, due to the presence of                         of alternating topological (∆/λSO = 0.5) and trivial
+metallic edge states. Within OBCs the individual LCMs                           (∆/λSO = 8) regions. Both the LSCM and LZ2M are
+C± (r) are such that their trace over the whole sample                          able to chart the local topology, however, since the LSCM
+vanishes, so the edge states contribution to the marker                         demonstrates a better convergence and performance with
+should compensate the non-trivial bulk topology. When                           respect to the LZ2M we use only the former to discuss
+computing the LSCM and LZ2M, since they are defined                             the numerical results for inhomogeneous systems. The
+only modulo 2, the divergence of the individual LCMs                            presence of metallic edge states is highlighted in OBCs
+results in a discontinuous behavior of the Z2 markers.                          both at the edge of the supercell and at the interface be-
+                                                                                                                                     10
+
+
+                                 Topological phase                             1.6       PBC LSCM        OBC LSCM
+                100
+                                                          P1 OBC LZ2M                    PBC LZ2M        OBC LZ2M
+            10−2                                          P+ OBC LSCM          1.4
+
+            10−4                                                               1.2
+                 −6
+            10
+  |hr0 |P|ri|
+
+
+
+
+                                                                               1.0
+
+
+
+
+                                                                           ν
+            10−8
+                                                                               0.8
+          10−10
+                                                                               0.6
+          10−12
+                                                                               0.4
+          10−14
+                                                                               0.2
+                      50   55   60     65           70   75   80    85
+                                               0
+                                        |r − r |                                     0       10     20         30      40       50
+                                                                                                           x
+                                     Trivial phase
+            10−1                                          P1 OBC LZ2M
+                                                          P+ OBC LSCM    FIG. 5. Profile along the x direction of the local spin-Chern
+                 −3                                                      (LSCM) and local Z2 (LZ2M) markers with both open (OBC)
+            10
+                                                                         and periodic (PBC) boundary conditions for the Kane-Mele
+            10−5                                                         model in the topological phase and in presence of Anderson
+  |hr0 |P|ri|
+
+
+
+
+                                                                         disorder (W = 2). First, a macroscopic average is performed
+            10−7                                                         over a radius R = 3 and then over the two sites of the pris-
+                                                                         tine lattice. The topological phase persists for sufficiently
+            10−9
+                                                                         small disorder amplitudes, as confirmed by all markers. The
+          10−11                                                          discontinuous behavior of the OBC markers near the edges is
+                                                                         due to the presence of metallic edge states, which are absent
+          10−13                                                          in PBCs.
+
+                      50   55   60     65           70   75   80    85
+                                        |r − r0 |
+                                                                                VII.     SUMMARY AND CONCLUSIONS
+
+FIG. 4. Matrix elements of the projectors P+ used in the lo-                We developed a framework to probe the local Z2 topol-
+cal spin Chern marker (LSCM) and P1 of the local Z2 marker               ogy of 2D TR-symmetric systems in real space for both fi-
+(LZ2M) inside the bulk as a function of the distance between             nite samples in OBCs and extended systems in PBCs, by
+lattice sites in the topological (ν = 1, top) and trivial (ν = 0,        introducing a number of topological markers. All mark-
+bottom) phases in open boundary conditions (OBC). The
+                                                                         ers are based on the fundamental idea that the occupied
+semilogarithmic scale highlights the exponential localization
+of the projectors, while the LZ2M projectors are exponen-                manifold can be split into two TR-conjugate subspaces,
+tially localized at short distances and their tail decays more           where a corresponding individual local Chern marker can
+slowly in the topological phase. Nonetheless, P1,2 are local-            then be calculated. In the first approach (LSCM), the
+ized enough to return the correct topological invariant of the           separation is performed by diagonalizing the projected
+system. In the trivial phase, both projectors are exponen-               spin operator PSz P, as its spectrum is generally made
+tially localized.                                                        of two sectors of positive and negative eigenvalues sep-
+                                                                         arated by a gap, in the spirit of Prodan’s spin-Chern
+                                                                         number [42]. Hence, the LSCM depends on the existence
+                                                                         of such spectral gap, which is not an essential property of
+tween the subsystems, while in PBCs they appear only at                  QSHIs but seems to be usually satisfied also in presence
+the interface, as the superlattice is periodic in both direc-            of rather strong Rashba SOC: We never observe such a
+tions. In the calculation of the PBC marker, we set the                  gap closure for the PSz P spectrum in our simulations on
+smearing temperature Ts = 0.05 to improve convergence.                   the Kane-Mele model, at least as long as the Hamiltonian
+Within OBCs, the Bianco-Resta LCM [21] vanishes when                     gap remains finite. However, as discussed in Ref. [33], 3D
+the trace is taken over the entire sample, and the topo-                 strong topological insulators are characterized by a van-
+logical marker evaluated at the metallic edges (where the                ishing gap of PSP for all choices of the spin operator
+Chern number is ill-defined) diverges. For QSHIs, the                    S. Notably, the LSCM could in principle be used also
+same holds for the local individual Chern markers C± (r).                for systems with a small breaking of TR symmetry, as in
+Here, since the local spin-Chern marker is well-defined                  the TR-symmetry-broken quantum spin Hall effect [63],
+only modulo 2, the divergence of C± (r) results in the                   provided that the aforementioned spectral gap remains fi-
+discontinuity observed at the interfaces between regions                 nite, since the construction does not explicitly make use
+with different topology.                                                 of TR.
+                                                                                                                               11
+
+
+                               √                                                                                        1
+      25                      2 3
+
+
+
+
+                                     λR /λSO
+                              0
+      20                        √
+                              −2 3
+             √         √
+           −3 3   0   3 3
+      15          ∆/λSO
+
+
+
+
+                                                                                                                            ν(r)
+  y
+
+
+
+
+      10
+
+       5
+
+       0
+                                                                                                                        0
+                          0                    20   40             60               80               100
+                                                            x
+
+
+FIG. 6. Local spin-Chern marker for a 6000-site heterojunction of the Kane-Mele model made of topological and trivial regions
+in open boundary conditions. The left and right regions are topological (ν = 1) while the center is trivial (ν = 0). One-
+dimensional metallic edge states surround the topological regions, separating different topological phases. The inset displays
+the model parameters used for the trivial (gray) and topological (blue) regions.
+
+
+                               √                                                                                        1
+      25                      2 3
+                                     λR /λSO
+
+
+
+
+                              0
+      20                        √
+                              −2 3
+             √         √
+           −3 3   0   3 3
+      15          ∆/λSO
+
+
+
+
+                                                                                                                            ν(r)
+  y
+
+
+
+
+      10
+
+       5
+
+       0
+                                                                                                                        0
+                          0                    20   40             60               80               100
+                                                            x
+
+
+FIG. 7. Local spin-Chern marker for a 6000-site superlattice of the Kane-Mele model made of topological and trivial stripes
+in periodic boundary conditions. The left and right regions are topological (ν = 1) while the center is trivial (ν = 0), and
+one-dimensional metallic channels separate the regions with different Z2 invariants. The inset displays the model parameters
+used for the trivial (gray) and topological (blue) regions.
+
+
+   Conceptually the extra condition required by Prodan’s         and its TR-conjugate, i.e., P1 + ΘP1 Θ−1 . These qWFs
+spin Chern number is not completely satisfactory, so we          are still exponentially localized at short distances but ex-
+introduced another marker (LZ2M) that is entirely based          hibit a slower asymptotic decay.
+on TR symmetry and does not make use of the spin op-                Once the TR-conjugate subspaces and their corre-
+erator. Crucially, Ref. [46] remarked that exponentially         sponding well-localized projectors are found, we calculate
+localized projectors on each half of the manifold guaran-        local Z2 markers through local individual Chern mark-
+tee to yield an integer local Chern number. While this           ers on the two subspaces, both in OBCs [21, 48] and
+is guaranteed in the LSCM procedure by the existence             PBCs [35]. Numerical simulations on the Kane-Mele
+of a spectral gap for PSz P, this is not the case if TR is       model show that all these markers agree with each other
+used to split the occupied manifold in two TR-conjugate          and are able to probe the local topology also for disor-
+halves.                                                          dered systems as well as topological/trivial heterojunc-
+  Hence, we find unitary rotations to obtain expo-               tions and superlattices.
+nentially localized projectors onto the two subspaces,              An implementation of all our markers is available in
+through the WF construction. However, QSHI do not ad-            the StraWBerryPy Python package [64], which is part
+mit a TR-symmetric smooth gauge, hence exponentially-            of the Wannier function software ecosystem [65] and
+localized WFs cannot be obtained as TR-conjugate cou-            is interfaced to popular tight-binding engines such as
+ples. Still, the calculation of the Z2 invariant through         TBmodels [66, 67] and PythTB [68].
+the difference modulo two of individual Chern num-                  The LSCM is computationally easier to implement and
+ber requires a partition in two TR-conjugate subspaces.          use, essentially avoiding the need of qWFs or any other
+We solve the conundrum by constructing “quasi” WFs               localization procedure, so we suggest using that method
+(qWFs) that minimize the spillage between the ground-            in applications whenever possible. Otherwise, if the sys-
+state projector P and the sum of one TR-split projector          tem of interest is such that the projected spin operator
+                                                                                                                               12
+
+does not have a finite gap, the LZ2M approach can always          crystals [14, 72]; in all cases even if TR symmetry or
+be used (if TR symmetry holds). We emphasize that the             the perpendicular component of the spin, Sz , are not
+construction of the LZ2Ms is more delicate, as an ac-             conserved. Moreover, the construction of our markers
+curate choice of the initial projection orbitals is needed        could potentially also be applied to the study of topo-
+to obtain well-behaved topological markers. The spe-              logical phonons [73] and mechanical-optical setups [74],
+cific projections we selected in our numerical experiments        where the dynamical matrix plays a role similar to the
+might be improved, and the choice is not universal, de-           electronic Hamiltonian.
+pending on the details of the system and its topological
+phase.
+   Finally, it is worth remarking that the domains of ap-                     VIII.   ACKNOWLEDGMENTS
+plications for the LSCM and LZ2M markers mostly over-
+lap, but there are some cases covered only by one of the             N.B. acknowledges a scholarship from the Depart-
+two approaches: The LSCM requires a finite gap in the             ment of Physics of the University of Trieste and Col-
+projected spin operator, but could in principle be used           legio Universitario “Luciano Fonda”; A.M. acknowledges
+also if TR symmetry is broken; on the contrary, the LZ2M          that this study was partially funded by the European
+approach necessitates TR symmetry, but can be used also           Union - NextGenerationEU, through the ICSC – Cen-
+if the projected spin operator is gapless.                        tro Nazionale di Ricerca in High Performance Com-
+   Our local markers are based on the ground-state elec-          puting, Big Data and Quantum Computing – (CUP
+tron distribution only, hence being very suited to large-         J93C22000540006, PNRR Investimento M4.C2.1.4). The
+scale ab initio electronic structure simulations of non-          views and opinions expressed are solely those of the au-
+crystalline systems, not only under Anderson disor-               thors and do not necessarily reflect those of the European
+der but also in presence of defects or interfaces, and            Union, nor can the European Union be held responsible
+for amorphous topological materials [69–71] or quasi-             for them.
+
+
+
+
+ [1] F. D. M. Haldane, Model for a Quantum Hall Effect with-      [12] R. Favata and A. Marrazzo, Single-point spin Chern
+     out Landau Levels: Condensed-Matter Realization of the            number in a supercell framework, Electronic Structure
+     “Parity Anomaly”, Phys. Rev. Lett. 61, 2015 (1988).               5, 014005 (2023).
+ [2] C. L. Kane and E. J. Mele, Z2 Topological Order and the      [13] T. A. Loring and M. B. Hastings, Disordered topological
+     Quantum Spin Hall Effect, Phys. Rev. Lett. 95, 146802             insulators via C ∗ -algebras, Europhysics Letters 92, 67004
+     (2005).                                                           (2011).
+ [3] C. L. Kane and E. J. Mele, Quantum Spin Hall Effect in       [14] H. Huang and F. Liu, Theory of spin Bott index for quan-
+     Graphene, Phys. Rev. Lett. 95, 226801 (2005).                     tum spin Hall states in nonperiodic systems, Phys. Rev.
+ [4] B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, Quan-              B 98, 125130 (2018).
+     tum Spin Hall Effect and Topological Phase Transition        [15] D. Muñoz-Segovia, P. Corbae, D. Varjas, F. Hellman,
+     in HgTe Quantum Wells, Science 314, 1757 (2006).                  S. M. Griffin, and A. G. Grushin, Structural spillage:
+ [5] T. Thonhauser and D. Vanderbilt, Insulator/Chern-                 An efficient method to identify noncrystalline topolog-
+     insulator transition in the Haldane model, Phys. Rev.             ical materials, Phys. Rev. Res. 5, L042011 (2023).
+     B 74, 235111 (2006).                                         [16] I. C. Fulga, F. Hassler, and A. R. Akhmerov, Scatter-
+ [6] A. A. Soluyanov and D. Vanderbilt, Wannier representa-            ing theory of topological insulators and superconductors,
+     tion of Z2 topological insulators, Phys. Rev. B 83, 035108        Phys. Rev. B 85, 165409 (2012).
+     (2011).                                                      [17] I. C. Fulga, F. Hassler, A. R. Akhmerov, and C. W. J.
+ [7] L. Fu and C. L. Kane, Time reversal polarization and a            Beenakker, Scattering formula for the topological quan-
+     Z2 adiabatic spin pump, Phys. Rev. B 74, 195312 (2006).           tum number of a disordered multimode wire, Phys. Rev.
+ [8] L. Fu and C. L. Kane, Topological insulators with inver-          B 83, 155429 (2011).
+     sion symmetry, Phys. Rev. B 76, 045302 (2007).               [18] J. E. Avron, R. Seiler, and B. Simon, Charge deficiency,
+ [9] R. Yu, X. L. Qi, A. Bernevig, Z. Fang, and X. Dai, Equiv-         charge transport and comparison of dimensions, Commu-
+     alent expression of Z2 topological invariant for band in-         nications in Mathematical Physics 159, 399 (1994).
+     sulators using the non-Abelian Berry connection, Phys.       [19] J. Avron, R. Seiler, and B. Simon, The Index of a Pair
+     Rev. B 84, 075119 (2011).                                         of Projections, Journal of Functional Analysis 120, 220
+[10] D. Gresch, G. Autès, O. V. Yazyev, M. Troyer, D. Van-            (1994).
+     derbilt, B. A. Bernevig, and A. A. Soluyanov, Z2Pack:        [20] H. Katsura and T. Koma, The noncommutative index
+     Numerical implementation of hybrid Wannier centers                theorem and the periodic table for disordered topological
+     for identifying topological materials, Phys. Rev. B 95,           insulators and superconductors, Journal of Mathematical
+     075146 (2017).                                                    Physics 59, 031903 (2018).
+[11] D. Ceresoli and R. Resta, Orbital magnetization and          [21] R. Bianco and R. Resta, Mapping topological order in
+     Chern number in a supercell framework: Single k-point             coordinate space, Phys. Rev. B 84, 241106(R) (2011).
+     formula, Phys. Rev. B 76, 012405 (2007).                     [22] D. Varjas, M. Fruchart, A. R. Akhmerov, and P. M.
+                                                                       Perez-Piskunow, Computation of topological phase dia-
+                                                                                                                                13
+
+     gram of disordered Pb1−x Snx Te using the kernel polyno-          12, 065010 (2010).
+     mial method, Phys. Rev. Res. 2, 013229 (2020).               [41] W. Chen, Universal topological marker, Phys. Rev. B
+[23] U. Gebert, B. Irsigler, and W. Hofstetter, Local Chern            107, 045111 (2023).
+     marker of smoothly confined Hofstadter fermions, Phys.       [42] E. Prodan, Robustness of the spin-Chern number, Phys.
+     Rev. A 101, 063606 (2020).                                        Rev. B 80, 125327 (2009).
+[24] L. Ulčakar, J. Mravlje, and T. c. v. Rejec, Kibble-Zurek    [43] A. A. Soluyanov and D. Vanderbilt, Computing topolog-
+     Behavior in Disordered Chern Insulators, Phys. Rev.               ical invariants without inversion symmetry, Phys. Rev. B
+     Lett. 125, 216601 (2020).                                         83, 235401 (2011).
+[25] P. d’Ornellas, R. Barnett, and D. K. K. Lee, Quantized       [44] A. A. Soluyanov and D. Vanderbilt, Smooth gauge for
+     bulk conductivity as a local Chern marker, Phys. Rev. B           topological insulators, Phys. Rev. B 85, 115415 (2012).
+     106, 155124 (2022).                                          [45] J. Bellissard, A. van Elst, and H. Schulz-Baldes, The non-
+[26] J. Mildner, M. D. Caio, G. Möller, N. R. Cooper, and             commutative geometry of the quantum Hall effect, Jour-
+     M. J. Bhaseen, Topological Phase Transitions in the Dis-          nal of Mathematical Physics 35, 5373 (1994).
+     ordered Haldane Model (2023), arXiv:2312.16689 [cond-        [46] E. Prodan, Non-commutative tools for topological insu-
+     mat.str-el].                                                      lators, New Journal of Physics 12, 065003 (2010).
+[27] Q. Marsal, D. Varjas, and A. G. Grushin, Topological         [47] A. A. Soluyanov, Topological aspects of band the-
+     Weaire-Thorpe models of amorphous matter, Proceed-                ory, PhD thesis, Rutgers University 10.7282/T3N0159G
+     ings of the National Academy of Sciences 117, 30260               (2012).
+     (2020).                                                      [48] A. Marrazzo and R. Resta, Locality of the anomalous
+[28] W. Kohn, Density Functional and Density Matrix                    Hall conductivity, Phys. Rev. B 95, 121114(R) (2017).
+     Method Scaling Linearly with the Number of Atoms,            [49] T. Rauch, T. Olsen, D. Vanderbilt, and I. Souza, Ge-
+     Phys. Rev. Lett. 76, 3168 (1996).                                 ometric and nongeometric contributions to the surface
+[29] B. D. Assunção, G. J. Ferreira, and C. H. Lewenkopf,            anomalous Hall conductivity, Phys. Rev. B 98, 115108
+     Phase transitions and scale invariance in topological An-         (2018).
+     derson insulators, Phys. Rev. B 109, L201102 (2024).         [50] R. Resta, Quantum-Mechanical Position Operator in Ex-
+[30] W. Chen, Optical absorption measurement of spin Berry             tended Systems, Phys. Rev. Lett. 80, 1800 (1998).
+     curvature and spin Chern marker, Journal of Physics:         [51] I. Souza, J. Íñiguez, and D. Vanderbilt, Dynamics
+     Condensed Matter 35, 155601 (2023).                               of Berry-phase polarization in time-dependent electric
+[31] Z. Li and R. S. K. Mong, Local formula for the Z2 invari-         fields, Phys. Rev. B 69, 085106 (2004).
+     ant of topological insulators, Phys. Rev. B 100, 205101      [52] J. C. Y. Teo, L. Fu, and C. L. Kane, Surface states
+     (2019).                                                           and topological invariants in three-dimensional topolog-
+[32] A. Cerjan, T. A. Loring, and H. Schulz-Baldes, Local              ical insulators: Application to Bi1−x Sbx , Phys. Rev. B
+     Markers for Crystalline Topology, Phys. Rev. Lett. 132,           78, 045426 (2008).
+     073803 (2024).                                               [53] T. Rauch, F. Töpler, and I. Mertig, Local spin Hall con-
+[33] K.-S. Lin, G. Palumbo, Z. Guo, Y. Hwang, J. Blackburn,            ductivity, Phys. Rev. B 101, 064206 (2020).
+     D. P. Shoemaker, F. Mahmood, Z. Wang, G. A. Fiete,           [54] T. Rauch, T. Olsen, D. Vanderbilt, and I. Souza, Mirror
+     B. J. Wieder, and B. Bradlyn, Spin-resolved topology              Chern numbers in the hybrid Wannier representation,
+     and partial axion angles in three-dimensional insulators,         Phys. Rev. B 103, 195103 (2021).
+     Nature Communications 15, 550 (2024).                        [55] N. Marzari and D. Vanderbilt, Maximally localized gen-
+[34] S.-W. Kim, S. Jeon, M. J. Park, and Y. Kim, Replica               eralized Wannier functions for composite energy bands,
+     higher-order topology of Hofstadter butterflies in twisted        Phys. Rev. B 56, 12847 (1997).
+     bilayer graphene, npj Computational Materials 9, 152         [56] N. Marzari, A. A. Mostofi, J. R. Yates, I. Souza, and
+     (2023).                                                           D. Vanderbilt, Maximally localized Wannier functions:
+[35] N. Baù and A. Marrazzo, Local Chern marker for periodic          Theory and applications, Rev. Mod. Phys. 84, 1419
+     systems, Phys. Rev. B 109, 014206 (2024).                         (2012).
+[36] O. Pozo, C. Repellin, and A. G. Grushin, Quantization        [57] S. F. Boys, Construction of Some Molecular Orbitals
+     in Chiral Higher Order Topological Insulators: Circu-             to Be Approximately Invariant for Changes from One
+     lar Dichroism and Local Chern Marker, Phys. Rev. Lett.            Molecule to Another, Rev. Mod. Phys. 32, 296 (1960).
+     123, 247401 (2019).                                          [58] G. W. Winkler, A. A. Soluyanov, and M. Troyer, Smooth
+[37] Q. Marsal, D. Varjas, and A. G. Grushin, Topological              gauge and Wannier functions for topological band struc-
+     Weaire-Thorpe models of amorphous matter, Proceed-                tures in arbitrary dimensions, Phys. Rev. B 93, 035453
+     ings of the National Academy of Sciences 117, 30260               (2016).
+     (2020).                                                      [59] The spillage can be interpreted as a measure of how
+[38] P. Molignini, B. Lapierre, R. Chitra, and W. Chen, Prob-          much two projectors describe the same subspace, or
+     ing Chern number by opacity and topological phase tran-           equivalently, a distance between manifolds. Since the
+     sition by a nonlocal Chern marker, SciPost Phys. Core             trace of P is equal to the number of occupied states
+     6, 059 (2023).                                                    Nocc , this formulation of the spillage is equivalent to the
+[39] J. D. Hannukainen, M. F. Martı́nez, J. H. Bardarson,              more common expression in terms of the projector onto
+     and T. K. Kvorning, Local Topological Markers in Odd              empty states: Tr[(P − PΘ )2 ]/(2Nocc ) = Tr[PQΘ ]/Nocc =
+     Spatial Dimensions and Their Application to Amorphous             Tr[QPΘ ]/Nocc . From these forms it is easier to see that,
+     Topological Matter, Phys. Rev. Lett. 129, 277601 (2022).          for γ = 0, the projectors describe the same subspace,
+[40] S. Ryu, A. P. Schnyder, A. Furusaki, and A. W. W. Lud-            while if γ = 1, the two projectors are orthogonal and
+     wig, Topological insulators and superconductors: tenfold          thus describe orthogonal subspaces.
+     way and dimensional hierarchy, New Journal of Physics
+                                                                                                                            14
+
+[60] C. Brouder, G. Panati, M. Calandra, C. Mourougane,              (2018).
+     and N. Marzari, Exponential Localization of Wannier        [68] The PythTB code package is available at http://www.
+     Functions in Insulators, Phys. Rev. Lett. 98, 046402            physics.rutgers.edu/pythtb/about.html.
+     (2007).                                                    [69] P. Corbae, J. D. Hannukainen, Q. Marsal, D. M. noz
+[61] I. Souza, N. Marzari, and D. Vanderbilt, Maximally lo-          Segovia, and A. G. Grushin, Amorphous topological mat-
+     calized Wannier functions for entangled energy bands,           ter: Theory and experiment, Europhysics Letters 142,
+     Phys. Rev. B 65, 035109 (2001).                                 16001 (2023).
+[62] P. W. Anderson, Absence of Diffusion in Certain Random     [70] P. Corbae, S. Ciocys, D. Varjas, E. Kennedy, S. Zelt-
+     Lattices, Phys. Rev. 109, 1492 (1958).                          mann, M. Molina-Ruiz, S. M. Griffin, C. Jozwiak,
+[63] Y. Yang, Z. Xu, L. Sheng, B. Wang, D. Y. Xing, and              Z. Chen, L.-W. Wang, A. M. Minor, M. Scott, A. G.
+     D. N. Sheng, Time-Reversal-Symmetry-Broken Quantum              Grushin, A. Lanzara, and F. Hellman, Observation
+     Spin Hall Effect, Phys. Rev. Lett. 107, 066602 (2011).          of spin-momentum locked surface states in amorphous
+[64] The StraWBerryPy code package is available at                   Bi2 Se3 , Nature Materials 22, 200 (2023).
+     https://strawberrypy.readthedocs.io/en/latest/.            [71] M. Costa, G. R. Schleder, M. Buongiorno Nardelli,
+[65] A. Marrazzo, S. Beck, E. R. Margine, N. Marzari, A. A.          C. Lewenkopf, and A. Fazzio, Toward Realistic Amor-
+     Mostofi, J. Qiao, I. Souza, S. S. Tsirkin, J. R. Yates,         phous Topological Insulators, Nano Letters 19, 8941
+     and G. Pizzi, The Wannier-Functions Software Ecosys-            (2019).
+     tem for Materials Simulations (2023), arXiv:2312.10769     [72] H. Huang and F. Liu, Quantum Spin Hall Effect and
+     [cond-mat.mtrl-sci].                                            Spin Bott Index in a Quasicrystal Lattice, Phys. Rev.
+[66] The TBmodels code package is available at https://              Lett. 121, 126401 (2018).
+     tbmodels.greschd.ch/en/latest/index.html.                  [73] E. Prodan and C. Prodan, Topological Phonon Modes
+[67] D. Gresch, Q. S. Wu, G. W. Winkler, R. Häuselmann,             and Their Role in Dynamic Instability of Microtubules,
+     M. Troyer, and A. A. Soluyanov, Automated construc-             Phys. Rev. Lett. 103, 248101 (2009).
+     tion of symmetrized Wannier-like tight-binding models      [74] R. Süsstrunk and S. D. Huber, Observation of phononic
+     from ab initio calculations, Phys. Rev. Mater. 2, 103805        helical edge states in a mechanical topological insulator,
+                                                                     Science 349, 47 (2015).
+

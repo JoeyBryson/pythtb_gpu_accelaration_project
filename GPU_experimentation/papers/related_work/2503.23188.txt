@@ -1,0 +1,503 @@
+                                                                 Fluctuations and Correlations of Local Topological Order Parameters
+                                                                        in Disordered Two-dimensional Topological Insulators
+
+                                                                                      Roberta Favata,1 Nicolas Baù,1 and Antimo Marrazzo2
+                                                                                 1
+                                                                                  Dipartimento di Fisica, Università di Trieste, I-34151 Trieste, Italy∗
+                                                                        2
+                                                                            Scuola Internazionale Superiore di Studi Avanzati (SISSA), I-34136 Trieste, Italy†
+                                                                                                         (Dated: June 27, 2025)
+                                                                    Two-dimensional topological insulators are characterized by an insulating bulk and conductive
+                                                                  edge states protected by the nontrivial topology of the bulk electronic structure. They remain
+                                                                  robust against moderate disorder until Anderson localization occurs and destroys the topological
+arXiv:2503.23188v2 [cond-mat.mes-hall] 18 Jun 2025
+
+
+
+
+                                                                  phase. Interestingly, disorder can also induce a topological phase—known as a topological Ander-
+                                                                  son insulator—starting from an otherwise pristine trivial phase. While topological invariants are
+                                                                  generally regarded as global quantities, we argue that space-resolved topological markers can act
+                                                                  as local order parameters, revealing the role of fluctuations and correlations in the local topology
+                                                                  under Anderson disorder and vacancies. With this perspective, we perform numerical simulations of
+                                                                  disorder-driven topological phase transitions in the Haldane and Kane-Mele models, using supercells
+                                                                  with both open and periodic boundary conditions. We find that short-scale fluctuations of topo-
+                                                                  logical markers vanish upon coarse-graining, except at the topological phase transition, where their
+                                                                  correlation length peaks and large-scale fluctuations remain. Notably, such a topological correlation
+                                                                  function is characterized by critical exponents that appear universal across disorder types, yet they
+                                                                  can resolve different topological phase transitions.
+
+
+                                                        Topological insulators are often discussed as phases of       cal formulation, i.e., solely based on the knowledge of the
+                                                     matter that are not characterized by a local order pa-           ground-state in the neighborhood around the region of
+                                                     rameter, hence falling outside Landau’s paradigm based           interest. Beyond the conceptual motivation, more prag-
+                                                     on symmetry breaking [1]. In particular, topological in-         matic applications loom larger: real materials are never
+                                                     variants are usually defined as global properties of the         perfect and can be affected by disorder such as defects,
+                                                     ground-state wavefunction in reciprocal space: a funda-          while non-crystalline systems—including quasi-crystals
+                                                     mental example is the Chern number, which can be calcu-          [6, 7] and amorphous materials [8–11]—are known to ex-
+                                                     lated as the integral of the Berry curvature over the entire     hibit non-trivial topological phases.
+                                                     Brillouin zone (BZ) and is an integer [2, 3]. The situation         In this work, we argue that local topological mark-
+                                                     is similar even in a more general many-body framework,           ers [12–15] not only allow probing topological phases in
+                                                     as the Chern number admits a similar expression where            non-crystalline materials, but they play the role of bona
+                                                     the Bloch wavevectors are replaced by the phase param-           fide local order parameters. We discuss numerical results
+                                                     eters in the boundary conditions [4]: that makes it a            for topological phase transitions driven by disorder or
+                                                     global property of the full many-body wavefunction on            vacancies, where local topological markers are shown to
+                                                     the torus. In this sense, topological invariants are non-        exhibit meaningful real-space fluctuations and two-point
+                                                     local properties that do not depend on the local details         correlations. We demonstrate how the scale of fluctua-
+                                                     of the system but describe global features that are robust       tions and the Chern-Chern correlation length increase as
+                                                     to adiabatic transformations. Their global character is a        the topological phase transition is approached, which res-
+                                                     description of the wavefunction geometry with respect to         onates with conventional (non-topological) phase transi-
+                                                     a closed parameter space, oftentimes the BZ torus. For           tions. A proper macroscopic average of the local markers
+                                                     the sake of simplicity, from now on we restrict the discus-      averages out the small-scale fluctuations and returns an
+                                                     sion to non-interacting systems in a “mean-field” sense,         integer topological invariant in the thermodynamic limit,
+                                                     where the Chern number and other topological invariants          essentially performing a coarse-graining procedure simi-
+                                                     are defined in reciprocal space, although our conclusions        lar to decimation [16–20]. While topological invariants
+                                                     might be more general. In this case, the non-local char-         describe robust properties of the wavefunction, topolog-
+                                                     acter stems from a definition that assumes to deal with          ical phases admit a description in terms of local order
+                                                     systems described by the Bloch theorem, essentially crys-        parameters and of their small-scale fluctuations and cor-
+                                                     tals with periodic boundary conditions (PBCs).                   relations, providing insights into the physics of disorder-
+                                                       However, the use of PBCs is no more than a convenient          driven topological phase transitions.
+                                                     artifact and real systems are always finite: so it should           Over the years, several approaches have been proposed
+                                                     be (and it is) possible to define topological phases in real     to calculate topological invariants in non-crystalline sys-
+                                                     space. In addition, the locality (or “nearsightedness” ac-       tems, a non-exhaustive list includes the switch-function
+                                                     cording to Kohn [5]) of the ground-state electronic struc-       formalism [21–23], methods based on the scattering ma-
+                                                     ture demands not only a real-space description, but a lo-        trix [24, 25] or on the non-commutative index theo-
+                                                                                                                              2
+
+rem [26–28], the structural spillage [29], the Bott in-               Here, we consider the Haldane model [38] on the hon-
+dex [30–32], real-space formulas [33, 34], single-point for-       eycomb lattice in the presence of Anderson disorder [39];
+mulas [35, 36] and local markers [12, 14, 15]; here, we fo-        numerical simulations for the Kane-Mele model [40, 41]
+cus and briefly outline the last two approaches, which can         are reported later and in the Supplementary Material
+tackle respectively homogeneous and inhomogeneous sys-             (SM) [42]. For the pristine case, the nearest-neighbor
+tems. A popular way to approach the non-crystalline case           hopping is real and set to t = −4, while the second-
+is to consider large periodic cells such that the sampling         nearest neighbor hopping is complex with amplitude
+of the BZ can be reduced to a single point in reciprocal           |t2 /t| = 1/4 and phase ϕ = − π2 . Disorder is introduced
+space, usually the Γ point. In the limit of large supercells,      through a random on-site term with uniform distribu-
+the Chern number can be calculated through single-point            tion wi ∈ − W      W
+                                                                                  2 , 2 , where W is the disorder strength.
+formulas as discussed in Ref. [35] for the Chern num-              Single-point invariants and local markers are calculated
+ber and in Ref. [36] for the Z2 invariant. Single-point            through the StraWBerryPy Python package [43], which
+topological numbers are an effective way to probe the              is part of the Wannier function software ecosystem [44]
+topology for non-crystalline systems, including crystals           and is interfaced to popular tight-binding engines such as
+at finite temperature through molecular dynamics, but              TBmodels [45, 46] and PythTB [47]. In Figure 1, we show
+they lack spatial resolution. Instead, topological markers         results of numerical simulations for the Haldane model
+can probe the topology locally in real space and describe          as a function of W , starting from a pristine system with
+inhomogeneous systems such as topological-trivial super-           Chern number C = 1 and on-site term ∆/t = 1.25: for
+lattices or heterojunctions. Originally, local topological         weak disorder the system is topological, while it becomes
+markers were formulated and validated in open bound-               trivial (C = 0) for larger values, with a rather sharp tran-
+ary conditions (OBCs) [12, 13], where the Chern marker             sition in between. The left-hand panel of Fig. 1 shows
+takes the form                                                     the single-point Chern number calculated for large su-
+                                                                   percells containing, respectively, 3528 (L = 42), 5202
+            C(r) = −4πIm ⟨r| Px(I − P)y |r⟩ ,                (1)   (L = 51) and 7200 (L = 60) sites; the points and error
+with P the ground-state projector and x, y the position            bars correspond to the average and standard deviation
+operators in OBCs. More recently [14], the Chern marker            over 300 realizations. While for sufficiently strong dis-
+has been formulated also in PBCs, where it can take the            order amplitudes the density of states becomes gapless,
+form [37]                                                          we confirm that the two phases are insulating by calcu-
+                                                                   lating the localization length [48] λ, which remains finite
+                      1                                          and increases near the critical disorder strength (where
+          C(r) = −      Im ⟨r| Pb1 , Pb2 PΓ |r⟩ .            (2)
+                     2π                                            it is expected that λ diverges with the system size and
+with Pbj = n=1
+              PNocc
+                     |ũnbj ⟩ ⟨ũnbj | being the ground-state      the critical phase is metallic). In the right-hand panel of
+projectors at BZ edge in the single-point limit. The pro-          Fig. 1, we show the real-space maps of the local Chern
+jectors Pbj , where bj are the reciprocal lattice vectors,         number, both in PBCs and OBCs for L = 78 (12168
+are expressed in terms of the “dual” states |ũnbj ⟩ and           sites), where the value at each site is calculated by av-
+represent, in the limit of a large supercell, the states ob-       eraging Chern markers over all the primitive cells within
+tained by parallel transport:                                      a radial cutoff rc = 20 (in units of the lattice param-
+                                                                   eter). Remarkably, even if the disorder amplitude in-
+                        N
+                        X occ                                      creases to values comparable with the on-site term of
+                                 −1
+           |ũnbj ⟩ =           Smn (bj )e−ibj ·r |umΓ ⟩ ,   (3)   the pristine case, the local topology depicts a homoge-
+                        m=1                                        neous system throughout the transition, except close to
+where we make use of the overlap matrix Snm (bj ) =                the critical point where the single-point Chern number
+⟨unΓ |e−ibj ·r |umΓ ⟩ as discussed in Refs. [35, 36]. The lo-      deviates from integer values and real-space fluctuations
+cal Chern number can then be obtained by calculating               are strong. In that region, finite-size effects are more vis-
+the macroscopic average of the Chern markers, either in            ible especially for finite samples: the OBC simulations
+OBCs (Eq. 1) or PBCs (Eq. 2), essentially taking the               return rather different topological maps with respect to
+trace per unit of area (TrA ) in a neighborhood around the         their PBC counterparts, even if all the on-site terms are
+region of interest. Notably, the trace of the PBC Chern            equal and only the boundary conditions differ.
+marker over the entire supercell is equal to the single-              Next, we investigate the length scale of the fluctua-
+point Chern number of Ceresoli and Resta [35], as shown            tions of local topological markers. The left-hand panel
+in Ref. [14]. Hence, we can study the effect of disorder on        of Figure 2 shows real-space maps for the Chern number
+topological phases from a more global perspective, by av-          in PBCs computed for increasing cutoff radii (red cir-
+eraging the single-point Chern number Csp over multiple            cles) ranging from rc = 2 to rc = 30, in the topological
+disorder realizations, and from a local viewpoint through          (Csp = 1.0, W/t = 5) and trivial (Csp = 0.0, W/t = 10)
+real-space maps of macroscopic averages of the OBC or              phase, as well as close to the topological phase transition
+PBC Chern markers C(r).                                            (Csp = 0.6, W/t = 6.5). If the trace is taken over a few
+                                                                                                                                3
+
+
+
+
+FIG. 1. Topological-to-trivial phase transition driven by Anderson disorder in the Haldane model (∆/t = 1.25). Left panel:
+single-point Chern number (Csp ) calculations as a function of the disorder strength W [in units of the nearest-neighbor hopping
+t]. Right panel: PBC (top row) and OBC (bottom row) Chern marker maps for the linear size L = 78 (12168 sites) for various
+values of W ; the single-point Chern number corresponding to the maps is displayed above. The disordered on-site terms are the
+same in PBCs and OBCs. The color (gray) scale displays values in [−1.2, 1.2], values outside the range are marked in red (lower
+than -1.2) and blue (larger than 1.2). The presence of disorder induces small-scale fluctuations that are averaged out even for
+strong disorder amplitudes by coarse graining (a.k.a. macroscopic average), i.e., by taking the trace over the neighborhood
+sites within a radial cutoff rc = 20. Fluctuations increase close to the phase transition, where finite-size effects are sensibly
+stronger for finite samples.
+
+
+
+
+FIG. 2. Macroscopic average and Chern-Chern correlation function. Left panel: PBC Chern marker maps for three different
+values of the disorder strength W/t, which correspond to three different values of the single-point Chern number (Csp = 1.0
+for W/t = 5, Csp = 0.6 for W/t = 6.5 and Csp = 0.0 for W/t = 10). Maps are drawn for increasing values of the cutoff rc over
+which the macroscopic average is performed. The cutoff rc is marked by the radius of the red circle centered in the middle of
+the sample. Short-scale fluctuations of the topological marker average out in the topological and trivial phase, while large-scale
+fluctuations remain at the transition. Right panel: the connected Chern-Chern radial correlation function (Eq. 4) computed
+at different disorder strengths, averaged over 200 realizations with linear size L = 78. The correlation length ξ is obtained by
+fitting with the Ornstein-Zernike formula (Eq. 6); the inset reports ξ as a function of W/t for system sizes L = 60 and L = 78,
+additional values for L = 96, 114 are shown at W/t = 6.5 only.
+
+
+sites, the local Chern marker displays fluctuations in all         the connected radial Chern-Chern correlation function as
+phases, that become very strong close to the phase transi-                                                   2
+tion. If we average over larger regions, essentially coarse                    G(r) = ⟨C0 Cr ⟩samples − ⟨C0 ⟩samples ,        (4)
+graining the topological markers, short-scale fluctuations
+                                                                   where the mean is taken over Nsamples disorder realiza-
+disappear both in the topological and trivial phase: al-
+                                                                   tions. The one- and two-point correlations are normal-
+ready at rc = 10 these disordered systems appear topo-
+                                                                   ized as
+logically uniform. On the contrary, sufficiently close to
+                                                                                                              s s
+                                                                                             P
+                                                                                              i,j δ(r − rij )Ci Cj
+                                                                                        
+the phase transition we observe large-scale fluctuations                                  1
+that persist even if the macroscopic average is performed             ⟨C0 Cr ⟩samples =                                    , (5)
+                                                                                          Nr          σs2          samples
+over rather large regions (e.g., rc = 30).
+                                                                   with Nr being the number of sites j at distance r from site
+  We rationalize these results by studying the real-space          i, Cis are the local Chern markers at site i in the realiza-
+correlations between local Chern numbers. We calculate             tion s, ⟨Ci ⟩s is the mean value of the local Chern number
+                                                                                                                           4
+
+over the system (i.e., the single-point Chern number) and
+σs2 = ⟨Ci2 ⟩s − ⟨Ci ⟩2s is the corresponding variance. In the
+right-hand panel of Fig. 2, we report the radial correla-
+tion function for local Chern markers computed at vari-
+ous disorder strengths, including those corresponding to
+the Chern maps in the left-hand panel, by averaging over
+200 realizations. The inset shows the correlation length
+ξ extracted by fitting G(r) with the Ornstein-Zernike
+form [49, 50]:
+
+                     G(r) ∼ r−p e−r/ξ ,                   (6)
+
+where p ≃ 1/2 is obtained by regression close to the phase
+transition. In both the topological and trivial phases the
+correlation length is in general very short, comparable
+with the pristine lattice parameter, no matter the large         FIG. 3. Power-law decay of the correlation function G(r)
+W that might be present: this corresponds to the situ-           for several disorder-driven topological phase transitions in
+ation where the local Chern markers are mostly 1 or 0,           the Haldane and Kane-Mele models. The dashed lines
+fluctuations are small and short-scale. As we approach           represent power laws r−p for rational values of p. All
+the phase transition, G(r) acquires longer tails and the         topological→trivial transitions are characterized by expo-
+                                                                 nents that do not depend on the type of disorder but only
+correlation length increases dramatically. We note that          on the symmetry class: p is about 1/2 in QAHIs and 1 in
+the large values (ξ ≈ 30 − 50) obtained very close to            QSHIs. The trivial→TAI transition is characterized by a dif-
+the transition might not be exact estimates, precisely be-       ferent exponent, about 1/3 in QAHIs and 2/3 in QSHIs. The
+cause the lengths are comparable with the simulation cell        parameters of the Haldane model (L = 96, except for the case
+(L = 78): in the inset, we show results up to L = 114            of vacancies where L = 57) are reported in the previous fig-
+(25992 sites), where ξ remains lower than half of the cell       ures, and in the Appendices for the transitions from/to the
+length. It is worth noting that, while the local topologi-       TAI phase and in the presence of vacancies; here we list the
+                                                                 values for the Kane-Mele case (L = 72): the QSHI→trivial
+cal order parameter sharply distinguishes the two phases,        transition occurs at about W/t = 4 with ∆/λSOC = 3; the
+its fluctuations and correlations display the same behav-        trivial→TAI and the TAI→trivial occur respectively at about
+ior on both sides of the transition and are characterized        W/t = 1.4 and W/t = 4 with ∆/λSOC = 5.3.
+by the same exponent p and length ξ (see the inset of
+Fig. 2).
+   These results highlight that local Chern markers be-          real-space maps of the local topology for the Anderson-
+have as local order parameters describing disorder-driven        disordered Kane-Mele model [40, 41], where the spin-
+phase transitions: fluctuations average out in the ther-         Chern marker [15] behaves as a local Z2 order parameter.
+modynamic limit and occur at short scales, except at the            Such generality in our findings suggests that p could
+boundary where the correlation length becomes rather             serve as a universal critical exponent, independent of the
+long and large-scale fluctuations remain. Hence, the real-       specific choice of parameters. We report in Fig. 3 a com-
+space fluctuations and correlations of local Chern mark-         parison of the power-law decay of G(r) and its exponent p
+ers are excellent tools to diagnose and discuss topological      extracted from the data, for several disorder-driven tran-
+phase transitions in non-crystalline systems, where the          sitions in both the Haldane and Kane-Mele models (the
+original definition of the Chern number is of no avail.          SM [42] provides a detailed discussion of how finite-size
+   In the Appendices, we show that our conclusions also          effects are accounted for). Remarkably, all topological-
+hold for topological Anderson insulators (TAIs) [51–             to-trivial transitions are characterized by the same expo-
+53], where a pristine trivial phase, sufficiently close to       nent, which does not depend on the type of disorder (i.e.,
+the phase boundary, becomes topological due to small             Anderson or vacancies) but depends on the symmetry
+amounts of disorder before strong disorder eventually            class: it differs between QAHIs and QSHIs. Notably, the
+drives the system back to a trivial insulator via Ander-         trivial-to-TAI transition is characterized by a different
+son localization. Therein, we show that the same analysis        exponent with respect to the topological-to-trivial cases,
+applies also in the presence of lattice vacancies, where a       hence providing a fingerprint to distinguish TAI from dis-
+topological-to-trivial transition is triggered once a critical   ordered topological insulators. The ratio between the ex-
+density of random sites is removed.                              ponents in QSHIs and QAHIs is around 2 and does not
+   Although we discussed Chern numbers and quan-                 depend on the type of transition: in QAHIs (QSHIs), p is,
+tum anomalous Hall insulators (QAHIs) in the Haldane             respectively, about 1/2 (1) for the topological-to-trivial
+model, our framework is equally applicable to quantum            and 1/3 (2/3) for the trivial-to-TAI transitions.
+spin Hall insulators (QSHIs). In the SM [42], we show               Finally, we emphasize that fluctuations and correla-
+                                                                                                                             5
+
+tions are particularly insightful whenever the topological           topological insulators, Nano Letters 19, 8941 (2019).
+phases lack translational invariance in the strict sense.        [9] Q. Marsal, D. Varjas, and A. G. Grushin, Topological
+Indeed, for clean samples there are no fluctuations owing            Weaire-Thorpe models of amorphous matter, Proceed-
+to crystalline order, which forces the local topological             ings of the National Academy of Sciences 117, 30260
+                                                                     (2020).
+markers to be uniform over all sample: any real-space           [10] P. Corbae, S. Ciocys, D. Varjas, E. Kennedy, S. Zelt-
+fluctuation would break translational invariance. Hence,             mann, M. Molina-Ruiz, S. M. Griffin, C. Jozwiak,
+in the limit of perfectly periodic crystals, local topologi-         Z. Chen, L.-W. Wang, A. M. Minor, M. Scott, A. G.
+cal order parameters are strictly quantized with vanishing           Grushin, A. Lanzara, and F. Hellman, Observation
+fluctuations, in agreement with the standard definition of           of spin-momentum locked surface states in amorphous
+topological invariants on the BZ torus.                              Bi2 Se3 , Nature Materials 22, 200 (2023).
+                                                                [11] P. Corbae, J. D. Hannukainen, Q. Marsal, D. Muñoz-
+   While in this work we study topological phase tran-               Segovia, and A. G. Grushin, Amorphous topological mat-
+sition at zero temperature and driven by disorder, the               ter: Theory and experiment, Europhysics Letters 142,
+local Chern marker can be calculated also for metallic               16001 (2023).
+systems and in the presence of an electronic tempera-           [12] R. Bianco and R. Resta, Mapping topological order in
+ture, where it is non-quantized and represents the intrin-           coordinate space, Phys. Rev. B 84, 241106 (2011).
+                                                                [13] A. Marrazzo and R. Resta, Locality of the anomalous
+sic geometric part of the local anomalous Hall conduc-
+                                                                     hall conductivity, Phys. Rev. B 95, 121114 (2017).
+tivity [13, 54]. As an outlook, it could be interesting to      [14] N. Baù and A. Marrazzo, Local Chern marker for periodic
+study temperature-driven topological phase transitions,              systems, Phys. Rev. B 109, 014206 (2024).
+such as those occurring in ZrTe5 [55] and transition-metal      [15] N. Baù and A. Marrazzo, Theory of local Z2 topological
+dichalcogenides [56], by studying fluctuations and corre-            markers for finite and periodic two-dimensional systems,
+lations of local topological order parameters.                       Phys. Rev. B 110, 054203 (2024).
+                                                                [16] L. P. Kadanoff, Scaling laws for Ising models near Tc ,
+  The data that support the findings of this article are             Physics Physique Fizika 2, 263 (1966).
+openly available [57].                                          [17] K. G. Wilson, Feynman-Graph Expansion for Critical
+   The authors acknowledge CINECA, under the ISCRA                   Exponents, Phys. Rev. Lett. 28, 548 (1972).
+initiative and the CINECA-UniTS and CINECA-SISSA                [18] L. P. Kadanoff and A. Houghton, Numerical evaluations
+                                                                     of the critical properties of the two-dimensional Ising
+agreements, for the availability of high-performance com-
+                                                                     model, Phys. Rev. B 11, 377 (1975).
+puting resources and support, including simulation time         [19] K. G. Wilson, Problems in Physics with many Scales of
+on Galileo100.                                                       Length, Scientific American 241, 158 (1979).
+                                                                [20] K. G. Wilson, The renormalization group and critical
+                                                                     phenomena, Rev. Mod. Phys. 55, 583 (1983).
+                                                                [21] P. Elbau and G. M. Graf, Equality of Bulk and Edge Hall
+                                                                     Conductance Revisited, Communications in Mathemati-
+  ∗
+     roberta.favata@phd.units.it                                     cal Physics 229, 415 (2002).
+  †
+     amarrazz@sissa.it                                          [22] C. Tauber, Effective vacua for floquet topological phases:
+ [1] B. Bernevig and T. Hughes, Topological Insulators and           A numerical perspective on the switch-function formal-
+     Topological Superconductors (Princeton University Press,        ism, Phys. Rev. B 97, 195312 (2018).
+     2013).                                                     [23] L. Jezequel, C. Tauber, and P. Delplace, Estimating bulk
+ [2] D. J. Thouless, M. Kohmoto, M. P. Nightingale, and              and edge topological indices in finite open chiral chains,
+     M. den Nijs, Quantized Hall Conductance in a Two-               Journal of Mathematical Physics 63, 121901 (2022).
+     Dimensional Periodic Potential, Phys. Rev. Lett. 49, 405   [24] I. C. Fulga, F. Hassler, and A. R. Akhmerov, Scatter-
+     (1982).                                                         ing theory of topological insulators and superconductors,
+ [3] D. Vanderbilt, Berry Phases in Electronic Structure             Phys. Rev. B 85, 165409 (2012).
+     Theory: Electric Polarization, Orbital Magnetization       [25] I. C. Fulga, F. Hassler, A. R. Akhmerov, and C. W. J.
+     and Topological Insulators (Cambridge University Press,         Beenakker, Scattering formula for the topological quan-
+     2018).                                                          tum number of a disordered multimode wire, Phys. Rev.
+ [4] Q. Niu, D. J. Thouless, and Y.-S. Wu, Quantized Hall            B 83, 155429 (2011).
+     conductance as a topological invariant, Phys. Rev. B 31,   [26] J. E. Avron, R. Seiler, and B. Simon, Charge deficiency,
+     3372 (1985).                                                    charge transport and comparison of dimensions, Commu-
+ [5] W. Kohn, Density Functional and Density Matrix                  nications in Mathematical Physics 159, 399 (1994).
+     Method Scaling Linearly with the Number of Atoms,          [27] J. Avron, R. Seiler, and B. Simon, The index of a pair
+     Phys. Rev. Lett. 76, 3168 (1996).                               of projections, Journal of Functional Analysis 120, 220
+ [6] H. Huang and F. Liu, Quantum Spin Hall Effect and               (1994).
+     Spin Bott Index in a Quasicrystal Lattice, Phys. Rev.      [28] H. Katsura and T. Koma, The noncommutative index
+     Lett. 121, 126401 (2018).                                       theorem and the periodic table for disordered topological
+ [7] H. Huang and F. Liu, Theory of spin Bott index for quan-        insulators and superconductors, Journal of Mathematical
+     tum spin Hall states in nonperiodic systems, Phys. Rev.         Physics 59, 031903 (2018).
+     B 98, 125130 (2018).                                       [29] D. Muñoz Segovia, P. Corbae, D. Varjas, F. Hellman,
+ [8] M. Costa, G. R. Schleder, M. Buongiorno Nardelli,               S. M. Griffin, and A. G. Grushin, Structural spillage:
+     C. Lewenkopf, and A. Fazzio, Toward realistic amorphous         An efficient method to identify noncrystalline topolog-
+                                                                                                                                     6
+
+     ical materials, Phys. Rev. Res. 5, L042011 (2023).                [44] A. Marrazzo, S. Beck, E. R. Margine, N. Marzari, A. A.
+[30] M. B. Hastings and T. A. Loring, Almost commuting                      Mostofi, J. Qiao, I. Souza, S. S. Tsirkin, J. R. Yates, and
+     matrices, localized Wannier functions, and the quantum                 G. Pizzi, Wannier-function software ecosystem for mate-
+     Hall effect, Journal of Mathematical Physics 51, 015214                rials simulations, Rev. Mod. Phys. 96, 045008 (2024).
+     (2010).                                                           [45] The TBmodels code package is available at https://
+[31] M. B. Hastings and T. A. Loring, Topological insulators                tbmodels.greschd.ch/en/latest/index.html.
+     and C ∗ algebras: Theory and numerical practice, Annals           [46] D. Gresch, Q. S. Wu, G. W. Winkler, R. Häuselmann,
+     of Physics 326, 1699 (2011).                                           M. Troyer, and A. A. Soluyanov, Automated construc-
+[32] T. A. Loring and M. B. Hastings, Disordered topological                tion of symmetrized Wannier-like tight-binding models
+     insulators via C ∗ -algebras, Europhysics Letters 92, 67004            from ab initio calculations, Phys. Rev. Mater. 2, 103805
+     (2011).                                                                (2018).
+[33] E. Prodan, T. L. Hughes, and B. A. Bernevig, Entangle-            [47] S. Coh and D. Vanderbilt, Python tight binding (pythtb)
+     ment Spectrum of a Disordered Topological Chern Insu-                  (2022).
+     lator, Phys. Rev. Lett. 105, 115501 (2010).                       [48] R. Resta and S. Sorella, Electron Localization in the In-
+[34] E. Prodan, Non-commutative tools for topological insu-                 sulating State, Phys. Rev. Lett. 82, 370 (1999).
+     lators, New Journal of Physics 12, 065003 (2010).                 [49] M. E. Fisher, Correlation functions and the critical region
+[35] D. Ceresoli and R. Resta, Orbital magnetization and                    of simple fluids, Journal of Mathematical Physics 5, 944
+     chern number in a supercell framework: Single k-point                  (1964).
+     formula, Phys. Rev. B 76, 012405 (2007).                          [50] M. Tuckerman, Statistical Mechanics: Theory and Molec-
+[36] R. Favata and A. Marrazzo, Single-point spin Chern                     ular Simulation, Oxford Graduate Texts (OUP Oxford,
+     number in a supercell framework, Electronic Structure                  2023).
+     5, 014005 (2023).                                                 [51] J. Li, R.-L. Chu, J. K. Jain, and S.-Q. Shen, Topological
+[37] In the numerical simulations presented in this                         Anderson Insulator, Phys. Rev. Lett. 102, 136806 (2009).
+     work, we used the symmetric version of Eq. 2                      [52] C. W. Groth, M. Wimmer, A. R. Akhmerov,
+     C (sym) (r) = − 8π   1
+                             Im ⟨r| ([Pb1 , Pb2 ] + [P−b1 , P−b2 ] −        J. Tworzydlo, and C. W. J. Beenakker, Theory of the
+     [P−b1 , Pb2 ] − [Pb1 , P−b2 ]) PΓ |r⟩ that converges faster            Topological Anderson Insulator, Phys. Rev. Lett. 103,
+     than Eq. 2 (asymmetric formula), as discussed in                       196805 (2009).
+     Ref. [14].                                                        [53] Y. Xing, L. Zhang, and J. Wang, Topological Anderson
+[38] F. D. M. Haldane, Model for a Quantum Hall Effect with-                insulator phenomena, Phys. Rev. B 84, 035110 (2011).
+     out Landau Levels: Condensed-Matter Realization of the            [54] T. c. v. Rauch, T. Olsen, D. Vanderbilt, and I. Souza,
+     “Parity Anomaly”, Phys. Rev. Lett. 61, 2015 (1988).                    Geometric and nongeometric contributions to the surface
+[39] E. Abrahams, P. W. Anderson, D. C. Licciardello, and                   anomalous Hall conductivity, Phys. Rev. B 98, 115108
+     T. V. Ramakrishnan, Scaling Theory of Localization:                    (2018).
+     Absence of Quantum Diffusion in Two Dimensions, Phys.             [55] B. Xu, L. X. Zhao, P. Marsik, E. Sheveleva, F. Lyzwa,
+     Rev. Lett. 42, 673 (1979).                                             Y. M. Dai, G. F. Chen, X. G. Qiu, and C. Bernhard,
+[40] C. L. Kane and E. J. Mele, Quantum Spin Hall Effect in                 Temperature-Driven Topological Phase Transition and
+     Graphene, Phys. Rev. Lett. 95, 226801 (2005).                          Intermediate Dirac Semimetal Phase in ZrTe5 , Phys.
+[41] C. L. Kane and E. J. Mele, Z2 Topological Order and the                Rev. Lett. 121, 187401 (2018).
+     Quantum Spin Hall Effect, Phys. Rev. Lett. 95, 146802             [56] V. Khaustov, J. Köster, M. W. Ochapski, A. Zakharov,
+     (2005).                                                                D. Convertino, Z. M. Gebeyehu, L. Martini, N. Mishra,
+[42] See Supplemental Material for a discussion on fluctua-                 G. Marini, M. Calandra, U. Kaiser, S. Forti, and C. Co-
+     tions in quantum spin Hall insulators with numerical re-               letti, Reversible semimetal-semiconductor phase tran-
+     sults on the disordered Kane-Mele model, which includes                sition in CVD-grown monolayer MoTe2 , 2D Materials
+     Refs. [15, 34, 36, 39–41], and for more details on account-            10.1088/2053-1583/adbcc0 (2025).
+     ing for finite-size effects in correlation functions.             [57] Favata Roberta, Baù Nicolas, and Marrazzo Antimo,
+[43] The StraWBerryPy code package is available at                          Fluctuations and correlations of local topological
+     https://github.com/strawberrypy-developers/                            order parameters in disordered two-dimensional
+     strawberrypy.git.                                                      topological insulators, Materials Cloud 2025.X,
+                                                                            10.24435/materialscloud:1n-gt (2025).
+
+
+                                                               Appendices
+
+
+   Disorder-driven phase transitions in the TAIs—                      and on-site term ∆/t = 1.375 (all the other parameters
+TAIs exhibit two phase transitions: for increasing dis-                are equal to those listed in the main text). Here we dis-
+order, the first transition goes from the trivial phase to             play both the single-point Chern number and PBC/OBC
+the TAI, where the topological invariant is non-trivial,               Chern marker maps (with rc = 10), adopting the frame-
+which is followed by a second transition from the TAI                  work of Fig. 1. Also in this case, if the macroscopic av-
+to a trivial insulator owing to Anderson localization. In              erage of the Chern markers is performed on the appro-
+Fig. 4, we report numerical simulations for phase transi-              priate length scale—set by the Chern-Chern correlation
+tions from and to the TAI phase in the Haldane model,                  length—the local topology is homogeneous for all phases,
+starting from a pristine system with Chern number C = 0                independently of the disorder strength. At both phase
+                                                                                                                           7
+
+
+
+
+FIG. 4. Trivial-topological-trivial phase transition driven by Anderson disorder in the Haldane model (∆/t = 1.375); the
+disorder-induced phase with Csp = 1.0 is the topological Anderson insulator. Plots are arranged as in Fig. 1. The local
+topology is homogeneous for all phases, independently of the disorder strength, except at the two phase transitions where the
+fluctuations become large, as signaled by the large variance of the single-point Chern numbers.
+
+
+
+
+FIG. 5. Topological phase transition in the Haldane model (∆ = 0) driven by the presence of vacancies, with relative density
+ρv . Plots are arranged as in Figs. 1 and 4. The macroscopic average is performed within a radial cutoff rc = 6 and yields a
+rather uniform topological landscape, except in the neighborhood of the phase transition where it becomes patchy and strongly
+affected by finite-size effects.
+
+
+
+
+transitions, the fluctuations become large: this is signaled    whereas for large ρv the Chern number becomes triv-
+by the large variance over disorder realizations of the         ial; the transition occurs for about 20% of removed sites.
+single-point Chern numbers and is related (through the          The left-hand panel displays the single-point Chern num-
+fluctuation-dissipation relation) to the correlation length     ber for different lattice sizes (L = 42, 52, 72), while the
+becoming larger.                                                PBC/OBC Chern marker maps in the right-hand panel
+   Vacancy-driven phase transition— Now we consider             sample, respectively, the topological phase with few va-
+a different type of disorder: a relative density of vacan-      cancies (ρv = 0.02), the region around the transition
+cies ρv is introduced by randomly removing sites from           (ρv = 0.2), and the trivial phase at high vacancy density
+the lattice. In Fig. 5 we report numerical simulations          (ρv = 0.38). As for Anderson disorder, also in the case
+for the Haldane model as a function of ρv . The pris-           of vacancies, the local topology is rather homogeneous,
+tine model is in the topological phase (∆ = 0, ϕ = − π8 ),      except around the phase transition that is characterized
+                                                                by patches and finite-size effects.
+                                                                                                                      8
+
+                                              Supplementary material
+
+                          Fluctuations and correlations in quantum spin Hall insulators
+
+  Here, we consider the Kane-Mele (KM) model [40, 41] on the honeycomb lattice in the presence of Anderson
+disorder [39]. For the pristine case, the real nearest-neighbor hopping is set to t = 1, the diagonal Kane-Mele spin-
+orbit coupling (SOC) is a complex next-nearest neighbor hopping with a spin-dependent amplitude λSOC = 0.05 and
+proportional to the Pauli matrix σz . The staggered on-site potential ∆ is such that ∆/λSOC = 3, while the Rashba
+SOC term, a complex nearest-neighbor hopping with off-diagonal spin components, is set to λR /λSOC = 1. For this
+set of parameters, the system
+                             is in   the
+                                       topological phase. Disorder is introduced through a random on-site term with
+uniform distribution wi ∈ − W       W
+                                2 , 2 , where W is the disorder strength.
+  Quantum spin Hall insulators are characterized by a Z2 invariant protected by time reversal symmetry, here we
+study the topology of the system globally via the single-point spin-Chern number [36] νsp , and locally by employing the
+local spin-Chern marker [15] ν(r). Both methods are based on the spin-Chern number, introduced in Ref. [34], that is
+well-defined if a spectral gap in the projected spin operator PSz P exists. If that is the case, the subspace spanned by
+the eigenvectors of PSz P with positive (negative) eigenvalues is characterized by an integer-valued individual Chern
+number C+ (C− ). These can then be promoted to individual local Chern markers using the methods introduced in
+Ref. [15] (and summarized in the main text), both for open (OBC) and periodic (PBC) boundary conditions, allowing
+us to define a local Z2 invariant in terms of a spin-Chern marker as
+
+                                                   C+ (r) − C− (r)
+                                          ν(r) =                     mod 2.                                        (S1)
+                                                          2
+
+The spectral gap in PSz P is typically non-vanishing also when Sz is not a good quantum number (e.g., in the
+presence of Rashba SOC), but in general the existence of a topological phase does not imply the existence of such
+a gap. Although, in principle, the gap of PSz P could also close in an insulating phase, we check that this does not
+occur in any of the simulations performed here. Additionally, the spin-Chern marker converges faster with the system
+size and it is more practical than a Z2 marker solely based on time reversal symmetry; both have been introduced and
+compared in Ref. [15]. For these reasons, we choose the spin-Chern number and marker to study the disorder-driven
+phase transitions in the model. However, our methods and conclusions are more general and would equally hold for
+the Z2 marker based on time reversal symmetry, which may be useful in scenarios where the spin-Chern marker is
+ill-defined.
+   The KM model undergoes disorder-driven topological phase transitions, which are analogous to those observed in
+the Haldane model; these are discussed in terms of the single-point spin Chern number in Ref. [36]. Supplementary
+Fig. 1 displays real-space maps for the Z2 invariant ν(r) in PBCs computed for increasing cutoff radii (red circles)
+ranging from rc = 2 to rc = 30, in the topological (νsp = 1.0, W/t = 3) and trivial (νsp = 0.0, W/t = 4) phase, as
+well as close to the topological phase transition (νsp = 0.6, W/t = 6.8). In constructing these maps, a macroscopic
+average is first taken over a cutoff radius rc , followed by a modulo 2 operation applied to each marker on the map
+as dictated by the definition of the Z2 invariant [Eq. S1]. Finally, the results are mapped into the range [0, 1] to
+aid in visualization. Fluctuations become very strong close to the phase transition, where finite-size effects are more
+visible. By averaging over larger regions, essentially coarse graining the topological markers, short-scale fluctuations
+disappear both in the topological and trivial phase: already at rc = 10 these disordered systems appear topologically
+uniform. On the contrary, sufficiently close to the phase transition we observe large-scale fluctuations that persist
+even if the macroscopic average is performed over rather large regions (e.g., rc = 30).
+
+
+                              Correlation functions, exponents and finite-size effects
+
+   In the main text, we compare the power-law decay of the correlation function G(r) of local topological markers
+for different phase transitions. As part of the analysis, here we comment on the role of finite-size effects, which
+are known to become significantly pronounced near critical points. In particular, the long-range behavior of G(r) is
+affected even for large—but finite—supercells: this is shown in the Supplementary Fig. 2 for the topological-to-trivial
+transition in the Haldane model, while we observe similar behavior for other transitions. Specifically, correlations at
+large distances become slightly negative and approach a finite value, denoted by G(∞). This behavior is due to the
+very long correlation lengths close to the critical point, which become comparable with the simulation cell such that
+spurious correlations between periodic images are present. Crucially, in the thermodynamic limit, G(∞) goes to zero
+                                                                                                                                9
+
+
+
+
+Supplementary Fig. 1. Macroscopic average of the local Z2 invariant in quantum spin Hall insulators: Real-space maps for the
+spin-Chern marker in PBC are shown for three different values of the disorder strength W/t that is added to the Kane-Mele
+model (linear size L = 75), corresponding to three different values of the single-point spin Chern number (νsp = 1.0 for W/t = 3,
+νsp = 0.5 for W/t = 4 and νsp = 0.0 for W/t = 6.8). The maps are drawn for increasing values of the radial cutoff rc within
+which the macroscopic average is performed. The cutoff rc is marked by the radius of the red circle centered in the middle of
+the sample. Short-scale fluctuations of the topological marker average out in the topological and trivial phase, while large-scale
+fluctuations remain at the transition.
+
+
+with the system size and G(r) becomes positive definite everywhere. This is shown in the inset of Supplementary
+Fig. 2, where we plot the value of G(∞) as obtained by fitting the correlation function at the transition point with
+                                                                        c
+                                                    G(r) = G(∞) +         ,                                                  (S2)
+                                                                       rp
+for increasing sample sizes, where the value of c is also obtained by fitting. Hence, in Fig. 3 of the main text we
+subtract G(∞) from G(r) when comparing the power-law decays, in order to visualize more clearly whether different
+transitions share the same exponent p (i.e., the slope in a log-log plot) or not. Finally, Supplementary Fig. 2 shows
+that the exponent p extracted from the data does not strongly depend on the system size and converges to the value
+of 1/2 for large simulation cells.
+                                                                                                                               10
+
+
+
+
+Supplementary Fig. 2. Correlation function G(r) for different cell sizes L in the Haldane model (∆/t = 1.25, ϕ = − π2 ) at the
+disorder-driven transition with W/t = 6.5. Dashed lines are obtained by power-law fitting with Eq. S2, from which a critical
+exponent p ≃ 12 is consistently obtained for all sizes. The fitting also yields G(∞), which is shown in the inset to vanish in the
+thermodynamic limit.
+

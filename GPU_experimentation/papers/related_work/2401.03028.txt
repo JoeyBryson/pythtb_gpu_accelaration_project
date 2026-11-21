@@ -1,0 +1,1065 @@
+                                                           Phase transitions and scale invariance in topological Anderson insulators
+
+                                                                              Bryan D. Assunção,1 Gerson J. Ferreira,1 and Caio H. Lewenkopf2
+                                                             1
+                                                                 Instituto de Fı́sica, Universidade Federal de Uberlândia, Uberlândia, Minas Gerais 38400-902, Brazil
+                                                                  2
+                                                                    Instituto de Fı́sica, Universidade Federal Fluminense, 24210-346 Niterói, Rio de Janeiro, Brazil
+                                                                                                          (Dated: May 3, 2024)
+                                                                     We investigate disorder-driven transitions between trivial and topological insulator (TI) phases in
+                                                                  two-dimensional (2D) systems. Our study primarily focuses on the Bernevig-Hughes-Zhang (BHZ)
+                                                                  model with Anderson disorder, while other standard 2DTI models exhibit equivalent features. The
+                                                                  analysis is based on the local Chern marker (LCM), a local quantity that allows for the char-
+                                                                  acterization of topological transitions in finite and disordered systems. Our simulations indicate
+arXiv:2401.03028v2 [cond-mat.dis-nn] 2 May 2024
+
+
+
+
+                                                                  that disorder-driven trivial to topological insulator transitions are nicely characterized by C0 , the
+                                                                  disorder-averaged LCM near the central cell of the system. We show that C0 is characterized by a
+                                                                  single-parameter scaling, namely, C0 (M, W, L) ≡ C0 (z), with z = [W µ − Wcµ (M )]L, √ where M is the
+                                                                  Dirac mass, W is the disorder strength, and L is the system size, while Wc (M ) ∝ M and µ ≈ 2
+                                                                  stand for the critical disorder strength and the critical exponent, respectively. Our numerical results
+                                                                  are in agreement with a theoretical prediction based on a first-order Born approximation analysis.
+                                                                  These observations lead us to speculate that the universal scaling function we have found is rather
+                                                                  general for amorphous and disorder-driven topological phase transitions.
+
+
+                                                     Introduction.– Topological insulators are a fascinating
+                                                  new class of materials characterized by unique electronic
+                                                  properties [1–3]. Notable among their attributes is the
+                                                  appearance of symmetry-protected spin-polarized edge
+                                                  (or surface) states that contrast with the insulating bulk
+                                                  region [4, 5]. These materials find diverse applications in
+                                                  spintronics, encompassing spin-to-charge conversion de-
+                                                  vices [6], memory read-out, and field-effect transistors in
+                                                  quantum computing [7], and they demonstrate promis-
+                                                  ing potential in preparing electrodes for photodetectors
+                                                  [8] and other applications [9–11].
+
+
+                                                     Since the unique features of such materials manifest
+                                                  only in their topological phase, there is great interest in
+                                                  a deeper understanding of their robustness. The theory
+                                                  predicts that smooth deformations of the system’s band
+                                                  structure do not change its topological properties, pro-
+                                                  vided the topological gap does not close [1, 2]. In pristine
+                                                  systems, topological invariants [4, 12] have been used to
+                                                  characterize the topological phase and to study the triv-
+                                                  ial to topological transitions caused by magnetic fields
+                                                  [13], electric fields [14], mechanical strain [15], temper-
+                                                  ature variations [16], doping, and interactions [17]. The
+                                                  understanding of disordered systems is less clear since the
+                                                  standard topological invariants rely on translation sym-
+                                                  metry.
+
+                                                                                                                       Figure 1. (a,b) Band structure of the BHZ Hamiltonian for
+                                                     A systematic study of topological phase transitions               a pristine ribbon of width Ly = 600 nm with (a) M = 2 meV,
+                                                  [18] has put forward a scaling procedure for inversion-              and (b) M = −2 meV. (c) Conductance G averaged over
+                                                  symmetric topological insulators, successfully identifying           N = 100 disorder realizations, as a function of the Fermi
+                                                  critical and fixed points under scaling of the curvature             energy εF and the disorder strength W . The yellow region
+                                                  function. Similar results have been obtained for other               highlights the G = G0 quantized plateau corresponding to the
+                                                  topological systems, such as in static and periodically              TAI phase. (d)-(f) Current density (black lines and arrows)
+                                                  driven Kitaev chains [19] and in higher-order band cross-            and spin polarization density (color coded with spin up in red,
+                                                  ings [20]. Topological phase transitions have also been              and spin down in blue) for a single-disorder realization with
+                                                                                                                       Lx = Ly = 100 nm and (d) W = 180 meV, (e) W = 400 meV,
+                                                  studied using the local Chern marker (LCM) as a func-
+                                                                                                                       and (f) W = 897 meV.
+                                                  tion of a mass parameter in the Haldane model [21].
+                                                                                                                         2
+
+   Of particular interest are disorder-driven, such as the      space of subbands of HgTe quantum wells [55]. As stan-
+topological Anderson insulators (TAI) [22, 23], and amor-       dard, we use A = 365 meV nm, B = 686 meV nm2 ,
+phous [24–27] topological systems, where one has to rely        and the mass term M = 2 meV, unless otherwise speci-
+on local topological invariants, such as the LCM [28–           fied. For simplicity, we choose to set C = D = 0 to keep
+30]. Recent studies have extended the two-dimensional           the energy spectrum particle-hole symmetric, and to al-
+LCM put forward by Bianco-Resta [29] to odd dimensions          low for a direct comparison with the Haldane [56] and
+[31], defined a local Chern marker for periodic systems         Kane-Mele [57] models (see Supplemental Material [58]
+[32] and finite temperatures [33], and established condi-       for details). For the numerical calculations, k = −i∇
+tions for their robustness against disorder [34], opening       is discretized into the square lattice with lattice param-
+new paths for future investigations. Various studies have       eter a = 3 nm, defining finite systems of variable sizes
+identified TAI systems, including disordered HgTe quan-         Lx ×Ly . The Anderson disorder is introduced as uncorre-
+tum wells [35–38], Haldane models and Kane-Mele sys-            lated random onsite energies uniformly distributed in the
+tems [39, 40], bilayer crystals [41], three-dimensional sys-    range [−W/2, W/2]. We compute the Landauer conduc-
+tems [42], four-dimensional artificial lattices [43], higher-   tance G and the current densities by standard methods
+order TAI in Sierpiński lattices [44], half-filled Haldane     [61, 62], considering this region coupled to semi-infinite
+models with extended Hubbard interactions [45], the Hal-        pristine leads of width Ly .
+dane model with binary disorder [46], and others [47, 48],         Figures 1(a) and 1(b) show the band structure of
+where nontrivial phases arise in areas of the phase dia-        the BHZ Hamiltonian in a ribbon geometry of width
+gram where the clean limit is topologically trivial. The        Ly = 600 nm and periodic along x for M = +2 meV and
+disordered topological phase can also be classified by in-      M = −2 meV, respectively. In both cases, we consider
+vestigating how the conductance approaches the quan-            pristine systems (W = 0) to emphasize that, in the triv-
+tization plateau [49, 50]. Experimental realizations in-        ial insulator case, there is a band gap of ≈ 2M = 4 meV,
+clude heterostructures [51] and disordered atomic wires         while in the nontrivial regime (M < 0) the gap is filled
+[52], among others [53, 54]. However, a study of scal-          with topologically protected helical edge states, which are
+ing and critical exponents in disorder-driven topological       responsible for a quantized conductance of G0 = e2 /h.
+phase transitions is still lacking.                             As shown in Ref. [23], and revised in the Supplemen-
+   In this Letter, we introduce the disorder-averaged local     tal Materials [58], within the 1BA the Anderson disorder
+Chern marker at the center of the system C0 to charac-          (W ̸= 0) renormalizes the mass term as
+terize trivial to topological phase transitions driven by
+                                                                                  f ≈ M − α(M )W 2 .
+                                                                               M →M                                    (2)
+the disorder. For finite-size systems, C0 varies smoothly
+as a function of the disorder strength W , as defined           This important result reveals that disorder can drive the
+by the Anderson disorder model, allowing for a scale            system from a trivial regime (M = 2 meV, W = 0) into a
+invariance investigation with the system size L. Our                                                   f < 0. Figure 1(c)
+                                                                TAI regime with an effective mass of M
+findings are based on the study of three seminal mod-
+                                                                shows the conductance G for the disordered BHZ model
+els for two-dimensional (2D) topological insulators (TIs),
+                                                                as a function of the Fermi energy εF and the disorder
+namely, the Bernevig-Hughes-Zhang (BHZ) [55], Haldane
+                                                                intensity W . The large parameter space region of the
+[56], and Kane-Mele [57] models. Here we focus on the
+                                                                quantized conductance G = G0 (in yellow) characterizes
+BHZ model, while in order to avoid unnecessary repeti-
+                                                                a TAI phase. Figures 1(d) and 1(e) illustrate the current
+tions, equivalent results for the Haldane and Kane-Mele
+                                                                and spin densities for a smaller system (L = 100 nm)
+models are shown in the Supplemental Materials [58].
+                                                                for different disorder intensities and εF = 0. For small
+In all cases, our simulations indicate that C0 scales as
+C0 (W, L) ≡ C0 (z), with z = (W µ −Wcµ )L, where Wc is the      W , as shown in Fig. 1(d), the system is already near
+critical disorder strength and µ ≈ 2 is the critical expo-      a TAI phase and the current and spin densities show a
+nent in the trivial to TAI phase transition. These results      tendency to form helical edge states. Figure 1(e) shows
+are further supported by a theory based on the scaling          that as the disorder strength W is increased, the system
+analysis of first-order Born approximation (1BA) results.       reaches the TAI phase and the helical edge states become
+These observations lead us to speculate that our find-          well-defined. For even larger W values, comparable with
+ings are universal for disorder-driven topological phase        the bandwidth, the topological protection is destroyed
+transitions.                                                    and the states become localized, as shown by Fig. 1(f),
+   Model and methods.– The BHZ Hamiltonian [55] is one          indicating the onset of Anderson localization.
+of the standard models to describe 2D TIs in the AII sym-          Local Chern marker.– As discussed in Ref. [22], in
+metry class of the Altland-Zirnbauer tenfold way classi-        the trivial regime the conductance is dominated by bulk
+fication [59, 60]. Considering only the majority spin-up        transport, and the scaled conductance σ = GLx /Ly de-
+block, the BHZ Hamiltonian reads as                             cays with W as a universal function, independent of the
+                                                                ribbon width Ly . In contrast, at the TAI phase, G = G0
+        H = C − Dk 2 + Ak · σ + (M − Bk 2 )σz ,          (1)    forms a quantized plateau [see Fig. 1(c)]. Therefore, in-
+                                                                stead of using G, we find it convenient to use local mark-
+where k = (kx , ky ) is the quasimomentum, and σ =              ers to investigate the normal-TAI transition, its scale in-
+(σx , σy , σz ) are the Pauli matrices acting on the E1 /H1     variance properties, and critical exponents. As shown in
+                                                                                                                                 3
+
+Ref. [29], the local Chern marker can be written as [63]
+                                                                                 50       (a)              (b)          2
+             4π    XZ
+  C(R) =        Im        d2 r ⟨r, β| Û P̂ x̂P̂ ŷ P̂ |r, β⟩ , (3)
+             Ac
+
+
+
+
+                                                                        Y [nm]
+                        R
+                      β
+                                                                                  0                                     1
+where Û is defined below, the integral is taken over a
+unit cell of area Ac centered at R, the sum runs over the                        50                                     0
+states β that define the basis for the model Hamiltonian                         50       (c)              (d)
+(e.g., E1 /H1 orbitals for the BHZ model), x̂ and ŷ are the
+                                                                                                                            1
+
+
+
+
+                                                                        Y [nm]
+position operators, and P̂ is the projector over occupied
+states, defined as
+                                                                                  0
+                             ϵℓX
+                               <εF
+                                                                                 50 50                                      2
+                      P̂ =           |ψℓ ⟩⟨ψℓ | .              (4)                          0   50   50      0   50
+                               ℓ                                                         X [nm]           X [nm]
+Here ϵℓ and |ψℓ ⟩ are the eigenenergies and eigenstates               Figure 2. Local Chern marker C(R) for a representative
+of the Hamiltonian H for a finite, nonperiodic system,                single-disorder realization as a function of R = (X, Y ) for
+and the Fermi energy is set to εF = 0 hereafter. It                   a system of size Lx = Ly = 100 nm, M = +2 meV, and
+has been shown that C(R) recovers the quantized bulk                  disorder strengths (a) W = 25 meV, (b) W = 180 meV, (c)
+Chern number C as one restores the lattice periodicity                W = 400 meV, and (d) W = 897 meV. Panels (b) to (d) cor-
+for clean systems [31], while for finite systems C(R) ≈ C             respond to the current and spin densities shown in Figs. 1(e)
+                                                                      and 1(f).
+for R ≈ 0, near the center of the sample [21, 29]. For
+the BHZ model, defined by Eq. (1), and for the Haldane
+model [58], we consider Û = 1. On the other hand, for
+the spinful Kane-Mele model [58], we set Û = σz (Pauli               approaching a TAI regime, which is fully achieved for
+matrix in spin space), such that C(R) represents a local              larger W , as shown in Fig. 2(c), where C(R ≈ 0) ≈ 1.0.
+spin-Chern number [64]. In this case, for a finite Rashba             Notice that Figs. 2(b) and 2(c) correspond to the same
+coupling, discussed in Ref. [58], the spin-Chern number               values of W of Figs. 1(d) and 1(e). Interestingly, up to
+is not quantized, but it remains a reliable witness for               Fig. 2(c) or Fig. 1(e), we find that the Anderson disorder
+nontrivial topology, as shown in Refs. [65–67].                       has driven the system into a TAI phase, but there are
+   In the presence of Anderson disorder, the local marker             no clear signs of Anderson localization, since the maps
+C(R) acquires fluctuations. Consequently, the analysis of             are overall smooth, apart from small fluctuations that
+the LCM requires a statistical approach. Here, we focus               cause some blurriness. However, for even larger W [see
+on the average C(R), which can be taken over disorder                 Fig. 2(d) or Fig. 1(f)], Anderson localization emerges as
+realizations and/or spatial averages. For large systems,              strong fluctuations over the full map C(R). In all cases,
+this can be an intensive numerical task. Therefore, we                we see that C(R) takes negativeP      values at the edges,
+have implemented two approaches. First, to calculate full             which fulfills the constraint R C(R) = 0 [29]. Indeed,
+C(R) maps as a function of R for a single-disorder sample             this is an undesirable consequence of the approximations
+(e.g., in Fig. 2), we use a brute force approach, where the           that take place in the derivation of the local marker [63],
+finite-size system is fully diagonalized, H |ψℓ ⟩ = ϵℓ |ψℓ ⟩,         which, for now, we leave as an issue to be discussed in
+such that the operators P̂ , x̂, and ŷ can be explicitly             future works.
+calculated to yield C(R) from Eq. (3). In the second ap-                Phase transition and scaling.– Figure 3 shows the
+proach, we define the disorder-averaged local marker C0               disorder-averaged local Chern marker C0 as a function
+as the average of C(R = 0) over many disorder realiza-                of W for different system sizes in a square geometry,
+tions, namely, C0 ≡ ⟨C(R = 0)⟩. We compute C0 employ-                 Lx = Ly ≡ L, and a fixed M = +2 meV. As W in-
+ing the efficient implementation developed in Ref. [68]               creases, all cases first display a transition from a trivial
+based on the kernel polynomial method (KPM) [69]. The                 regime with C0 ≈ 0.1 to a nontrivial regime characterized
+KPM allows us to estimate P̂ |φ⟩ for an arbitrary state               by C0 ≈ 1. For very large values of W , exceeding the
+                                                                                                  2
+|φ⟩ in terms of an efficient expansion of Chebyshev poly-             bandwidth (Emax ∼ |B|kmax        = 8|B|/a2 ≈ 610 meV for
+nomials (details about the KPM implementation are pre-                a = 3 nm) of the pristine BHZ Hamiltonian, C0 collapses
+sented in Ref. [58]).                                                 back to C0 → 0. This is the transition seen from Fig. 2(c)
+   Figure 2 shows C(R) as a function of R = (X, Y )                   to Fig. 2(d), which is due to the emergence of Anderson
+for a single-disorder realization for increasing disorder             localization. Such behavior is not surprising, since in
+strengths W . Figure 2(a) corresponds to a small W for                such a strong-disorder regime, it hardly makes sense to
+which the system is in the trivial regime, which is char-             consider the system as topological. Figure 3(a) clearly
+acterized by a small LCM near the sample center, that                 shows that the second transition, C0 = 1 → 0, does not
+is, C(R ≈ 0) ≈ 0. Figure 2(b) considers a moderate dis-               depend on L. In fact, the transition to a trivial Anderson
+order intensity W , yielding C(R ≈ 0) ≈ 0.7 and thus                  insulator is governed by an energy scale defined by the
+                                                                                                                        4
+
+bandwidth [70], which is only influenced by L for very
+small samples. Thus, for moderate L, both the band-
+width and this transition are expected to be independent
+of L. In contrast, the first transition, C0 ≈ 0.1 → 1, is L
+dependent. This dependence is what we analyze next.
+   We obtain a single-parameter universal scaling func-
+tion for the trivial-TAI phase transition by expressing C0
+in terms of the parameter z, which combines the disorder
+strength W and the system size L according to
+
+                    C0 (W, L) → C0 (z),                (5)
+
+with
+                      W µ − Wcµ    L
+                 z=       µ     ·      ,               (6)
+                       Wmax       Lmax
+as shown in Fig. 3(b). Here, Wc is the critical point
+where the curves corresponding to systems with differ-
+ent sizes L cross, and µ is the critical exponent. To
+make z dimensionless, we introduce Lmax = 250 nm, the
+largest simulated system size, and Wmax = 1200 meV,
+the largest considered disorder strength, in the denomi-
+nators of z. We find numerically that the optimal scaling
+in Fig. 3(b) occurs for µ ≈ 2 and Wc ≈ 86 meV [dashed
+line in Fig. 3(a)]. Next, to understand these values for µ
+and Wc , we analyze the phase diagram and scaling prop-       Figure 3. (a) Disorder-averaged local Chern marker (400 dis-
+erties of the C0 as a function of both the mass M and the     order realizations and 2000 Chebyshev moments in the KPM
+disorder intensity W .                                        expansion) as a function of W for different Lx = Ly = L
+                                                              showing a trivial-TAI transition, C0 → 0 to 1, followed by
+   Phase diagram.– The local Chern marker can be used
+                                                              the trivial Anderson localization as W becomes larger than
+to define a topological phase diagram. For the BHZ            the bandwidth. (b) Optimal scaling of the marker showing
+model, we now consider C0 in terms of the mass M and          that all curves in panel (a) fall into a universal trend for
+the disorder strength W , as shown in Fig. 4, for two sys-    the trivial-TAI transition region upon the scaling W → z =
+tem sizes. In both cases the color code labels the value      (W µ − Wcµ )L/Wmax
+                                                                               µ
+                                                                                   Lmax , with µ ≈ 2 and Wc ≈ 86 meV. The
+of the local marker C0 calculated for 400 disorder realiza-   points indicated by the arrows (i) to (iv) correspond to the
+tions. The phase diagrams in Figs. 4(a) and 4(b) show         C(R) color maps shown in Fig. 2(a) to 2(d), respectively.
+the following phases: trivial, TI, TAI, and Anderson lo-
+calization (AL). As discussed above, the AL phase oc-
+curs when the disorder strength exceeds the bandwidth
+                                                              4(b) the dashed lines mark the phase boundary given by
+W > Emax ≈ 610 meV.
+                                                              Wgapless (M ) for an optimal α0 ≈ 1/3700 meV−1 , which
+   We recall that, for W = 0, the bulk Chern number
+                                                              matches remarkably well the phase boundary between
+indicates that a TI phase occurs for M < 0, whereas
+                                                              the trivial and topological phases (TI and TAI).
+Figs. 4(a) and 4(b) show that the trivial to TI transition,
+characterized by the local marker C0 , depends upon the          The data shown in Figs. 4(a) and 4(b) for all M and
+finite system size L. In a pristine 2D TI, the topological    W , and additional data for L = 150 nm (not shown),
+edge states’ are gapless and do not hybridize, provided       can be combined into a single universal function that
+the system size L is much larger than the edge states         characterizes the trivial to TAI phase transition shown
+penetration depth ξ = A/|M |, i.e., for A/|M | ≪ L (with      in Fig. 4(c). The scaling used in this case is a direct ex-
+M < 0 and W = 0). We extend this gapless condition            tension of the one presented in Eqs. (5) and (6), where
+to the disordered case by making M → M     f to obtain an     now Wc → Wc (M ) depends upon M . To obtain an ex-
+                                           f from 1BA in      pression for Wc (M ) and to understand the value µ ≈ 2
+expression for the phase boundary using M
+                                                              of the critical parameters, let us first consider the clean
+Eq. (2). Hence, from the gapless condition A/|M   f| ≪ L
+                                                              regime (W = 0), to find the scaling law for the trivial to
+and assuming M   f ≤ 0, we obtain                             TI phase transition as a function of M . Here, we con-
+                        s               s                     sider an argument similar to the one used in Ref. [21] for
+                          M + A/L         M + A/L             the Haldane model, as follows. In the topological regime,
+       Wgapless (M ) =               ≈             . (7)
+                            α(M )            α0               the only relevant length scales are ξ = A/|M | and L, as
+                                                              introduced above. Therefore, one can expect that the
+Here and in what follows we use that the first Born ap-       topological phase transition scaling with the system size
+proximation gives α(M ) ≈ α0 [58]. In Figs. 4(a) and          L should be a universal function of L/ξ ∝ M L (assuming
+                                                                                                                            5
+
+                                                                 α0 , such that the universal function argument now reads
+
+                                                                        fL = (M − α0 W 2 )L = −α0 (W 2 − Wc2 )L,
+                                                                        M                                                 (9)
+
+                                                                 where Wc2 = M/α0 is the critical point and marks the
+                                                                 phase boundary in the thermodynamic limit (L/ξ → ∞),
+                                                                 where M  f = 0 and Wgapless = Wc . Indeed, for M =
+                                                                 2 meV, this expression yields Wc ≈ 86 meV, thus match-
+                                                                 ing the value found in Fig. 3. Moreover, apart from con-
+                                                                 stant factors, the expression for MfL in Eq. (9) matches
+                                                                 z given by Eq. (6) with µ = 2, in agreement with the
+                                                                 previously numerically obtained value.
+                                                                    Conclusions.– We have investigated the scale invari-
+                                                                 ance of the local Chern marker C0 applied to TAIs. The
+                                                                 smooth profile of C0 throughout the phase transition al-
+                                                                 lows us to characterize the scale invariance and obtain
+                                                                 critical parameters, and universal scaling functions. Our
+                                                                 analysis uses the disordered BHZ model as a canonical ex-
+                                                                 ample of TI and TAI phases. The simplicity of the model
+Figure 4. (a, b) Phase diagrams calculated using the lo-
+                                                                 allows for an analytical justification of the obtained nu-
+cal Chern marker C0 as a function of the BHZ mass M              merical results. We like to stress that the disordered
+and the disorder strength W for (a) L = 50 nm and (b)            Haldane [56] and Kane-Mele [57] models exhibit an iden-
+100 nm. In all cases, we consider 200 disorder realizations      tical scaling and universal behavior, as we have shown
+and 1000 Chebyshev moments on the KPM expansion. The             in the Supplemental Material [58]. This observation sup-
+dashed white line marks the phase boundary between the           ports the statement that our findings are quite generic.
+trivial and topological phases (TI and TAI) obtained from        Indeed, as long as the first-order Born approximation re-
+the gapless condition A/|M  f| ≪ L. The dot-dashed line          mains sufficiently accurate, we expect that the universal
+marks the boundary where W matches the bandwidth of the          function will scale with ∼ W 2 L, while deviations from
+clean system, above which the Anderson localization phase        this behavior should occur only beyond the validity range
+takes place. (c) All data from panels (a) and (b), and addi-     of the 1BA. We believe that our findings shed light on
+tional data for a system of L = 150 nm, fall into a universal    an approach to investigating scaling properties of topo-
+curve for the trivial to TAI phase transition upon the scaling
+                                                                 logical phase transitions for disordered and amorphous
+(M, W, L) → z = [W µ − Wcµ (M )]L/Wmax µ
+                                           Lmax .
+                                                                 systems.
+                                                                    Note added in proof. The independent study [71] has
+A is constant). Thus, we justify that                            considerable overlap with our work.
+                                                                    Acknowledgments.– This work was supported by the
+                   C0 (M, L) ≡ C0 (M L).                  (8)    Brazilian funding agencies CNPq, CAPES, FAPERJ, and
+                                                                 FAPEMIG (Grant No. PPM-00798-18). The authors
+Next, to extend this scaling to finite W , we replace M →        acknowledge useful conversations with C. Beenakker,
+f using the 1BA expression from Eq. (2) with α(M ) ≈
+M                                                                A. Akhmerov, and C. P. Orth.
+
+
+
+
+ [1] M. Z. Hasan and C. L. Kane, Colloquium: Topological              vaux, Y. Fagot-Revurat, S. Migot, E. Rongione, T. Chen,
+     insulators, Rev. Mod. Phys. 82, 3045 (2010).                     P. Abel Dainone, J.-M. George, S. Dhillon, M. Mi-
+ [2] X.-L. Qi and S.-C. Zhang, Topological insulators and su-         cica, Y. Lu, and J.-P. Wang, Room temperature spin-
+     perconductors, Rev. Mod. Phys. 83, 1057 (2011).                  to-charge conversion in amorphous topological insulating
+ [3] D. Culcer, A. C. Keser, Y. Li, and G. Tkachov, Transport         Gd-alloyed Bix Se1−x /CoFeB bilayers, ACS Appl. Mater.
+     in two-dimensional topological materials: recent devel-          Interfaces 15, 38592 (2023).
+     opments in experiment and theory, 2D Mater. 7, 022007        [7] H. Nikoofard, M. Esmaeilzadeh, R. Farghadan, and J. T.
+     (2020).                                                          Sun, Quantum pumping through the surface states of a
+ [4] C. L. Kane and E. J. Mele, Z2 topological order and the          topological insulator, Phys. Rev. B 106, 165127 (2022).
+     quantum spin Hall effect, Phys. Rev. Lett. 95, 146802        [8] B. Wang, S. Zhong, P. Xu, and H. Zhang, Recent devel-
+     (2005).                                                          opment and advances in photodetectors based on two-
+ [5] B. A. Bernevig and S.-C. Zhang, Quantum spin Hall ef-            dimensional topological insulators, J. Mater. Chem. C 8,
+     fect, Phys. Rev. Lett. 96, 106802 (2006).                        15526 (2020).
+ [6] P. Sahu, Y. Yang, Y. Fan, H. Jaffrès, J.-Y. Chen, X. De-    [9] M. He, H. Sun, and Q. L. He, Topological insulator:
+                                                                                                                               6
+
+     Spintronics and quantum computations, Front. Phys. 14,            106, 155124 (2022).
+     43401 (2019).                                                [31] J. Sykes and R. Barnett, Local topological markers in
+[10] K. Mazumder and P. M. Shirage, A brief review of Bi2 Se3          odd dimensions, Phys. Rev. B 103, 155134 (2021).
+     based topological insulator: From fundamentals to appli-     [32] N. Baú and A. Marrazzo, Local Chern marker for pe-
+     cations, J. Alloys Compd. 888, 161492 (2021).                     riodic systems, Phys. Rev. B 109, 014206 (2024); The
+[11] O. Breunig and Y. Ando, Opportunities in topological              StraWBerryPy code presented in this reference is avali-
+     insulator devices, Nat. Rev. Phys. 4, 184 (2021).                 able at strawberrypy.readthedocs.io.
+[12] R. M. Kaufmann, D. Li, and B. Wehefritz-Kaufmann,            [33] P. Molignini, B. Lapierre, R. Chitra, and W. Chen, Prob-
+     Notes on topological insulators, Rev. Math. Phys. 28,             ing Chern number by opacity and topological phase tran-
+     1630003 (2016).                                                   sition by a nonlocal Chern marker, SciPost Phys. Core
+[13] M. Tomé and H. D. Rosales, Topological phase transition          6, 059 (2023).
+     driven by magnetic field and topological Hall effect in an   [34] L. A. Oliveira and W. Chen, Robustness of topological
+     antiferromagnetic skyrmion lattice, Phys. Rev. B 103,             order against disorder (2024), arXiv:2401.02270 [cond-
+     L020403 (2021).                                                   mat.dis-nn].
+[14] J.-Y. You, X.-J. Dong, B. Gu, and G. Su, Electric            [35] H. Jiang, L. Wang, Q.-f. Sun, and X. C. Xie, Nu-
+     field induced topological phase transition and large en-          merical study of the topological Anderson insulator in
+     hancements of spin-orbit coupling and Curie temperature           HgTe/CdTe quantum wells, Phys. Rev. B 80, 165316
+     in two-dimensional ferromagnetic semiconductors, Phys.            (2009).
+     Rev. B 103, 104403 (2021).                                   [36] E. Prodan, Three-dimensional phase diagram of disor-
+[15] W.-Z. Zheng, T.-Y. Zhao, A.-Q. Wang, D.-Y. Xu, P.-Z.              dered HgTe/CdTe quantum spin-Hall wells, Phys. Rev.
+     Xiang, X.-G. Ye, and Z.-M. Liao, Strain-gradient induced          B 83, 195119 (2011).
+     topological transition in bent nanoribbons of the Dirac      [37] J. Song, H. Liu, H. Jiang, Q.-f. Sun, and X. C. Xie, De-
+     semimetal Cd3 As2 , Phys. Rev. B 104, 155140 (2021).              pendence of topological Anderson insulator on the type
+[16] G. Antonius and S. G. Louie, Temperature-induced topo-            of disorder, Phys. Rev. B 85, 195125 (2012).
+     logical phase transitions: Promoted versus suppressed        [38] D. Xu, J. Qi, J. Liu, V. Sacksteder, X. C. Xie, and
+     nontrivial topology, Phys. Rev. Lett. 117, 246401 (2016).         H. Jiang, Phase structure of the topological Anderson
+[17] P. B. Melo, S. A. S. Júnior, W. Chen, R. Mondaini, and           insulator, Phys. Rev. B 85, 195140 (2012).
+     T. Paiva, Topological marker approach to an interacting      [39] Z.-Q. Zhang, B.-L. Wu, J. Song, and H. Jiang, Topolog-
+     Su-Schrieffer-Heeger model, Phys. Rev. B 108, 195151              ical Anderson insulator in electric circuits, Phys. Rev. B
+     (2023).                                                           100, 184202 (2019).
+[18] W. Chen, Scaling theory of topological phase transitions,    [40] C. P. Orth, T. Sekera, C. Bruder, and T. L. Schmidt, The
+     J. Phys. Condens. Matter 28, 055601 (2016).                       topological Anderson insulator phase in the Kane-Mele
+[19] P. Molignini, W. Chen, and R. Chitra, Universal quan-             model, Sci. Rep. 6, 24007 (2016).
+     tum criticality in static and Floquet-Majorana chains,       [41] H. Liu, B. Xie, H. Wang, W. Liu, Z. Li, H. Cheng,
+     Phys. Rev. B 98, 125129 (2018).                                   J. Tian, Z. Liu, and S. Chen, Acoustic spin-Chern topo-
+[20] W. Chen and A. P. Schnyder, Universality classes of topo-         logical Anderson insulators, Phys. Rev. B 108, L161410
+     logical phase transitions with higher-order band crossing,        (2023).
+     New J. Phys. 21, 073003 (2019).                              [42] R. Shindou and S. Murakami, Effects of disorder in three-
+[21] M. Caio, G. Möller, N. Cooper, and M. J. Bhaseen, Topo-          dimensional Z2 quantum spin Hall systems, Phys. Rev.
+     logical marker currents in Chern insulators, Nat. Phys.           B 79, 045321 (2009).
+     15, 257 (2019).                                              [43] R. Chen, X.-X. Yi, and B. Zhou, Four-dimensional topo-
+[22] J. Li, R.-L. Chu, J. K. Jain, and S.-Q. Shen, Topological         logical Anderson insulator with an emergent second
+     Anderson insulator, Phys. Rev. Lett. 102, 136806 (2009).          Chern number, Phys. Rev. B 108, 085306 (2023).
+[23] C. W. Groth, M. Wimmer, A. R. Akhmerov,                      [44] H. Chen, Z.-R. Liu, R. Chen, and B. Zhou, Higher-order
+     J. Tworzydlo, and C. W. J. Beenakker, Theory of the               topological Anderson insulator on the Sierpiński lattice,
+     topological Anderson insulator, Phys. Rev. Lett. 103,             Chin. Phys. B 33, 017202 (2023).
+     196805 (2009).                                               [45] M. Gonçalves, P. Ribeiro, and E. V. Castro, The Haldane
+[24] A. Agarwala and V. B. Shenoy, Topological insulators in           model under quenched disorder, arXiv:1807.11247.
+     amorphous systems, Phys. Rev. Lett. 118, 236402 (2017).      [46] J. S. Silva, E. V. Castro, R. Mondaini, M. A. H. Voz-
+[25] M. Costa, G. R. Schleder, M. B. Nardelli, C. Lewenkopf,           mediano, and M. P. López-Sancho, Topological Ander-
+     and A. Fazzio, Toward realistic amorphous topological             son insulating phases in the interacting Haldane model,
+     insulators, Nano Lett. 19, 8941 (2019).                           Phys. Rev. B 109, 125145 (2024).
+[26] P. Corbae, J. D. Hannukainen, Q. Marsal, D. Muñoz-          [47] H.-M. Guo, G. Rosenberg, G. Refael, and M. Franz,
+     Segovia, and A. G. Grushin, Amorphous topological mat-            Topological Anderson insulator in three dimensions,
+     ter: Theory and experiment, EPL 142, 16001 (2023).                Phys. Rev. Lett. 105, 216601 (2010).
+[27] V. Regis, V. Velasco, M. B. S. Neto, and C. Lewenkopf,       [48] P. Titum, N. H. Lindner, M. C. Rechtsman, and G. Re-
+     Structure-driven phase transitions in paracrystalline             fael, Disorder-induced Floquet topological insulators,
+     topological insulators, arXiv:2312.08779.                         Phys. Rev. Lett. 114, 056801 (2015).
+[28] R. Resta, The insulating state of matter: a geometrical      [49] A. Girschik, F. Libisch, and S. Rotter, Topological in-
+     theory, Eur. Phys. J. B 79, 121 (2011).                           sulator in the presence of spatially correlated disorder,
+[29] R. Bianco and R. Resta, Mapping topological order in              Phys. Rev. B 88, 014201 (2013).
+     coordinate space, Phys. Rev. B 84, 241106(R) (2011).         [50] D. D. Vu and S. Das Sarma, Weak quantization of non-
+[30] P. d'Ornellas, R. Barnett, and D. K. K. Lee, Quantized            interacting topological Anderson insulator, Phys. Rev. B
+     bulk conductivity as a local Chern marker, Phys. Rev. B           106, 134201 (2022).
+                                                                                                                                    7
+
+[51] G.-G. Liu, Y. Yang, X. Ren, H. Xue, X. Lin, Y.-H. Hu,       [63] Bianco-Resta’s derivation of the local Chern marker
+     H.-X. Sun, B. Peng, P. Zhou, Y. Chong, and B. Zhang,             [29] goes from k to r space using the identity
+     Topological Anderson insulator in disordered photonic            ⟨un′ ,k |∇k un,k ⟩ = −i ⟨ψn′ ,k | r |ψn,k ⟩ for n′ ̸= n, which
+     crystals, Phys. Rev. Lett. 125, 133603 (2020).                   is shown in Ref. [72]. Additionally, it implies a physically
+[52] E. J. Meier, F. A. An, A. Dauphin, M. Maffei, P. Massig-         reasonable, but not rigorous,
+                                                                                               P           approximation of replac-
+     nan, T. L. Hughes, and B. Gadway, Observation of                 ing the projector P̂ = occ.n,k   |ψ n,k ⟩⟨ψn,k |, with sums over
+     the topological Anderson insulator in disordered atomic          Bloch states, with its finite size counterpart shown in
+     wires, Science 362, 929 (2018).                                  Eq. (4). A more rigorous derivation was later published
+[53] S. Stützer, Y. Plotnik, Y. Lumer, P. Titum, N. H. Lind-         in Ref. [31], but it also includes an ad hoc replacement
+     ner, M. Segev, M. C. Rechtsman, and A. Szameit, Pho-             of projectors defined by eigenstates with open (|ψℓ ⟩) and
+     tonic topological Anderson insulators, Nature 560, 461           closed (|ψn,k ⟩) boundary conditions.
+     (2018).                                                     [64] The derivation of the local spin-Chern number fol-
+[54] F. Zangeneh-Nejad and R. Fleury, Disorder-induced sig-           lows from the local mirror-Chern number introduced in
+     nal filtering with topological metamaterials, Adv. Mater.        Ref. [68].
+     32, 2001034 (2020).                                         [65] M. Ezawa, Topological Kirchhoff law and bulk-edge cor-
+[55] B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, Quantum           respondence for valley Chern and spin-valley Chern num-
+     spin Hall effect and topological phase transition in HgTe        bers, Phys. Rev. B 88, 161406(R) (2013).
+     quantum wells, Science 314, 1757 (2006).                    [66] M. Ezawa, Symmetry protected topological charge in
+[56] F. D. M. Haldane, Model for a quantum Hall effect with-          symmetry broken phase: Spin-Chern, spin-valley-Chern
+     out Landau levels: Condensed-matter realization of the           and mirror-Chern numbers, Phys. Lett. A 378, 1180
+     “parity anomaly”, Phys. Rev. Lett. 61, 2015 (1988).              (2014).
+[57] C. L. Kane and E. J. Mele, Quantum spin Hall effect in      [67] W. Zhu, Y. Long, H. Chen, and J. Ren, Quantum valley
+     graphene, Phys. Rev. Lett. 95, 226801 (2005).                    Hall effects and spin-valley locking in topological Kane-
+[58] See Supplemental Material for additional information on          Mele circuit networks, Phys. Rev. B 99, 115410 (2019).
+     the numerical methods and on the analysis of the topolog-   [68] D. Varjas, M. Fruchart, A. R. Akhmerov, and P. M.
+     ical disorder-driven transitions in the Haldane and Kane-        Perez-Piskunow, Computation of topological phase dia-
+     Mele models, which are similar to the ones discussed in          gram of disordered Pb1−x Snx Te using the kernel polyno-
+     the main text.                                                   mial method, Phys. Rev. Research 2, 013229 (2020).
+[59] A. Altland and M. R. Zirnbauer, Nonstandard symme-          [69] A. Weiße, G. Wellein, A. Alvermann, and H. Fehske,
+     try classes in mesoscopic normal-superconducting hybrid          The kernel polynomial method, Rev. Mod. Phys. 78, 275
+     structures, Phys. Rev. B 55, 1142 (1997).                        (2006).
+[60] C.-K. Chiu, J. C. Y. Teo, A. P. Schnyder, and S. Ryu,       [70] P. W. Anderson, Absence of diffusion in certain random
+     Classification of topological quantum matter with sym-           lattices, Phys. Rev. 109, 1492 (1958).
+     metries, Rev. Mod. Phys. 88, 035005 (2016).                 [71] J. Mildner, M. D. Caio, G. Möller, N. R. Cooper, and
+[61] S. Datta, Electronic Transport in Mesoscopic Systems             M. J. Bhaseen, Topological phase transitions in the dis-
+     (Cambridge University, Cambridge, England, 1995).                ordered haldane model, arXiv:2312.16689.
+[62] C. W. Groth, M. Wimmer, A. R. Akhmerov, and                 [72] E. Blount, Formalisms of Band Theory (Academic, San
+     X. Waintal, Kwant: a software package for quantum                Diego, 1962) pp. 305–373.
+     transport, New J. Phys. 16, 063065 (2014).
+                                                                                    Supplemental Material to
+                                                           “Phase transitions and scale invariance in Topological Anderson Insulators”
+                                                                                   Bryan D. Assunção,1 Gerson J. Ferreira,1 and Caio H. Lewenkopf2
+                                                                      1
+                                                                          Instituto de Fı́sica, Universidade Federal de Uberlândia, Uberlândia, MG 38400-902, Brazil
+                                                                            2
+                                                                              Instituto de Fı́sica, Universidade Federal Fluminense, 24210-346 Niterói, RJ, Brazil
+                                                                                                              (Dated: May 3, 2024)
+
+
+
+                                                                                  CONTENTS                               G(k) is the full Green’s function. The latter is diagonal
+                                                                                                                         in k as the impurity self-averaging restores translation in-
+arXiv:2401.03028v2 [cond-mat.dis-nn] 2 May 2024
+
+
+
+
+                                                   I. Summary                                                       1    variance [3]. Within the first-order Born approximation,
+                                                                                                                         the self-energy reads
+                                                  II. Impurity scattering self-energy                               1                                      Z
+                                                                                                                                              W 2  a 2
+                                                                                                                                     Σ1BA =                      G0 (k)d2 k,       (2)
+                                                  III. The kernel polynomial method                                 2                         12 2π         BZ
+                                                       A. Convergence analysis                                      3
+                                                                                                                         which is independent of k. The factor (a/2π)2 is the
+                                                  IV. Results for other models                                      3    inverse area of the Brillouin zone (BZ) related to the
+                                                      A. Haldane model                                              4    square lattice with lattice parameter a. The on-site
+                                                      B. Kane-Mele model                                            4    random impurity potential Wi is uniformly distributed
+                                                                                                                         within the range [−W/2, W/2], such that ⟨Wi ⟩ = 0 and
+                                                         References                                                 7                1
+                                                                                                                         ⟨Wi Wj ⟩ = 12 W 2 δi,j . Here, we are interested in the real
+                                                                                                                         (Hermitian) part of Σ1BA , which leads to chemical poten-
+                                                                                                                         tial and mass renormalizations. The chemical potential
+                                                                             I.    SUMMARY                               renormalization can be neglected, since it only shifts the
+                                                                                                                         energy reference. Hence, hereafter we consider only the
+                                                     Here, we present the following additional numerical                 mass renormalization, that is given by
+                                                  and analytical materials: (II) Details on the computa-
+                                                  tion of the self-energy, within the first order Born ap-                           f = M + Re Σz = M + α(M )W 2 ,
+                                                                                                                                     M                                             (3)
+                                                  proximation, due to random impurity scattering in the
+                                                  BHZ model. First, we consider an approximate analyt-                   with
+                                                  ical expression for the continuum model, and next, we                                              Z
+                                                  present numerical results for the BHZ model regularized                                1  a 2         1
+                                                                                                                                 α(M ) =                    Tr [σz G0 (k)] d2 k.   (4)
+                                                  into a square lattice. (III) We show how the kernel poly-                              12 2π         BZ 2
+                                                  nomial method (KPM) is used to efficiently calculate the
+                                                  local Chern marker, and we discuss the convergence of                     For the sake of simplicity, we take the chemical poten-
+                                                  the KPM expansion. (IV) We show results for the Hal-                   tial εF = 0. Consequently, εF lies within the gap be-
+                                                  dane [1] and the Kane-Mele [2] models, that complement                 tween the BHZ bands and, hence, the self-energy should
+                                                  the study of the BHZ model presented in the main text.                 be identically real, since its imaginary part is propor-
+                                                  As referred to in the main text, the analysis of the latter            tional to the density of states at the chemical potential,
+                                                  corroborates our findings. These results are presented as              i.e. Im Σ1BA ∝ D(εF ) = 0.
+                                                  additional material to avoid unnecessary repetitions.                     In Ref. [4] the authors arrive at an approximate ana-
+                                                                                                                         lytical expression for the renormalization parameters by
+                                                                                                                         considering only the logarithmically divergent part of the
+                                                   II.     IMPURITY SCATTERING SELF-ENERGY                               Σ1BA integral. Within this approximation,  Eq. (4) leads
+                                                                                                                         to α(M ) ≈ (a2 /48πB) ln π 4 B 2 /(M 2 )a4 , for C = D =
+                                                    The clean system is described by the BHZ Hamiltonian                 0. However, this approximation yields unphysical diver-
+                                                                                                                         gencies for |M | = εF = 0. In what follows, we show that
+                                                             H0 = A(kx σx + ky σy ) + (M + Bk 2 )σz ,             (1)    a careful analysis of α(M ) gives a smooth and nearly
+                                                                                                                         constant function of M .
+                                                  where we have already set C = D = 0 for simplicity. A                     To obtain an analytical expression for the mass renor-
+                                                  random impurity perturbation potential V is added to                   malization defined in Eqs. (3) and (4), and its correc-
+                                                  the full Hamiltonian H = H0 + V , such that the Dyson                  tion beyond the logarithmically divergent part, we ex-
+                                                  equation reads G(k) = G0 (k) + G0 (k)ΣG(k). Here,                      press k = (k cos θ, k sin θ) in polar coordinates, replace
+                                                  G0 (k) = [εF − H0 + i0+ ]−1 is the bare Green’s function,              the integral over the BZ by a integral over a disk of ra-
+                                                  Σ = ⟨V ⟩ + ⟨V G0 V ⟩ + · · · is the self-energy due to the im-         dius kcut = π/a, assuming that the most relevant con-
+                                                  purities, the ⟨·⟩ refers to the impurity self-averaging, and           tributions arise from the region near k = 0. Later we
+                                                                                                                               2
+
+will contrast this approximation with a numerical inte-        In turn, for k ≤ kcut the k-integral gives
+gral over the full BZ. For now, we notice that our approx-
+imation significantly simplifies the problem, as it yields
+the θ-integral as
+         Z 2π            
+   1                             −2π(M + Bk 2 )
+     Tr σz        G0 (k)dθ =                        . (5)
+   2          0               (Ak)2 + (M + Bk 2 )2
+
+
+
+                                                                            2                 kcut
+               a2        (Akcut )2 + (M + Bkcut
+                                            2
+                                                )2          a2 A              A + 2B(M + Bk 2 )
+      α(M ) ≈      log                               +     √         arctanh     √                     .                     (6)
+              96πB                  M2                 48πB A2 + 4BM            A A2 + 4BM                          0
+
+
+
+
+By considering only the logarithmically divergent part              Log. divergent part   Polar approx.       Numerical, full BZ
+and leading order in kcut → ∞, we obtain α(M ) ≈
+(a2 /96πB) ln π 4 B 2 /(M 2 )a4 , which matches the expres-              4
+sion for α(M ) present in Ref. [4] (see above), apart
+from an overall factor 1/2. While this logarithmically                   3
+divergent part diverges at M = 0, the full expression
+given by Eq. (6) is well behaved at this limit and yields
+
+                                                                  α/α0
+limM →0 α(M ) = (a2 /48πB) ln[1 + (Bkcut /A)2 ], which                   2
+shows that the arctanh contribution cannot be neglected
+for small M .
+                                                                         1
+   To verify the precision of our approximate analytical
+expression for α(M ), we numerically integrate Eq. (4).                  0
+For that purpose, we consider the regularization of the                  -10         -5          0            5           10
+BHZ Hamiltonian in a square lattice of lattice parameter
+                                                                                           M [meV]
+a, such that the k-powers in H0 become kx → a1 sin(kx a),
+kx2 → a22 [1 − cos(kx a)], and equivalent expressions for ky
+                                                               Figure 1. Comparison of α(M )/α0 as a function of the bare
+and ky2 . Hence, the BZ is defined by the square region        mass M between the analytical approximation of Eq. (6)
+set by |kx | ≤ π/a and |ky | ≤ π/a.                            (orange), its logarithmically divergent part (blue), and the
+                                                               numerical integration over a square lattice (green). Here
+   The analytical expression given by Eq. (6), its loga-       α0 = 1/3700 meV−1 is the reference value.
+rithmically divergent part, and the numerical integration
+results are compared in Fig. 1, where we plot α/α0 as a
+function of the bare mass M . Here α0 = 1/3700 meV−1
+is the optimal value used in the main text. The com-
+parison shows that α(M ) obtained using the polar cutoff         III.        THE KERNEL POLYNOMIAL METHOD
+approximation, Eq. (6), matches well the smooth behav-
+ior of the numerics except for a rigid shift that is likely
+due to the missing regions in polar integration of the           The KPM expansion [5] for the projector operator over
+BZ. Furthermore, the numerical results fall close to the       occupied states is given by
+constant value α0 = 1/3700 meV−1 , indicating that α
+depends very weekly on M . In the main text, we use this
+value for the scaling analysis.                                                                  M
+                                                                                                 X
+                                                                         P (ε, H) = θ(ε − H) =                      e
+                                                                                                       gm µm (ε)Tm (H),      (7)
+   It is important to emphasize that all calculations                                            m=0
+shown here are done for bulk systems and within the
+first-order Born approximation. In contrast, the results
+presented in the paper consider finite systems and nu-
+merical averaging over many realizations of the random         where Tm (H) are the Chebyshev polynomials, gm are
+impurity ensemble. In other words, the assumption that                                              e = (H − b)/a is the
+                                                               the Jackson kernel coefficients [5], H
+α ≈ α0 (used in the main text), which is well established      Hamiltonian H shifted by b and renormalized by a such
+by the numerics (see Fig. 1), does not account for even-       that the energy spectrum lies in the range [−1, +1] to
+tual finite size corrections.                                  match the Chebyshev polynomial domain, and µm (ε) are
+                                                                                                                                 3
+
+the moments of the expansion, which read as [6]                      the data for W = 200 meV averaged over 400 disorder
+                          Z 1                                        realizations. In both cases we vary the mass M in the
+                     2          θ(ε − E)Tm (E)                       same range presented in Fig. 4 of the main text. In all
+       µm (ε) =                     √           dE,
+                 1 + δm,0 −1 π 1 − E 2                               cases, the data shows that the LCM for 1000 moments
+                                                                    is close to convergence, and from 2000 to 3000 moments
+                 1 − arccos(ε) ,         for m = 0,
+                          π                                          there no significant changes.
+              = −2 sin[m arccos(ε)]                      (8)
+                                      , for m ̸= 0.
+                           mπ
+                                                 √
+In the definition of µm (ε), the denominator π 1 − E 2 is
+the weight function for the inner product of Chebyshev                          (a)
+polynomials of the first kind, and the prefactor before
+the integral appears due to the orthogonality ⟨Tn |Tm ⟩ =                 0.6                         Exact diagonalization
+1                                                                                                     1000 moments
+2 (1 + δm,0 )δn,m .
+                                                                                                      2000 moments
+   In practice, rather than evaluating P̂ itself, we need to              0.4                         3000 moments
+calculate the action P̂ |r⟩ on a generic state vector |v⟩.
+
+
+
+
+                                                                      0
+Namely,
+                                                                          0.2
+                                M
+                                X
+             P (ε, H) |v⟩ =            gm µm (ε) |vm ⟩ .      (9)
+                                                                          0.0
+                                m=0
+                                                                                  10       5       0           5         10
+                                                                                (b)             M [meV]
+The vectors |vm ⟩ = Tm (H) e |v⟩ can be efficiently ob-                   1.0
+tained via the recursion relation of Chebyshev polyno-
+mials, yielding                                                           0.8
+                  |v0 ⟩ = |v⟩ ,                              (10)         0.6
+                                                                      0
+
+
+
+                  |v1 ⟩ = He |v0 ⟩ ,                         (11)                Exact diagonalization
+                         e |vm−1 ⟩ − |vm−2 ⟩ .                            0.4    1000 moments
+                |vm ⟩ = 2H                                   (12)                2000 moments
+                                                                          0.2    3000 moments
+  For the LCM, we need to compute matrix elements of
+the type ⟨v| Û P̂ x̂P̂ ŷ P̂ |v⟩, as shown in Eq. 3 of the main              10       5          0            5         10
+text. This can be acomplished using the KPM recipe                                           M [meV]
+above by parts as
+
+                   |ϕ1 ⟩ = P̂ |v⟩ ,                          (13)    Figure 2. Comparison of the local Chern marker calculated
+                                                                     via exact diagonalization (brute force, blue line) and via the
+                   |ϕ2 ⟩ = ŷ |ϕ1 ⟩ = ŷ P̂ |v⟩ ,            (14)    KPM method with different number of Chebyshev moments
+                   |ϕ3 ⟩ = x̂ |ϕ1 ⟩ = x̂P̂ |v⟩ ,             (15)    in the expansion. Here we consider the BHZ model with L =
+                                                                     100 nm, and vary the mass M for fixed (a) W = 0, and
+                   |ϕ4 ⟩ = P̂ |ϕ3 ⟩ = P̂ x̂P̂ |v⟩ ,          (16)    (b) W = 200 meV. (a) For W = 0, all lines fall on top of
+                                                                     each other, and the discrepancy between the KPM and exact
+where |ϕ1 ⟩ and |ϕ4 ⟩ are calculated via KPM and the                 diagonalization data is less than 1% in all cases. (b) For
+others are straightforward. These can be combined to                 W ̸= 0 the error is typically around 2 to 3% and at most
+form ⟨v| Û P̂ x̂P̂ ŷ P̂ |v⟩ = ⟨ϕ4 | Û |ϕ2 ⟩, which assumes that   about 5% in the worst cases.
+Û commutes with P̂ , x̂, and ŷ [6].
+
+
+                A.     Convergence analysis
+
+   For all results presented in this Letter, we have rigor-                 IV.        RESULTS FOR OTHER MODELS
+ously tested the convergence of the LCM calculated via
+KPM, as explained in this section.
+   To illustrate the convergence analysis, we consider the              The main text analyzes the topological phase transi-
+BHZ model on a flake of size L = 100 nm. In Fig. 2                   tions due to Anderson disorder in the BHZ model [7].
+we compare the LCM C0 calculated via exact diagonal-                 Here, we extend this analysis to other standard topolog-
+ization (brute force) and via KPM with different number              ical insulator models, namely, the Haldane [1] and the
+of Chebyshev moments. Fig. 2(a) show the results for                 Kane-Mele [8] models. We find that these models show
+the clean system with W = 0, while Fig. 2(b) presents                the same scaling behavior discussed in the main text.
+                                                                                                                             4
+
+                    A.   Haldane model                        disorder intensity, Fig. 3(g), the local Chern marker at
+                                                              the center of the system is C(R) ≈ 0.5 with small fluc-
+  The Hamiltonian of the Haldane model [1] reads as           tuations, indicating a transition between the trivial and
+                                                              topological regimes. In contrast, Fig. 3(h) shows that
+             X †                  X                           the local Chern marker is C(R) ≈ 1 over most of the
+  HH = −t1    (ci cj + h.c.) − t2   (eiϕij c†i cj + H.c.)
+                                                              central region, resembling a bulk topological regime. Fi-
+             ⟨ij⟩                   ⟨⟨ij⟩⟩
+                            X †        X †                    nally, Figure 3(i) shows that strong disorder drives the
+                         +M  ci ci − M  ci ci ,       (17)    system back into the trivial regime, due to the emergence
+                              i∈A            i∈B              of Anderson localization.
+                                                                 In Fig. 3(j), we plot the phase diagram of the pris-
+where i and j label the sites of a honeycomb lattice, a       tine system using the local Chern marker in the center of
+hexagonal lattice with a two-atom basis, labeled by A         the system. The topological region depicted by the local
+and B. The first neighbor hopping term t1 ≡ t sets the        Chern marker matches exactly the outlined region set by
+energy units and we take t2 = t/3 for the second neighbor     the dashed curve. In contrast, for a disordered system
+hopping. Here, we analyze the model dependence on the         with disorder intensity W = 5t, the phase diagram of
+mass M and the phase ϕ over the ranges |M | ≤ 2t and          Fig. 3(k) shows that the Anderson disorder extends the
+0 ≤ ϕ ≤ 2π. Additionally, we consider Anderson’s onsite       topological region beyond the dashed lines.
+disorder, such that the total Hamiltonian reads
+                              X †
+                  H = HH +       εi ci ci ,          (18)                         B.   Kane-Mele model
+                               i
+                                                                The Kane-Mele Hamiltonian [2] reads
+where the onsite energies {εi } are randomly chosen from
+a uniform distribution within the interval [−W/2, W/2].                    X †         X †              X
+   The band structure for the Haldane model is illustrated      HKM = t     ci cj + λν  ξi ci ci + iλSO   νij c†i σz cj
+in Figs. 3(a) and 3(b), which show the non-trivial (black                  ⟨ij⟩             i                 ⟨⟨ij⟩⟩
+                                                                                                    X †
+lines) and trivial (red lines) energy bands for the zigzag                                      iλR  ci (σ × dˆij )z cj   (19)
+and armchair ribbons, respectively. Figures 3(c) and 3(d)                                             ⟨ij⟩
+show the conductance G as a function of the chemical
+potential εF and disorder intensity W with M = 2t and         where i and j label the sites of a honeycomb lattice
+ϕ = π/2 for zigzag and armchair ribbons, respectively.        and ⟨ij⟩ restrict the double sum to run over pairs of
+For W = 0 the system is in a trivial regime and the           the nearest-neighbors sites, whereas ⟨⟨ij⟩⟩ constraints
+conductance vanishes in the gap around εF = 0. How-           the sum to next-nearest neighbors sites. The operators
+ever, as the disorder intensity increases, a finite conduc-   c†i = (c†i↑ , c†i↓ ) and ci = (ci↑ , ci↓ )T create and annihilate
+tance G ≈ G0 , where G0 = e2 /h, emerges within the           (spin-full) electrons at the site i and σ = (σx , σy , σz )
+gap region, as represented by the yellow region around        stands for the Pauli matrices acting on the spin sub-
+εF = 0, which is characteristic of topological Anderson       space. The term λν , corresponds to the sublattice poten-
+insulators. Notably, the size of this region in parame-       tial, with ξi = 1 for the A sublattice and ξi = −1 for the
+ter space is much smaller than the one we find for the        B sublattice. The spin-orbit interaction is described by
+BHZ model calculations in the main text, owing to the         the two-last terms of the Hamiltonian. The coupling con-
+narrower bandwidth in the Haldane model.                      stants λSO and λR stand, respectively, for the intrinsic
+   The topological phase transition can be seen in            and the Rashba spin-orbit coupling (SOC). The intrinsic
+Fig. 3(e), which shows the local Chern marker at the          SOC has a phase determined by νij = √23 (di ×dj )z = ±1,
+central cell of the system, averaged over 400 disorder
+                                                              where di and dj are unit vectors along the two bonds the
+configurations, as a function of W for systems of vari-
+                                                              electron goes through when hopping from site j to site
+ous sizes L. These curves do not reach the full plateau
+                                                              i. For the Rashba SOC, dˆij = dij /dij is the unit vector
+C0 = 1 of the non-trivial regime, since the onset of An-
+                                                              pointing from site j to i.
+derson localization occurs at small values of W due to
+                                                                  In the following we study HKM in the presence of An-
+the narrow bandwidth of the Haldane model. Neverthe-
+                                                              derson onsite disorder, namely,
+less, the scaling behavior remains equivalent to that de-
+scribed in the main text. Figure 3(f) shows the curves                                             X †
+                                                                                     H = HKM +          εi ci ci ,        (20)
+from Fig. 3(e) renormalized through the scaling W →
+                                                                                                  i
+(W µ − Wcµ )/Wmax µ
+                      · (L/Lmax ), with a critical exponent
+of µ ≈ 2 and critical disorder of Wc ≈ 3.05t.                 where εi is randomly chosen from a uniform distribution
+   Figures 3(g), 3(h), and 3(k) show a color map of the lo-   within the interval [−W/2, W/2]. We express all energies
+cal Chern marker over the system sites C0 (r) for disorder    in units of the hopping term t and analyze the interplay
+intensities of W = 3.23t, W = 4.24t, and W = 7.07t, re-       between λSO , λν , λR and W .
+spectively. These disorder strengths correspond to points       The band structure of the Kane-Mele model is de-
+(ii), (iii), and (iv) indicated in Fig. 3(f). For a small     picted in Figs. 4(a) and 4(b), which show the non-trivial
+                                                                                                                                                                                                 5
+
+           (a) Zigzag                                          (b) Armchair                                     2 (c) Zigzag             4                  2 (d) Armchair           4
+       4                                                   4
+       2                                                   2                                                    1                        3                  1                        3
+
+
+
+
+                                                                                                                                         G [e2/h]
+
+
+
+
+                                                                                                                                                                                     G [e2/h]
+       0                                                   0                                                    0                        2                  0                        2
+
+
+
+
+                                                                                                         F/t
+
+
+
+
+                                                                                                                                                     F/t
+ E/t
+
+
+
+
+                                                     E/t
+       2                                                   2                                                    1                        1                  1                        1
+       4                                                   4                                                    20
+               2.5 0.0            2.5                              2.5 0.0              2.5                                 5       10 0                    20          5       10 0
+                     k [1/a]                                               k [1/a]                                        W/t                                         W/t
+           (e)                                                     (f) = 2, Wc = 3.05t
+    1.00                        L = 25                 1.00            (iii)                                        (g) W = 3.23t                               (h) W = 4.24t
+                                L = 50
+                                L = 100                                                                        20                            1.0           20                            1.0
+    0.75                        L = 150                0.75                                                                                  0.5                                         0.5
+    0.50                                               0.50 (ii)               (iv)                             0                            0.0            0                            0.0
+
+
+
+
+                                                                                                     y/a
+
+
+
+
+                                                                                                                                                     y/a
+ 0
+
+
+
+
+                                                     0
+
+
+
+
+    0.25                                               0.25                                                                                    0.5                                         0.5
+                                                               (i)                                             20                              1.0         20                              1.0
+    0.00                                               0.00                                                          20      0      20                           20      0      20
+           0            5             10                           0               50                                       x/a                                         x/a
+                      W/t                                                      z
+           (j) W = 0t                     1.0                  (k) W = 5t                     1.0
+       2                                                   2                                                        (i) W = 7.07t
+                                                                                                               20                            1.0
+       1                                  0.5              1                                  0.5
+                                                                                                                                             0.5
+       0                                  0.0              0                                  0.0               0                            0.0
+  /t
+
+
+
+
+                                                     /t
+
+
+
+
+                                                                                                     y/a
+                                                 0
+
+
+
+
+                                                                                                     0
+
+
+
+
+       1                                                   1                                                                                   0.5
+                                           0.5                                                 0.5             20
+       2                                                   2                                                                                   1.0
+                                           1.0                                                 1.0                   20      0      20
+           0     2
+                            3   2                              0       2
+                                                                                   3    2                                   x/a
+                            2                                                      2
+
+
+
+Figure 3. (a)-(b) Band structures for Haldane system in the trivial regime (M = 2t) in red, and non-trivial regime (M = 1.5t)
+in black, for (a) zigzag and (b) armchair ribbons. (c)-(d) Conductance G, averaged over 100 disorder configurations, as
+a function of the disorder intensity W and chemical potential εF for the Haldane (c) zigzag and (d) armchair ribbons of
+size Lx = Ly = 25a, with ϕ = π/2 and M = 2t. (e) Local Chern marker, for ϕ = π/2 and M = 2t, as a function of
+disorder intensity W , for Lx = Ly = L averaged over 400 disorder realizations and 1000 Chebyshev moments in the KPM
+expansion. (f) Renormalization of the curves in (e) showing a universal superposition in the region of TAI after the scaling
+zµ = (W µ − Wcµ )L/(Lmax tµ ), where the denominator Lmax tµ is introduced to keep zµ dimensionless. (g)-(i) Spatial distribution
+of the local Chern marker at all sites of the Haldane system with Lx = Ly = 25a, using M = 2t, ϕ = π/2, and different values
+of W = 3.23t, W = 4.24t, and W = 7.07t respectively. (j)-(k) Topological phase diagrams drawn from the local Chern marker
+(C0 ) as a function of the phase ϕ and mass M/t, without disorder (j) and with disorder W = 5t (k).
+
+
+(black lines, with λν = 1.45t) and trivial (red lines, with                                               Lx = Ly = 25a. For weak disorder, W/t ≲ 1, the con-
+λν = 1.85t) bands for zigzag and armchair ribbons, re-                                                    ductance vanishes around εF = 0 due to the gap seen in
+spectively. Similar to the Haldane model, the Kane-                                                       the trivial regime. As disorder intensity increases, a do-
+Mele model features a narrow bandwidth compared to                                                        main of quantized conductance G ≈ G0 emerges within
+the BHZ model. Consequently, the onset of the standard                                                    the gap region, corresponding to the yellow region around
+Anderson localization phase occurs already at small val-                                                  εF = 0, characteristic of topological Anderson insulators.
+ues of W/t and limits the range of parameters where the                                                   However, the size in the parameter space of this quan-
+TAI phase can be seen.                                                                                    tized conductance region is smaller than that of the BHZ
+  Figures 4(c) and 4(d) show the average Landauer con-                                                    model, owing to the narrower bandwidth.
+ductance G for 100 realizations as a function of the                                                         Figure 4(e) illustrates the topological phase transition
+chemical potential εF and disorder intensity W for the                                                    in terms of the local spin Chern marker C0 , averaged over
+Kane-Mele model for zigzag and armchair ribbons. In                                                       400 disorder configurations, at the center of the system
+these simulations, the mass value is fixed at λν = 1.85t,                                                 as a function of disorder intensity W . Here, the Rashba
+with λR = 0 and λSO = 0.3t, and the system size is                                                        spin-orbit coupling is absent, λR = 0, which allows the
+                                                                                                                                                                                                 6
+
+
+        2 (a) Zigzag                                     2 (b) Armchair                                    2 (c) Zigzag                                  2 (d) Armchair
+                                                                                                                                       5                                             5
+
+
+
+
+                                                                                                                                       G [e2/h]
+
+
+
+
+                                                                                                                                                                                     G [e2/h]
+        0                                                0                                                 0                                             0
+
+
+
+
+                                                                                                     F/t
+
+
+
+
+                                                                                                                                                   F/t
+ E/t
+
+
+
+
+                                                  E/t
+        2 2.5            0.0     2.5                     2 2.5             0.0       2.5                   20             5         10 0                 20             5         10 0
+                     k [1/a]                                         k [1/a]                                             W/t                                           W/t
+            (e)                                               (f) = 2, Wc = 3.15t                                   (g) W = 3.23t                                 (h) W = 4.24t
+     1.0                        L = 25                 1.0         (iii)                                       20                          1                 20                          1
+                                L = 50
+                                L = 100
+     0.5                        L = 150
+                                                       0.5 (ii)              (iv)                               0                          0                  0                          0
+
+
+
+
+                                                                                                      y/a
+
+
+
+
+                                                                                                                                                    y/a
+  0
+
+
+
+
+                                                  0          (i)
+     0.0                                               0.0                                                     20                              1             20                              1
+            0             5            10                      0               50                                   25         0     25                           25         0     25
+                      W/t                                                  z                                                  x/a                                           x/a
+            (j) W = 0t                                       (k) W = 5t                                             (i) W = 7.07t
+       10                             1                 10                               1                     20                          1
+
+        0                             0                  0                               0                      0                          0
+/t
+
+
+
+
+                                                  /t
+
+
+
+
+                                                                                                      y/a
+                                              0
+
+
+
+
+       10                                 1             10                                   1   0             20                              1
+                10    0         10                            10       0            10                              25         0     25
+                     SO/t                                             SO/t                                                    x/a
+        3 (l) W = 0t                  1                  3 (m) W = 5t                    1
+        2                                                2
+                                      0                                                  0
+   /t
+
+
+
+
+                                                   /t
+                                              0
+
+
+
+
+                                                                                                 0
+
+
+
+
+        1                                                1
+        00                  2             1              00                  2               1
+                      R/t                                              R/t
+
+
+Figure 4. Band structures for Kane-Mele system in the trivial regime (λν = 1.85t) in red, and non-trivial regime (λν = 1.45t)
+in black, for (a) zigzag and (b) armchair ribbons, using λR = 0, λSO = 0.3t. Conductance, averaged over 100 disorder
+configurations, as a function of the disorder intensity W and chemical potential εF for the Kane-Mele system of size Lx = Ly =
+25a, λR = 0, λSO = 0.3t, and λν = 1.85t, for (c) zigzag and (d) armchair ribbons. (e) Local Chern marker, for λR = 0 and
+λν = 0.3t, as a function of disorder intensity W and various Lx = Ly = L, averaged over 400 disorder realizations and 1000
+Chebyshev moments in the KPM expansion. (f) Same curves as in panel (e) scaled according to zµ = (W µ − Wcµ )L/(Lmax tµ ),
+where the denominator Lmax tµ is introduced to keep zµ dimensionless, showing a universal behavior in the TAI region. (g)-
+(i) Local Chern markers C(R) as a function of the positions of the Kane-Mele system cells with Lx = Ly = 50a for λν =
+1.85t, λR = 0, and λSO = 0.3t and different values of W = 3.23t, W = 4.24t, and W = 7.07t respectively. (j)-(k) Topological
+phase diagrams drawn from the √   local Chern marker as a function of spin-orbit coupling λSO /t and mass parameter λν /t, using
+λR = 0.05t, and Lx = Ly = 15 3a, without disorder (j) and with disorder W = 5t (k). (l)-(m) Topological phase diagrams
+drawn from the√ local Chern marker as a function of spin-orbit coupling λR /t, and mass parameter λν /t, using λSO = 0.3t and
+Lx = Ly = 15 3a, without disorder (l) and with disorder W = 5t (m).
+
+
+use of spin Chern number since [H, σz ] = 0. In this                                                 of the local Chern marker over the system sites C(R)
+case, the local marker is calculated using Û = σz (see                                              for disorder intensities of W = 3.23t, W = 4.24t, and
+Eq. 3 in the main text). While there is a transition to                                              W = 7.07t, respectively. These intensities correspond to
+the non-trivial phase, it does not reach the fully non-                                              the points (ii), (iii), and (iv) in Fig. 4(f). For W = 3.23t,
+trivial phase where C0 = 1, due to the small bandwidth of                                            Fig. 4(g), the local Chern marker intensity is C(R) ≈ 0.5
+the model which leads to the emergence of the standard                                               with small fluctuations, that is a disorder strength do-
+Anderson localization phase at small W . The scaling                                                 main corresponding to the transition between trivial and
+analysis, see Fig. 4(f), gives a critical exponent µ ≈ 2,                                            topological regimes. In contrast, in Fig. 4(h) the local
+which is consistent with the ones we obtain for the BHZ                                              Chern marker is C(R) ≈ 1 over almost the entire central
+(main text) and Haldane models (SM above).                                                           region, resembling a bulk topological regime. Figure 4(i)
+                                                                                                     shows that an increasing disorder strength drives the sys-
+  Figures 4(g), 4(h) and 4(i) show the full color map
+                                                                                                                            7
+
+tem back into the trivial regime with the emergence of          topological region is bounded by the dashed lines. In
+Anderson localization.                                          contrast, in the disordered case, illustrated by Fig. 4(k),
+                                                                in which W = 5t, the Anderson disorder extends the
+  Next, we use the local spin-Chern marker C0 to draw
+                                                                topological region beyond the dashed line.
+phase diagrams for the Kane-Mele model with λR ̸= 0.
+                                                                   Similarly, we present a diagram of the local spin Chern
+In this case [H, σz ] ̸= 0 and the spin is not a good quan-
+                                                                marker as a function of mass λν /t and λR for both the
+tum number. Nevertheless, as shown by Refs. [9–11], the
+                                                                pristine case, Fig. 4(l), and the disordered one, Fig. 4(m)
+spin-Chern number for finite λR is quasi-quantized and
+                                                                with W = 5t. The simulations indicate that in disor-
+remains a reliable witness of the topological phase.
+                                                                dered systems the topological parameter space region is
+  Figure 4(j), shows the phase diagram of the pristine          expanded with respect to the pristine limit, especially for
+system using the local spin Chern marker as a function          larger values of λR . This conclusion is in line with the
+of the mass λν /t and the spin-orbit coupling λSO . The         findings reported in Ref. [12].
+
+
+
+
+ [1] F. D. M. Haldane, Model for a quantum Hall effect with-     [7] B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, Quantum
+     out Landau levels: Condensed-matter realization of the          spin Hall effect and topological phase transition in HgTe
+     “parity anomaly”, Phys. Rev. Lett. 61, 2015 (1988).             quantum wells, Science 314, 1757 (2006).
+ [2] C. L. Kane and E. J. Mele, Quantum spin Hall effect in      [8] C. L. Kane and E. J. Mele, Z2 topological order and the
+     graphene, Phys. Rev. Lett. 95, 226801 (2005).                   quantum spin Hall effect, Phys. Rev. Lett. 95, 146802
+ [3] H. Bruus and K. Flensberg, Many-body quantum field the-         (2005).
+     ory in condensed matter physics: an introduction (Ox-       [9] M. Ezawa, Topological Kirchhoff law and bulk-edge cor-
+     ford University Press, United Kingdom, 2003).                   respondence for valley Chern and spin-valley Chern num-
+ [4] C. W. Groth, M. Wimmer, A. R. Akhmerov,                         bers, Phys. Rev. B 88, 161406(R) (2013).
+     J. Tworzydlo, and C. W. J. Beenakker, Theory of the        [10] M. Ezawa, Symmetry protected topological charge in
+     topological Anderson insulator, Phys. Rev. Lett. 103,           symmetry broken phase: Spin-Chern, spin-valley-Chern
+     196805 (2009).                                                  and mirror-Chern numbers, Phys. Lett. A 378, 1180
+ [5] A. Weiße, G. Wellein, A. Alvermann, and H. Fehske,              (2014).
+     The kernel polynomial method, Rev. Mod. Phys. 78, 275      [11] W. Zhu, Y. Long, H. Chen, and J. Ren, Quantum valley
+     (2006).                                                         Hall effects and spin-valley locking in topological Kane-
+ [6] D. Varjas, M. Fruchart, A. R. Akhmerov, and P. M.               Mele circuit networks, Phys. Rev. B 99, 115410 (2019).
+     Perez-Piskunow, Computation of topological phase dia-      [12] C. P. Orth, T. Sekera, C. Bruder, and T. L. Schmidt, The
+     gram of disordered Pb1−x Snx Te using the kernel polyno-        topological Anderson insulator phase in the Kane-Mele
+     mial method, Phys. Rev. Research 2, 013229 (2020).              model, Sci. Rep. 6, 24007 (2016).
+

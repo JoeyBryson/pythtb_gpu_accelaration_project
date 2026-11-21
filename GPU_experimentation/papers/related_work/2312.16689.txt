@@ -1,0 +1,1289 @@
+                                                                      Topological Phase Transitions in the Disordered Haldane Model
+
+                                                                       J. Mildner,1 M. D. Caio,1, 2, ∗ G. Möller,3, ∗ N. R. Cooper,4 and M. J. Bhaseen1
+                                                                  1
+                                                                  Department of Physics, King’s College London, Strand, London WC2R 2LS, United Kingdom
+                                                                   2
+                                                                     Instituut-Lorentz, Universiteit Leiden, P.O. Box 9506, 2300 RA Leiden, The Netherlands
+                                                                                      3
+                                                                                        Physics and Astronomy, Division of Natural Sciences,
+                                                                                 University of Kent, Ingram Building, Canterbury CT2 7NZ, UK
+                                                              4
+                                                                TCM Group, Cavendish Laboratory, University of Cambridge, Cambridge CB3 0HE, United Kingdom
+                                                                    We investigate the phases and phase transitions of the disordered Haldane model in the presence
+                                                                 of on-site disorder. We use the real-space Chern marker and transfer matrices to extract critical
+                                                                 exponents over a broad range of parameters. The disorder-driven transitions are consistent with
+                                                                 the plateau transitions in the Integer Quantum Hall Effect (IQHE), in conformity with recent
+arXiv:2312.16689v1 [cond-mat.str-el] 27 Dec 2023
+
+
+
+
+                                                                 simulations of disordered Dirac fermions. Our numerical findings are compatible with an additional
+                                                                 line of mass-driven transitions with a continuously varying correlation length exponent. The values
+                                                                 interpolate between free Dirac fermions and the IQHE with increasing disorder strength. We also
+                                                                 show that the fluctuations of the Chern marker exhibit a power-law divergence in the vicinity of
+                                                                 both sets of transitions, yielding another varying exponent. We discuss the interpretation of these
+                                                                 results.
+
+
+                                                                      I.   INTRODUCTION                             confirm that the disorder-driven topological transition is
+                                                                                                                    in the universality class of the plateau transition for dis-
+                                                      A defining characteristic of topological phases of mat-       ordered IQH systems, in conformity with recent work on
+                                                   ter is their resilience to local perturbations and sam-          continuum Dirac fermions [29]. Our numerical results are
+                                                   ple defects. A prominent example is the Integer Quan-            compatible with an additional line of mass-driven transi-
+                                                   tum Hall Effect (IQHE) [1, 2] which is robust to vari-           tions with a continuously varying correlation length ex-
+                                                   ations in the sample geometry and is manifest in the             ponent ν. The results interpolate between those of free
+                                                   presence of disorder. This robustness to local pertur-           Dirac fermions with ν = 1 and those of the IQHE with
+                                                   bations makes topological systems ideal candidates for           ν ∼ 5/2, with increasing disorder strength. We also ob-
+                                                   applications, including metrology and quantum informa-           serve a power-law divergence of the fluctuations of the
+                                                   tion processing [3]. Experimental realizations of topolog-       Chern marker yielding another continuously varying ex-
+                                                   ical systems have proliferated in recent years, and now          ponent κ. We discuss the interpretations of these findings
+                                                   include solid state devices in two- and three-dimensions,        including the possible need for larger system sizes at weak
+                                                   cold atomic gases and optical systems. For reviews, see          disorder.
+                                                   for example Refs [4–12].                                            The layout of this paper is as follows. We introduce
+                                                      From a theoretical perspective, one of the most chal-         the model in Section II and the Chern marker in Section
+                                                   lenging and long-standing problems is the characterisa-          III. We discuss the evolution of the phase diagram in
+                                                   tion of the plateau transitions in the IQHE. This has at-        Section IV before turning our attention to the correlation
+                                                   tracted a great deal of attention over the years, including      length exponent in Section V. In Section VI we examine
+                                                   scaling theory approaches [13–19], network models [20–           the sample-to-sample fluctuations of the Chern marker
+                                                   22], and recent conjectures for the low-energy field the-        exposing its power-law divergence in the vicinity of the
+                                                   ory [23, 24]. Amongst these approaches is the idea that          transitions. In Section VII we discuss the variation of the
+                                                   topological phase transitions can be described in terms          correlation length exponent and the fluctuation exponent
+                                                   of disordered Dirac fermions [25–28]. This has been the          as a function of the disorder strength. We conclude in
+                                                   focus of renewed interest due to recent simulations of con-      Section VIII and provide Supplementary Material.
+                                                   tinuum Dirac fermions which confirm their relevance to
+                                                   the IQHE [29].
+                                                      In this work, we explore the critical properties of disor-           II.   DISORDERED HALDANE MODEL
+                                                   dered topological phase transitions using the real-space
+                                                   topological marker [30] and transfer matrices. The ab-
+                                                                                                                      The Haldane model [35] describes spinless fermions
+                                                   sence of translational invariance makes the real-space ap-
+                                                                                                                    hopping on a honeycomb lattice with nearest and next-
+                                                   proach especially suitable for numerical studies of critical
+                                                                                                                    nearest neighbor hopping amplitudes t1 and t2 . In the
+                                                   exponents [31–34]. We focus on the Haldane model [35]
+                                                                                                                    presence of on-site disorder the Hamiltonian is given by
+                                                   in the presence of on-site disorder, whose low-energy de-
+                                                   scription corresponds to disordered Dirac fermions. We                        X †                 X                        
+                                                                                                                    Ĥ = −t1       âi âj + h.c. − t2     eiφij â†i âj + h.c.
+                                                                                                                                 ⟨i,j⟩                           ⟨⟨i,j⟩⟩
+                                                                                                                                 X                 X             X
+                                                   ∗ These authors contributed equally to this work
+                                                                                                                            +M           n̂i − M         n̂i +       vi n̂i ,   (1)
+                                                                                                                                 i∈A               i∈B           i
+                                                                                                                              2
+
+where vi ∈ [−W, W ] is a random variable drawn from
+a flat distribution of width 2W and A, B label the two
+sublattices. Throughout this work we set t1 = 1 and
+t2 = 1/3. Here, â†i and âi are fermionic creation and an-
+nihilation operators obeying anticommutation relations
+{âi , â†j } = δij and n̂i ≡ â†i âi . The energy offset ±M
+breaks inversion symmetry between the A and B sublat-
+tices allowing the possibility of a conventional band in-
+sulator when W = 0. The phase factor φij = ±φ is posi-
+tive (negative) for anticlockwise (clockwise) hopping and
+breaks time-reversal symmetry, allowing the possibility
+of topological phases. The Haldane model with W = 0
+was realized using cold atomic gases [36], where the phase       Figure 1. Finite-size geometry used in the numerical investi-
+factor φ is imprinted via the periodic modulation of the         gations of the Haldane model via the real-space Chern marker.
+optical lattice. The clean Haldane model with W = 0              The dashed lines divide the honeycomb lattice into unit cells
+also played a crucial role in the discovery of topological       containing two sublattice sites A and B, as indicated by the
+insulators [37, 38]; for a review see Ref. [6]. More recently,   red and blue dots. We consider diamond shaped samples with
+an extension of this model with spatially anisotropic first      L unit cells along each edge and 2L2 lattice sites. We set the
+                                                                 inter-site lattice spacing a to unity. The Chern marker is typ-
+neighbor hopping parameters has been investigated for
+                                                                 ically evaluated in the center of the sample as indicated by
+W ̸= 0 [39]. This showed the presence of disorder-driven         the solid lines.
+Lifshitz and Chern transitions. In this work, we focus on
+the isotropic Haldane model with W ̸= 0. We extract the
+disorder induced critical exponents using the real-space         a unit cell, and the sum is over the two sublattice sites
+Chern marker and transfer matrix calculations.                   within the unit cell α. For a clean Chern insulator with
+                                                                 W = 0 and away from topological transitions, the value
+                                                                 of c(rα ) evaluated in the center of a finite-size sample re-
+       III.   REAL-SPACE CHERN MARKER                            produces the value that the global Chern index (2) would
+                                                                 have in the presence of periodic boundary conditions. For
+  In the absence of disorder, the phases of the Hal-             further details see Ref. [30] and the Supplementary Ma-
+dane model (1) are distinguished by the global Chern             terial provided here.
+index [35, 40, 41]
+                 n occ Z
+             1   X                                                               IV.   PHASE DIAGRAM
+        C = − Im         dk ⟨∂kx unk |∂ky unk ⟩ ,         (2)
+             π   n=1 BZ
+                                                                    In order to distinguish between the topological and
+where unk (r) = e   −ik·r
+                         ψnk (r) is the periodic part of the     non-topological phases of the disordered Haldane model
+ground state wavefunction and nocc is the number of oc-          (1) one may consider the disorder average of the real-
+cupied bands. Here, n is the band index and the inte-            space Chern marker c̄, in the center of a finite-size sam-
+gration is over the first Brillouin zone. The Chern index        ple, and averaged over a number of independent disorder
+is quantized and takes the values C = ±1 (C = 0) in              realizations [30, 39]; see Fig. 1. In Fig. 2 we show the evo-
+the topological (non-topological) phases. In the presence        lution of c̄ with increasing disorder strength W . As may
+of disorder (or in finite-size samples with open boundary        be seen from Fig. 2(a), in the absence of disorder the real-
+conditions) the definition (2) is not immediately conve-         space Chern marker c directly reproduces the equilibrium
+nient due to the explicit use of momentum space. One             phase diagram of the clean Haldane model [35]. A verti-
+approach to this problem is to impose periodic bound-            cal slice through Fig. 2(a) shows clear plateaus, with val-
+ary conditions on the disordered sample and to use a             ues of c close to integers [30]. In the vicinity of the transi-
+supercell formulation instead [42]. Alternatively, one can       tion between the topological and non-topological phases,
+employ the real-space Chern marker c(rα ), defined on a          the value of c is no longer quantized, but smoothly in-
+unit cell α, introduced by Bianco and Resta [30]. This           terpolates between the plateaus. As shown in our earlier
+can be obtained from the definition (2) and is given by          work [31], a finite-size scaling analysis of this transition
+                                                                 region yields the correlation length exponent ν = 1. This
+                     4π    X                                     is in agreement with the low-energy description of the
+        c(rα ) = −      Im   ⟨rαs |P̂ x̂Q̂ŷ P̂ |rαs ⟩.   (3)    clean Haldane model in terms of free Dirac fermions [35].
+                     Ac
+                             s=A,B
+                                                                 As the disorder strength W increases, the topological re-
+            Ac     Pnocc R                                       gions of the phase diagram expand, in agreement with
+Here, P̂ = (2π)2     n=1 BZ dk |ψnk ⟩ ⟨ψnk | is the projector    Ref. [39]; see Figs 2 (b) - (d). Strong disorder ultimately
+onto the ground state, Q̂ = Iˆ − P̂ is the complementary         destroys the topological phases as illustrated in Fig. 3.
+projector onto the unoccupied bands, Ac is the area of           This occurs around W ∼ 3.6 for t1 = 1, t2 = 1/3 and
+                                                                                                                            3
+
+                                                                               V.   FINITE-SIZE SCALING
+
+
+
+
+                                                                     The universal features of topological phase transitions
+                                                                  can be obtained from a finite-size scaling analysis of the
+                                                                  Chern marker, both in the absence [31] and the presence
+                                                                  of disorder [32, 33, 43]. In Fig. 4(a) we plot the varia-
+                                                                  tion of the disorder-averaged Chern marker c̄ as a func-
+                                                                  tion of W , corresponding to a horizontal slice through
+                                                                  Fig. 3 with M = 0. It is readily seen that c̄ inter-
+                                                                  polates between plateaus at c̄ ∼ 1 and c̄ ∼ 0, over a
+Figure 2. Exact diagonalization results for the disorder aver-    broad transition region in the vicinity of a critical dis-
+aged Chern marker c̄ in the centre of a finite-size sample with   order strength Wc ∼ 3.6. The width of this transition
+increasing disorder strength W . The results are obtained for     region ∆W narrows with increasing system size L. As-
+an L = 17 sample with 2L2 sites, t1 = 1 and t2 = 1/3. (a)         suming that the correlation length ξ ∼ (W − Wc )−ν
+W = 0, (b) W = 1, (c) W = 2, and (d) W = 3. For W ̸= 0,           is of order the system size when the departures from
+we average over 500 disorder realizations and for W = 0 we        quantization occur, one expects that the width scales
+plot c directly. The data in (a) are consistent with the phase    as ∆W ∼ L−1/ν . More generally, we assume a scal-
+diagram of the clean Haldane model (dashed lines).
+                                                                  ing form c̄ ∼ f (ξ/L) ∼ f˜((W − Wc )L1/ν ). In Fig. 4(a)
+                                                                  we maximize the overlap between the c̄ curves obtained
+                                                                  for different system sizes when plotted as a function
+                                                                  of (W − Wc )L1/ν . This yields Wc = 3.58 ± 0.02 and
+                                                                  ν = 2.42 ± 0.11. Replotting the data in Fig. 4(a) as a
+                                                                  function of (W − Wc )L1/ν with ν = 2.42 the data col-
+                                                                  lapse onto a single curve; see Fig. 4(b) and the inset. This
+                                                                  value of ν is close to, but a little lower than, the most
+                                                                  recent numerical results for the correlation length expo-
+                                                                  nent pertaining to the plateau transitions in the IQHE
+                                                                  where ν ∼ 2.6 [19, 29, 44]. It is however, compatible with
+                                                                  the spread of results shown in Ref. [45]. We corroborate
+                                                                  these findings with transfer matrix calculations on large
+                                                                  strips with width up to 59 unit cells and length up to 107 .
+                                                                  We find that ν = 2.47 ± 0.09, which is numerically close
+                                                                  to 5/2, and in agreement with the scaling of the Chern
+                                                                  marker; see Supplementary Material. We further confirm
+                                                                  our results for the disorder-driven transition with M = 1.
+Figure 3. Exact diagonalization results for the disorder aver-    This yields ν = 2.47 ± 0.08, in agreement with the results
+aged Chern marker c̄ in the centre of a finite-size sample as a   for M = 0; see Supplementary Material. This suggests
+function of M and the disorder strength W . The results are       that the disorder-driven transitions in Fig. 3 are in the
+obtained for an L = 17 sample with 2L2 sites and φ = π/2.         same universality class, independent of the value of M .
+The data are averaged over 103 disorder realizations. We in-
+vestigate both the disorder-driven transitions (horizontal ar-
+row) and the mass-driven transitions at fixed disorder (verti-
+cal arrow).                                                          Having examined the disorder-driven transitions in
+                                                                  Fig. 3 we turn our attention to the mass-driven tran-
+                                                                  sitions at fixed disorder strength. In Fig. 5(a) we plot
+                                                                  the evolution of the Chern marker on transiting from the
+                                                                  topological to the non-topological phase with W = 1 held
+                                                                  fixed. The data show a clear crossing point at Mc ∼ 1.85
+for a range of φ and M . A notable feature in Fig. 3              in conformity with Fig. 3. Re-plotting the data as a func-
+is the presence of re-entrant disorder-driven transitions,        tion of (M − Mc )L1/ν with ν = 1.06 ± 0.03, the data col-
+first from c̄ = 0 to c̄ = 1, and then from c̄ = 1 to c̄ = 0       lapse onto a single curve; see Fig. 5(b). This result is in
+at stronger disorder [39]; this may be seen along the line        agreement with transfer matrix calculations which yield
+M = 2 for example. In the next section we use finite-             ν = 1.05 ± 0.03; see Supplementary Material. This value
+size scaling to extract the critical properties of both the       is close to, but distinct from that of free Dirac fermions
+disorder-driven transitions and the mass-driven transi-           with ν = 1. We will consider further instances of such
+tions at fixed disorder strength; see Fig. 3.                     departures in Sections VI and VII.
+                                                                                                                              4
+
+
+
+
+Figure 4. (a) Exact diagonalization results for the disorder     Figure 5. (a) Exact diagonalization results for the disorder
+averaged Chern marker c̄ in the centre of a finite-size sample   averaged Chern marker c̄ in the centre of a finite-size sample
+as a function of the disorder strength W , with M = 0 and        as a function of the inversion-breaking parameter M . We
+φ = π/2. The results are obtained for L = 15, 17, 19, ..., 35,   set W = 1 and φ = π/2. The results are obtained for
+corresponding to 2L2 site samples, averaged over 3 × 104 dis-    L = 13, 15, 17, 19, ..., 35, corresponding to 2L2 site samples,
+order realizations. At low disorder strength c̄ is pinned at     averaged over 104 disorder realizations. On transiting from
+unity, and it is zero for strong disorder, corresponding to a    the topological to the non-topological phase the topological
+disorder-driven topological phase transition at Wc ∼ 3.6. By     marker c̄ interpolates between unity and zero. We extract
+maximizing the overlap between c̄ when plotted as a func-        the value Mc ∼ 1.85 from the crossing point. We fit the
+tion of (W − Wc )L1/ν for different system sizes we extract      critical point Mc = 1.85 ± 0.01 and the critical exponent
+ν = 2.42 ± 0.11 and Wc = 3.58 ± 0.02. (b) Collapse of the        ν = 1.06 ± 0.03 by maximizing the overlap when plotted as
+data in (a) for the rescaling (W − Wc )L1/ν of the horizontal    a function of (M − Mc )L1/ν . (b) Collapse of the data in (a)
+axis with ν = 2.42 and Wc = 3.58. Inset: a zoomed-in portion     for the rescaling (M − Mc )L1/ν of the horizontal axis with
+of the data in the vicinity of the critical point. The results   Mc = 1.85 and ν = 1.06. This is in agreement with the expo-
+are in good agreement with the transfer matrix calculations      nent ν = 1.05 ± 0.03 derived via the transfer matrix method.
+which yield ν = 2.47 ± 0.09; see Supplementary Material.         Inset: A zoomed-in portion of the data in the vicinity of the
+                                                                 critical point illustrating the quality of the collapse.
+
+
+                 VI.   FLUCTUATIONS
+                                                                 sition highlighting the consistency with our Section V
+                                                                 results for ν. In Section VII we explore the variation of
+   Having established the scaling of the disorder averaged       the exponents ν and κ with increasing disorder strength.
+Chern marker c̄, we now turn our attention to its fluc-
+tuations. We examine the sample-to-sample fluctuations
+of the Chern marker (δc)2 = (c − c̄)2 in the middle of
+the system, where the overbar indicates disorder averag-             VII.    VARIATION OF THE EXPONENTS
+ing. In Fig. 6(a) we plot the evolution of (δc)2 on tran-
+siting from the topological to the non-topological phase            Having discussed the scaling of the Chern marker and
+with W = 1 held fixed. The fluctuations show a clear             its fluctuations we now consider the variation of ν and
+peak on approaching the critical point at Mc ∼ 1.84.             κ with W . In Fig. 7(a) we plot the variation of ν as we
+The value of (δc)2 at the peak grows with increasing             transit along the mass-driven phase boundary in Fig. 3.
+system size and is consistent with a power-law diver-            It can be seen that ν interpolates between that of free
+gence (δc)2max ∼ Lκ with κ = 0.36 ± 0.02; see in-                Dirac fermions with ν = 1 and the value ν ∼ 5/2 cor-
+set of Fig. 6(a). We therefore consider a scaling form           responding to the disorder-driven transitions. The re-
+(δc)2 ∼ Lκ g(ξ/L) ∼ Lκ g̃((M − Mc )L1/ν ) in the vicin-          sults obtained via the Chern marker are in agreement
+ity of the transition. In Fig. 6(b) we plot (δc)2 L−κ as a       with those obtained via the transfer matrix approach, al-
+function of (M − Mc )L1/ν where the values of Mc = 1.84          though the error bars increase with W . The deviation
+and ν = 1.05 are obtained from the scaling of the Chern          between the results at strong disorder is attributed to
+marker. The data collapse in the vicinity of the tran-           finite-size effects in the Chern marker calculations, which
+                                                                                                                               5
+
+                                                                  note that a drift of the critical exponent ν was observed
+                                                                  in early work on the site diluted Ising model [46]. This
+                                                                  has been recently attributed to the effect of logarithmic
+                                                                  corrections [47, 48].
+
+
+
+
+Figure 6. (a) Evolution of the Chern marker fluctuations
+(δc)2 on transiting from the topological to the non-topological
+phase with W = 1 held fixed. We set t1 = 3t2 = 1,                 Figure 7. (a) Evolution of the correlation length exponent ν
+φ = π/2 and average over 104 disorder realizations with           as a function of W for the mass-driven transitions (vertical
+L = 15, 19, ..., 35. The data show a clear peak on approach-      arrow) in Fig. 3. The results are extracted from the finite-
+ing the critical point at Mc ∼ 1.84. Inset: Evolution of the      size scaling of the Chern marker (blue circles) and transfer
+peak value (δc)2max with increasing system size. The data         matrices (green crosses). The exponent interpolates between
+corresponds to a power-law divergence (δc)2max ∼ Lκ with          ν = 1 corresponding to free Dirac fermions and ν ∼ 2.5
+κ = 0.36 ± 0.02. (b) Scaling collapse of the data shown in        (dashed lines), where W ∼ 3.6 corresponds to the disorder-
+panel (a) with Mc = 1.84, ν = 1.05 and κ = 0.36.                  driven transition. The results for the latter are shown in red.
+                                                                  The underlying continuous curve (light blue) is a guide to the
+                                                                  eye only. (b) Evolution of the fluctuation exponent κ for the
+                                                                  same transitions in panel (a). The exponent interpolates be-
+are also performed in a different geometry; see Supple-           tween κ ∼ 0.35 for W = 0.2 and κ ∼ 0.65 (red circle) for the
+mentary Material. The fluctuation exponent κ shows a              disorder-driven transition, as indicated by the dashed lines.
+similar evolution as ν, interpolating between κ ∼ 0.35
+and κ ∼ 0.65; see Fig. 7(b). It is notable that Ref. [29]
+also finds evidence for varying ν as a function of energy in
+a model of Dirac fermions. However, this is over a much                            VIII.   CONCLUSIONS
+smaller range of values, between 2.33 and 2.53. Here,
+we provide evidence for a very strong variation of the               In this work we have explored the critical behavior
+exponents over a wide range of parameters.                        of the disordered Haldane model using both the Chern
+   The results contained in Fig. 7 raise a number of ques-        marker and transfer matrix calculations. We provide ev-
+tions and scenarios. One possibility is that the disordered       idence for disorder-driven transitions with ν ∼ 5/2. Our
+Haldane model exhibits a line of continuously varying             findings are also consistent with a line of fixed points
+exponents ν and κ, due to the presence of marginal per-           with a continuously varying exponent which interpolates
+turbations [24, 45]. Another possibility is that the weak         between ν = 1 and ν ∼ 5/2. It would be interesting to
+disorder regime shows very slow convergence to the ther-          explore the latter in more detail both numerically and
+modynamic limit and will ultimately flow to ν ∼ 5/2.              analytically. We have also introduced an exponent κ
+Another scenario is the possibility of distinct fixed points      associated with the power-law divergence of the Chern
+at both weak and strong disorder to which the system              marker fluctuations in the vicinity of topological phase
+will eventually flow. All of these scenarios may lead to          transitions. We provide numerical evidence for its varia-
+the extraction of effective exponents, νeff and κeff , for        tion along the mass-driven phase boundary. These results
+the system sizes considered. It would be interesting to           may provide a useful starting point to explore the drift
+explore these possibilities in more detail. In closing, we        in exponents found in other works on the IQHE [29, 45].
+                                                                                                                              6
+
+           IX.    ACKNOWLEDGEMENTS                               Investigator Grant No. 511029. MJB was supported by
+                                                                 the National Renewable Energy Laboratory and thanks
+  We acknowledge helpful conversations with M. Fos-              the EPSRC Centre for Doctoral Training in Cross-
+ter, C. von Keyserlingk, R. Kühn, J. Pixley and L.              Disciplinary Approaches to Non-Equilibrium Systems
+Privitera. The early stages of this work was supported           (CANES) funded under grant EP/L015854/1. MJB,
+by EPSRC grants EP/J017639/1 and EP/K030094/1,                   MDC and JM acknowledge the Thomas Young Centre
+by the Netherlands Organization for Scientific Re-               and the use of Create for numerical simulations. The
+search (NWO/OCW), and by an ERC Synergy Grant.                   data presented in this work is available upon request.
+GM was supported by the Royal Society under grant                For the purpose of open access, the authors have applied
+URF\R\180004. NRC was supported by EPSRC Grants                  a creative commons attribution (CC BY) licence.
+EP/P034616/1 and EP/V062654/1 and by the Simons
+
+
+
+
+ [1] T. Ando, Y. Matsumoto, and Y. Uemura, J. Phys. Soc.         [27] S. Guruswamy, A. LeClair, and A. Ludwig, Nucl. Phys.
+     Japan 39, 279 (1975).                                            B. 583, 475 (2000).
+ [2] K. v. Klitzing, G. Dorda, and M. Pepper, Phys. Rev.         [28] D. Bernard and A. LeClair, J. Phys. A Math. Gen. 35,
+     Lett. 45, 494 (1980).                                            2555 (2002).
+ [3] C. Nayak, S. H. Simon, A. Stern, M. Freedman, and           [29] B. Sbierski, E. J. Dresselhaus, J. E. Moore, and I. A.
+     S. Das Sarma, Rev. Mod. Phys. 80, 1083 (2008).                   Gruzberg, Phys. Rev. Lett. 126, 076801 (2021).
+ [4] M. Z. Hasan and C. L. Kane, Rev. Mod. Phys. 82, 3045        [30] R. Bianco and R. Resta, Phys. Rev. B 84, 241106 (2011).
+     (2010).                                                     [31] M. D. Caio, G. Möller, N. R. Cooper, and M. J. Bhaseen,
+ [5] J. Dalibard, F. Gerbier, G. Juzeliūnas, and P. Öhberg,         Nat. Phys. 15, 257 (2019).
+     Rev. Mod. Phys. 83, 1523 (2011).                            [32] L. Ulcakar, J. Mravlje, and T. Rejec, Phys. Rev. Lett.
+ [6] X.-L. Qi and S.-C. Zhang, Rev. Mod. Phys. 83, 1057               125, 216601 (2020).
+     (2011).                                                     [33] A. Beck and M. Goldstein, Phys. Rev. B 103, L241401
+ [7] I. Carusotto and C. Ciuti, Rev. Mod. Phys. 85, 299               (2021).
+     (2013).                                                     [34] P. d’Ornellas, R. Barnett, and D. K. K. Lee, Phys. Rev.
+ [8] L. Lu, J. D. Joannopoulos, and M. Soljacić, Nat. Pho-           B 106, 155124 (2022).
+     tonics 8, 821 (2014).                                       [35] F. D. M. Haldane, Phys. Rev. Lett. 61, 2015 (1988).
+ [9] N. Goldman, G. Juzeliūnas, P. Öhberg, and I. B. Spiel-    [36] G. Jotzu, M. Messer, R. Desbuquois, M. Lebrat,
+     man, Rep. Prog. Phys. 77, 126401 (2014).                         T. Uehlinger, D. Greif, and T. Esslinger, Nature 515,
+[10] M. Kim, Z. Jacob, and J. Rho, Light Sci. Appl. 9, 130            237 (2014).
+     (2020).                                                     [37] C. L. Kane and E. J. Mele, Phys. Rev. Lett. 95, 226801
+[11] B. Q. Lv, T. Qian, and H. Ding, Rev. Mod. Phys. 93,              (2005).
+     025002 (2021).                                              [38] C. L. Kane and E. J. Mele, Phys. Rev. Lett. 95, 146802
+[12] X. Ni, S. Yves, A. Krasnok, and A. Alù, Chem. Rev.              (2005).
+     123, 7585 (2023).                                           [39] P. V. Sriluckshmy, K. Saha, and R. Moessner, Phys. Rev.
+[13] D. E. Khmelnitskii, JETP Lett. 38, 454 (1983).                   B 97, 024204 (2018).
+[14] A. M. M. Pruisken, Phys. Rev. Lett. 61, 1297 (1988).        [40] S.-S. Chern, Ann. Math. Second Ser. 47, 85 (1946).
+[15] B. Huckestein and B. Kramer, Phys. Rev. Lett. 64, 1437      [41] M. V. Berry, Proc. R. Soc. A Math. Phys. Eng. Sci. 392,
+     (1990).                                                          45 (1984).
+[16] C. Lütken and G. Ross, Phys. Lett. B 653, 363 (2007).      [42] D. Ceresoli and R. Resta, Phys. Rev. B 76, 012405
+[17] H. Obuse, I. A. Gruzberg, and F. Evers, Phys. Rev. Lett.         (2007).
+     109, 206804 (2012).                                         [43] D. Varjas, M. Fruchart, A. R. Akhmerov, and P. M.
+[18] E. J. Dresselhaus, B. Sbierski, and I. A. Gruzberg, Phys.        Perez-Piskunow, Phys. Rev. Res. 2, 013229 (2020).
+     Rev. Lett. 129, 026801 (2022).                              [44] E. J. Dresselhaus, B. Sbierski, and I. A. Gruzberg, Phys.
+[19] K. Slevin and T. Ohtsuki, Phys. Status Solidi Rapid Res.         Rev. Lett. 129, 026801 (2022).
+     Lett. , 2300080 (2023).                                     [45] E. J. Dresselhaus, B. Sbierski, and I. A. Gruzberg, Ann.
+[20] J. T. Chalker and P. D. Coddington, J. Phys. C Solid             Phys. 435, 168676 (2021).
+     State Phys. 21, 2665 (1988).                                [46] R. Kühn, Phys. Rev. Lett. 73, 2268 (1994).
+[21] I. C. Fulga, F. Hassler, A. R. Akhmerov, and C. W. J.       [47] N. G. Fytas and A. Malakis, Phys. Rev. E 81, 041109
+     Beenakker, Phys. Rev. B 84 (2011).                               (2010).
+[22] I. A. Gruzberg, A. Klümper, W. Nuding, and A. Se-          [48] M. Schrauth, J. A. J. Richter, and J. S. E. Portela, Phys.
+     drakyan, Phys. Rev. B 95, 125414 (2017).                         Rev. E 97, 022144 (2018).
+[23] M. R. Zirnbauer, Nucl. Phys. B 941, 458 (2019).
+[24] M. R. Zirnbauer, Ann. Phys. 431, 168559 (2021).
+[25] A. W. W. Ludwig, M. P. A. Fisher, R. Shankar, and
+     G. Grinstein, Phys. Rev. B 50, 7526 (1994).
+[26] C.-M. Ho and J. T. Chalker, Phys. Rev. B 54, 8708
+     (1996).
+                                                                                                                           7
+
+                                   Supplementary Material
+                Topological Phase Transitions in the Disordered Haldane Model
+
+
+   Here we provide further details of the Chern marker          by the ground-state projector P (r, r′ ) = ⟨r|P̂ |r′ ⟩ which,
+and transfer matrix calculations performed in the main          for insulators, is exponentially decreasing with |r − r′ |.
+text. We also provide additional results to support our         The Chern marker has proved to be efficient in charac-
+findings.                                                       terizing the topological phases of finite-size systems in
+                                                                equilibrium [2] and out-of-equilibrium [3]. The Chern
+                                                                marker has also proven successful in the presence of dis-
+       A.   REAL-SPACE CHERN MARKER                             order [2].
+
+  Topological order in non-interacting systems is often
+described by the presence of a topologically non-trivial
+texture in the ground state wavefunction. In the case
+of Chern insulators, this topological texture is usually           Topological Phase Transition at Fixed Disorder
+characterised by the global Chern index [1]:
+                   occZ                                            For the phase transitions at fixed disorder strength
+              1   X
+       C = − Im         dk ⟨∂kx unk |∂ky unk ⟩,    (A.1)        W , obtained by changing M in Fig. 3 of the main text,
+              π     n BZ                                        we find that the correlation length exponent ν increases
+                                                                from unity with increasing disorder strength. Setting
+where unk (r) = e−ik·r ψnk (r) is the periodic part of the
+                                                                φ = π/2 and taking W = 0.2, 0.6, 1, 1.4, 1.6, 1.8 we find
+occupied Bloch states for the n-th band. Although C is
+                                                                ν = 1.02(5), 1.02(5), 1.05(6), 1.23(0), 1.49(8) and 1.70(1)
+usually expressed in momentum space, topological order
+                                                                respectively, using the Chern marker. For W ≲ 1 these
+can have consequences even when this is not permitted,
+                                                                values are numerically close to the clean result with
+e.g. in finite-size systems with open boundaries or in the
+                                                                ν = 1 [4]. In Fig. S-1(a) we show the disorder averaged
+presence of disorder. In view of this, a local topologi-
+                                                                topological marker c̄ for the topological phase transition
+cal characteristic known as the Chern marker has been
+                                                                with W = 1.4 held fixed, and averaged over 104 disor-
+introduced by Bianco and Resta [2]. To see this, it is con-
+                                                                der realizations. We consider diamond shaped samples
+venient to insert a complete set of states into Eq. (A.1):
+                                                                with L unit cells along each edge; see Fig. 1 of the main
+          1    Xocc unocc
+                     XZ                                         text. The data show a crossing point in the vicinity of
+  C = − Im                dk ⟨∂kx unk |umk ⟩⟨umk |∂ky unk ⟩,    the critical point at Mc ∼ 1.96. The data exhibits scal-
+          π      n   m BZ                                       ing collapse when plotted as a function of (M − Mc )L1/ν
+                                                       (A.2)    with ν = 1.23 and Mc = 1.96; see Fig. S-1(b). The
+where the missing terms are real. The derivatives in k-         parameters ν and Mc can be obtained by minimising
+space can be recast in real space using                         the mean-squared distance between the rescaled curves
+                                                                in Fig. S-1(b). Explicitly, we minimize the square devia-
+              ⟨ψmk |r̂|ψnk ⟩ = i⟨umk |∂k unk ⟩          (A.3)
+                                                                tion
+for m ̸= n; although the position operator is generically
+ill-defined in the case of periodic boundary conditions, its
+                                                                                       Z                           2
+                                                                           1 X                
+off-diagonal matrix elements are well defined. As such              D=                     dm̃ c̄L (m̃) − c̄L′ (m̃) ,   (A.5)
+                                                                         (#L)2 ′       Ω
+                                                                                 L,L
+                   occ unocc
+                        XZ      Z
+           Ac     X
+    C = − 3 Im                dk dk′
+          4π        n   m    BZ   BZ                            where c̄L is the disorder averaged Chern marker and m̃ =
+                             ⟨ψnk |x̂|ψmk′ ⟩⟨ψmk′ |ŷ|ψnk ⟩     (M − Mc )L1/ν for a system of size L. Here, #L is the
+                                                                number of system sizes used. The inset of Fig. S-1(b)
+        4π
+     = − Im Tr(P̂ x̂Q̂ŷ),                              (A.4)   highlights the quality of the scaling collapse.
+        Ac
+                                                                  In Fig. S-2 we show the disorder averaged Chern
+where for k ̸= k′ the matrix elements vanish, and in the        marker on transiting from the topological to the non-
+second line P̂ and Q̂ = Iˆ − P̂ are the projectors onto         topological phase with W = 1.8. The data show a
+the occupied and empty states, respectively. The pivotal        crossing point in the vicinity of Mc ∼ 2.1. The data
+point to define the Chern marker is to recognize that the       exhibit scaling collapse when plotted as a function of
+trace is independent of the representation and can thus         (M − Mc )L1/ν with ν = 1.70 and Mc = 2.09; see the in-
+be taken in real space. Eq. (A.4) is finally obtained using     set. These values are obtained by minimizing the mean-
+the cyclic property of the trace and P̂ 2 = P̂ [2]. For free-   squared displacement in Eq. (A.5). The data collapse
+electron systems, the ground state is uniquely determined       onto a single curve verifying the non-trivial results.
+                                                                                                                               8
+
+
+
+
+                                                                  Figure S-2. Exact diagonalization results for the disorder av-
+                                                                  eraged Chern marker c̄ in the centre of a finite-size sample
+                                                                  as a function of M , for t2 = t1 /3, t1 = 1, φ = π/2 and
+                                                                  W = 1.8. The results are obtained for L = 13, 15, ..., 35 and
+                                                                  L = 49, corresponding to 2L2 sites, averaged over 104 dis-
+                                                                  order realizations. Inspection of the plot yields Mc ∼ 2.1,
+                                                                  as the critical value for the topological transition associated
+                                                                  with the crossing point. Inset: Collapse of the data in the
+Figure S-1. (a) Exact diagonalization results for the disorder    main figure for the rescaling (M − Mc )L1/ν of the horizon-
+averaged Chern marker c̄ in the centre of a finite-size sam-      tal axis with ν = 1.70. The values of Mc = 2.09 ± 0.01 and
+ple as a function of M , for t2 = t1 /3, t1 = 1, φ = π/2 and      ν = 1.70 ± 0.09 are obtained by minimizing the squared devi-
+W = 1.4. The results are obtained for L = 13, 15, ..., 35,        ation between the rescaled curves. The result is in agreement
+corresponding to 2L2 sites, averaged over 104 disorder re-        with ν = 1.77 ± 0.10 obtained via the transfer matrix ap-
+alizations. The data show a crossing point in the vicinity        proach.
+of Mc ∼ 1.95 corresponding to the transition between the
+phases. (b) Scaling collapse of the data in (a) for the rescal-
+ing (M − Mc )L1/ν of the horizontal axis with ν = 1.23. The
+values of Mc = 1.96±0.01 and ν = 1.23±0.05 are obtained by        contribution within a slice [7]. The matrices J and M are
+minimizing the mean-squared deviation in Eq. (A.5). Inset:        evaluated for a fixed n, and have dimension Ny nc ×Ny nc ,
+magnified portion of the data in the vicinity of the critical     where nc is the number of sites in the unit cell and Ny is
+point highlighting the quality of the collapse. The results are   the number of unit cells per slice. For the Haldane model
+in good agreement with those obtained by the transfer ma-         nc = 2, as shown in Fig. S-3.
+trix approach with ν = 1.21 ± 0.03; see the section below on
+intermediate disorder.
+
+
+        B.   TRANSFER MATRIX METHOD
+
+   In the main text we extract the correlation length ex-
+ponent ν for the Haldane model via the real-space Chern
+marker and via the transfer matrix approach. Here, we
+provide further details on the latter. The derivation of
+the transfer matrix starts from a real-space discretization
+of the Schrödinger equation, Ĥ |ψ⟩ = E |ψ⟩ [5, 6]. In the
+case of a two-dimensional lattice, the system is split into
+                                                                  Figure S-3. Honeycomb lattice structure of the Haldane
+one-dimensional slices, indexed by the position n along
+                                                                  model where the red and blue dots indicate the two sublat-
+the side
+       √ of length Lx . In the case of the Haldane model          tices. The unit cells are shown by dashed lines. The lattice
+Lx = 3aNx , where Nx is the number of slices in the               is divided into one-dimensional slices indexed by an integer
+x-direction and a is the nearest neighbor lattice spacing;        n, as indicated by the solid black line. The transfer matrix T
+see Fig. S-3. For Hamiltonians with short-range hopping           connects the wavefunctions in adjacent slices.
+the Schrödinger equation reduces to
+             Jψn+1 + Mψn + J† ψn−1 = Eψn ,               (B.1)    The Schrödinger equation (B.1) can be recast as
+where ψn = ⟨n|ψ⟩ is the real-space wavefunction for
+slice n. Here, J = ⟨n|Ĥ|n + 1⟩ is the hopping matrix
+                                                                                                     
+                                                                                     ψn+1           ψn
+                                                                                            = Tn          ,                (B.2)
+for nearest neighbour slices and M = ⟨n|Ĥ|n⟩ is a local                              ψn           ψn−1
+                                                                                                                              9
+
+where the transfer matrix Tn is given by                       the Dirac point. We further consider the finite-size scal-
+                  −1                                          ing of systems with Ny mod 3 ̸= 0 and show that the
+                   J (E11 − M) −J−1 J†
+                                         
+           Tn =                            .          (B.3)    Dirac point is approached with increasing Ny . This is
+                         11          0                         demonstrated in Fig. S-8 which shows the evolution of
+                                                               the inverse correlation length ξ −1 with increasing system
+This is a square matrix of dimension 2Ny nc ×2Ny nc . For      size. It can be seen that the results converge towards the
+a fixed value of E, the diagonalisation of Tn is faster than   linear gap-closing expected on the basis of the low-energy
+that of Ĥ due to the reduction in size. The transfer ma-      Dirac Hamiltonian:
+trix T across the whole system is obtained by multiplying
+the transfer matrices for each slice:                                                                                  
+                                                                               X                        m α c2  −cpeiαγ
+                                                                  Ĥ(p, γ) =       Ĥα ;   Ĥα =                          ,
+                             Nx
+                             Y                                                                         −cpe−iαγ −mα c2
+                       T=         Tn ,                (B.4)                    α
+                                                                                                                       (C.1)
+                            n=1
+                                                               where α = ±1 labels the Dirac point. Here, c =
+where we set ψNx +1 = 0 and ψ0 = 0. In the ab-                 3t1 a/(2ℏ) is the effective speed of light, peiαγ = px + iαpy
+sence of disorder the transfer matrices Tn coincide and        is the 2D momentum (px , py ) mapped √        onto the com-
+T = (T1 )Nx . In general, T is non-Hermitian, as follows       plex plane, and mα = (M − 3 3αt2 sin φ)/c2 is the
+from Eq. (B.3). It is therefore convenient to define the       effective mass. The energy √      bands in the vicinity of
+Hermitian matrix [8]                                           the critical point at Mc = 3 3αt2 sin φ are given by
+                                                               E± (M ) = ±ϵ|M − Mc |ν (where ± refers to the upper
+                     Ω = ln T† T .
+                                 
+                                                   (B.5)       and lower bands respectively) with ν = 1 and ϵ = 1. This
+                                                               yields the inverse correlation length ξ −1 = |M − Mc |, in
+The eigenvalues of Ω come in pairs with opposite signs,        agreement with the transfer matrix approach; see Fig. S-
+±λj , where j = 1, ..., Ny nc . This reflects the conserva-    8.
+tion of probability flux. The inverse correlation length is
+obtained from the smallest positive eigenvalue:                  In order to treat systems with different Ly on an equal
+                                                               footing, it is convenient to impose Twisted Boundary
+                                  minj |λj |                   Conditions (TBCs) in the y-direction such that
+                  ξ −1 = lim                 .        (B.6)
+                         Nx →∞      2Lx
+In practice, this is obtained for a large but finite Nx .                      ψ(x, y) = eiθ ψ(x, y + Ly ).              (C.2)
+
+
+                                                               The twist can be generated by threading a magnetic flux
+          C.    BOUNDARY CONDITIONS
+                                                               Φ = ℏe θ through a system with PBCs [9], as shown in
+                                                               Fig. S-4. This shifts the wavevector such that ky →
+   To compute the correlation length from Eq. (B.6) one        ky −θ/Ly = (2πn−θ)/Ly , for n = 0, ..., Ny −1, where the
+typically chooses a strip geometry where Lx ≫ Ly . It          twist-angle θ is defined modulo 2π. This renders J invert-
+is often convenient to impose periodic boundary condi-         ible and the transfer matrix (B.3) can be used directly.
+tions (PBCs) in the y-direction, as shown in Fig. S-4.         It is convenient to choose θ so that the eigenvalues of Ω
+As we will discuss in more detail below, for the Hal-          are symmetrically    distributed around the Dirac point at
+                                                                           √
+dane model, it turns out to be more convenient to use          ky = 4π/(3 3a) for φ = π/2. For Ny = 0, 1, 2 mod 3
+twisted boundary conditions (TBCs). In addition, the           we set θ = π, 2π/3 and π/3 respectively.
+matrix J has two vanishing eigenvalues and is not invert-
+ible. One approach is to separate the singular and non-
+singular contributions following the general treatment of
+Ref. [7]. For the model with PBCs in the y-direction, this
+leads to distinct physical behavior when Ny is a multiple
+of 3. In this case, the allowed momenta ky = 2πj/Ly ,
+with j = 0, ..., Ny − 1, √include the y-momentum of the
+Dirac point at (0, 4π/(3 3a)); see Fig. S-5. This is fur-
+ther illustrated in Fig. S-6 which shows the eigenvalues
+of Ω plotted as a function of the rescaled momentum in
+the y-direction. For the particular choice of Ny = 99
+                                                               Figure S-4. Cylinder geometry used for the transfer matrix
+it can be seen that one of the eigenvalues
+                                       √       corresponds
+                                                               calculations, with Lx ≫ Ly . In the case of the Haldane model,
+to the Dirac momentum ky = 4π/(3 3a). The impact               it is convenient to choose twisted boundary conditions. This
+of this can be seen in Fig. S-7 which shows the varia-         can be achieved by threading a magnetic flux Φ through the
+tion of the inverse correlation length on passing from the     system with periodic boundary conditions in the y-direction.
+topological to the non-topological phase. The linear gap
+closing for Ny = 99 is consistent with the inclusion of
+                                                                                                                                 10
+
+
+
+
+Figure S-5. Reciprocal lattice of√the Haldane model showing√      Figure S-7. Evolution of the inverse correlation length ξ −1 of
+the Dirac points at K = 2π3a
+                             (1, 1/ 3) and K ′ = 2π
+                                                 3a
+                                                    (1, −1/ 3).   the clean Haldane model on transiting from the topological
+For system sizes Ny that are multiples of 3 the allowed values    to the non-topological phase. We set t1 = 3t2 = 1, φ = π/2
+of ky includes the y-component corresponding to K ′ as shown      and impose PBCs in the y-direction. For system sizes Ny that
+in Fig. S-6 . This leads to the distinct linear behavior shown    are multiples of 3 the gap√ closes linearly in the vicinity of the
+in Fig. S-7.                                                      critical point at Mc = 3 (vertical line) due to the inclusion
+                                                                  of the Dirac point. For system sizes Ny that are not multiples
+                                                                  of 3, the gap closing is rounded as the Dirac momentum is not
+                                                                  included in the k-space grid. This may be regarded as a finite-
+                                                                  size effect. The evolution of ξ −1 with increasing system size
+                                                                  is illustrated in Fig. S-8.
+
+
+
+
+Figure S-6. Eigenvalues of Ω for the clean Haldane model
+with PBCs in the y-direction. We set t1 = 3t2 = 1, φ = π/2,
+corresponding to a point in the topological phase with C = 1.
+For system sizes Ny that are multiples of 3 the spectrum of
+Ω includes the y-component of the Dirac momentum (ver-
+tical line). On transiting from the topological to the non-       Figure S-8. Evolution of ξ −1 with increasing system size for
+topological phase the lowest eigenvalue corresponding to the      the topological phase transition illustrated in Fig. S-7. The
+Dirac momentum goes to zero at the critical point as illus-       results for Ny = 50, 100, 200, 400 (blue) that are not multiples
+trated in Fig. S-7. In order to treat all system sizes on an      of 3 converge to the linear gap-closing of the low-energy Dirac
+equal footing we impose TBCs to shift the momenta away            theory (red line). The results for relatively small system sizes
+from the Dirac point.                                             Ny = 12 (open circles) and Ny = 24 (crosses) that are multi-
+                                                                  ples of 3 are in very good agreement with the linear prediction
+                                                                  of the Dirac theory. This is due to the inclusion of the Dirac
+             D.    FINITE-SIZE SCALING                            momentum as illustrated in Fig. S-6. We have checked that
+                                                                  similar behaviour is observed for other values of φ including
+                                                                  φ = π/6, π/4.
+   In order to extract the correlation length exponent ν
+for the topological phase transition illustrated in Fig. S-7,
+we perform a finite-size scaling analysis for the correla-
+                                                                  also necessary to include corrections to Eq. (D.1) due to
+tion length. In the first instance we consider the simple
+                                                                  irrelevant operators. On the basis of the naı̈ve ansatz in
+scaling relation
+                                                                  Eq. (D.1) it is natural to investigate the evolution of the
+                   ξ −1 ∼ L−1     1/ν                             dimensionless ratio Λ = (ξ/Ly )−1 as shown in Fig. S-9.
+                           y f (mNy ),                   (D.1)
+                                                                     The data show a clear √ minimum in the vicinity of the
+where m = (M − Mc )/Mc is the dimensionless distance              critical point at Mc = 3 which follows from the Dirac
+from the critical point. As we will discuss below it is           theory for t1 = 3 t2 = 1 and φ = π/2; see Fig. S-9. The
+                                                                                                                            11
+
+inset shows a zoomed-in portion which shows the finite- √
+size approach to the thermodynamic result, Mc = 3.
+This is further illustrated in Fig. S-10 which shows the
+evolution of the finite-size critical point Mc (Ny ) (corre-
+sponding to the minima in Fig. S-9) with increasing sys-
+tem size. The results
+                  √ asymptote towards the field theory
+prediction Mc = 3. The evolution is well described by
+a power law
+
+                    Mc (Ny ) = Mc − ANy−λ ,           (D.2)
+                                                   √
+where λ is the shift exponent [10] and Mc = 3. As
+can be seen in Fig. S-10, the results are compatible with
+λ = 3 and A = 20.1±0.1; the latter is empirically close to
+A ≃ e3 as inferred from the logarithmic plot. In Fig. S-11
+we plot the evolution of Mc as a function of φ. It can be
+seen that the results are in an excellent
+                                  √        agreement with
+the field-theory prediction Mc = 3 sin φ for t1 = 1 and
+t2 = 1/3. In a similar way we can track the evolution of
+λ and A for different values of φ. The prefactor A also
+varies sinusoidally as shown in Fig. S-12 (a). In contrast,    Figure S-9. Evolution of the dimensionless gap Λ = (ξ/Ly )−1
+the exponent λ stays constant as illustrated in Fig. S-        across the topological (C = 1) to non-topological (C = 0)
+                                                               phase transition for system sizes Ny = 15, 19, ..., 59, 99, 139.
+12 (b). Combining these results, Eq. (D.2) can be recast
+                                                               We set t1 = 1, t2 = 1/3, φ = π/2 and impose TBCs. The
+as                                                             critical region shrinks as the system size increases. Inset:
+                                                                                                                        √ A
+                                                               zoomed-in plot of Λ around the critical point Mc = 3 for
+               Mc (Ny ) = Mc (1 − ÃNy−3 ),    (D.3)
+                                                               the same system sizes. The finite-size critical point Mc (Ny )
+              √                     √                          associated with the minimum of Λ (black crosses) drifts to-
+where Mc = 3 sin φ and Ã = e3 / 3 for fixed t1 = 1            wards the critical point Mc with increasing system size. This
+and t2 = 1/3.                                                  drift is further investigated in Fig. S-10.
+
+
+               i.    Irrelevant contribution                   This allows the drift shown in Figs. S-10(a) and S-10(b)
+                                                               to converge to the critical point Mc with an exponent
+   On the basis of the naı̈ve ansatz given by Eq. (D.1)        λ ̸= 1. We note that m ∼ Ny−λ at the minimum of Λ. In
+one would expect the relation λ = 1/ν to hold [11].                                                1/ν
+                                                               order to keep the argument mNy from Eq. (D.5) finite
+This can be seen by minimizing the naı̈ve scaling rela-                                      −λ+1/ν
+                   1/ν                                         at the minimum, we demand Ny         < ∞, yielding
+tion Λ = f (mNy ) and applying f −1 which renders
+                                   −1/ν                        λ ≥ 1/ν.
+Mc (Ny ) = Mc (1 + f −1 (Λmin )Ny       ). In the case of
+the low-energy Dirac theory with ν = 1 this would yield
+λ = 1; this differs from the extracted value of λ = 3, as      ii.   Extraction of the correlation length exponent ν
+shown in Fig. S-10. As we will see below, this discrep-
+ancy is due to the absence of irrelevant scaling variables
+in Eq. (D.1). The need for irrelevant corrections has been         Due to the quadratic variation of Λ in the vicinity of
+found in other disordered systems [12–15]. These correc-       the critical point, as illustrated in Fig. S-9, it is numer-
+tions are also required to accommodate                         ically preferable to focus on the scaling of the second
+                                     √ the vertical drift      derivative ∂m2
+                                                                              Λ with system size. This can be obtained
+of Λ at the critical point at Mc = 3 which is present
+in Fig. S-9. In view of this, we generalise the ansatz in      by explicit differentiation of Eq. (D.5):
+Eq. (D.1) by taking into account a single irrelevant con-                                                             
+tribution:                                                     ∂m2
+                                                                   Λ|Mc = Ny2/ν ∂m2
+                                                                                    F0 (0)+Ny−y ∂m2
+                                                                                                      ψ(m)F1 (mL1/ν )       .
+                                                                                                                            m=0
+                                                                                                                    (D.6)
+                    Λ = F (mNy1/ν , ψNy−y ),          (D.4)                                               2           2/ν
+                                                               The first term in Eq. (D.6) scales as ∂m     Λ|Mc ∼ Ny
+where y > 0 is an exponent associated with the irrelevant      which is quadratic for ν = 1. The second term scales as
+                                                                 2/ν−y
+field ψ(m). In the case of a finite-size system, the scal-     Ny       with y > 0, which is subleading in the thermody-
+ing function F is analytic and can be Taylor expanded          namic limit. For the large system sizes explored in Fig. S-
+around the vanishing irrelevant contribution ψNy−y = 0:        13, the subleading corrections are indeed found to be in-
+                                                               significant. The first term yields ν = 0.999 ± 0.001 ≃ 1,
+  Λ = F0 (mNy1/ν ) + ψNy−y F1 (mNy1/ν ) + O((ψNy−y )2 ).       as illustrated in Fig. S-13. This is in agreement with the
+                                                   (D.5)       correlation length exponent ν = 1 of the Dirac theory.
+                                                                                                                               12
+
+
+
+
+                                                                   Figure S-12. (a) Evolution of the prefactor A (circles) from
+                                                                   Eq. (D.2) as a function of φ for t1 = 3t2 = 1. The value of A
+                                                                   varies sinusoidally (solid line) between values ±e3 (dashed
+                                                                   lines). The variation is proportional to the critical value
+Figure S-10. (a) Evolution of the finite-size critical point
+                                                                   Mc (φ), as shown in Fig. S-11). (b) Evolution of the shift ex-
+Mc (Ny ) with increasing system size Ny for the clean Haldane
+                                                                   ponent λ (crosses) as a function of φ. The exponent λ stays
+model with t1 = 3t2 = 1 and φ √   = π/2. The blue line corre-
+                                                                   constant suggesting a universal value of λ = 3 (solid line) for
+sponds to Eq. (D.2) with Mc = 3, λ = 3 and A = e3 . The
+                                                                   the clean Haldane model.
+departure of λ from 1/ν = 1 indicates the presence of irrele-
+vant corrections to Eq. (D.1). (b) Deviation of the finite-size
+critical point Mc (Ny ) from that in the thermodynamic limit
+Mc = Mc (∞). The results are in excellent agreement with
+the power-law scaling in Eq. (D.2) with λ = 3 (blue line)).
+
+
+
+
+                                                                   Figure S-13. Finite-size scaling of the second√derivative of Λ
+                                                                   at the (infinite-size) critical point at Mc = 3 for the clean
+                                                                   Haldane model with t1 = 3t2 = 1 and φ = π/2. The results
+                                                                                                                        2
+                                                                   are in agreement with the leading-order prediction ∂m  Λ|Mc ∼
+                                                                     2/ν
+                                                                   Ny obtained from Eq. (D.6). The value of ν = 0.999±0.001
+                                                                   agrees with the field-theory prediction of ν = 1.
+Figure S-11. Evolution of the infinite-size critical point Mc
+as a function of φ obtained from the finite-size scaling rela-
+tion in Eq. (D.2). The results are
+                                 √ in excellent agreement with
+the field-theory result Mc (φ) = 3 sin φ corresponding to the      size can be inferred from Eq. (D.5) by setting m = 0:
+gap-closing of a single Dirac point (solid blue line). The clos-
+ing at the other Dirac point is indicated by a dashed line.                     Λ|Mc = F0 (0) − Ny−y ψ(0)F1 (0).            (D.7)
+
+                                                                   This is of a similar form to Eq. (D.2). In the ther-
+                                                                   modynamic limit Ny → ∞, Eq. (D.7) converges to
+iii.   Extraction of the irrelevant scaling exponent y             Λ|Mc = F0 (0) ≡ Λ0 . In the case of the clean Haldane
+                                                                   model, the limiting value of Λ0 can be inferred from the
+                                                                   Dirac theory. To see this, we note that the dispersion
+   In order to extract the scaling exponent y of the irrel-        relation in the vicinity of the Dirac point is given by
+evant field ψ we focus on the vertical shift of the dimen-         E+ (δky ) = |cℏδky | with c = 3t1 a/(2ℏ) and δky is the
+sionless gap at the critical point, Λ|Mc . This describes          distance from the Dirac momentum. In the presence of
+the vertical shift in Fig. S-9. The scaling with system            TBCs, the minimum of the dispersion relation occurs at
+                                                                                                                                  13
+
+a value of δky that is half of the momentum spacing.
+                                                   √ The
+minimum value of E+ is given by   √ min E+ = 3π/(2   3Ny )
+for t1 = 1, yielding Λ0 = 3π/(2 3) ≃ 2.72. On the basis
+of Eq. (D.7) it can be seen that the finite-size deviation
+from Λ0 scales as Λ|Mc − Λ0 ∼ Ny−y . The data shown
+                                             √
+in Fig. S-14 is consistent with Λ0 = 3π/(2 3) and the
+exponent y = 1.
+
+
+
+
+                                                                       Figure S-15. Finite-size scaling of the first√derivative of Λ
+                                                                       at the (infinite-size) critical point at Mc = 3 for the clean
+                                                                       Haldane model with t1 = 3t2 = 1 and φ = π/2. The deriva-
+                                                                       tive decays as a power-law ∂m Λ|m=0 ∼ Ny−1 , vanishing in the
+                                                                       thermodynamic limit. The value of the exponent matches the
+                                                                       value of the irrelevant exponent y = 1.
+
+
+                                                                       to remove the vertical shift in Fig. S-9. It follows that Λ̃
+Figure S-14. Finite-size scaling of the deviation between the                              1/ν
+                                                                       is a function of mNy as shown in Fig. S-16. In practice,
+dimensionless gap Λ = (ξ/Ly )−1 at√the critical point and the          the irrelevant contribution F1 described by Eq. (E.2) can
+field-theory prediction Λ0 = 3π/(2 3) for t1 = 3 t2 = 1 and
+                                                                       be Taylor expanded up to the second order in m and
+φ = π/2. The power-law scaling of |Λ|Mc − Λ0 | ∼ Ny−y yields
+y = 1 (blue line) and is consistent with the prediction of Λ0
+                                                                       removed appropriately.
+in the thermodynamic limit.
+
+
+
+
+               E.      SCALING RELATION
+
+  A notable feature of the results obtained above is that
+the values λ = 3, y = 1 and ν = 1 satisfy the relation
+λ = 2/ν + y. The latter can be seen from the condition
+for the finite-size critical point, ∂m Λ|mc (Ny ) = 0. Taylor
+expansion of ∂m Λ in powers of m around the critical point
+m = 0 yields
+                                                 2
+ 0 = ∂m Λ              = ∂m Λ         + mc (Ny )∂m Λ         , (E.1)
+            mc (Ny )            m=0                    m=0
+
+with mc (Ny ) ∼ Ny−λ . The scaling of ∂m Λ and ∂m    2
+                                                       Λ at
+the critical point m = 0 can be obtained from Eq. (D.5)
+by explicit differentiation. We find that the first deriva-
+tive at m = 0 vanishes in the thermodynamic limit as
+∂m Λ|m=0 ∼ Ny−y , as illustrated in Fig. S-15. Substitut-
+ing Eq. (D.6) into Eq. (E.1) yields the scaling relation               Figure S-16. Scaling collapse of the shifted variable Λ̃ which
+λ = 2/ν + y, in agreement with the calculated values of                removes the irrelevant contribution via Eq. (E.2). The correc-
+                                                                       tions have been removed on the basis of a Taylor expansion of
+the exponents λ = 3 and ν = y = 1.
+                                                                       F1 , using the previously extracted exponents ν = y = 1 and
+                                                                       λ = 3.
+                       i.   Scaling collapse
+
+  To validate our results, we collapse the data shown in
+                                                                             F.   DISORDERED HALDANE MODEL
+Fig. S-9 onto a single curve; see Fig. S-16. Explicitly, we
+consider the shifted variable Λ̃:
+                                                                        Having investigated the critical properties of the clean
+                 Λ̃ = Λ − ψNy−y F1 (mNy1/ν )                  (E.2)    Haldane model, we now consider the model in presence of
+                                                                                                                                 14
+
+on-site disorder. In the case of an infinite strip Nx → ∞,
+the eigenvalues of the transfer matrix for a fixed real-
+isation of disorder converge to their disorder averages;
+this is due to the consecutive multiplication of single-
+slice transfer matrices [16]. In practice, we use a long
+but finite strip with Nx = 106 or Nx = 107 .
+
+
+                    i.   Weak Disorder
+
+   In Fig. S-17 we plot the evolution of the dimensionless
+inverse gap Λ for disorder strength W = 1, on transiting
+                                                                   Figure S-18. Drift of the minimum of the dimensionless gap Λ
+from the topological to the non-topological phase. As
+                                                                   as a function of the system size Ny for the disordered Haldane
+found in the clean case, the data show a clear minimum             model with disorder strength W = 1. We set t1 = 3t2 = 1 and
+which drifts with the system size Ny . On the basis of             φ = π/2 and impose TBCs. The data asymptotes towards
+Eq. (D.2) we find Mc (∞) = 1.833 ± 0.002, and the shift            Mc (∞) = 1.833 ± 0.002 on the basis of Eq. (D.2) (solid line).
+exponent λ = 2.7 ± 0.3, as illustrated in Fig.S-18. The            The location √of the critical point differs from the clean case
+location of the critical point differs
+                                  √ from the critical point        where Mc = 3 ≃ 1.73. Inset: The approach to the critical
+of the clean system at Mc = 3 ≃ 1.73. In contrast to               point is consistent with the power-law (D.2) with the shift
+the clean case, the vertical drift of Λ at the critical point      exponent λ = 2.7 ± 0.3.
+Mc = 1.833 is non-monotonic, as shown in Fig. S-19.
+This complicates the extraction of the irrelevant expo-
+nent y via Eq. (D.7). Nonetheless we can extract the
+correlation length exponent ν via the scaling of the sec-
+                  2
+ond derivative ∂m   Λ at the critical point Mc = 1.833 using
+Eq. (D.6). As in the clean case, we find that ν can be ob-
+tained from the leading term. This yields ν = 1.05 ± 0.01
+as illustrated in Fig. S-20. The value of the exponent dif-
+fers from that of the clean Haldane model, where ν = 1.
+
+
+
+
+                                                                   Figure S-19. Evolution of the dimensionless gap Λ|Mc as a
+                                                                   function of the inverse system size Ny−1 in the disordered
+                                                                   Haldane model with disorder strength W = 1. We set
+                                                                   t1 = 3t2 = 1 and φ = π/2 and impose TBCs. The evolution
+                                                                   is non-monotonic (dots) which complicates the extraction of
+                                                                   the exponent y. The non-monotonicity is potentially due to
+                                                                   the higher-order corrections in Eq. (D.5). On the basis of a
+                                                                   naı̈ve third order polynomial fit in Ny−1 (solid line) we extract
+                                                                   Λ0 = 2.43 ± 0.02. A crude estimate of y can be obtained by
+                                                                   a power-law fit to the largest system size data.
+
+
+                                                                     In order to verify the extracted value of ν ̸= 1, we
+                                                                   consider scaling collapse of the data. Due to the non-
+                                                                   monotonic vertical shift shown in Fig. S-17, we focus on
+Figure S-17. Evolution of the dimensionless inverse gap Λ          the scaling in the horizontal direction. This can be done
+for disorder strength W = 1 on transiting from the topo-           by shifting the minimum of each of the curves in Fig. S-17
+logical to the non-topological phase for system sizes Ny =         to a common origin. Explicitly we define:
+19, 23, 27, ..., 59 and Ny = 99, 139. We set t1 = 3t2 = 1 and                     ∼
+                                                                                  ∼
+φ = π/2 and impose TBCs. The results are obtained from                            Λ = Λ(M − Mc (Ny )) − Λmin ,                (F.1)
+Nx = 106 transfer matrix multiplications using Eq. (B.4).
+The finite-size critical point Mc (Ny ) associated with the min-   where Λmin is the value of the inverse gap at the min-
+                                                                                       ∼
+                                                                                       ∼
+imum of Λ drifts towards Mc (∞) = 1.833 with increasing                                                       1/ν
+                                                                   imum. Replotting Λ as a function of mNy with ν =
+system size; see Fig. S-18.                                        1.05, it can be seen that the data collapse onto a single
+                                                                   curve as shown in Fig. S-21. This is consistent with a
+                                                                                                                                15
+
+                                                                  strength, W = 2.6. The inverse correlation length ξ −1 is
+                                                                  extracted from Nx = 106 transfer matrix multiplications
+                                                                  in Eq. (B.4). In Fig. S-22, we plot the dimensionless gap
+                                                                  Λ = (ξ/Ly )−1 on transiting from the topological to the
+                                                                  non-topological phase. The minimum of Λ drifts with
+                                                                  increasing system size Ny towards the critical point at
+                                                                  Mc = 2.352 ± 0.002 as illustrated in Fig. S-23. The devi-
+                                                                  ation of the finite-size critical point from the infinite-size
+                                                                  critical point is described by the power law (D.2) with
+                                                                  the shift-exponent λ = 2.1 ± 0.4; see inset of Fig. S-23.
+
+
+
+Figure S-20. Finite-size scaling of the second derivative of
+                  2
+the inverse gap ∂m  Λ at the critical point. We consider the
+disordered Haldane model with W = 1, t1 = 3t2 = 1, φ =
+π/2 and imposed TBCs. The results are consistent with the
+power-law (D.6) with ν = 1.05 ± 0.01 without the need for
+subleading corrections. The value of ν differs from that of the
+clean Haldane model where ν = 1. This is in agreement with
+the result ν = 1.05 ± 0.03 obtained via the Chern Marker.
+
+
+correlation length exponent that differs from the clean
+Haldane model where ν = 1.
+
+
+
+
+                                                                  Figure S-22. Evolution of the dimensionless inverse gap Λ
+                                                                  for the disordered Haldane model with W = 2.6 on transit-
+                                                                  ing from the topological to the non-topological phase. We
+                                                                  set t1 = 3t2 = 1 and φ = π/2 and impose TBCs. The
+                                                                  data are obtained are obtained from Nx = 106 transfer ma-
+                                                                  trix multiplications in Eq. (B.4). We consider system sizes
+                                                                  Ny = 19, 23, 27, ..., 59 and Ny = 99, 139. The minimum of
+                                                                  Λ, associated with the finite-size critical point, drifts towards
+                                                                  the infinite-size critical point at Mc = 2.352 ± 0.002, as shown
+                                                                  in Fig. S-23.
+
+                                                                     The vertical drift of Λ at the critical point Mc = 2.352
+                                                                  with system size is monotonic and downwards for W =
+                                                                  2.6. The drift is well described by Eq. (D.7) with y =
+                                   ∼
+                                                                  2, as illustrated in Fig. S-24. We estimate the limiting
+                                   ∼
+Figure S-21. Scaling collapse of Λ defined in Eq. (F.1) for       value of the infinite-size dimensionless gap ratio as Λ0 =
+the disordered Haldane model with disorder strength W = 1.        0.81 ± 0.02. This is close to values previously reported
+We set t1 = 3t2 = 1, φ = π/2 and imposed TBCs. The data           for the plateau transitions for the Quantum Hall Effect
+collapses onto a single curve when plotted as a function of       [13, 15, 17].
+     1/ν
+mNy with ν = 1.05. The exponent differs from that in the             In order to extract the exponent ν, we examine the
+clean Haldane model where ν = 1.                                  finite-size scaling of the second derivative ∂m  2
+                                                                                                                     Λ at the
+                                                                  critical point corresponding to m = 0. In Fig. S-25 we
+                                                                                                            2        2/ν
+                                                                  show that the derivative scales as ∂m       Λ ∼ Ny     with
+                                                                  ν = 2.37 ± 0.03. This is in accordance with the lead-
+                   ii.   Strong Disorder                          ing order contribution in Eq. (D.6) without subleading
+                                                                  corrections. The value of the exponent for this specific
+   Having found a non-trivial value of the correlation            disorder strength, W = 2.6, is numerically close to that of
+length exponent ν ̸= 1 in the disordered Haldane model            the conjectured exponent ν = 7/3 ≃ 2.33 for the Integer
+with W = 1, we now consider a stronger disorder                   Quantum Hall Effect. It also agrees with recent numer-
+                                                                                                                                16
+
+
+
+
+Figure S-23. Drift of the finite-size critical point Mc (Ny ) as-
+sociated with the minimum of the dimensionless gap Λ with
+                                                                    Figure S-25. Finite-size scaling of the second derivative
+the system size Ny for the disordered Haldane model with             2
+                                                                    ∂M Λ|Mc at the critical point at Mc = 2.352 for the disordered
+disorder strength W = 2.6. We set t1 = 3t2 = 1 and φ = π/2
+                                                                    Haldane model with disorder strength W = 2.6. The diver-
+and impose TBCs. The infinite-size critical point is estimated
+                                                                    gence of the second derivative is well describes by a power-law
+at Mc = 2.352 ± 0.002 on the basis of Eq. (D.2). The un-             2            2/ν
+certainty is obtained from the covariance matrix of the least       ∂M Λ|Mc ∼ Ny with ν = 2.37±0.03, without subleading cor-
+squared error estimation. Inset: Departure of the finite-size       rections.
+critical point Mc (Ny ) from the infinite-size critical point at
+Mc (∞) = 2.352. The departure vanishes as a power-law (D.2)
+with the shift exponent λ = 2.1 ± 0.4.
+
+
+
+
+                                                                                                     ∼
+                                                                                                     ∼
+                                                                    Figure S-26. Scaling collapse of Λ defined in Eq. (F.1) for the
+Figure S-24. Evolution of the dimensionless gap ratio at the
+                                                                    disordered Haldane model with W = 2.6. We set t1 = 3t2 = 1
+critical point Λ|Mc with system size in the disordered Haldane
+                                                                    and φ = π/2 and impose TBCs. In the vicinity of the critical
+model with W = 2.6. We set t1 = 3t2 = 1 and φ = π/2                                                                             1/ν
+and impose TBCs. The drift is well described by Eq. (D.7)           point, the data collapse when plotted as a function of mNy
+with the exponent y = 2. We estimate the limiting value             with ν = 2.37. Away from the critical point, it can be seen
+Λ0 = 0.81 ± 0.02 from the intercept of the linear fit (blue         that the collapse is better for m > 0 than m < 0.
+line). This is consistent with other results for the plateau
+transitions in the Integer Quantum Hall effect [13, 15, 17].
+                                                                                   iii.   Intermediate Disorder
+
+
+                                                                      Having examined the cases of weak and strong dis-
+                                                                    order, we turn our attention to the intermediate disor-
+ical results for disordered Dirac fermions at E = 0 [15].           der regime. In Fig. S-27 we plot the dimensionless gap
+It is also consistent with results for a geometrically dis-         Λ = (ξ/Ly )−1 on transiting from the topological to the
+torted network model [17] and experiment [18]. As dis-              non-topological phase with W = 1.4. Clear minima can
+cussed below and in the main text, our results for the              be seen in the vicinity of Mc = 1.932 ± 0.003. In Fig. S-
+Haldane model appear to approach something closer to                28 we show the drift of the critical point with increas-
+ν ∼ 5/2 in the strong disorder regime. This is compatible           ing system size Ny . The results yield the shift exponent
+with the spread in exponents presented in Ref. [19].                λ = 1.30 ± 0.05; see inset. In contrast, the vertical dis-
+                                                                                                                               17
+
+placement in Fig. S-27 shows a strong downward trend
+with increasing system size Ny . The value at the critical
+point Λ|Mc decreases linearly without saturation for the
+system sizes considered; see Fig. S-29.
+
+
+
+
+                                                                   Figure S-29. Evolution of the dimensionless gap at the critical
+                                                                   point Λ|Mc with increasing system size. For the system sizes
+                                                                   considered, the data are consistent with the linear evolution
+                                                                   (blue line) without a clear termination point in the thermo-
+                                                                   dynamic limit.
+
+
+
+
+                                                                        2            2/ν
+                                                                   as ∂M  Λ|Mc ∼ Ny with ν = 1.21 ± 0.03 for the largest
+                                                                   system sizes Ny > 40. For smaller system sizes it is nec-
+Figure S-27. Evolution of the dimensionless inverse gap Λ          essary to include the subleading corrections in Eq. D.6.
+for the disordered Haldane model with W = 1.4 on transit-          The value of the exponent is in agreement with that de-
+ing from the topological to the non-topological phase. We set      rived via the Chern marker, ν = 1.23 ± 0.05. Further
+t1 = 3t2 = 1, φ = π/2 and impose TBCs. The inverse corre-          verification of this result is obtained by rescaling the hor-
+lation length ξ −1 is extracted from Nx = 106 transfer matrix      izontal axis in order to see∼data collapse. In Fig. S-31 we
+                                                                                                 ∼
+multiplications in Eq. (B.4). The location of the minimum of       plot the centred variable Λ as defined in Eq. (F.1) as a
+Λ drifts with increasing system size Ny towards the critical                         1/ν
+point at Mc = 1.932 ± 0.003; see Fig. S-28. The vertical dis-      function of mNy with ν = 1.21. It is readily seen that
+placement is strong and downwards as illustrated in Fig. S-29.     the data collapse onto a single curve.
+
+
+
+
+                                                                   Figure S-30. Finite-size scaling of the second derivative
+                                                                     2
+Figure S-28. Evolution of the finite-size critical point associ-   ∂M  Λ|Mc at the critical point at Mc = 1.932 for the disor-
+ated with the minimum of Λ in Fig. S-27. The data asymp-           dered Haldane model with W = 1.4. We set t1 = 3t2 = 1,
+tote towards a critical point at Mc = 1.932 (dashed line).         φ = π/2 and impose TBCs. For large system size Ny > 40,
+The data is consistent with Eq. (D.2) with the shift exponent      the growth is well-described by the leading power-law in
+λ = 1.30 ± 0.05 (blue line); see inset.                            Eq. (D.6) with ν = 1.21 ± 0.03 (solid line). The extracted
+                                                                   value ν = 1.21 ± 0.03 is in agreement with that obtained via
+                                                                   the Chern marker, ν = 1.23±0.05. For smaller system sizes it
+   In order to extract the correlation length exponent ν,          is necessary to include the subleading correction in Eq. (D.6)
+we examine the finite-size scaling of the second derivative        (dashed line).
+ 2
+∂M  Λ at the infinite-size critical point with Mc = 1.932.
+As can be seen in Fig. S-30 the second derivative scales
+                                                                                                                             18
+
+
+
+
+                                                      ∼
+                                                      ∼
+Figure S-31. Scaling collapse of the centred variable Λ when
+                            1/ν
+plotted as a function of mNy for Ny > 40 and ν = 1.21.
+
+
+
+         G.   VARIATION OF EXPONENTS
+
+                                                                  Figure S-32. Evolution of the exponent ν for the mass-
+   Having provided evidence that the critical exponents
+                                                                  driven transitions extracted via the scaling of the Chern
+λ, y and ν vary with the disorder strength we plot their          marker (orange circles) as a function of the largest system
+evolution in Figs. S-33(a)-(c). As discussed in the main          size Lmax . (a) The results for W = 1 show little dependence
+text, the exponent ν interpolates between that of free            on Lmax and agree with the transfer matrix calculations with
+Dirac fermions with ν = 1 and a value ν ∼ 5/2 associ-             ν = 1.04 ± 0.02 (black line and shaded area). (b) The re-
+ated with the plateau transition in the IQHE. As can be           sults for W = 2 show an upward trend towards the value
+seen in Fig. 7(a), of the main text the transfer matrix           obtained via transfer matrices. We obtain ν = 1.99 ± 0.12
+results are in good agreement with those obtained via             from a naı̈ve extrapolation of the Chern marker results to the
+the Chern marker. The departures at strong disorder are           thermodynamic limit, in agreement with the transfer matrix
+attributed to finite-size effects in the Chern marker cal-        calculations. (c) Deviation ∆ν of the exponent obtained via
+culations. As shown in Fig. S-32(a), the exponent ν has           the Chern marker and the transfer matrix results. The devi-
+                                                                  ation is compatible with a power-law approach (blue line) to
+little dependence on the maximum system size Lmax in
+                                                                  the extrapolated value ν = 1.99.
+the weak disorder regime. However, it exhibits a slower
+growth for stronger disorder; see Fig. S-32(b). On the
+basis of a naı̈ve extrapolation we obtain ν = 1.99 ± 0.12
+for Lmax → ∞, in agreement with the transfer matrix
+results. The evolution towards the limiting value is well         where the coefficient A(W ) is independent of Ny . Within
+described by a power-law; see Fig. S-32(c). This reduces          the parabolic approximation for Λ one obtains
+the discrepancy in Fig. 7(a) of the main text.
+   In tandem with the variation of ν, we also observe a                               p
+variation in λ and y; see Figs S-33(b) and (c). In view of               Λ ∼ Λmin + (m A(W )Ny1/ν(W ) )2 /2,              (G.2)
+the variation of the exponents with the disorder strength,
+it’s instructive to look for scaling collapse as a function of
+W . In Fig. S-34 we show the variation of Λ on transiting         where Λmin is the value of Λ at the minimum. Using
+from the topological to the non-topological phase for dif-        Eq. (G.2) we can replot the data in Fig. S-34 as a function
+ferent values of W and a fixed system size with Ny = 59.
+                                                                                              p         1/ν(W )
+                                                                  of the rescaled variable m A(W )Ny            , where ν and
+It can be seen that the curvature in the vicinity of the          A are functions of disorder strength. As shown in Fig. S-
+critical point decreases with increasing disorder strength.       35(a) it can be seen that the data collapse in the vicinity
+  For large system sizes Ny , the curvature in the vicinity       of the critical point. Similar behavior is also observed for
+of the critical point is given by Eq. (D.6):                      Ny = 139 as shown in Fig. S-35(b). The scaling collapse
+                                                                  for two distinct system sizes acts as a useful cross-check
+                   2
+                  ∂m Λ ≃ A(W )Ny2/ν(W ) ,                 (G.1)   on the evolution of ν with disorder strength.
+                                                                                                                                19
+
+
+
+
+                                                                   Figure S-34. Variation of Λ on transiting from the topological
+                                                                   to the non-topological phase in the disordered Haldane model
+Figure S-33. Evolution of the exponents ν, λ and y and the         with Ny = 59 for different disorder strengths W . We set t1 =
+amplitude A from Eq. (G.1) with disorder strength W . The          3t2 = 1 and φ = π/2 and impose TBCs. The minimum of
+correlation length exponent ν interpolates between the clean                                                                   √Λ
+                                                                   interpolates that of free Dirac fermion where Λ0 = 3π/(2 3)
+system ν = 1 and ν ∼ 5/2, a value close to what is asso-           (dash-dotted line) and the strong disorder regime where Λ0 ∼
+ciated with the plateau transitions in the Integer Quantum         0.8 (dashed line). The curvature in the vicinity of the critical
+Hall Effect [15, 17, 18]. The exponent y of the irrelevant field   point decreases with increasing W . This leads to a variation of
+interpolates between y = 1 in the clean case and y = 2 in          the correlation length exponent ν with the disorder strength.
+the strong disorder regime. The red stars indicate the values
+obtained for the clean Haldane model.
+                                                                   this quantum phase transition. As found for M = 0, the
+      H.   DISORDER-DRIVEN TRANSITION                              minimum exhibits negligible drift with increasing system
+                                                                   size; see Fig. S-39(b). The location of the critical point
+                                                                   at Wc = 3.57 ± 0.01 coincides with that for M = 0. This
+   Having examined the M -driven transitions at fixed dis-
+                                                                   is consistent with the vertical phase boundary shown in
+order strength, we now turn our attention to the disorder-
+                                                                   Fig. 3 from the main text. The scaling of the second
+driven transitions at fixed M . In Fig. S-36, we plot the                       2            2/ν
+dimensionless gap Λ = (ξ/Ly )−1 as a function of the               derivative ∂W  Λ|Wc ∼ Ny at the critical point yields
+disorder strength on transiting from the topological to            ν = 2.47 ± 0.08, in conformity of the result for M = 0;
+the non-topological phase with M = 0. The data show                see Fig. S-39(c). In Fig. S-39(d) we replot the data in
+                                                                                                   ∼
+                                                                                                   ∼         1/ν
+a clear minimum in the vicinity of a critical disorder             terms of the centred variable Λ and wNy . The data
+strength at Wc = 3.56 ± 0.01. In contrast to the M -               collapse onto a single curve with ν = 2.47 further con-
+driven transitions, we do not see a drift of the minimum           firming the result. This suggest that the disorder-driven
+with increasing system size; see the inset of Fig. S-36.           transitions across the vertical boundary in Fig. 3 of the
+   In order to extract the critical exponent ν, we consider        main text are in the same universality class.
+                                                  2
+the finite-size scaling of the second derivative ∂W Λ eval-
+uated at the critical point Wc = 3.56; see Fig. S-37. It
+                                            2           2/ν                            I.   FLUCTUATIONS
+can be seen that the derivative scales as ∂W  Λ|Wc ∼ Ny
+with ν = 2.47±0.09. This is in accordance with the lead-
+ing contribution in Eq. (D.6) without subleading correc-              Having established the scaling properties o of the dis-
+tions. The value of the exponent is in agreement with              order averaged Chern marker c̄ and its relation to the
+that obtained via the Chern marker, ν = 2.42 ± 0.11.               transfer matrix approach, we now examine the fluctua-
+We may further verify the extracted value ν = 2.47 by              tions of the Chern marker (δc)2 = (c − c̄)2 .
+rescaling the data∼
+                     in Fig. S-36. In Fig. S-38 we plot the
+                  ∼
+centred variable Λ as defined by Eq. (F.1) as a function of
+     1/ν                                                                          i.    Mass-driven Transitions
+wNy , where w = (W − Wc )/Wc is the reduced disorder
+strength. The data collapse onto a single curve for ν =
+2.47.                                                                 In Fig. S-40(a) we plot the evolution of (δc)2 on tran-
+   Having established results for the disorder-driven tran-        siting from the topological to the non-topological phase,
+sition with M = 0 we turn our attention to the case with           with W = 1.8 held fixed. The data show a peak on
+M = 1. In Fig. S-39(a) we plot the evolution of Λ across           approaching the critical point at Mc ∼ 2.09. The maxi-
+                                                                                                                            20
+
+
+
+
+                                                                 Figure S-36. Evolution of the dimensionless inverse gap Λ for
+                                                                 the disordered Haldane model with M = 0 on transiting from
+                                                                 the topological to the non-topological phase with increasing
+Figure S-35. (a) Scaling collapse of the data shown in Fig. S-   disorder strength. We set t1 = 3t2 = 1 and φ = π/2 and
+                                                          1/ν    impose TBCs. We consider system sizes Ny = 19, 23, 27, ..., 59
+                                                p
+34 for Ny = 59 when plotted as a function of m A(W )Ny ,
+where ν and A vary with the disorder strength W . (b) Anal-      and use Nx = 107 transfer matrix multiplications in Eq. (B.4).
+ogous results for Ny = 139.                                      The data show a clear minimum in the vicinity of the critical
+                                                                 disorder strength Wc = 3.56 ± 0.01. Inset: The location of
+                                                                 the minimum of Λ shows negligible drift as a function of Ny .
+mum of (δc)2 exhibits a power-law scaling with increasing
+system size, (δc)2max ∼ Lκ with κ = 0.62 ± 0.02; see in-
+set of Fig. S-40(a). Assuming the scaling form (δc)2 ∼
+Lκ g(ξ/L) ∼ Lκ g̃((M −Mc )L1/ν ) with Mc = 2.09 and ν =
+1.7, the data collapse in the vicinity of the transition; see
+Fig. S-40(b). The result for κ differs from that at W = 1
+where κ = 0.36 ± 0.02; see Fig. 6 in the main text. Re-
+peating the same analysis for different disorder strengths
+we find κ = 0.35(4), 0.35(3), 0.35(9), 0.37(6), 0.61(7) and
+0.67(6) for W = 0.2, 0.6, 1, 1.4, 1.8 and 2.0 respectively.
+The exponent interpolates between κ ∼ 0.35 in the weak
+disorder regime and κ ∼ 0.65 in the strong disorder
+regime as shown in Fig. 7(b) in the main text. The vari-
+ation of κ mirrors that of ν.
+                                                                 Figure S-37. Finite-size scaling of the second derivative
+                                                                   2
+                                                                 ∂W  Λ|Wc at the critical point with Wc = 3.56 for the dis-
+            ii.   Disorder-driven Transition                     ordered Haldane model. We set t1 = 3t2 = 1,φ = π/2 and
+                                                                 M = 0 with TBCs. The divergence of the second deriva-
+                                                                                                       2          2/ν
+  Having established the scaling of the fluctuations of the      tive is compatible with a power-law ∂W  Λ|Wc ∼ Ny    with
+Chern marker for the mass-driven transitions, we now ex-         ν = 2.47 ± 0.09. The result is in agreement with that ob-
+amine the disorder-driven transition at M = 0. In Fig. S-        tained via the Chern marker.
+41(a) we plot the evolution of (δc)2 across the transition
+at Wc ∼ 3.6. The data show a maximum on approach-                we plot (δc)2 L−κ versus (W − Wc )L1/ν where Wc = 3.58
+ing the transition. The value of (δc)2 at the peak grows         and ν = 2.42 are obtained via the scaling of the Chern
+with increasing system size and is well described by the         marker. The data collapse onto a single curve in the
+power-law scaling (δc)2max ∼ Lκ with κ = 0.67 ± 0.02; see        vicinity of the critical point.
+the inset of Fig. S-41(a). This value is close to that of the
+mass-driven transitions in the strong disorder regime; see
+Fig. 7(b) in the main text. Assuming the scaling form
+(δc)2 ∼ Lκ f (ξ/L) ∼ Lκ f ((W −Wc )L1/ν ), in Fig. S-41(b)
+                                                                                                                              21
+
+
+
+
+Figure S-38. Scaling collapse of the data shown in Fig. S-
+                                                 ∼
+                                                 ∼
+36 when plotted in terms of the centred variable Λ defined in
+                 1/ν
+Eq. (F.1) and wNy , where w = (W −Wc )/Wc and ν = 2.47.
+
+
+
+
+                                                                  Figure S-40. (a) Evolution of the Chern marker fluctuations
+                                                                  (δc)2 on transiting from the topological to the non-topological
+                                                                  phase with W = 1.8 held fixed. We set t1 = 3t2 = 1,
+                                                                  φ = π/2 and average over 104 disorder realisations with
+                                                                  L = 15, 19, ..., 35 and L = 49. The data show a maximum
+                                                                  in the vicinity of the critical point at Mc ∼ 2.09. Inset:
+                                                                  The value of (δc)2 at the peak exhibits a power-law scaling
+                                                                  (δc)2max ∼ Lκ with κ = 0.62 ± 0.02 (blue line) (b) Scaling
+                                                                  collapse of the data shown in panel (a) with Mc = 2.09 and
+                                                                  ν = 1.7 obtained from the scaling of the Chern marker.
+
+
+
+
+Figure S-39. (a) Evolution of the dimensionless gap Λ on
+transiting from the topological to the non-topological phase
+as a function of the disorder strength, with M = 1 fixed. We
+set t1 = 3t2 = 1, φ = π/2 with TBCs. (b) The location of the
+minimum of Λ shows a negligible drift with increasing system
+size. The average corresponds to Wc = 3.57 as indicated by
+the blue line. (c) Finite-size scaling of the second derivative
+  2           2/ν
+∂W  Λ|Wc ∼ Ny at the critical point. We extract ν = 2.47 ±
+0.08 using the system sizes Ny ≥ 19 (blue line). (d) Scaling
+collapse of the data shown in (a) when plotted in terms of the
+                  ∼
+                  ∼          1/ν
+centred variable Λ and wNy with ν = 2.47.
+                                                                   22
+
+
+
+
+Figure S-41. (a) Evolution of the Chern marker fluctuations
+(δc)2 for the disorder-driven transition with M = 0. We set
+t1 = 3t2 = 1, φ = π/2 and average over 3 × 104 disorder reali-
+sations with L = 15, 19, ..., 35. The data show a maximum in
+the vicinity of the critical point at Wc ∼ 3.6. Inset: The value
+of (δc)2 at the peak exhibits a power-law scaling (δc)2max ∼ Lκ
+with κ = 0.67 ± 0.02. (b) Scaling collapse of the data shown
+in panel (a) with Wc = 3.58 and ν = 2.42 obtained from the
+scaling of the Chern marker. The data collapse onto a single
+curve in the vicinity of the critical point.
+                                                                                                                            23
+
+
+
+
+ [1] S.-S. Chern, Ann. Math. Second Ser. 47, 85 (1946).         [12] K. Slevin and T. Ohtsuki, Phys. Rev. Lett. 82, 382
+ [2] R. Bianco and R. Resta, Phys. Rev. B 84, 241106 (2011).         (1999).
+ [3] L. Privitera and G. E. Santoro, Phys. Rev. B 93, 241406    [13] K. Slevin and T. Ohtsuki, Phys. Rev. B 80, 041304
+     (2016).                                                         (2009).
+ [4] M. D. Caio, G. Möller, N. R. Cooper, and M. J. Bhaseen,   [14] A. Beck and M. Goldstein, Phys. Rev. B 103, L241401
+     Nature Physics 15, 257 (2019).                                  (2021).
+ [5] A. MacKinnon and B. Kramer, Phys. Rev. Lett. 47, 1546      [15] B. Sbierski, E. J. Dresselhaus, J. E. Moore, and I. A.
+     (1981).                                                         Gruzberg, Phys. Rev. Lett. 126, 076801 (2021).
+ [6] J. B. Pendry, A. MacKinnon, and P. J. Roberts, Proc.       [16] B. Kramer, A. MacKinnon, T. Ohtsuki, and K. Slevin,
+     R. Soc. Lond. 437, 67 (1992).                                   Int. J. Mod. Phys. B 24, 1841 (2010).
+ [7] V. Dwivedi and V. Chua, Phys. Rev. B 93, 134304 (2016).    [17] I. A. Gruzberg, A. Klümper, W. Nuding, and A. Se-
+ [8] A. MacKinnon and B. K. Kramer, Z. Phys. B 53, 1                 drakyan, Phys. Rev. B 95, 125414 (2017).
+     (1983).                                                    [18] W. Li, C. L. Vicente, J. S. Xia, W. Pan, D. C. Tsui, L. N.
+ [9] K. Zawadzki, I. D’Amico, and L. N. Oliveira, Braz. J.           Pfeiffer, and K. W. West, Phys. Rev. Lett. 102, 216801
+     Phys 47, 488 (2017).                                            (2009).
+[10] M. E. Fisher and M. N. Barber, Phys. Rev. Lett. 28,        [19] E. J. Dresselhaus, B. Sbierski, and I. A. Gruzberg, Ann.
+     1516 (1972).                                                    Phys. 435, 168676 (2021).
+[11] J. Cardy, Scaling and Renormalization in Statistical
+     Physics (1996), Cambridge University Press.
+
