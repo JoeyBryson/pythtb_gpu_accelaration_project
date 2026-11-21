@@ -44,6 +44,21 @@ PRESETS = {
         ["analysis/sweep.py", "--size", "8", "--samples", "100", "--W-step", "0.5",
          "--out", "/kaggle/working/out/sweep_pilot_8x8.csv"],
     ],
+    # Spin-up Chern number C_up (gpu_engine.spin_chern; decision A in PART2_PLAN.md).
+    # "chern_test": C_up GPU vs the validated CPU version + timing at 8/12/16 (~5 min).
+    "chern_test": [
+        [*_TESTS, "tests/test_spin_chern.py"],
+        ["benchmarks/gpu_spin_chern.py", "--sizes", "8", "12", "16", "--configs", "20", "--W", "2.0"],
+    ],
+    # "chern_pilot": lambda_nu = 1.65 only, W 0..9 step 0.5, 100 samples, 8x8 and 12x12, with both
+    # CPU baselines (PythTB as-is, and the same C_up algorithm in NumPy on all cores) (~15-25 min).
+    "chern_pilot": [
+        [*_TESTS, "tests/test_spin_chern.py"],
+        ["analysis/sweep.py", "--size", "8", "--deltas", "1.65", "--samples", "100", "--W-step", "0.5",
+         "--W-max", "9", "--cpu-baseline", "--out", "/kaggle/working/out/chern_pilot_8x8.csv"],
+        ["analysis/sweep.py", "--size", "12", "--deltas", "1.65", "--samples", "100", "--W-step", "0.5",
+         "--W-max", "9", "--cpu-baseline", "--out", "/kaggle/working/out/chern_pilot_12x12.csv"],
+    ],
     # "sweep_12": 12x12, W 0..10 step 0.25, 200 samples per point, plus the PythTB CPU estimate
     # (~2-3 h: overnight).
     "sweep_12": [
