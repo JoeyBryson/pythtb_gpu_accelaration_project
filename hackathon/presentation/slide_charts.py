@@ -240,7 +240,7 @@ def slide_phase_map(path: Path = PHASEMAP, out: str = "5_phase_map.png") -> Path
             color="white", va="center")
     ax.text(0.35, lams[-1] - 0.25 * (lams[-1] - clean), "ordinary", fontsize=18, fontweight="bold",
             color=INK, va="center")
-    ax.text(3.0, clean + 0.45 * (lams[-1] - clean), "disorder made\nit topological", fontsize=17,
+    ax.text(3.3, clean + 0.22 * (lams[-1] - clean), "disorder made\nit topological", fontsize=17,
             fontweight="bold", color="white", va="center", ha="center")
     cbar = fig.colorbar(im, ax=ax, fraction=0.03, pad=0.02, ticks=[0, 0.5, 1])
     cbar.ax.set_yticklabels(["0%", "50%", "100%"])
