@@ -186,7 +186,9 @@ def main() -> None:
     print(f"{'size':>6} {'opens 100':>16} {'opens 500':>16} {'closes 100':>16} {'closes 500':>16}"
           f" {'resolved':>8} {'s/sample':>8}")
     for r in rows:
-        cell = lambda n, s: f"{r[f'{n}_{s}']:6.2f} ± {r[f'{n}_{s}_sd']:.2f}"
+        def cell(n, s, r=r):
+            return f"{r[f'{n}_{s}']:6.2f} ± {r[f'{n}_{s}_sd']:.2f}"
+
         print(f"{r['L']:>3}x{r['L']:<2} {cell('opens', 'n100'):>16} {cell('opens', 'n500'):>16} "
               f"{cell('closes', 'n100'):>16} {cell('closes', 'n500'):>16} "
               f"{r['resolved_min']:8.0%} {r['s_per_sample']:8.3f}")
