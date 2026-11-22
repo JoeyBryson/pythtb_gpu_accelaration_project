@@ -13,7 +13,7 @@ one sweep run on several GPUs. One seed = one disorder pattern, kept together ac
 
 Run from hackathon/:
   uv run python analysis/size_samples.py results/ensemble_sizes_*.csv
-Output: results/size_samples.png and results/size_samples.csv (the edge table).
+Output: results/size_samples.png, results/size_samples_curves.png (panels a, b only)\nand results/size_samples.csv (the edge table).
 """
 
 from __future__ import annotations
@@ -165,6 +165,22 @@ def figure(d: dict, rows: list[dict], out: Path, hardware: str) -> None:
     fig.savefig(out, dpi=150, bbox_inches="tight")
 
 
+def curves_figure(d: dict, Ls, out: Path) -> None:
+    """Panels a and b alone: all sizes at 100 vs 500 samples per point."""
+    colours = size_colours(Ls)
+    fig, axes = plt.subplots(1, 2, figsize=(15, 5.8), layout="constrained", sharey=True)
+    panel_curves(axes[0], d, Ls, colours, SMALL, f"a  {SMALL} samples per point")
+    panel_curves(axes[1], d, Ls, colours, BIG, f"b  {BIG} samples per point")
+    axes[1].set_ylabel("")
+    axes[1].legend(title="Supercell", loc="center right", frameon=True)
+    fig.suptitle(f"Fraction of disordered samples that are topological, {len(Ls)} supercell sizes "
+                 "(λ_ν = 1.65, λ_R = 0)", x=0.01, ha="left", fontsize=14, fontweight="bold")
+    fig.text(0.01, -0.01, "Shaded bands: 95% Wilson intervals. Fractions are over samples whose "
+             "spin-up Chern number passed the reliability check.",
+             fontsize=9, color=MUTED, ha="left", va="top")
+    fig.savefig(out, dpi=150, bbox_inches="tight")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument("csv", type=Path, nargs="+")
@@ -177,6 +193,7 @@ def main() -> None:
     Ls = sorted(int(L) for L in np.unique(d["L"]))
     rows = summarise(d, Ls)
     figure(d, rows, args.out, args.hardware)
+    curves_figure(d, Ls, args.out.with_name(args.out.stem + "_curves.png"))
 
     keys = [k for k in rows[0] if not k.endswith("repeats")]
     with open(args.out.with_suffix(".csv"), "w", newline="") as f:
