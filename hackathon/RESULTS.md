@@ -457,6 +457,38 @@ this), W in [1, 3]: `results/sweep/fss_8_12_16_20.json`, `results/figures/fss_8_
 - The pseudo-critical fit W_mid(L) = W_c + A·L^(−1/ν) doesn't constrain W_c with four sizes
   (1.85 ± 0.73); not used.
 
+## R17. Seven sizes (4×4 to 24×24) over the whole window, 100 vs 500 samples (MODAL)
+
+`scripts/ensemble_sweep.py` on 13 Modal H100s in parallel (Filip, 22 Nov 14:30–14:50, 20 min
+wall clock incl. queueing; 121 GPU-minutes): λ_ν = 1.65, λ_R = 0, C_up (mesh 6, refine 10),
+double precision, W = 0–8 step 0.25, **500 shared-seed samples per point, 115,500 samples**.
+24×24 (1,152 sites, up block 1152×1152) took 0.28 s/sample; 20×20 0.11; 16×16 0.04.
+Data: `results/sizes/ensemble_sizes_*.csv`. Analysis: `uv run python analysis/size_samples.py
+results/sizes/*.csv` → `results/size_samples.png`, `results/size_samples.csv`.
+"100 samples" = first 100 seeds; ± = bootstrap SD over seeds. Edges = where the fraction of
+resolved samples that are topological crosses 1/2 (linear interpolation).
+
+| Size | Opens, 100 | Opens, 500 | Closes, 100 | Closes, 500 | Resolved (worst W) |
+|---|---|---|---|---|---|
+| 4×4 | 2.31 ± 0.19 | 2.19 ± 0.06 | 7.33 ± 0.18 | 7.45 ± 0.09 | 89% |
+| 6×6 | 2.09 ± 0.08 | 2.05 ± 0.04 | 6.97 ± 0.15 | 7.01 ± 0.07 | 93% |
+| 8×8 | 2.07 ± 0.05 | 2.02 ± 0.03 | 6.87 ± 0.17 | 6.94 ± 0.06 | 91% |
+| 12×12 | 1.93 ± 0.03 | 1.96 ± 0.02 | 6.88 ± 0.13 | 6.83 ± 0.05 | 90% |
+| 16×16 | 1.94 ± 0.03 | 1.94 ± 0.01 | 6.80 ± 0.08 | 6.77 ± 0.04 | 90% |
+| 20×20 | 1.93 ± 0.02 | 1.92 ± 0.01 | 6.92 ± 0.13 | 6.84 ± 0.05 | 91% |
+| 24×24 | 1.94 ± 0.02 | 1.92 ± 0.01 | 6.69 ± 0.06 | 6.77 ± 0.03 | 92% |
+
+Findings:
+- **500 samples cut the error on both edges ~2–3×** (≈ √5). With 500, the opening edge falls
+  steadily with size and levels off at 1.92 from 20×20 (Favata & Marrazzo's L = 42: 1.92). With
+  100 samples, 12×12, 16×16, 20×20 and 24×24 can't be told apart or even put in order.
+- The closing edge moves from 7.45 (4×4) to ~6.8 from 12×12 on. With 100 samples its 95% range
+  is up to ±0.35 (8×8); a single 100-sample run can put it anywhere in 6.4–7.1.
+- The rising curves of all sizes cross near W ≈ 1.9 (panel b), consistent with R14/R16.
+- **To check:** our closing edge (~6.8) sits ~0.2 below Favata's L = 42 (7.00); different
+  observable (their mean single-point spin Chern number vs our fraction). 20×20 closes slightly
+  later than 16×16 and 24×24 (6.84 vs 6.77), within ~1.5 SD.
+
 ---
 
 ## Still to measure

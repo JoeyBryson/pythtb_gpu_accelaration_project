@@ -1,0 +1,33 @@
+{
+  "config": {
+    "supercells": [
+      24
+    ],
+    "Ws": [
+      0.75,
+      2.75,
+      4.75,
+      6.75
+    ],
+    "n_samples": 500,
+    "nk": {
+      "24": 6
+    },
+    "deltas": [
+      1.65
+    ],
+    "soc": 0.3,
+    "rashba": 0.0,
+    "disorder": "uniform",
+    "seeds": "shared",
+    "seed0": 0,
+    "keep_flows": 0,
+    "spin_blocks": false,
+    "invariant": "c_up",
+    "refine_nk": 10
+  },
+  "hardware": "NVIDIA H100 80GB HBM3 (85 GB), double precision",
+  "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+  "disorder_convention": "eps_i ~ U[-W/2, W/2] per site, both spins (ours; Orth uses [-W, W], i.e. W_ours = 2 W_Orth)",
+  "written": "2026-11-22 14:50:04"
+}

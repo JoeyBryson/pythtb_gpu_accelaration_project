@@ -1,0 +1,68 @@
+{
+  "config": {
+    "supercells": [
+      4,
+      6,
+      8,
+      12
+    ],
+    "Ws": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0,
+      1.25,
+      1.5,
+      1.75,
+      2.0,
+      2.25,
+      2.5,
+      2.75,
+      3.0,
+      3.25,
+      3.5,
+      3.75,
+      4.0,
+      4.25,
+      4.5,
+      4.75,
+      5.0,
+      5.25,
+      5.5,
+      5.75,
+      6.0,
+      6.25,
+      6.5,
+      6.75,
+      7.0,
+      7.25,
+      7.5,
+      7.75,
+      8.0
+    ],
+    "n_samples": 500,
+    "nk": {
+      "4": 6,
+      "6": 6,
+      "8": 6,
+      "12": 6
+    },
+    "deltas": [
+      1.65
+    ],
+    "soc": 0.3,
+    "rashba": 0.0,
+    "disorder": "uniform",
+    "seeds": "shared",
+    "seed0": 0,
+    "keep_flows": 0,
+    "spin_blocks": false,
+    "invariant": "c_up",
+    "refine_nk": 10
+  },
+  "hardware": "NVIDIA H100 80GB HBM3 (85 GB), double precision",
+  "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+  "disorder_convention": "eps_i ~ U[-W/2, W/2] per site, both spins (ours; Orth uses [-W, W], i.e. W_ours = 2 W_Orth)",
+  "written": "2026-11-22 14:34:17"
+}
