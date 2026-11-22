@@ -1,0 +1,7 @@
+lambda_nu,W,supercell,nk,refine_nk,samples,precision,spin_blocks,n_reliable,n_topological,frac_topological,stderr,n_unreliable,n_gap_closed,n_refined,t_gpu,t_refine,invariant,device,gpu,timestamp
+1.65,1.5,20,6,12,1000,single,True,996,10,0.0100,0.0032,4,0,7,600.909,27.909,c_up,cuda,Tesla T4,2026-11-21T23:47:55
+1.65,1.6,20,6,12,1000,single,True,990,32,0.0323,0.0056,10,0,24,602.419,68.246,c_up,cuda,Tesla T4,2026-11-21T23:59:06
+1.65,1.7,20,6,12,1000,single,True,964,106,0.1100,0.0101,36,0,70,603.342,178.357,c_up,cuda,Tesla T4,2026-11-22T00:12:09
+1.65,1.8,20,6,12,1000,single,True,936,232,0.2479,0.0141,64,0,117,603.497,290.841,c_up,cuda,Tesla T4,2026-11-22T00:27:03
+1.65,1.9,20,6,12,1000,single,True,913,403,0.4414,0.0164,87,0,174,604.272,427.322,c_up,cuda,Tesla T4,2026-11-22T00:44:15
+1.65,2.0,20,6,12,1000,single,True,925,604,0.6530,0.0157,75,0,153,612.802,384.098,c_up,cuda,Tesla T4,2026-11-22T01:00:53

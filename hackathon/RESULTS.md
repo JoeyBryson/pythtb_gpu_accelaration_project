@@ -419,6 +419,44 @@ W where the fraction topological crosses 50% (linear interpolation between grid 
 - The dense 1,000-sample 16×16 run (preset "dense") stopped after 2 of 9 points (W = 1.00: 0/1000,
   W = 1.25: 1/1000) when this run took the GPU; not used.
 
+## R16. 20×20 at 1,000 samples per point, and finite-size scaling with four sizes (KAG + MAC)
+
+`kaggle/run.py` preset "fssfine_big" (Joey), 21–22 Nov 23:37–01:01, both T4s in parallel
+(scripts/run_parallel.py): 20×20 (1,600 sites), λ_ν = 1.65, W = 1.5–2.5 step 0.1, 1,000 samples
+per point, C_up (mesh 6, refine 12): **11,000 samples in 84 min**, 10.5–17 min per point.
+First attempt was killed at 10.6 min (host RAM: the refinement built the full spinful H for all
+144 k-points at once, ~6 GB per process); fixed by building it in k-chunks (`a0bc2a7`).
+Data: `results/sweep/fssfine_L20{a,b}.csv`.
+
+| W | 1.5 | 1.6 | 1.7 | 1.8 | 1.9 | 2.0 | 2.1 | 2.2 | 2.3 | 2.4 | 2.5 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| topological | 1.0% | 3.2% | 11.0% | 24.8% | 44.1% | 65.3% | 81.6% | 91.0% | 96.0% | 98.9% | 99.5% |
+| unresolved | 0.4% | 1.0% | 3.6% | 6.4% | 8.7% | 7.5% | 5.7% | 3.1% | 1.7% | 1.2% | 0.2% |
+
+Finite-size scaling with Joey's `analysis/fss.py` (8/12/16 from R11/R13 at ~100 samples, plus
+this), W in [1, 3]: `results/sweep/fss_8_12_16_20.json`, `results/figures/fss_8_12_16_20.png`.
+
+| L | W_mid | width |
+|---|---|---|
+| 8 | 2.003 ± 0.038 | 0.276 ± 0.021 |
+| 12 | 1.969 ± 0.031 | 0.189 ± 0.017 |
+| 16 | 1.945 ± 0.019 | 0.133 ± 0.010 |
+| 20 | **1.933 ± 0.004** | **0.109 ± 0.002** |
+
+- Consecutive crossings 8/12, 12/16, 16/20: 1.895, 1.889, 1.876 (each ± ~0.13);
+  **W_c = 1.887 ± 0.079** (weighted mean, no significant drift). Same centre as R14; the error is
+  larger because R14 quoted the single 8/16 crossing. The 16/20 crossing is limited by the
+  100-sample 16×16 data, not by 20×20.
+- The switch keeps sharpening: width ∝ L^(−1/ν) with **1/ν = 1.03 ± 0.09 (ν ≈ 0.97 ± 0.09)**,
+  four sizes on a straight log-log line.
+- **To check with the physics team:** what ν to expect. fss.py notes ~2.4–2.6 for a
+  quantum-Hall-class transition and 1 for a clean mass-driven one; L ≤ 20 may still be in a
+  crossover. Don't claim a universality class from this.
+- Unresolved samples peak at 8.7% at W = 1.9 (near the gap closing) and are left out of the
+  fractions; if they lean one way the curve shifts slightly. To check.
+- The pseudo-critical fit W_mid(L) = W_c + A·L^(−1/ν) doesn't constrain W_c with four sizes
+  (1.85 ± 0.73); not used.
+
 ---
 
 ## Still to measure
