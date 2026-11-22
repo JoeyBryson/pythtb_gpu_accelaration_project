@@ -10,7 +10,7 @@ Physics checks against the papers: [`VALIDATION.md`](VALIDATION.md).
 | ID | Machine | CPU | GPU | Software |
 |---|---|---|---|---|
 | **MAC** | Oscar's MacBook Air | Apple Silicon (arm), 10 cores, Apple Accelerate BLAS | none (CPU only) | Python 3.12, numpy 2.5.5, torch 2.15 (CPU) |
-| **KAG** | Kaggle notebook, "GPU T4 x2" | x86_64, 4 vCPUs | 2 × Tesla T4, 15.6 GB each (**only 1 used so far**) | Python 3.13, numpy 2.1.3, torch 2.11+cu130 |
+| **KAG** | Kaggle notebook, "GPU T4 x2" | x86_64, 4 vCPUs | 2 × Tesla T4, 15.6 GB each (one for the speed results; both in parallel for R16) | Python 3.13, numpy 2.1.3, torch 2.11+cu130 |
 
 T4 note: double precision is ~15× slower than single on this GPU (measured below, R5).
 
@@ -27,7 +27,7 @@ T4 note: double precision is ~15× slower than single on this GPU (measured belo
 > machine, 16,400 samples):** at 16×16, PythTB on all 4 cores **~172 h (7 days)** vs our C_up
 > algorithm on one T4 **~2.1 h: 83× faster** (8.8× from the algorithm, 9.4× more from the GPU);
 > at 12×12, ~32 h vs ~55 min (35×).
-> Not yet included: the second T4. On a T4, double precision overall gives only 1.6–2.9× (R8).
+> Speed numbers use one T4 (R16 used both, for throughput). On a T4, double precision overall gives only 1.6–2.9× (R8).
 
 ---
 
@@ -418,6 +418,44 @@ W where the fraction topological crosses 50% (linear interpolation between grid 
   Not done yet; 50 samples per point, one size only.
 - The dense 1,000-sample 16×16 run (preset "dense") stopped after 2 of 9 points (W = 1.00: 0/1000,
   W = 1.25: 1/1000) when this run took the GPU; not used.
+
+## R16. 20×20 at 1,000 samples per point, and finite-size scaling with four sizes (KAG + MAC)
+
+`kaggle/run.py` preset "fssfine_big" (Joey), 21–22 Nov 23:37–01:01, both T4s in parallel
+(scripts/run_parallel.py): 20×20 (1,600 sites), λ_ν = 1.65, W = 1.5–2.5 step 0.1, 1,000 samples
+per point, C_up (mesh 6, refine 12): **11,000 samples in 84 min**, 10.5–17 min per point.
+First attempt was killed at 10.6 min (host RAM: the refinement built the full spinful H for all
+144 k-points at once, ~6 GB per process); fixed by building it in k-chunks (`a0bc2a7`).
+Data: `results/sweep/fssfine_L20{a,b}.csv`.
+
+| W | 1.5 | 1.6 | 1.7 | 1.8 | 1.9 | 2.0 | 2.1 | 2.2 | 2.3 | 2.4 | 2.5 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| topological | 1.0% | 3.2% | 11.0% | 24.8% | 44.1% | 65.3% | 81.6% | 91.0% | 96.0% | 98.9% | 99.5% |
+| unresolved | 0.4% | 1.0% | 3.6% | 6.4% | 8.7% | 7.5% | 5.7% | 3.1% | 1.7% | 1.2% | 0.2% |
+
+Finite-size scaling with Joey's `analysis/fss.py` (8/12/16 from R11/R13 at ~100 samples, plus
+this), W in [1, 3]: `results/sweep/fss_8_12_16_20.json`, `results/figures/fss_8_12_16_20.png`.
+
+| L | W_mid | width |
+|---|---|---|
+| 8 | 2.003 ± 0.038 | 0.276 ± 0.021 |
+| 12 | 1.969 ± 0.031 | 0.189 ± 0.017 |
+| 16 | 1.945 ± 0.019 | 0.133 ± 0.010 |
+| 20 | **1.933 ± 0.004** | **0.109 ± 0.002** |
+
+- Consecutive crossings 8/12, 12/16, 16/20: 1.895, 1.889, 1.876 (each ± ~0.13);
+  **W_c = 1.887 ± 0.079** (weighted mean, no significant drift). Same centre as R14; the error is
+  larger because R14 quoted the single 8/16 crossing. The 16/20 crossing is limited by the
+  100-sample 16×16 data, not by 20×20.
+- The switch keeps sharpening: width ∝ L^(−1/ν) with **1/ν = 1.03 ± 0.09 (ν ≈ 0.97 ± 0.09)**,
+  four sizes on a straight log-log line.
+- **To check with the physics team:** what ν to expect. fss.py notes ~2.4–2.6 for a
+  quantum-Hall-class transition and 1 for a clean mass-driven one; L ≤ 20 may still be in a
+  crossover. Don't claim a universality class from this.
+- Unresolved samples peak at 8.7% at W = 1.9 (near the gap closing) and are left out of the
+  fractions; if they lean one way the curve shifts slightly. To check.
+- The pseudo-critical fit W_mid(L) = W_c + A·L^(−1/ν) doesn't constrain W_c with four sizes
+  (1.85 ± 0.73); not used.
 
 ---
 
