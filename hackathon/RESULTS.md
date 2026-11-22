@@ -10,7 +10,7 @@ Physics checks against the papers: [`VALIDATION.md`](VALIDATION.md).
 | ID | Machine | CPU | GPU | Software |
 |---|---|---|---|---|
 | **MAC** | Oscar's MacBook Air | Apple Silicon (arm), 10 cores, Apple Accelerate BLAS | none (CPU only) | Python 3.12, numpy 2.5.5, torch 2.15 (CPU) |
-| **KAG** | Kaggle notebook, "GPU T4 x2" | x86_64, 4 vCPUs | 2 × Tesla T4, 15.6 GB each (**only 1 used so far**) | Python 3.13, numpy 2.1.3, torch 2.11+cu130 |
+| **KAG** | Kaggle notebook, "GPU T4 x2" | x86_64, 4 vCPUs | 2 × Tesla T4, 15.6 GB each (one for the speed results; both in parallel for R16) | Python 3.13, numpy 2.1.3, torch 2.11+cu130 |
 
 T4 note: double precision is ~15× slower than single on this GPU (measured below, R5).
 
@@ -27,7 +27,7 @@ T4 note: double precision is ~15× slower than single on this GPU (measured belo
 > machine, 16,400 samples):** at 16×16, PythTB on all 4 cores **~172 h (7 days)** vs our C_up
 > algorithm on one T4 **~2.1 h: 83× faster** (8.8× from the algorithm, 9.4× more from the GPU);
 > at 12×12, ~32 h vs ~55 min (35×).
-> Not yet included: the second T4. On a T4, double precision overall gives only 1.6–2.9× (R8).
+> Speed numbers use one T4 (R16 used both, for throughput). On a T4, double precision overall gives only 1.6–2.9× (R8).
 
 ---
 
