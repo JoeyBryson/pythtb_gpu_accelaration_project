@@ -1,0 +1,2 @@
+lambda_nu,W,supercell,nk,refine_nk,samples,precision,spin_blocks,n_reliable,n_topological,frac_topological,stderr,n_unreliable,n_gap_closed,n_refined,t_gpu,t_refine,invariant,device,gpu,timestamp
+1.65,1.5,20,6,12,1000,single,True,996,10,0.0100,0.0032,4,0,7,625.313,30.682,c_up,cuda,Tesla T4,2026-11-21T23:26:29

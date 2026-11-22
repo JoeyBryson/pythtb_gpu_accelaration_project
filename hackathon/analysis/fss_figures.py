@@ -43,6 +43,25 @@ def shades(n: int) -> list:
     return [cmap(x) for x in np.linspace(0, 1, n)]
 
 
+def wc_summary(est):
+    """(lo, hi, centre, label, drifting) for our W_c. With significant drift the weighted mean of
+    the crossings is not a valid estimate: show the range of the crossings instead."""
+    cr = [v["W"] for v in est["crossings"].values() if np.isfinite(v["W"])]
+    drifting = bool(est.get("drift", {}).get("significant"))
+    if drifting and cr:
+        lo, hi = min(cr), max(cr)
+        return lo, hi, 0.5 * (lo + hi), f"crossings drift with size:\n{hi:.2f} → {lo:.2f}", True
+    w = est["Wc_weighted_mean"]
+    return w["Wc"] - w["err"], w["Wc"] + w["err"], w["Wc"], f"critical disorder\nW_c = {w['Wc']:.2f} ± {w['err']:.2f}", False
+
+
+def pseudo_ok(est) -> bool:
+    """Reject the pseudo-critical fit when its W_c falls outside the measured W range (e.g. midpoints
+    still accelerating: no power-law approach at these sizes)."""
+    pc = est.get("pseudo_critical")
+    return bool(pc) and est["W_range"][0] < pc["Wc"] < est["W_range"][1]
+
+
 def logistic(W, mid, width):
     return 1 / (1 + np.exp(-(W - mid) / width))
 
@@ -54,11 +73,11 @@ def fig_switch(data, est, tag):
     lo, hi = est["W_range"]
     Wf = np.linspace(lo, hi, 400)
     if "Wc_weighted_mean" in est:
-        wc, e = est["Wc_weighted_mean"]["Wc"], est["Wc_weighted_mean"]["err"]
-        ax.axvspan(wc - e, wc + e, color=ORANGE, alpha=0.15, lw=0)
-        ax.axvline(wc, color=ORANGE, lw=2)
-        ax.text(wc + e + 0.02, 0.06, f"critical disorder\nW_c = {wc:.2f} ± {e:.2f}", color=ORANGE,
-                fontsize=15, fontweight="bold", va="bottom")
+        b_lo, b_hi, centre, label, drifting = wc_summary(est)
+        ax.axvspan(b_lo, b_hi, color=ORANGE, alpha=0.15, lw=0)
+        if not drifting:
+            ax.axvline(centre, color=ORANGE, lw=2)
+        ax.text(b_hi + 0.02, 0.06, label, color=ORANGE, fontsize=15, fontweight="bold", va="bottom")
     for L, c in zip(Ls, cols):
         W, k, n = data[L]
         p = k / np.maximum(n, 1)
@@ -78,11 +97,18 @@ def fig_switch(data, est, tag):
 def fig_crossings(est, tag):
     Ls = est["sizes"]
     fig, ax = new_slide()
-    if "Wc_weighted_mean" in est:
+    drifting = bool(est.get("drift", {}).get("significant"))
+    if "Wc_weighted_mean" in est and not drifting:
         wc, e = est["Wc_weighted_mean"]["Wc"], est["Wc_weighted_mean"]["err"]
         ax.axhspan(wc - e, wc + e, color=ORANGE, alpha=0.15, lw=0)
         ax.axhline(wc, color=ORANGE, lw=2)
         ax.text(0.003, wc + e + 0.006, f"weighted mean of crossings  W_c = {wc:.3f} ± {e:.3f}", color=ORANGE, fontsize=14)
+    if drifting:  # straight-line drift fit through the crossings, extrapolated to 1/L = 0 (crude: label it so)
+        d = est["drift"]
+        xf = np.linspace(0, 1 / min(Ls), 50)
+        ax.plot(xf, d["intercept_1overL_to_0"] + d["slope"] * xf, "--", color=ORANGE, lw=2,
+                label=f"straight-line extrapolation of the crossings: {d['intercept_1overL_to_0']:.2f} ± "
+                      f"{d['intercept_err']:.2f} (crude)")
     mids = [est["per_size"][str(L)] for L in Ls]
     ax.errorbar([1 / L for L in Ls], [m["W_mid"] for m in mids], yerr=[m["W_mid_err"] for m in mids], fmt="o", ms=9,
                 color=BLUE, elinewidth=1.5, label="midpoint of each size (50% topological)")
@@ -95,7 +121,7 @@ def fig_crossings(est, tag):
                 elinewidth=1.5, label="where consecutive sizes cross")
     for xi, k in zip(x, keys):
         ax.annotate(k.replace("/", " & "), (xi, cr[k]["W"]), textcoords="offset points", xytext=(10, 6), color=INK_2, fontsize=11)
-    if "pseudo_critical" in est:
+    if pseudo_ok(est):
         pc = est["pseudo_critical"]
         ax.errorbar([0], [pc["Wc"]], yerr=[pc["Wc_err"]], fmt="D", ms=9, color=AQUA, elinewidth=1.5,
                     label=f"midpoints extrapolated to infinite size: {pc['Wc']:.3f} ± {pc['Wc_err']:.3f}")
@@ -105,7 +131,8 @@ def fig_crossings(est, tag):
     drift = est.get("drift", {})
     drift_note = (f"Drift of the crossings with size: {'significant' if drift.get('significant') else 'not significant'} at 2σ."
                   if drift else "")
-    titled(fig, "All sizes cross at one point: the critical disorder",
+    titled(fig, ("The crossing point drifts down as the system grows" if drifting
+                 else "All sizes cross at one point: the critical disorder"),
            "Finite-size scaling, as for the Binder cumulant of the Ising model: crossings of consecutive sizes",
            note(f"{PARAMS}. Logistic fits per size; errors from 2,000 parametric bootstrap resamples. {drift_note} {CONV}"))
     return save(fig, f"fss_2_crossings_{tag}.png", bottom=0.17)
@@ -156,12 +183,19 @@ def fig_comparison(est, tag):
     rows.append((f"Ours: midpoint at {big}×{big}", pb["W_mid"], pb["W_mid_err"], BLUE, "same estimator as the Favata rows"))
     if "Wc_weighted_mean" in est:
         w = est["Wc_weighted_mean"]
-        rows.append((f"Ours: finite-size scaling ({len(est['sizes'])} sizes)", w["Wc"], w["err"], ORANGE,
-                     "crossings of consecutive sizes, weighted mean"))
+        lo, hi, centre, _, drifting = wc_summary(est)
+        if drifting:  # a range, not a point: value = centre, err = half-range, colour flags it
+            rows.append((f"Ours: crossings, {len(est['sizes'])} sizes (L = {min(est['sizes'])}–{max(est['sizes'])})",
+                         centre, 0.5 * (hi - lo), "range", "range of crossings; they drift down with size"))
+        else:
+            rows.append((f"Ours: finite-size scaling ({len(est['sizes'])} sizes)", w["Wc"], w["err"], ORANGE,
+                         "crossings of consecutive sizes, weighted mean"))
     fig, ax = new_slide()
     y = np.arange(len(rows))[::-1]
     for yi, (lab, v, e, c, txt) in zip(y, rows):
-        if e is not None:
+        if c == "range":  # drifting crossings: a bar for the range, no central point
+            ax.plot([v - e, v + e], [yi, yi], color=ORANGE, lw=9, solid_capstyle="butt", alpha=0.85)
+        elif e is not None:
             ax.errorbar([v], [yi], xerr=[e], fmt="o", ms=11, color=c, elinewidth=3, capsize=0)
         else:
             ax.plot([v], [yi], "o", ms=11, color=c, mfc="white", mew=2.5)
@@ -171,7 +205,7 @@ def fig_comparison(est, tag):
     ax.set_yticks(y)
     ax.set_yticklabels([r[0] for r in rows], fontsize=12.5)
     for lbl, r in zip(ax.get_yticklabels(), rows):
-        if r[3] in (BLUE, ORANGE):
+        if r[3] in (BLUE, ORANGE, "range"):
             lbl.set_fontweight("bold")
             lbl.set_color(INK)
     ax.set_xticks([1.6, 1.8, 2.0, 2.2, 2.4])
