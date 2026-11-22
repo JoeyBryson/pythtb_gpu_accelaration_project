@@ -13,6 +13,8 @@ Writes to results/figures/pipeline/:
   step2b_wannier_centres.png  WILSON LOOP. The two Wannier centres xbar_n(k_y) (Wilson loops
                            along k_x) of the perfect crystal: ordinary (lambda_nu = 2.5) vs
                            topological (lambda_nu = 1.0).
+  speed_scaling.png        SPEED. Time per sample vs system size, PythTB vs our method on CPU and
+                           GPU, log-log, from the measured rates in RESULTS.md R12.
   step3_newton_schulz.png  OUR ALGORITHM. Newton-Schulz iterations on real overlap matrices from
                            disordered samples: singular values go to 1, the distance from a unitary
                            matrix falls to rounding error.
@@ -262,7 +264,55 @@ def fig_newton_schulz(steps: int = 10) -> Path:
     return save(fig, "step3_newton_schulz.png")
 
 
+# ---------------------------------------------------------------- speed: scaling with system size
+
+COST_CSV = OUT.parent.parent / "kaggle" / "20261121-213825" / "out" / "sweep_cost.csv"  # R12
+
+
+def fig_speed_scaling() -> Path:
+    """Time per disordered sample vs system size, three methods, log-log (RESULTS.md R12).
+
+    Measured on one Kaggle machine (4 CPU cores + 1 Tesla T4) at lambda_nu = 1.65, W = 2, 6x6 mesh.
+    The exponent in each label is the straight-line slope through the three measured sizes.
+    """
+    import csv
+
+    with COST_CSV.open() as f:
+        rows = sorted(csv.DictReader(f), key=lambda r: int(r["supercell"]))
+    atoms = np.array([2 * int(r["supercell"]) ** 2 for r in rows])
+    methods = [
+        ("s_per_sample_pythtb_cpu", "PythTB, 4 CPU cores", "#555555", "s"),
+        ("s_per_sample_c_up_cpu", "our method, 4 CPU cores", "#e23b3b", "^"),
+        ("s_per_sample_c_up_gpu", "our method, one T4 GPU", LINE_BLUE, "o"),
+    ]
+    fig, ax = plt.subplots(figsize=(6.6, 4.6))
+    times = {}
+    for key, label, colour, marker in methods:
+        t = np.array([float(r[key]) for r in rows])
+        times[key] = t
+        slope = np.polyfit(np.log(atoms), np.log(t), 1)[0]
+        ax.loglog(atoms, t, color=colour, marker=marker, ms=7, lw=1.6,
+                  label=rf"{label}  ($\propto N^{{{slope:.1f}}}$)")
+    # the gap at the largest size
+    top, bottom = times["s_per_sample_pythtb_cpu"][-1], times["s_per_sample_c_up_gpu"][-1]
+    x = atoms[-1] * 1.13
+    ax.annotate("", xy=(x, bottom), xytext=(x, top),
+                arrowprops={"arrowstyle": "<->", "color": INK, "lw": 1.0})
+    ax.text(x * 1.06, np.sqrt(top * bottom), f"{top / bottom:.0f}×", va="center", fontsize=14,
+            fontweight="bold")
+    ax.set_xticks(atoms, [f"{n}\n({r['supercell']}×{r['supercell']})" for n, r in zip(atoms, rows, strict=True)])
+    ax.minorticks_off()
+    ax.set_xlim(atoms[0] * 0.85, atoms[-1] * 1.5)
+    ax.set_ylim(0.05, 100)
+    ax.set_xlabel("atoms in the supercell, N")
+    ax.set_ylabel("time per disordered sample (s)")
+    ax.legend(loc="upper left", fontsize=10.5, handlelength=2.2)
+    for key, *_ in methods:
+        print(f"  speed: {key}: {np.round(times[key], 3)}", flush=True)
+    return save(fig, "speed_scaling.png")
+
+
 if __name__ == "__main__":
     paper_style()
-    for make in (fig_ribbon_bands, fig_wannier_centres, fig_newton_schulz, fig_winding):
+    for make in (fig_speed_scaling, fig_ribbon_bands, fig_wannier_centres, fig_newton_schulz, fig_winding):
         print(f"wrote {make()}", flush=True)
