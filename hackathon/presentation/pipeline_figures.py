@@ -10,6 +10,9 @@ Writes to results/figures/pipeline/:
                            spin-up polarisation sum_n ybar_n(k_x) followed across the Brillouin zone
                            (the quantity gpu_engine.spin_chern winds to get C_up). A sample is
                            topological if its line ends one cell away from where it started.
+  step2b_wannier_centres.png  WILSON LOOP. The two Wannier centres xbar_n(k_y) (Wilson loops
+                           along k_x) of the perfect crystal: ordinary (lambda_nu = 2.5) vs
+                           topological (lambda_nu = 1.0).
   step3_newton_schulz.png  OUR ALGORITHM. Newton-Schulz iterations on real overlap matrices from
                            disordered samples: singular values go to 1, the distance from a unitary
                            matrix falls to rounding error.
@@ -31,8 +34,11 @@ import torch
 from matplotlib.colors import LinearSegmentedColormap
 from pythtb.models import kane_mele
 
+from gpu_engine import get_backend, wilson
+from gpu_engine.batched import solve_configs
 from gpu_engine.reference import clean_kane_mele
 from gpu_engine.spin_chern import boundary_phase_up, clean_up_hamiltonians, up_disorder
+from gpu_engine.topology import z2_from_wannier_flow
 
 OUT = Path(__file__).resolve().parent.parent / "results" / "figures" / "pipeline"
 # the team deck's figure colours (261121hackathon.pptx): blue - grey - salmon red, on white
@@ -162,6 +168,51 @@ def fig_winding(L: int = 8, lambda_nu: float = 1.65, n_samples: int = 200, nk: i
     return save(fig, "step2_winding.png")
 
 
+# ---------------------------------------------------------------- step 2b: Wannier centres vs k_y
+
+
+def centres_vs_ky(L: int, lambda_nu: float, W: float, seed: int, nk: int) -> tuple[np.ndarray, int]:
+    """Wannier centres xbar_n(k_y) of one sample: Wilson loops along k_x at each k_y.
+
+    The engine's own steps (batched.solve_configs, then wilson: overlaps, Newton-Schulz unitary
+    part, ordered product, eigenvalue phases) with the two k directions swapped, because
+    wilson.wannier_centres runs its loops along k_y. Double precision, CPU.
+    Returns centres (nk, n_occ) in [0, 1), sorted at each k_y, and Z2 from their flow.
+    """
+    backend = get_backend("double", "cpu")
+    model = clean_kane_mele(L, delta=lambda_nu, t=1.0, soc=0.3, rashba=0.0)
+    _, u = solve_configs(model, nk, W, [seed], backend)  # (1, nk_x, nk_y, n_occ, N)
+    u = u.transpose(1, 2).contiguous()  # (1, nk_y, nk_x, ...): loop direction is now k_x
+    phase = torch.as_tensor(wilson.boundary_phase(model, G=(1.0, 0.0)), dtype=u.dtype)
+    U, _ = wilson.unitary_part(wilson.overlaps_along_ky(u, phase))
+    evals, _ = wilson.unitary_eigenvalues(wilson.ordered_product(U))
+    wcc = torch.sort(torch.remainder(-torch.angle(evals.cpu()) / (2 * torch.pi), 1.0), dim=-1)[0]
+    wcc = wcc[0].numpy()
+    return wcc, int(z2_from_wannier_flow(wcc[: nk // 2 + 1]))  # rows k_y = 0 ... pi (nk even)
+
+
+def fig_wannier_centres(nk: int = 120) -> Path:
+    """Two panels, perfect crystal (one unit cell, two Wannier centres): ordinary vs topological."""
+    cases = [("ordinary", 2.5), ("topological", 1.0)]
+    fig, axes = plt.subplots(1, 2, figsize=(8.6, 4.0), sharey=True)
+    for i, (ax, (title, lambda_nu)) in enumerate(zip(axes, cases, strict=True)):
+        wcc, z2 = centres_vs_ky(L=1, lambda_nu=lambda_nu, W=0.0, seed=0, nk=nk)
+        wcc = np.concatenate([wcc, wcc[:1]])  # k_y = 2 pi is the same point as k_y = 0
+        ky = np.repeat(np.arange(nk + 1)[:, None] / nk, wcc.shape[1], axis=1)
+        ax.scatter(ky, wcc, s=9, color=LINE_BLUE, linewidths=0)
+        ax.set_title(f"({'ab'[i]}) {title}, $Z_2$ = {z2}", fontsize=14)
+        ax.set_xlim(0, 1)
+        ax.set_ylim(0, 1)
+        ax.set_xticks([0, 0.5, 1], ["0", "π", "2π"])
+        ax.set_yticks([0, 0.5, 1])
+        ax.tick_params(labelsize=12)
+        ax.set_xlabel(r"$k_y$", fontsize=14)
+        print(f"  wannier centres: {title}: Z2 = {z2}", flush=True)
+    axes[0].set_ylabel(r"Wannier centre $\bar{x}$ (cells)", fontsize=14)
+    fig.subplots_adjust(wspace=0.08)
+    return save(fig, "step2b_wannier_centres.png")
+
+
 # ---------------------------------------------------------------- step 3: Newton-Schulz
 
 
@@ -213,5 +264,5 @@ def fig_newton_schulz(steps: int = 10) -> Path:
 
 if __name__ == "__main__":
     paper_style()
-    for make in (fig_ribbon_bands, fig_newton_schulz, fig_winding):
+    for make in (fig_ribbon_bands, fig_wannier_centres, fig_newton_schulz, fig_winding):
         print(f"wrote {make()}", flush=True)
